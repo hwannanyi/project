@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
+  m_Name: Skill
+  m_EditorClassIdentifier: 
+  skillName: sex
+  SkillEffectIllustration: {fileID: 0}
+  SkillEffectPrefab: {fileID: 0}
+  passive: 1
+  skillTypes: 
+  tooltip: sex
+  actionsNumber: 1
+  skillNumber: 1
+  skillCumulative: 1
+  startSkillPosition: 0
+  XstartSkillPosition: 0
+  YstartSkillPosition: 0
+  projectile: 0
+  targeting: 1
+  skillTarget: 00000000
+  projectileSpeed: 0
+  afterdelay: 0
+  beforedelay: 0
+  range: 0
+  aoetype: 2
+  Xaoe: 0
+  Yaoe: 0
+  aoecenter: 0
+  specialAoe:
+  - {x: 0, y: 0}
+  cooldown: 5
+  colldownSkill: 0
+  basicValue: 0
+  increase:
+    keys: 0000000000000000
+    values:
+    - 0
+    - 0
+  damageHit: 0
+  hitSpeed: 0
+  DebuffEffects: []
+  BuffEffects: []
+  CCEffects: []
+  conditionalEffects:
+  - effectName: sex
+    condition: sex
+    target: sex
+    baseValue: 6
+    increaseValue: 9
+    trunDuration: 0
+    skillDuration: 0
+    numberDurations: 0
+    counterDurations: 0
+  - effectName: 
+    condition: 
+    target: 
+    baseValue: 0
+    increaseValue: 0
+    trunDuration: 0
+    skillDuration: 0
+    numberDurations: 0
+    counterDurations: 0

@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
+  m_Name: ball
+  m_EditorClassIdentifier: 
+  skillName: ball
+  SkillEffectIllustration: {fileID: 21300000, guid: d1c1bfea4adf00f40902d66a315d1849, type: 3}
+  SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
+  passive: 0
+  skillTypes: 00000000
+  tooltip: "5\uCE78 \uC55E\uC73C\uB85C \uCCAB\uBC88\uC9F8 \uB300\uC0C1\uC5D0\uAC8C
+    \uB2FF\uC73C\uBA74 \uB370\uBBF8\uC9C0\n\uD788\uD788 \uBC1C\uC0AC"
+  actionsNumber: 1
+  skillNumber: 1
+  skillCumulative: 1
+  startSkillPosition: 0
+  XstartSkillPosition: 0
+  YstartSkillPosition: 0
+  projectile: 1
+  targeting: 0
+  penetration: 0
+  projectileType: 0
+  skillTarget: 02000000
+  projectileSpeed: 5
+  afterdelay: 0
+  beforedelay: 0
+  range: 7
+  aoetype: 1
+  effectRotation: 0
+  Xaoe: 1
+  Yaoe: 1
+  specialAoe: []
+  aoecenter: 1
+  cooldown: 3
+  colldownSkill: 0
+  basicValue: 10
+  increase:
+    keys: 00000000
+    values:
+    - 0.2
+  damageHit: 1
+  hitSpeed: 0
+  DebuffEffects: []
+  BuffEffects: []
+  CCEffects: []
+  conditionalEffects: []
