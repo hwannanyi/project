@@ -157,6 +157,7 @@ public class SkillEffectProjectile : MonoBehaviour
         // 충돌한 대상이 적일 경우
         if (skillData.projectileType.ToString() == "shot")
         {
+            //dfdfdfdfdf
             Destroy(gameObject);
         }
 
