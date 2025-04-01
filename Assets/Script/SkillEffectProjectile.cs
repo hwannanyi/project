@@ -106,7 +106,7 @@ public class SkillEffectProjectile : MonoBehaviour
     }
     
     // 투사체 초기화 메서드
-    public void Initialize(Skill skill, Vector3 targetPosition)
+    public void Initialize(Skill skill, Vector3 targetPosition, GameObject charcter)
     {
 
         
@@ -138,6 +138,12 @@ public class SkillEffectProjectile : MonoBehaviour
         if (hitboxScript != null)
         {
             hitboxScript.Initialize(skill);
+        }
+        // 충돌 처리 전달
+        SkillHitOn hit = GetComponent<SkillHitOn>();
+        if (hit != null)
+        {
+            hit.Initialize(skill, charcter); // 또는 실제 캐릭터 GameObject
         }
 
     }

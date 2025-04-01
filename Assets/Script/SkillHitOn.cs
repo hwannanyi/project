@@ -4,16 +4,7 @@ using System.Collections;
 public class SkillHitOn : MonoBehaviour
 {
     private Skill skillData;
-    private GameObject caster; // 스킬을 쏜 주체
-
-
-    // SkillHitOn.cs 내부
-    private IEnumerator EnableColliderNextFrame()
-    {
-        yield return null;
-        GetComponent<Collider2D>().enabled = true;
-    }
-
+    private GameObject caster;
     private bool isInitialized = false;
 
     public void Initialize(Skill skill, GameObject casterObject)
@@ -22,24 +13,50 @@ public class SkillHitOn : MonoBehaviour
         caster = casterObject;
         isInitialized = true;
 
-        GetComponent<Collider2D>().enabled = false;
-        StartCoroutine(EnableColliderNextFrame());
+        HitboxTile[] hitboxes = GetComponentsInChildren<HitboxTile>(true);
+        for (int i = 0; i < hitboxes.Length; i++)
+        {
+            hitboxes[i].EnableCollider();
+        }
+
+    }
+
+
+
+    private IEnumerator EnableColliderNextFrame()
+    {
+        yield return new WaitForSeconds(0.05f); // 확실히 타이밍 확보
+        var col = GetComponent<Collider2D>();
+        if (col != null)
+        {
+            col.enabled = true;
+        }
+    }
+
+    private void IgnoreCasterCollision()
+    {
+        var skillCollider = GetComponent<Collider2D>();
+        var casterCollider = caster.GetComponent<Collider2D>();
+
+        if (skillCollider != null && casterCollider != null)
+        {
+            Physics2D.IgnoreCollision(skillCollider, casterCollider, true);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (!isInitialized)
         {
-            Debug.LogWarning("Initialize가 먼저 호출되지 않았습니다. 충돌 무시");
+            Debug.LogWarning("Initialize가 먼저 호출되지 않았습니다. 충돌 무시.");
             return;
         }
 
         Debug.Log($"[충돌 감지] {other.name}");
 
-
         if (skillData == null || caster == null)
         {
-            Debug.LogWarning("Initialize가 먼저 호출되지 않았습니다.");
+            Debug.LogWarning("Initialize 정보가 없습니다.");
             return;
         }
 
@@ -64,7 +81,7 @@ public class SkillHitOn : MonoBehaviour
         var statsManager = CharacterStats.Instance;
         if (statsManager == null || statsManager.characters == null)
         {
-            Debug.LogError("CharacterStats.Instance 또는 characters 리스트가 null입니다.");
+            Debug.LogError("CharacterStats.Instance 또는 characters가 null입니다.");
             return;
         }
 
@@ -73,7 +90,7 @@ public class SkillHitOn : MonoBehaviour
 
         if (targetIndex == -1 || casterIndex == -1)
         {
-            Debug.LogWarning("충돌한 오브젝트 또는 caster가 CharacterStats에 등록되지 않았습니다.");
+            Debug.LogWarning("충돌한 오브젝트 또는 caster가 CharacterStats에 없습니다.");
             return;
         }
 
@@ -92,6 +109,4 @@ public class SkillHitOn : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
-
 }
