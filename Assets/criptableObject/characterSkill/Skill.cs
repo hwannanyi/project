@@ -76,7 +76,7 @@ public class Skill : ScriptableObject
 
     public int cooldown;        // 쿨타임
     public int colldownSkill;      // 지속 스킬횟수
-    public float basicValue;      // 기본 위력
+    public int basicValue;      // 기본 위력
     public UDictionary<IncreaseType, float> increase; // 위력 계수 (예: {공격력: 0.1}, {방어력: 0.5})
 
     public int damageHit;         // 타격 횟수

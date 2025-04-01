@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4978613006717625041}
   - component: {fileID: 4627853741427945798}
   - component: {fileID: 2565216215778085254}
+  - component: {fileID: 2570423864531637506}
   - component: {fileID: 2458038533739056254}
   - component: {fileID: 5264796764254746751}
-  - component: {fileID: 2570423864531637506}
   m_Layer: 0
   m_Name: skill
   m_TagString: skill
@@ -111,6 +111,18 @@ MonoBehaviour:
   rotatingVisual: {fileID: 4978613006717625041}
   hitbox: {fileID: 6478507458708094152, guid: 6a4c9e45a832e684b970444b1b9f7ee9, type: 3}
   hitboxProject: {fileID: 419652966581439005, guid: 6a4c9e45a832e684b970444b1b9f7ee9, type: 3}
+--- !u!114 &2570423864531637506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6478507458708094152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56bdcf8e1852ba244bea4c6ffb0c0708, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!66 &2458038533739056254
 CompositeCollider2D:
   m_ObjectHideFlags: 0
@@ -183,15 +195,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &2570423864531637506
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6478507458708094152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 56bdcf8e1852ba244bea4c6ffb0c0708, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

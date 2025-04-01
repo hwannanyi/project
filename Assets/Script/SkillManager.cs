@@ -171,7 +171,7 @@ public class SkillManager : MonoBehaviour
         SkillEffectProjectile skillEffect = skillObject.GetComponent<SkillEffectProjectile>();
         if (skillEffect != null)
         {
-            skillEffect.Initialize(skill, targetPosition, character.characterPrefab);
+            skillEffect.Initialize(skill, targetPosition);
         }
 
         // 충돌 처리 전달

@@ -34,12 +34,17 @@ public class CharacterStats : MonoBehaviour
         
         playerCharacters.Add("melun");
         playerCharacters.Add("melunDago");
-        //playerCharacters.Add("MelunMelun");
+        EnemieCharacters.Add("MelunMelun");
   
 
         for (int i = 0; i < playerCharacters.Count; i++) // playerCharacters 리스트의 길이만큼 반복
         {
             CharacterAdd(playerCharacters[i]);
+            Debug.Log(ALLcharacterList[i].charactername);
+        }
+        for (int i = 0; i < EnemieCharacters.Count; i++) // EnemieCharacters 리스트의 길이만큼 반복
+        {
+            CharacterAdd(EnemieCharacters[i]);
             Debug.Log(ALLcharacterList[i].charactername);
         }
         Charactercreation();
