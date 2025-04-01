@@ -134,30 +134,18 @@ public class SkillManager : MonoBehaviour
         targetPosition.z = 0f;
 
 
-        // 5-1. 생성될때 aoeCenter에 맞춰서 생성위치 조정
-        Vector3 offset = Vector3.zero;
-        Vector3 Poffset = Vector3.zero;
-
-
+        // 5. AOE 중심점 계산
         Vector3 aoeCenterPosition = Vector3.zero;
+        Vector3 Poffset = Vector3.zero;
 
         switch (skill.aoecenter)
         {
-
             case aoeCenter.center:
-
                 aoeCenterPosition = startPosition;
                 break;
 
             case aoeCenter.edge:
-                AoeCenterPosition(skill, closestDirection, startPosition, ref aoeCenterPosition, ref Poffset);
-                
-                break;
-
             case aoeCenter.Rcorner:
-                AoeCenterPosition(skill, closestDirection, startPosition, ref aoeCenterPosition, ref Poffset);
-                break;
-
             case aoeCenter.Lcorner:
                 AoeCenterPosition(skill, closestDirection, startPosition, ref aoeCenterPosition, ref Poffset);
                 break;
@@ -166,46 +154,32 @@ public class SkillManager : MonoBehaviour
                 aoeCenterPosition = startPosition;
                 break;
         }
-        
 
-        
+        // 6. Poffset 적용 (특정 AOE 모드일 경우만)
+        switch (skill.aoecenter)
+        {
+            case aoeCenter.Rcorner:
+            case aoeCenter.Lcorner:
+                targetPosition += Poffset;
+                break;
+        }
 
-
-            // 5-2. 스킬 프리팹 생성
-            //Debug.Log(closestDirection);
+        // 7. 스킬 이펙트 프리팹 생성
         GameObject skillObject = Instantiate(skillPrefab, aoeCenterPosition, Quaternion.identity);
 
-        // 6. 초기화
+        // 8. 초기화 - 사용자 정보까지 넘김
         SkillEffectProjectile skillEffect = skillObject.GetComponent<SkillEffectProjectile>();
         if (skillEffect != null)
         {
-            switch (skill.aoecenter)
-            {
-                case aoeCenter.center:
-                    
-                    break;
-
-                case aoeCenter.edge:
-
-                    break;
-
-                case aoeCenter.Rcorner:
-                    targetPosition = targetPosition + Poffset;
-                    break;
-
-                case aoeCenter.Lcorner:
-                    targetPosition = targetPosition + Poffset;
-                    break;
-            }
-            skillEffect.Initialize(skill, targetPosition);
+            skillEffect.Initialize(skill, targetPosition, character.characterPrefab);
         }
 
-        /*// 6. 초기화
-        SkillEffectHitscan skillEffect = skillObject.GetComponent<SkillEffectHitscan>();
-        if (skillEffect != null)
+        // 충돌 처리 전달
+        SkillHitOn hit = GetComponent<SkillHitOn>();
+        if (hit != null)
         {
-            skillEffect.Initialize(skill, targetPosition);
-        }*/
+            hit.Initialize(skill, character.characterPrefab);
+        }
     }
 
     public void AoeCenterPosition(Skill skill, Vector3 closestDirection, Vector3 startPosition, ref Vector3 aoeCenterPosition, ref Vector3 Poffset)

@@ -104,10 +104,12 @@ public class SkillEffectProjectile : MonoBehaviour
     {
         
     }
-
+    
     // 투사체 초기화 메서드
-    public void Initialize(Skill skill, Vector3 targetPosition)
+    public void Initialize(Skill skill, Vector3 targetPosition, GameObject caster)
     {
+
+        
 
         skillData = skill;
         speed = skill.projectileSpeed;
@@ -137,6 +139,7 @@ public class SkillEffectProjectile : MonoBehaviour
         {
             hitboxScript.Initialize(skill);
         }
+
     }
 
     void Update()
@@ -151,7 +154,7 @@ public class SkillEffectProjectile : MonoBehaviour
 
     }
     // 충돌 처리 메서드
-    private void OnTriggerEnter2D(Collider2D other)
+/*    private void OnTriggerEnter2D(Collider2D other)
     {
         //Debug.Log($"[투사체] 충돌 감지: {other.gameObject.name}");
         // 충돌한 대상이 적일 경우
@@ -169,7 +172,7 @@ public class SkillEffectProjectile : MonoBehaviour
 
             Destroy(gameObject);
         }
-    }
+    }*/
 }
 /*    // 충돌 처리 메서드
     private void OnTriggerEnter2D(Collider2D other)
