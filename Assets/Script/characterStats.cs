@@ -108,6 +108,21 @@ public class CharacterStats : MonoBehaviour
             GameObject CharacterObject = Instantiate(characterList[i].characterPrefab);
             characters.Add(CharacterObject);
             CharacterObject.transform.position = transform.position;
+
+            // 수정: 프리팹 원본 대신 씬 인스턴스를 Stats에 저장
+            characterList[i].characterPrefab = CharacterObject; // <-- 추가됨
+
+            // 수정: 캐릭터 리스트에 인스턴스 등록
+            if (!characters.Contains(CharacterObject))
+            {
+                characters.Add(CharacterObject); // <-- 수정 또는 추가됨
+            }
+
+            // 수정: CharacterStats의 characters 리스트에 인스턴스 등록
+            if (!CharacterStats.Instance.characters.Contains(CharacterObject))
+            {
+                CharacterStats.Instance.characters.Add(CharacterObject); // <-- 추가됨
+            }
         }
 
     }

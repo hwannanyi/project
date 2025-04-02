@@ -46,50 +46,47 @@ public class SkillHitOn : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (caster == null || skillData == null)
+        var statsManager = CharacterStats.Instance;
+
+        var targetStats = other.GetComponentInParent<CharacterStats>();
+        var casterStats = caster.GetComponentInParent<CharacterStats>();
+
+        if (targetStats == null)
         {
-            Debug.LogWarning("[HitboxTile] caster 또는 skillData가 설정되지 않음");
+            Debug.LogWarning($"[SkillHitOn] 충돌한 오브젝트 '{other.name}' 또는 부모에 CharacterStats가 없습니다.");
+        }
+
+        if (casterStats == null)
+        {
+            Debug.LogWarning($"[SkillHitOn] caster '{caster.name}' 또는 부모에 CharacterStats가 없습니다.");
+        }
+
+        if (targetStats == null || casterStats == null)
+        {
             return;
         }
 
-        GameObject target = other.transform.root.gameObject;      // 충돌한 오브젝트의 루트 (캐릭터 본체)
-        GameObject self = caster.transform.root.gameObject;       // caster도 루트 기준으로 비교
-
-        if (target == self)
+        if (targetStats == casterStats)
         {
             Debug.Log("[HitboxTile] 자기 자신과 충돌 - 무시");
             return;
         }
 
-        var statsManager = CharacterStats.Instance;
-        if (statsManager == null || statsManager.characters == null)
+        if (!statsManager.characters.Contains(targetStats.gameObject))
         {
-            Debug.LogError("[HitboxTile] CharacterStats 또는 characters 리스트가 null입니다.");
+            Debug.LogWarning($"{targetStats.name} 이 CharacterStats.characters 리스트에 등록되지 않음");
             return;
         }
-
-        int targetIndex = statsManager.characters.IndexOf(target);
-        int casterIndex = statsManager.characters.IndexOf(self);
-
-        if (targetIndex == -1 || casterIndex == -1)
-        {
-            Debug.LogWarning("충돌한 오브젝트 또는 caster가 CharacterStats에 없습니다.");
-            Debug.Log($"[target: {target.name}], [caster: {self.name}]");
-            return;
-        }
-
-        Stats targetStats = statsManager.characterList[targetIndex];
-        Stats casterStats = statsManager.characterList[casterIndex];
-
-        if (targetStats.team != casterStats.team)
-        {
-            int damage = Mathf.RoundToInt(skillData.basicValue);
-            targetStats.hp -= damage;
-            Debug.Log($"[Hit] {targetStats.name}이(가) {damage} 피해를 입음. 남은 HP: {targetStats.hp}");
-        }
-        else
-        {
-            Debug.Log("[HitboxTile] 같은 팀 - 무시");
-        }
+    
+    /*if (targetStats.team != casterStats.team)
+    {
+        int damage = Mathf.RoundToInt(skillData.basicValue);
+        targetStats.hp -= damage;
+        Debug.Log($"[Hit] {targetStats.name}이(가) {damage} 피해를 입음. 남은 HP: {targetStats.hp}");
+    }
+    else
+    {
+        Debug.Log("[HitboxTile] 같은 팀 - 무시");
+    }*/
     }
 }

@@ -69,6 +69,15 @@ public class SkillManager : MonoBehaviour
         var character = CharacterStats.Instance.characterList[0];
         var skill = character.useSkill[0];
 
+        // 실제 씬에 존재하는 캐릭터 인스턴스를 가져온다
+        GameObject casterObject = CharacterStats.Instance.characters[0];
+
+        if (casterObject == null)
+        {
+            Debug.LogWarning("[SkillManager] 캐릭터 인스턴스를 찾을 수 없습니다.");
+            return;
+        }
+
         // 2. 스킬 시작 위치 결정
         Vector3 startPosition = Vector3.zero;
 
@@ -171,7 +180,7 @@ public class SkillManager : MonoBehaviour
         SkillEffectProjectile skillEffect = skillObject.GetComponent<SkillEffectProjectile>();
         if (skillEffect != null)
         {
-            skillEffect.Initialize(skill, targetPosition, character.characterPrefab);
+            skillEffect.Initialize(skill, targetPosition, casterObject);
         }
     }
 
