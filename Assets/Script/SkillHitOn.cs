@@ -46,51 +46,35 @@ public class SkillHitOn : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!isInitialized)
+        if (caster == null || skillData == null)
         {
-            Debug.LogWarning("Initialize가 먼저 호출되지 않았습니다. 충돌 무시.");
+            Debug.LogWarning("[HitboxTile] caster 또는 skillData가 설정되지 않음");
             return;
         }
 
-        Debug.Log($"[충돌 감지] {other.name}");
+        GameObject target = other.transform.root.gameObject;      // 충돌한 오브젝트의 루트 (캐릭터 본체)
+        GameObject self = caster.transform.root.gameObject;       // caster도 루트 기준으로 비교
 
-        if (skillData == null || caster == null)
+        if (target == self)
         {
-            Debug.LogWarning("Initialize 정보가 없습니다.");
-            return;
-        }
-
-        if (other.gameObject.GetInstanceID() == caster.GetInstanceID())
-        {
-            Debug.Log("사용자 본인과 충돌 - 무시");
-            return;
-        }
-
-        if (other.GetComponent<SkillHitOn>() != null)
-        {
-            Debug.Log("다른 스킬과 충돌 - 무시");
-            return;
-        }
-
-        if (other.CompareTag("Tile"))
-        {
-            Destroy(gameObject);
+            Debug.Log("[HitboxTile] 자기 자신과 충돌 - 무시");
             return;
         }
 
         var statsManager = CharacterStats.Instance;
         if (statsManager == null || statsManager.characters == null)
         {
-            Debug.LogError("CharacterStats.Instance 또는 characters가 null입니다.");
+            Debug.LogError("[HitboxTile] CharacterStats 또는 characters 리스트가 null입니다.");
             return;
         }
 
-        int targetIndex = statsManager.characters.IndexOf(other.gameObject);
-        int casterIndex = statsManager.characters.IndexOf(caster);
+        int targetIndex = statsManager.characters.IndexOf(target);
+        int casterIndex = statsManager.characters.IndexOf(self);
 
         if (targetIndex == -1 || casterIndex == -1)
         {
             Debug.LogWarning("충돌한 오브젝트 또는 caster가 CharacterStats에 없습니다.");
+            Debug.Log($"[target: {target.name}], [caster: {self.name}]");
             return;
         }
 
@@ -101,12 +85,11 @@ public class SkillHitOn : MonoBehaviour
         {
             int damage = Mathf.RoundToInt(skillData.basicValue);
             targetStats.hp -= damage;
-            Debug.Log($"[{targetStats.name}]이(가) {damage} 피해를 입음. 남은 HP: {targetStats.hp}");
+            Debug.Log($"[Hit] {targetStats.name}이(가) {damage} 피해를 입음. 남은 HP: {targetStats.hp}");
         }
-
-        if (skillData.projectileType.ToString() == "shot")
+        else
         {
-            Destroy(gameObject);
+            Debug.Log("[HitboxTile] 같은 팀 - 무시");
         }
     }
 }
