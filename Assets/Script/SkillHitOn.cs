@@ -4,7 +4,9 @@ using System.Collections;
 public class SkillHitOn : MonoBehaviour
 {
     private Skill skillData;
-    private GameObject caster;
+    public GameObject caster;
+    public GameObject ccc;
+    public GameObject cccc;
     private bool isInitialized = false;
 
     public void Initialize(Skill skill, GameObject casterObject)
@@ -46,38 +48,41 @@ public class SkillHitOn : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var statsManager = CharacterStats.Instance;
+        var manager = CharacterStats.Instance;
+        if (manager == null)
+        {
+            Debug.LogWarning("CharacterStats 매니저 인스턴스가 없습니다.");
+            return;
+        }
 
-        var targetStats = other.GetComponentInParent<CharacterStats>();
-        var casterStats = caster.GetComponentInParent<CharacterStats>();
+        var target = other.transform.root.gameObject;
+        var self = caster.transform.root.gameObject;
+
+        if (target == self)
+        {
+            Debug.Log("[SkillHitOn] 자기 자신과 충돌 - 무시");
+            return;
+        }
+
+        var targetStats = manager.GetStats(target);
+        var casterStats = manager.GetStats(self);
 
         if (targetStats == null)
         {
-            Debug.LogWarning($"[SkillHitOn] 충돌한 오브젝트 '{other.name}' 또는 부모에 CharacterStats가 없습니다.");
+            Debug.LogWarning($" '{target.name}' 은 Stats 정보 없음");
+            return;
         }
 
         if (casterStats == null)
         {
-            Debug.LogWarning($"[SkillHitOn] caster '{caster.name}' 또는 부모에 CharacterStats가 없습니다.");
-        }
-
-        if (targetStats == null || casterStats == null)
-        {
+            Debug.LogWarning($" caster '{self.name}' 은 Stats 정보 없음");
             return;
         }
 
-        if (targetStats == casterStats)
-        {
-            Debug.Log("[HitboxTile] 자기 자신과 충돌 - 무시");
-            return;
-        }
+        // 여기서 팀 비교 등 처리
+        Debug.Log($"'{target.name}' 가 '{caster.name}' 의 스킬에 피격됨!");
+    }
 
-        if (!statsManager.characters.Contains(targetStats.gameObject))
-        {
-            Debug.LogWarning($"{targetStats.name} 이 CharacterStats.characters 리스트에 등록되지 않음");
-            return;
-        }
-    
     /*if (targetStats.team != casterStats.team)
     {
         int damage = Mathf.RoundToInt(skillData.basicValue);
@@ -88,5 +93,5 @@ public class SkillHitOn : MonoBehaviour
     {
         Debug.Log("[HitboxTile] 같은 팀 - 무시");
     }*/
-    }
 }
+

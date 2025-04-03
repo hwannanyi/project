@@ -127,4 +127,14 @@ public class CharacterStats : MonoBehaviour
 
     }
 
+    public Stats GetStats(GameObject obj)
+    {
+        foreach (var stats in characterList)
+        {
+            if (stats.characterPrefab == obj)
+                return stats;
+        }
+        return null;
+    }
+
 }
