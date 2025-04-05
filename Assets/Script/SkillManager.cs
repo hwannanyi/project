@@ -1,4 +1,5 @@
 using Microsoft.Win32.SafeHandles;
+using System;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
@@ -33,11 +34,14 @@ public class SkillManager : MonoBehaviour
             Characterform(); // 캐릭터들의 스킬을 리스트에 저장
         }
 
+        if (CharacterSelection.selectedCharacterIndex != -1)
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            // 스킬 프리팹을 캐릭터 리스트의 첫 번째 캐릭터의 첫 번째 스킬 프리팹으로 설정
-            skillPrefab = CharacterStats.Instance.characterList[0].useSkill[0].SkillEffectPrefab;
-            CastSkill(); // 스킬 사용
+            CastSkill(0); // 스킬 사용
+        }
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            CastSkill(1); // 스킬 사용
         }
     }
 
@@ -63,14 +67,19 @@ public class SkillManager : MonoBehaviour
     /// <summary>
     /// 선택된 캐릭터의 스킬을 하나만 실행하는 함수
     /// </summary>
-    public void CastSkill()
+    public void CastSkill(int skillcast)
     {
+        string name = CharacterStats.Instance.playerCharacters[CharacterSelection.selectedCharacterIndex];
+        int index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);
+        // 스킬 프리팹을 캐릭터 리스트의 캐리선책번째 캐릭터의 입력번째 스킬 프리팹으로 설정
+        skillPrefab = CharacterStats.Instance.characterList[index].useSkill[skillcast].SkillEffectPrefab;
+
         // 1. 캐릭터와 스킬 설정
-        var character = CharacterStats.Instance.characterList[0];
-        var skill = character.useSkill[0];
+        var character = CharacterStats.Instance.characterList[index];
+        var skill = character.useSkill[skillcast];
 
         // 실제 씬에 존재하는 캐릭터 인스턴스를 가져온다
-        GameObject casterObject = CharacterStats.Instance.characters[0];
+        GameObject casterObject = CharacterStats.Instance.characters[index];
 
         if (casterObject == null)
         {
@@ -177,11 +186,25 @@ public class SkillManager : MonoBehaviour
         GameObject skillObject = Instantiate(skillPrefab, aoeCenterPosition, Quaternion.identity);
 
         // 8. 초기화 - 사용자 정보까지 넘김
-        SkillEffectProjectile skillEffect = skillObject.GetComponent<SkillEffectProjectile>();
-        if (skillEffect != null)
+
+        if (skill.projectile)
         {
-            skillEffect.Initialize(skill, targetPosition, casterObject);
+            SkillEffectProjectile skillEffect = skillObject.GetComponent<SkillEffectProjectile>();
+            if (skillEffect != null)
+            {
+                skillEffect.Initialize(skill, targetPosition, casterObject);
+            }
         }
+        else
+        {
+            SkillEffectHitscan skillEffect = skillObject.GetComponent<SkillEffectHitscan>();
+            if (skillEffect != null)
+            {
+                skillEffect.Initialize(skill, targetPosition, casterObject);
+            }
+        }
+        
+        
     }
 
     public void AoeCenterPosition(Skill skill, Vector3 closestDirection, Vector3 startPosition, ref Vector3 aoeCenterPosition, ref Vector3 Poffset)
@@ -224,5 +247,10 @@ public class SkillManager : MonoBehaviour
 
         aoeCenterPosition = startPosition + offset;
         Poffset = offset;
+    }
+
+    public void characterNumber(int skillcast)
+    {
+        
     }
 }

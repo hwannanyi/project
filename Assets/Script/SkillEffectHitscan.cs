@@ -6,7 +6,6 @@ using UnityEngine.TextCore.Text;
 // 스킬 효과(투사체)를 관리하는 클래스
 public class SkillEffectHitscan : MonoBehaviour
 {
-    public float speed;  // 투사체 이동 속도
     public float range;  // 투사체의 최대 사거리
     public int damage;   // 투사체가 가하는 피해량
     public Skill skillData;  // 스킬 데이터 참조
@@ -25,12 +24,9 @@ public class SkillEffectHitscan : MonoBehaviour
 
     }
 
-    // 투사체 초기화 메서드
-    public void Initialize(Skill skill, Vector3 targetPosition)
+    public void Initialize(Skill skill, Vector3 targetPosition, GameObject charcter)
     {
-
         skillData = skill;
-        speed = skill.projectileSpeed;
         range = skill.range;
 
         startPosition = transform.position;
@@ -47,19 +43,26 @@ public class SkillEffectHitscan : MonoBehaviour
         }
 
 
-        GameObject ProjectileHitbox = Instantiate(hitbox, this.transform);
-        ProjectileHitbox.transform.localPosition = Vector3.zero;
+        GameObject HitboxTile = Instantiate(hitbox, this.transform);
+        HitboxTile.transform.localPosition = Vector3.zero;
 
         // 2. 그 인스턴스에서 SkillProjectileHitbox 스크립트를 가져와 초기화
-        HitboxTile hitboxScript = ProjectileHitbox.GetComponent<HitboxTile>();
+        HitboxTile hitboxScript = HitboxTile.GetComponent<HitboxTile>();
         if (hitboxScript != null)
         {
             hitboxScript.Initialize(skill);
         }
+        // 충돌 처리 전달
+        SkillHitOn hit = GetComponent<SkillHitOn>();
+        if (hit != null)
+        {
+            hit.Initialize(skill, charcter); // 또는 실제 캐릭터 GameObject
+        }
+
     }
 
     void Update()
     {
-        
+            Destroy(gameObject,3);
     }
 }

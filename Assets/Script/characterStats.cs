@@ -41,13 +41,15 @@ public class CharacterStats : MonoBehaviour
         {
             CharacterAdd(playerCharacters[i]);
             Debug.Log(ALLcharacterList[i].charactername);
-        }
+            
+    }
         for (int i = 0; i < EnemieCharacters.Count; i++) // EnemieCharacters 리스트의 길이만큼 반복
         {
             CharacterAdd(EnemieCharacters[i]);
             Debug.Log(ALLcharacterList[i].charactername);
         }
         Charactercreation();
+
         /*characterStats["melun"] = new Dictionary<string, int>
         {
             { "MaxHealth", 100 },
@@ -136,5 +138,6 @@ public class CharacterStats : MonoBehaviour
         }
         return null;
     }
+
 
 }

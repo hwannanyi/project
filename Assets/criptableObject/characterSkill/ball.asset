@@ -36,7 +36,7 @@ MonoBehaviour:
   range: 7
   aoetype: 1
   effectRotation: 0
-  Xaoe: 1
+  Xaoe: 5
   Yaoe: 1
   specialAoe: []
   aoecenter: 1

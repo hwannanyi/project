@@ -30,9 +30,6 @@ public class SkillEffectProjectile : MonoBehaviour
     // 투사체 초기화 메서드
     public void Initialize(Skill skill, Vector3 targetPosition, GameObject charcter)
     {
-
-
-
         skillData = skill;
         speed = skill.projectileSpeed;
         range = skill.range;

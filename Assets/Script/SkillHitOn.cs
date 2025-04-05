@@ -7,8 +7,6 @@ public class SkillHitOn : MonoBehaviour
 {
     private Skill skillData;
     public GameObject caster;
-    public GameObject ccc;
-    public GameObject cccc;
     private bool isInitialized = false;
 
     public void Initialize(Skill skill, GameObject casterObject)

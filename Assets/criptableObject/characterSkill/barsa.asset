@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: barsa
   m_EditorClassIdentifier: 
   skillName: barsa
-  SkillEffectIllustration: {fileID: 0}
-  SkillEffectPrefab: {fileID: 0}
+  SkillEffectIllustration: {fileID: 21300000, guid: e8fce6869195caf4b922b75a9ffb1cdb, type: 3}
+  SkillEffectPrefab: {fileID: 6478507458708094152, guid: 996504ae6dec45d428cf8f9a8938b2b4, type: 3}
   passive: 0
   skillTypes: 00000000
   tooltip: "3\uCE78 \uC55E\uC73C\uB85C \uCCAB\uBC88\uC9F8 \uB300\uC0C1\uC5D0\uAC8C
@@ -25,18 +25,21 @@ MonoBehaviour:
   startSkillPosition: 0
   XstartSkillPosition: 0
   YstartSkillPosition: 0
-  projectile: 1
-  targeting: 1
+  projectile: 0
+  targeting: 0
+  penetration: 0
+  projectileType: 0
   skillTarget: 02000000
   projectileSpeed: 3
   afterdelay: 0
   beforedelay: 0
   range: 3
   aoetype: 1
-  Xaoe: 2
-  Yaoe: 2
-  aoecenter: 0
+  effectRotation: 0
+  Xaoe: 3
+  Yaoe: 3
   specialAoe: []
+  aoecenter: 1
   cooldown: 3
   colldownSkill: 0
   basicValue: 10
