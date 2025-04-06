@@ -7,7 +7,7 @@ public class HitboxTile : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    public Skill skillData;  // 스킬 데이터 참조
+    public SkillData skillData;  // 스킬 데이터 참조
     private BoxCollider2D boxCollider; // 콜라이더 캐시
     public Transform rotating;
     private Collider2D col;
@@ -26,7 +26,7 @@ public class HitboxTile : MonoBehaviour
     }
 
     // 투사체 초기화 메서드
-    public void Initialize(Skill skill)
+    public void Initialize(SkillData skill)
     {
         skillData = skill;
 

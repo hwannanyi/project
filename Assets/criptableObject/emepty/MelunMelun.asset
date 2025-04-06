@@ -21,7 +21,7 @@ MonoBehaviour:
   movespeed: 10
   moveCount: 3
   trun: 3
-  team: 0
+  team: 1
   useSkill:
   - {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
   characterillustration: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}

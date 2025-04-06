@@ -240,6 +240,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3ca4d8baf2e3382458618f1afc6cae18, type: 2}
   - {fileID: 11400000, guid: a5ba03f9721fe1541ad7ea121e103d3b, type: 2}
   - {fileID: 11400000, guid: b11f4a7c1f432bd4a917292456a88879, type: 2}
+  - {fileID: 11400000, guid: 4ac3725f0408dd64a8960ed81ce193bf, type: 2}
+  - {fileID: 11400000, guid: 1bfae467f1171fb44a45c5150fe8fe17, type: 2}
+  - {fileID: 11400000, guid: 758874bdcc9fb2a468ac1ddbac02b252, type: 2}
+  - {fileID: 11400000, guid: e147a1810056bf04ab88f384b8fa8a17, type: 2}
+  - {fileID: 11400000, guid: 7e75175febb5b1a46b5ba4a1d11ce239, type: 2}
   playerCharacters: []
   EnemieCharacters: []
   characterList: []

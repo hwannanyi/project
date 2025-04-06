@@ -101,13 +101,22 @@ public class CharacterStats : MonoBehaviour
                 int index = Array.FindIndex(ALLcharacterList, Character => Character.charactername == chname);
             Debug.Log(index);
                 //캐릭터 생성
-                characterList.Add(new Stats(ALLcharacterList[index], Vector3.zero, Quaternion.identity, false));
+                characterList.Add(new Stats(ALLcharacterList[index], Vector3.zero, Quaternion.identity, false, new()));
             }
             else
             {
                 Debug.Log("에러 캐릭터를 찾을수 없음");
+            return;
             }
-        
+        // 캐릭터 리스트에 있는 스킬 리스트를 순회하며 각 캐릭터의 스킬을 저장
+
+        int index1 = characterList.FindIndex(Character => Character.name == chname);
+        for (int i = 0; i < characterList[index1].useSkill.Count; i++)
+        {
+            // 캐릭터 이름과 스킬을 SkillData로 만들어 리스트에 추가
+            characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name));
+        }
+
     }
 
     public void Charactercreation()

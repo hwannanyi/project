@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30c4cb1fd5df3cb42abbdafcca2e6a47, type: 3}
   m_Name: PuSsiMaster
   m_EditorClassIdentifier: 
-  charactername: 
-  maxhp: 0
-  maxmp: 0
-  atk: 0
-  def: 0
-  speed: 0
-  movespeed: 0
-  moveCount: 0
-  trun: 0
-  team: 0
+  charactername: PuSsiMaster
+  maxhp: 10
+  maxmp: 10
+  atk: 10
+  def: 10
+  speed: 10
+  movespeed: 10
+  moveCount: 10
+  trun: 10
+  team: 1
   useSkill: []
-  characterillustration: {fileID: 0}
-  characterPrefab: {fileID: 0}
+  characterillustration: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
+  characterPrefab: {fileID: 4344314745404087944, guid: b350271128cd3ca489c78af4523dd393, type: 3}

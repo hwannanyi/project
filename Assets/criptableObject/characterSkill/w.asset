@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
   m_Name: w
   m_EditorClassIdentifier: 
-  skillName: ball
+  skillName: w
   SkillEffectIllustration: {fileID: 21300000, guid: 23b63e3eb1db8614d94fd36ff137c86c, type: 3}
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
   passive: 0

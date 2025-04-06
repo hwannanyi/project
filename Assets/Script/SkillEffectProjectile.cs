@@ -11,7 +11,7 @@ public class SkillEffectProjectile : MonoBehaviour
     public float range;  // 투사체의 최대 사거리
     public float Xaoe;   // 투사체 길이
     public int damage;   // 투사체가 가하는 피해량
-    public Skill skillData;  // 스킬 데이터 참조
+    public SkillData skillData;  // 스킬 데이터 참조
 
     private Vector3 startPosition;  // 투사체 시작 위치
     private Vector3 direction;      // 투사체 이동 방향
@@ -28,7 +28,7 @@ public class SkillEffectProjectile : MonoBehaviour
     }
 
     // 투사체 초기화 메서드
-    public void Initialize(Skill skill, Vector3 targetPosition, GameObject charcter)
+    public void Initialize(SkillData skill, Vector3 targetPosition, GameObject charcter, Stats character)
     {
         skillData = skill;
         speed = skill.projectileSpeed;
@@ -62,7 +62,7 @@ public class SkillEffectProjectile : MonoBehaviour
         SkillHitOn hit = GetComponent<SkillHitOn>();
         if (hit != null)
         {
-            hit.Initialize(skill, charcter); // 또는 실제 캐릭터 GameObject
+            hit.Initialize(skill, charcter, character); // 또는 실제 캐릭터 GameObject
         }
 
     }

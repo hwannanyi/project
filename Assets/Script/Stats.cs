@@ -24,11 +24,12 @@ public class Stats
     public bool isdie;            // 죽음
     public Team team;             // 팀
     public List<Skill> useSkill;   // 사용스킬
+    public List<SkillData> usingSkill = new();   // 사용스킬
     public Sprite characterillustration;
     public GameObject characterPrefab;
 
 
-    public Stats(Character data, Vector3 charPosition, Quaternion charRotation, bool die)
+    public Stats(Character data, Vector3 charPosition, Quaternion charRotation, bool die, List<SkillData> usingSkill)
     {
         name = data.charactername;
         maxhp = data.maxhp;
@@ -49,6 +50,8 @@ public class Stats
 
         team = data.team;
         useSkill = data.useSkill;
+        this.usingSkill = usingSkill;
+
         characterillustration = data.characterillustration;
         characterPrefab = data.characterPrefab;
     }

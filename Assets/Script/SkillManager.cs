@@ -73,16 +73,16 @@ public class SkillManager : MonoBehaviour
         string name = CharacterStats.Instance.playerCharacters[CharacterSelection.selectedCharacterIndex];
         int index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);
         // 스킬 프리팹을 캐릭터 리스트의 캐리선책번째 캐릭터의 입력번째 스킬 프리팹으로 설정
-        if (CharacterStats.Instance.characterList[index].useSkill.Count < skillcast+1)
+        if (CharacterStats.Instance.characterList[index].usingSkill.Count < skillcast+1)
         {
             Debug.LogWarning("스킬을 찾을 수 없습니다");
             return;
         }
-        skillPrefab = CharacterStats.Instance.characterList[index].useSkill[skillcast].SkillEffectPrefab;
+        skillPrefab = CharacterStats.Instance.characterList[index].usingSkill[skillcast].SkillEffectPrefab;
 
         // 1. 캐릭터와 스킬 설정
         var character = CharacterStats.Instance.characterList[index];
-        var skill = character.useSkill[skillcast];
+        var skill = character.usingSkill[skillcast];
 
         // 실제 씬에 존재하는 캐릭터 인스턴스를 가져온다
         GameObject casterObject = CharacterStats.Instance.characters[index];
@@ -198,7 +198,7 @@ public class SkillManager : MonoBehaviour
             SkillEffectProjectile skillEffect = skillObject.GetComponent<SkillEffectProjectile>();
             if (skillEffect != null)
             {
-                skillEffect.Initialize(skill, targetPosition, casterObject);
+                skillEffect.Initialize(skill, targetPosition, casterObject, character);
             }
         }
         else
@@ -206,14 +206,14 @@ public class SkillManager : MonoBehaviour
             SkillEffectHitscan skillEffect = skillObject.GetComponent<SkillEffectHitscan>();
             if (skillEffect != null)
             {
-                skillEffect.Initialize(skill, targetPosition, casterObject);
+                skillEffect.Initialize(skill, targetPosition, casterObject, character);
             }
         }
         
         
     }
 
-    public void AoeCenterPosition(Skill skill, Vector3 closestDirection, Vector3 startPosition, ref Vector3 aoeCenterPosition, ref Vector3 Poffset)
+    public void AoeCenterPosition(SkillData skill, Vector3 closestDirection, Vector3 startPosition, ref Vector3 aoeCenterPosition, ref Vector3 Poffset)
     {
         float xOffset = (skill.Xaoe - 1) * 0.5f;
         float yOffset = (skill.Yaoe - 1) * 0.5f;
