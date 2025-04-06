@@ -1,6 +1,7 @@
 using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
@@ -72,6 +73,11 @@ public class SkillManager : MonoBehaviour
         string name = CharacterStats.Instance.playerCharacters[CharacterSelection.selectedCharacterIndex];
         int index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);
         // 스킬 프리팹을 캐릭터 리스트의 캐리선책번째 캐릭터의 입력번째 스킬 프리팹으로 설정
+        if (CharacterStats.Instance.characterList[index].useSkill.Count < skillcast+1)
+        {
+            Debug.LogWarning("스킬을 찾을 수 없습니다");
+            return;
+        }
         skillPrefab = CharacterStats.Instance.characterList[index].useSkill[skillcast].SkillEffectPrefab;
 
         // 1. 캐릭터와 스킬 설정

@@ -31,22 +31,28 @@ public class CharacterStats : MonoBehaviour
             }
 
             DontDestroyOnLoad(gameObject);
-        
-        playerCharacters.Add("melun");
-        playerCharacters.Add("melunDago");
-        EnemieCharacters.Add("MelunMelun");
-  
 
+        playerCharacters.Add("Antikythera");
+        playerCharacters.Add("Deus");
+        playerCharacters.Add("JuInGong");
+        playerCharacters.Add("ShellLin");
+        EnemieCharacters.Add("melun");
+        EnemieCharacters.Add("melunDago");
+        EnemieCharacters.Add("MelunMelun");
+        EnemieCharacters.Add("PuSsiMaster");
+        
+
+        
         for (int i = 0; i < playerCharacters.Count; i++) // playerCharacters 리스트의 길이만큼 반복
         {
             CharacterAdd(playerCharacters[i]);
             Debug.Log(ALLcharacterList[i].charactername);
             
     }
-        for (int i = 0; i < EnemieCharacters.Count; i++) // EnemieCharacters 리스트의 길이만큼 반복
+        for (int j = 0; j < EnemieCharacters.Count; j++) // EnemieCharacters 리스트의 길이만큼 반복
         {
-            CharacterAdd(EnemieCharacters[i]);
-            Debug.Log(ALLcharacterList[i].charactername);
+            CharacterAdd(EnemieCharacters[j]);
+            Debug.Log(ALLcharacterList[j].charactername);
         }
         Charactercreation();
 
@@ -93,6 +99,7 @@ public class CharacterStats : MonoBehaviour
             if (ALLcharacterList.Any(Character => Character.charactername == chname))
             {
                 int index = Array.FindIndex(ALLcharacterList, Character => Character.charactername == chname);
+            Debug.Log(index);
                 //캐릭터 생성
                 characterList.Add(new Stats(ALLcharacterList[index], Vector3.zero, Quaternion.identity, false));
             }
