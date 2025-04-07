@@ -70,8 +70,31 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     public void CastSkill(int skillcast)
     {
-        string name = CharacterStats.Instance.playerCharacters[CharacterSelection.selectedCharacterIndex];
-        int index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);
+        
+        string name ;
+        int index;
+        if (TurnManager.Instance.IsPlayerTeamTurn)
+        {
+            if (TurnManager.Instance.playerUseSkillTurn >= TurnManager.Instance.playerSkillTurn)
+            {
+                return;
+            }
+            TurnManager.Instance.playerUseSkillTurn++;
+            name = CharacterStats.Instance.playerCharacters[CharacterSelection.selectedCharacterIndex];
+            index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);
+        }
+        else
+        {
+            if (TurnManager.Instance.enemyUseSkillTurn >= TurnManager.Instance.enemySkillTurn)
+            {
+                return;
+            }
+            TurnManager.Instance.enemyUseSkillTurn++;
+            name = CharacterStats.Instance.EnemieCharacters[CharacterSelection.selectedCharacterIndex - CharacterStats.Instance.playerCharacters.Count];
+            index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);
+        }
+
+        
         // 스킬 프리팹을 캐릭터 리스트의 캐리선책번째 캐릭터의 입력번째 스킬 프리팹으로 설정
         if (CharacterStats.Instance.characterList[index].usingSkill.Count < skillcast+1)
         {

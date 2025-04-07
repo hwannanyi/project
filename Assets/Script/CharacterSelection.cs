@@ -29,10 +29,19 @@ public class CharacterSelection : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2)) SelectCharacter(1);
         if (Input.GetKeyDown(KeyCode.Alpha3)) SelectCharacter(2);
         if (Input.GetKeyDown(KeyCode.Alpha4)) SelectCharacter(3);
+
+        if (Input.GetKeyDown(KeyCode.Alpha5)) SelectCharacter2P(4);// 0
+        if (Input.GetKeyDown(KeyCode.Alpha6)) SelectCharacter2P(5);// 1
+        if (Input.GetKeyDown(KeyCode.Alpha7)) SelectCharacter2P(6);// 2
+        if (Input.GetKeyDown(KeyCode.Alpha8)) SelectCharacter2P(7);// 3
     }
     void SelectCharacter(int index)
     {
-
+        if (!TurnManager.Instance.IsPlayerTeamTurn)
+        {
+            selectedCharacterIndex = -1;
+            return;
+        }
         if (index < CharacterStats.Instance.playerCharacters.Count)
         {
             if (CharacterStats.Instance.playerCharacters[index] != null && selectedCharacterIndex != index)
@@ -44,6 +53,36 @@ public class CharacterSelection : MonoBehaviour
 
             }
             else if (CharacterStats.Instance.playerCharacters[index] != null && selectedCharacterIndex == index)
+            {
+                selectedCharacterIndex = -1;
+                Debug.Log("캐릭선택취소");
+            }
+            else
+            {
+                Debug.Log("캐릭 선택실패");
+            }
+        }
+    }
+
+    void SelectCharacter2P(int index)
+    {
+        if (TurnManager.Instance.IsPlayerTeamTurn)
+        {
+            selectedCharacterIndex = -1;
+            return;
+        }
+        int index1 = index - CharacterStats.Instance.playerCharacters.Count;
+        if (index1 < CharacterStats.Instance.EnemieCharacters.Count)
+        {
+            if (CharacterStats.Instance.EnemieCharacters[index1] != null && selectedCharacterIndex != index)
+            {
+
+                selectedCharacterIndex = index;
+
+                Debug.Log($"선택된 캐릭터: {CharacterStats.Instance.EnemieCharacters[index1]}");
+
+            }
+            else if (CharacterStats.Instance.EnemieCharacters[index1] != null && selectedCharacterIndex == index)
             {
                 selectedCharacterIndex = -1;
                 Debug.Log("캐릭선택취소");

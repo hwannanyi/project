@@ -3,8 +3,13 @@ using UnityEngine;
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
-    public static int Turn;
-    public static int skillTurn;
+    public int TeamTurn = 0;
+    public bool IsPlayerTeamTurn = true;
+    public int playerSkillTurn = 10;
+    public int playerUseSkillTurn = 0;
+    public int enemySkillTurn = 10;
+    public int enemyUseSkillTurn = 0;
+    public int counterTrun = 0;
 
     private void Awake()
     {
@@ -25,7 +30,7 @@ public class TurnManager : MonoBehaviour
         // EventManager.Instance가 null인지 체크하여 안전하게 구독
         if (EventManager.Instance != null)
         {
-            EventManager.Instance.TurnEnd += ReceiveTurnEnd;
+            EventManager.Instance.TurnEnd += NextTurnEnd;
         }
         else
         {
@@ -37,14 +42,25 @@ public class TurnManager : MonoBehaviour
     {
         if (EventManager.Instance != null)
         {
-            EventManager.Instance.TurnEnd -= ReceiveTurnEnd;
+            EventManager.Instance.TurnEnd -= NextTurnEnd;
         }
     }
 
-    private void ReceiveTurnEnd(bool value)
+    private void NextTurnEnd(bool value)
     {
+        CharacterSelection.selectedCharacterIndex = -1;//캐릭 선택 초기화
+
         Debug.Log($"[SignalReceiver] 신호 받음: {value}");
-        Turn++;
-        Debug.Log(Turn);
+        if (IsPlayerTeamTurn)
+        {
+            IsPlayerTeamTurn = false;
+        }
+        else
+        {
+            IsPlayerTeamTurn = true;
+        }
+        TeamTurn++;
+        //Debug.Log(TeamTurn);
+        //Debug.Log(IsPlayerTeamTurn);
     }
 }

@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6478507458708094152}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.36, y: -1.92, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -147,5 +147,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb7e35f7e1c184349808d6246bdc9ee9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skillData: {fileID: 0}
+  skillData:
+    useCharacterName: 
+    skillName: 
+    SkillEffectIllustration: {fileID: 0}
+    SkillEffectPrefab: {fileID: 0}
+    passive: 0
+    skillTypes: 
+    tooltip: 
+    actionsNumber: 0
+    skillNumber: 0
+    skillCumulative: 0
+    startSkillPosition: 0
+    XstartSkillPosition: 0
+    YstartSkillPosition: 0
+    projectile: 0
+    targeting: 0
+    projectileType: 0
+    skillTarget: 
+    projectileSpeed: 0
+    afterdelay: 0
+    beforedelay: 0
+    range: 0
+    aoetype: 0
+    effectRotation: 0
+    Xaoe: 0
+    Yaoe: 0
+    aoecenter: 0
+    specialAoe: []
+    cooldown: 0
+    colldownSkill: 0
+    basicValue: 0
+    increase:
+      keys: 
+      values: []
+    damageHit: 0
+    hitSpeed: 0
+    DebuffEffects: []
+    BuffEffects: []
+    CCEffects: []
+    conditionalEffects: []
   rotating: {fileID: 0}

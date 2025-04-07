@@ -27,7 +27,15 @@ public class EventManager : MonoBehaviour
 
     public void FinishTurn(bool value)
     {
-        Debug.Log($"[EventManager] Ω≈»£ ∫∏≥ø: {value}");
+        //Debug.Log($"[EventManager] Ω≈»£ ∫∏≥ø: {value}");
         TurnEnd?.Invoke(value);
+    }
+
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.P)) 
+        {
+            FinishTurn(true);
+        }
     }
 }
