@@ -12,6 +12,14 @@ public class SkillManager : MonoBehaviour
     public List<SkillData> UseSkillList = new(); // 현재 사용 가능한 스킬 목록
     public GameObject skillPrefab; // 생성할 스킬 프리팹
 
+    /// 대응을 위한 대기상태 스킬을 저장하는 변수
+    private SkillData pendingSkill;
+    private GameObject pendingCaster;
+    private Vector3 pendingPosition;
+    private bool waitingForResponse = false;
+    ///
+
+
     void Awake()
     {
         // 싱글턴 패턴 적용 (중복 방지)
@@ -209,6 +217,23 @@ public class SkillManager : MonoBehaviour
             case aoeCenter.Lcorner:
                 targetPosition += Poffset;
                 break;
+        }
+
+        // --- [6. 대응단계 진입] ---
+        GameObject target = null; // 현재 타겟팅 로직 없음. 추후 구현 예정
+
+        Debug.Log(skill.react);
+        if (skill.react != React.no && ResponseManager.Instance.CanRespond(skill))
+        {
+            // 대응용으로 임시 저장
+            pendingSkill = skill;
+            pendingCaster = casterObject;
+            pendingPosition = aoeCenterPosition;
+            waitingForResponse = true;
+
+
+            ResponseManager.Instance.EnterResponsePhase(skill, casterObject);
+            return; // 대응 우선 처리
         }
 
         // 7. 스킬 이펙트 프리팹 생성

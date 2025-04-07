@@ -46,6 +46,8 @@ public class SkillData
     public List<CCEffect> CCEffects;     //CC 효과
     public List<ConditionalEffect> conditionalEffects; // 특정 조건부 효과
 
+    public React react; //대응가능유무 + 대응가능대상
+
     public SkillData(Skill data, string characterName)
     {
         skillName = data.skillName;
@@ -100,5 +102,6 @@ public class SkillData
         BuffEffects = new List<BuffEffect>(data.BuffEffects);
         CCEffects = new List<CCEffect>(data.CCEffects);
         conditionalEffects = new List<ConditionalEffect>(data.conditionalEffects);
+        react = data.react;
     }
 }

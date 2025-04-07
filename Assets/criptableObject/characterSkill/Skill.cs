@@ -32,6 +32,11 @@ public enum Buffs
 public enum CCs
 { none, stun }
 
+public enum React
+{
+    no, maintarget, all
+}
+
 [System.Serializable]
 public class DoubleList_Vector2
 {
@@ -88,7 +93,9 @@ public class Skill : ScriptableObject
 
     public List<ConditionalEffect> conditionalEffects; // 특정 조건부 효과
 
-    
+    public React react; //대응가능유무 + 대응가능대상
+
+
 }
 
 [System.Serializable]

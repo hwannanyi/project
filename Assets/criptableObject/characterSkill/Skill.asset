@@ -26,17 +26,20 @@ MonoBehaviour:
   YstartSkillPosition: 0
   projectile: 0
   targeting: 1
+  penetration: 0
+  projectileType: 0
   skillTarget: 00000000
   projectileSpeed: 0
   afterdelay: 0
   beforedelay: 0
   range: 0
   aoetype: 2
+  effectRotation: 0
   Xaoe: 0
   Yaoe: 0
-  aoecenter: 0
   specialAoe:
-  - {x: 0, y: 0}
+  - list: []
+  aoecenter: 0
   cooldown: 5
   colldownSkill: 0
   basicValue: 0
@@ -69,3 +72,4 @@ MonoBehaviour:
     skillDuration: 0
     numberDurations: 0
     counterDurations: 0
+  react: 2
