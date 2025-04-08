@@ -21,6 +21,14 @@ public class SkillManager : MonoBehaviour
     private Vector3 pendingAoeCenterPosition;
     private Vector3 pendingTargetPosition;
     public bool waitingForResponse = false;
+
+    //대응상대 스킬 저장
+    private int pendingSelectedCharacterIndex;
+    private SkillData pendingReactSkill;
+    private GameObject pendingReactCaster;
+    private Stats pendingReactCharacter;
+    private Vector3 pendingReactAoeCenterPosition;
+    private Vector3 pendingReactTargetPosition;
     ///
 
 
@@ -93,10 +101,7 @@ public class SkillManager : MonoBehaviour
         {
             if (TurnManager.Instance.playerUseSkillTurn >= TurnManager.Instance.playerSkillTurn)
             {
-                return;
-            }
-            if (waitingForResponse == true)
-            {
+
                 return;
             }
             TurnManager.Instance.playerUseSkillTurn++;
@@ -109,14 +114,10 @@ public class SkillManager : MonoBehaviour
             {
                 return;
             }
-            if (waitingForResponse == true)
-            {
-                return;
-            }
             TurnManager.Instance.enemyUseSkillTurn++;
             name = CharacterStats.Instance.EnemieCharacters[CharacterSelection.selectedCharacterIndex - CharacterStats.Instance.playerCharacters.Count];
             index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);
-        }
+        }/*
 
         
         // 스킬 프리팹을 캐릭터 리스트의 캐리선책번째 캐릭터의 입력번째 스킬 프리팹으로 설정
@@ -124,7 +125,7 @@ public class SkillManager : MonoBehaviour
         {
             Debug.LogWarning("스킬을 찾을 수 없습니다");
             return;
-        }
+        }*/
         skillPrefab = CharacterStats.Instance.characterList[index].usingSkill[skillcast].SkillEffectPrefab;
 
         // 1. 캐릭터와 스킬 설정
@@ -238,7 +239,6 @@ public class SkillManager : MonoBehaviour
         // --- [6. 대응단계 진입] ---
         GameObject target = null; // 현재 타겟팅 로직 없음. 추후 구현 예정
 
-        Debug.Log(skill.react);
         if (skill.react != React.no && ResponseManager.Instance.CanRespond(skill))
         {
             // 대응용으로 임시 저장
@@ -257,6 +257,8 @@ public class SkillManager : MonoBehaviour
         // 7. 스킬 이펙트 프리팹 생성
         castskillon(skill, aoeCenterPosition, targetPosition, casterObject, character);
     }
+
+
     public void AoeCenterPosition(SkillData skill, Vector3 closestDirection, Vector3 startPosition, ref Vector3 aoeCenterPosition, ref Vector3 Poffset)
     {
         float xOffset = (skill.Xaoe - 1) * 0.5f;
@@ -339,6 +341,21 @@ public class SkillManager : MonoBehaviour
             pendingAoeCenterPosition = Vector3.zero;
             pendingTargetPosition = Vector3.zero;
             waitingForResponse = false;
+        }
+    }
+
+    public void CastSkillImmediately(SkillData skill, GameObject caster)
+    {
+        Vector3 position = caster.transform.position;
+
+        if (skill.SkillEffectPrefab != null)
+        {
+            Instantiate(skill.SkillEffectPrefab, position, Quaternion.identity);
+            Debug.Log($"[SkillManager] 대응 스킬 즉시 발동: {skill.skillName}");
+        }
+        else
+        {
+            Debug.LogWarning("[SkillManager] 대응 스킬 프리팹이 비어 있음");
         }
     }
 
