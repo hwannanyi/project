@@ -2,8 +2,10 @@ using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 [System.Serializable]
 public class SkillManager : MonoBehaviour
@@ -15,8 +17,10 @@ public class SkillManager : MonoBehaviour
     /// 대응을 위한 대기상태 스킬을 저장하는 변수
     private SkillData pendingSkill;
     private GameObject pendingCaster;
-    private Vector3 pendingPosition;
-    private bool waitingForResponse = false;
+    private Stats pendingCharacter;
+    private Vector3 pendingAoeCenterPosition;
+    private Vector3 pendingTargetPosition;
+    public bool waitingForResponse = false;
     ///
 
 
@@ -51,6 +55,10 @@ public class SkillManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.W))
         {
             CastSkill(1); // 스킬 사용
+        }
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            SkillManager.Instance.ContinuePendingSkill();
         }
     }
 
@@ -87,6 +95,10 @@ public class SkillManager : MonoBehaviour
             {
                 return;
             }
+            if (waitingForResponse == true)
+            {
+                return;
+            }
             TurnManager.Instance.playerUseSkillTurn++;
             name = CharacterStats.Instance.playerCharacters[CharacterSelection.selectedCharacterIndex];
             index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);
@@ -94,6 +106,10 @@ public class SkillManager : MonoBehaviour
         else
         {
             if (TurnManager.Instance.enemyUseSkillTurn >= TurnManager.Instance.enemySkillTurn)
+            {
+                return;
+            }
+            if (waitingForResponse == true)
             {
                 return;
             }
@@ -228,7 +244,9 @@ public class SkillManager : MonoBehaviour
             // 대응용으로 임시 저장
             pendingSkill = skill;
             pendingCaster = casterObject;
-            pendingPosition = aoeCenterPosition;
+            pendingCharacter = character;
+            pendingAoeCenterPosition = aoeCenterPosition;
+            pendingTargetPosition = targetPosition;
             waitingForResponse = true;
 
 
@@ -237,30 +255,8 @@ public class SkillManager : MonoBehaviour
         }
 
         // 7. 스킬 이펙트 프리팹 생성
-        GameObject skillObject = Instantiate(skillPrefab, aoeCenterPosition, Quaternion.identity);
-
-        // 8. 초기화 - 사용자 정보까지 넘김
-
-        if (skill.projectile)
-        {
-            SkillEffectProjectile skillEffect = skillObject.GetComponent<SkillEffectProjectile>();
-            if (skillEffect != null)
-            {
-                skillEffect.Initialize(skill, targetPosition, casterObject, character);
-            }
-        }
-        else
-        {
-            SkillEffectHitscan skillEffect = skillObject.GetComponent<SkillEffectHitscan>();
-            if (skillEffect != null)
-            {
-                skillEffect.Initialize(skill, targetPosition, casterObject, character);
-            }
-        }
-        
-        
+        castskillon(skill, aoeCenterPosition, targetPosition, casterObject, character);
     }
-
     public void AoeCenterPosition(SkillData skill, Vector3 closestDirection, Vector3 startPosition, ref Vector3 aoeCenterPosition, ref Vector3 Poffset)
     {
         float xOffset = (skill.Xaoe - 1) * 0.5f;
@@ -303,8 +299,53 @@ public class SkillManager : MonoBehaviour
         Poffset = offset;
     }
 
-    public void characterNumber(int skillcast)
+    // castskill에서 나온 스킬을 생성
+    public void castskillon(SkillData skill, Vector3 aoeCenterPosition, Vector3 targetPosition, GameObject casterObject, Stats character)
     {
-        
+        GameObject skillObject = Instantiate(skillPrefab, aoeCenterPosition, Quaternion.identity);
+
+
+        //초기화 - 사용자 정보까지 넘김
+        if (skill.projectile)
+        {
+            SkillEffectProjectile skillEffect = skillObject.GetComponent<SkillEffectProjectile>();
+            if (skillEffect != null)
+            {
+                skillEffect.Initialize(skill, targetPosition, casterObject, character);
+            }
+        }
+        else
+        {
+            SkillEffectHitscan skillEffect = skillObject.GetComponent<SkillEffectHitscan>();
+            if (skillEffect != null)
+            {
+                skillEffect.Initialize(skill, targetPosition, casterObject, character);
+            }
+        }
+    }
+
+    public void ContinuePendingSkill()
+    {
+        if (waitingForResponse && pendingSkill != null && pendingCaster != null)
+        {
+            //Instantiate(pendingSkill.SkillEffectPrefab, pendingPosition, Quaternion.identity);
+            castskillon(pendingSkill, pendingAoeCenterPosition, pendingTargetPosition, pendingCaster, pendingCharacter);
+            Debug.Log($"[SkillManager] 대응 후 스킬 실행: {pendingSkill.skillName}");
+
+            // 초기화
+            pendingSkill = null;
+            pendingCaster = null;
+            pendingCharacter = null;
+            pendingAoeCenterPosition = Vector3.zero;
+            pendingTargetPosition = Vector3.zero;
+            waitingForResponse = false;
+        }
+    }
+
+    public void EndResponsePhase()
+    {
+        Debug.Log("[ResponseManager] 대응단계 종료");
+
+        SkillManager.Instance.ContinuePendingSkill();
     }
 }

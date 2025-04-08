@@ -45,7 +45,10 @@ public class CharacterMovement : MonoBehaviour
         }
         if (characterNumber == CharacterSelection.selectedCharacterIndex)
         {
-
+            if (SkillManager.Instance.waitingForResponse == true)
+            {
+                return;
+            }
             // 이동 중이 아니고, 막히지 않았을 때만 마우스 클릭을 처리
             if (moveCount>0 &&!isMoving && !isBlocked && Input.GetMouseButtonDown(0))
             {
