@@ -118,6 +118,7 @@ public class TurnManager : MonoBehaviour
     //  대응단계 종료 → 이전 턴 복원
     public void ExitReactPhase()
     {
+        CharacterSelection.selectedCharacterIndex = -1;
         currentPhase = previousPhase;
         Debug.Log($"[TurnManager] 대응단계 종료: 턴 복귀 = {currentPhase}");
     }
@@ -133,6 +134,7 @@ public class TurnManager : MonoBehaviour
         {
             currentPhase = TurnPhase.PlayerTurn;
         }  
+        CharacterSelection.selectedCharacterIndex = -1;
         Debug.Log($"[TurnManager] 턴 전환됨: 현재 턴 = {currentPhase}");
     }
 

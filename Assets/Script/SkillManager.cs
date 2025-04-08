@@ -99,31 +99,52 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     public void CastSkill(int skillcast)
     {
-        
         string name ;
         int index;
-        if (TurnManager.Instance.currentPhase == TurnPhase.PlayerTurn 
-            || TurnManager.Instance.currentPhase == TurnPhase.ReactPhase_PlayerResponding)
+
+        bool isPlayerTurn = TurnManager.Instance.currentPhase == TurnPhase.PlayerTurn
+                            || TurnManager.Instance.currentPhase == TurnPhase.ReactPhase_PlayerResponding;
+
+        int selectedIndex = CharacterSelection.selectedCharacterIndex;
+        if (selectedIndex == -1)
+        {
+            Debug.LogWarning("[SkillManager] 캐릭터가 선택되지 않아 스킬을 사용할 수 없습니다.");
+            return;
+        }
+
+        // 행동 제한 체크
+        if (isPlayerTurn)
         {
             if (TurnManager.Instance.playerUseSkillTurn >= TurnManager.Instance.playerSkillTurn)
-            {
+                return;
 
+            if (selectedIndex < 0 || selectedIndex >= CharacterStats.Instance.playerCharacters.Count)
+            {
+                Debug.LogWarning("선택된 플레이어 캐릭터 인덱스가 범위를 벗어났습니다.");
                 return;
             }
-            //TurnManager.Instance.playerUseSkillTurn++;
-            name = CharacterStats.Instance.playerCharacters[CharacterSelection.selectedCharacterIndex];
-            index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);
+
+            TurnManager.Instance.playerUseSkillTurn++;
+            name = CharacterStats.Instance.playerCharacters[selectedIndex];
         }
         else
         {
             if (TurnManager.Instance.enemyUseSkillTurn >= TurnManager.Instance.enemySkillTurn)
+                return;
+
+            int enemyIndex = selectedIndex - CharacterStats.Instance.playerCharacters.Count;
+            if (enemyIndex < 0 || enemyIndex >= CharacterStats.Instance.EnemieCharacters.Count)
             {
+                Debug.LogWarning("선택된 적 캐릭터 인덱스가 범위를 벗어났습니다.");
                 return;
             }
-            //TurnManager.Instance.enemyUseSkillTurn++;
-            name = CharacterStats.Instance.EnemieCharacters[CharacterSelection.selectedCharacterIndex - CharacterStats.Instance.playerCharacters.Count];
-            index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);
-        }/*
+
+            TurnManager.Instance.enemyUseSkillTurn++;
+            name = CharacterStats.Instance.EnemieCharacters[enemyIndex];
+        }
+
+        // name → index 변환
+        index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);/*
 
         
         // 스킬 프리팹을 캐릭터 리스트의 캐리선책번째 캐릭터의 입력번째 스킬 프리팹으로 설정
@@ -252,6 +273,12 @@ public class SkillManager : MonoBehaviour
             bool phase = TurnManager.Instance.IsInReactPhase();
             if (!phase)
             {
+                if (CharacterSelection.selectedCharacterIndex == -1)
+                {
+                    Debug.LogWarning("[SkillManager] 캐릭터가 선택되지 않았습니다.");
+                    return;
+                }
+
                 if (!waitingForResponse)// 이미 대응 중이면 덮어쓰기 금지
                 {
                     // 대응용으로 임시 저장
@@ -275,11 +302,6 @@ public class SkillManager : MonoBehaviour
                     Debug.LogWarning("이미 대응한 턴입니다");
                     return;
                 }
-
-                hasReacted = true;
-                
-
-
                 if (TurnManager.Instance.IsPlayerReactPhase())
                 {
                     if(TurnManager.Instance.playerReactTrun <= TurnManager.Instance.playerUseSkillReactTrun)
@@ -297,13 +319,16 @@ public class SkillManager : MonoBehaviour
                     ++TurnManager.Instance.enemyUseSkillReactTrun;
                 }
 
+                
+
                 pendingReactSkill = skill;
                 pendingReactCaster = casterObject;
                 pendingReactCharacter = character;
                 pendingReactAoeCenterPosition = aoeCenterPosition;
                 pendingReactTargetPosition = targetPosition;
-
                 ReactManager.Instance.EnterResponsePhase(skill, casterObject);
+                hasReacted = true;
+
                 return; // 대응 우선 처리
             }
         }
@@ -380,6 +405,8 @@ public class SkillManager : MonoBehaviour
             }
         }
     }
+
+
 
     public void ContinuePendingSkill()
     {

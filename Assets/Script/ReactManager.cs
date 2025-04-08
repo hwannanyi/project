@@ -40,6 +40,7 @@ public class ReactManager : MonoBehaviour
     /// </summary>
     public void EnterResponsePhase(SkillData skill, GameObject caster)
     {
+        CharacterSelection.selectedCharacterIndex = -1;
         Debug.Log($"[ResponseManager] 대응단계 진입: 스킬: {skill.skillName}");
 
         // 대응 선택 UI, 타이머, 대응 가능한 스킬 목록 표시 등 처리 예정
