@@ -3,9 +3,9 @@ using UnityEngine;
 /// <summary>
 /// 스킬 사용 전, 대응 조건을 체크하고 대응단계를 시작하는 관리 클래스
 /// </summary>
-public class ResponseManager : MonoBehaviour
+public class ReactManager : MonoBehaviour
 {
-    public static ResponseManager Instance;
+    public static ReactManager Instance;
 
     private void Awake()
     {

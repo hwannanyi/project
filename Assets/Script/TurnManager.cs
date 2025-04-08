@@ -1,15 +1,37 @@
 using UnityEngine;
+using System;
+
+public enum TurnPhase
+{
+    PlayerTurn,
+    EnemyTurn,
+    ReactPhase_PlayerResponding,
+    ReactPhase_EnemyResponding
+}
 
 public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
-    public int TeamTurn = 0;
-    public bool IsPlayerTeamTurn = true;
+
+    public TurnPhase currentPhase = TurnPhase.PlayerTurn;
+    public TurnPhase previousPhase;
+
+    public int Turn = 0;
+    public int nextTrunCount = 4;
+    public int nextTrunCounting = 0;
+
     public int playerSkillTurn = 10;
-    public int playerUseSkillTurn = 0;
     public int enemySkillTurn = 10;
+
+    public int playerUseSkillTurn = 0;
     public int enemyUseSkillTurn = 0;
-    public int counterTrun = 0;
+
+
+    public int playerReactTrun = 3;
+    public int enemyReactTrun = 3;
+
+    public int playerUseSkillReactTrun = 0;
+    public int enemyUseSkillReactTrun = 0;
 
     private void Awake()
     {
@@ -21,13 +43,12 @@ public class TurnManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-            return;
         }
     }
 
+    //  EventManager 연동 유지 (턴 종료 이벤트로 외부에서 턴 넘기기 가능)
     private void OnEnable()
     {
-        // EventManager.Instance가 null인지 체크하여 안전하게 구독
         if (EventManager.Instance != null)
         {
             EventManager.Instance.TurnEnd += NextTurnEnd;
@@ -46,21 +67,86 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    private void NextTurnEnd(bool value)
+    //  현재 턴 판별 함수들
+    public bool IsPlayerTurn()
     {
-        CharacterSelection.selectedCharacterIndex = -1;//캐릭 선택 초기화
+        return currentPhase == TurnPhase.PlayerTurn;
+    }
 
-        Debug.Log($"[SignalReceiver] 신호 받음: {value}");
-        if (IsPlayerTeamTurn)
-        {
-            IsPlayerTeamTurn = false;
-        }
+    public bool IsEnemyTurn()
+    {
+        return currentPhase == TurnPhase.EnemyTurn;
+    }
+
+    public bool IsInReactPhase()
+    {
+        return currentPhase == TurnPhase.ReactPhase_PlayerResponding ||
+               currentPhase == TurnPhase.ReactPhase_EnemyResponding;
+    }
+
+    public bool IsPlayerReactPhase()
+    {
+        return currentPhase == TurnPhase.ReactPhase_PlayerResponding;
+    }
+
+    public bool IsEnemyReactPhase()
+    {
+        return currentPhase == TurnPhase.ReactPhase_EnemyResponding;
+    }
+
+    //  캐릭터가 플레이어 팀인지 판별
+    public bool IsPlayerTeam(GameObject character)
+    {
+        return CharacterStats.Instance.playerCharacters.Contains(character.name);
+    }
+
+    //  대응단계 진입 → 대응하는 팀에게 턴을 넘김
+    public void EnterReactPhase(GameObject reactingTeam)
+    {
+        playerUseSkillReactTrun = 0;
+        enemyUseSkillReactTrun = 0;
+        previousPhase = currentPhase;
+
+        if (IsPlayerTeam(reactingTeam))
+            currentPhase = TurnPhase.ReactPhase_PlayerResponding;
         else
+            currentPhase = TurnPhase.ReactPhase_EnemyResponding;
+
+        Debug.Log($"[TurnManager] 대응단계 진입: 현재 대응팀 = {currentPhase}");
+    }
+
+    //  대응단계 종료 → 이전 턴 복원
+    public void ExitReactPhase()
+    {
+        currentPhase = previousPhase;
+        Debug.Log($"[TurnManager] 대응단계 종료: 턴 복귀 = {currentPhase}");
+    }
+
+    //  턴 전환 (일반 턴 순환: 플레이어 <-> 적)
+    public void NextTurn()
+    {
+        if (currentPhase == TurnPhase.PlayerTurn)
         {
-            IsPlayerTeamTurn = true;
+            currentPhase = TurnPhase.EnemyTurn;
         }
-        TeamTurn++;
-        //Debug.Log(TeamTurn);
-        //Debug.Log(IsPlayerTeamTurn);
+        else if (currentPhase == TurnPhase.EnemyTurn)
+        {
+            currentPhase = TurnPhase.PlayerTurn;
+        }  
+        Debug.Log($"[TurnManager] 턴 전환됨: 현재 턴 = {currentPhase}");
+    }
+
+    //  EventManager 이벤트용
+    public void NextTurnEnd(bool value)
+    {
+        Debug.Log("[TurnManager] EventManager를 통한 턴 종료 요청 감지");
+        NextTurn();
+    }
+
+    //  턴 내 행동횟수 초기화 (시간 경과 등)
+    public void ResetTurn()
+    {
+        playerUseSkillTurn = 0;
+        enemyUseSkillTurn = 0;
     }
 }

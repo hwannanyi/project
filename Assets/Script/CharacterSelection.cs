@@ -8,7 +8,7 @@ using System.Xml.Linq;
 
 public class CharacterSelection : MonoBehaviour
 {
-    
+    public static CharacterSelection Instance;
     public static int selectedCharacterIndex = -1; // 선택된 캐릭터 (-1: 선택 없음)
 
 
@@ -37,7 +37,8 @@ public class CharacterSelection : MonoBehaviour
     }
     void SelectCharacter(int index)
     {
-        if (!TurnManager.Instance.IsPlayerTeamTurn)
+        if (TurnManager.Instance.currentPhase == TurnPhase.EnemyTurn
+            || TurnManager.Instance.currentPhase == TurnPhase.ReactPhase_EnemyResponding)
         {
             selectedCharacterIndex = -1;
             return;
@@ -49,7 +50,7 @@ public class CharacterSelection : MonoBehaviour
 
                 selectedCharacterIndex = index;
 
-                Debug.Log($"선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");
+                Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");
 
             }
             else if (CharacterStats.Instance.playerCharacters[index] != null && selectedCharacterIndex == index)
@@ -66,7 +67,8 @@ public class CharacterSelection : MonoBehaviour
 
     void SelectCharacter2P(int index)
     {
-        if (TurnManager.Instance.IsPlayerTeamTurn)
+        if (TurnManager.Instance.currentPhase == TurnPhase.PlayerTurn
+            || TurnManager.Instance.currentPhase == TurnPhase.ReactPhase_PlayerResponding)
         {
             selectedCharacterIndex = -1;
             return;
@@ -79,7 +81,7 @@ public class CharacterSelection : MonoBehaviour
 
                 selectedCharacterIndex = index;
 
-                Debug.Log($"선택된 캐릭터: {CharacterStats.Instance.EnemieCharacters[index1]}");
+                Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.EnemieCharacters[index1]}");
 
             }
             else if (CharacterStats.Instance.EnemieCharacters[index1] != null && selectedCharacterIndex == index)
@@ -92,6 +94,11 @@ public class CharacterSelection : MonoBehaviour
                 Debug.Log("캐릭 선택실패");
             }
         }
+    }
+
+    public void SelectCharacterCen()
+    {
+        selectedCharacterIndex = -1;
     }
 
 

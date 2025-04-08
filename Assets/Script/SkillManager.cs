@@ -12,7 +12,8 @@ public class SkillManager : MonoBehaviour
 {
     public static SkillManager Instance; // 싱글턴 인스턴스 (전역 접근 가능)
     public List<SkillData> UseSkillList = new(); // 현재 사용 가능한 스킬 목록
-    public GameObject skillPrefab; // 생성할 스킬 프리팹
+    //
+    //public GameObject skillPrefab; // 생성할 스킬 프리팹 미사용
 
     /// 대응을 위한 대기상태 스킬을 저장하는 변수
     private SkillData pendingSkill;
@@ -20,6 +21,10 @@ public class SkillManager : MonoBehaviour
     private Stats pendingCharacter;
     private Vector3 pendingAoeCenterPosition;
     private Vector3 pendingTargetPosition;
+
+    // 대응 중 한 번만 대응하도록 제한
+    private bool hasReacted = false;
+
     public bool waitingForResponse = false;
 
     //대응상대 스킬 저장
@@ -66,7 +71,7 @@ public class SkillManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
-            SkillManager.Instance.ContinuePendingSkill();
+            EndResponsePhase();
         }
     }
 
@@ -97,14 +102,15 @@ public class SkillManager : MonoBehaviour
         
         string name ;
         int index;
-        if (TurnManager.Instance.IsPlayerTeamTurn)
+        if (TurnManager.Instance.currentPhase == TurnPhase.PlayerTurn 
+            || TurnManager.Instance.currentPhase == TurnPhase.ReactPhase_PlayerResponding)
         {
             if (TurnManager.Instance.playerUseSkillTurn >= TurnManager.Instance.playerSkillTurn)
             {
 
                 return;
             }
-            TurnManager.Instance.playerUseSkillTurn++;
+            //TurnManager.Instance.playerUseSkillTurn++;
             name = CharacterStats.Instance.playerCharacters[CharacterSelection.selectedCharacterIndex];
             index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);
         }
@@ -114,7 +120,7 @@ public class SkillManager : MonoBehaviour
             {
                 return;
             }
-            TurnManager.Instance.enemyUseSkillTurn++;
+            //TurnManager.Instance.enemyUseSkillTurn++;
             name = CharacterStats.Instance.EnemieCharacters[CharacterSelection.selectedCharacterIndex - CharacterStats.Instance.playerCharacters.Count];
             index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);
         }/*
@@ -126,7 +132,9 @@ public class SkillManager : MonoBehaviour
             Debug.LogWarning("스킬을 찾을 수 없습니다");
             return;
         }*/
-        skillPrefab = CharacterStats.Instance.characterList[index].usingSkill[skillcast].SkillEffectPrefab;
+
+        //코드수정으로 미사용됨
+        //skillPrefab = CharacterStats.Instance.characterList[index].usingSkill[skillcast].SkillEffectPrefab;
 
         // 1. 캐릭터와 스킬 설정
         var character = CharacterStats.Instance.characterList[index];
@@ -239,23 +247,69 @@ public class SkillManager : MonoBehaviour
         // --- [6. 대응단계 진입] ---
         GameObject target = null; // 현재 타겟팅 로직 없음. 추후 구현 예정
 
-        if (skill.react != React.no && ResponseManager.Instance.CanRespond(skill))
+        if (skill.react != React.no && ReactManager.Instance.CanRespond(skill))
         {
-            // 대응용으로 임시 저장
-            pendingSkill = skill;
-            pendingCaster = casterObject;
-            pendingCharacter = character;
-            pendingAoeCenterPosition = aoeCenterPosition;
-            pendingTargetPosition = targetPosition;
-            waitingForResponse = true;
+            bool phase = TurnManager.Instance.IsInReactPhase();
+            if (!phase)
+            {
+                if (!waitingForResponse)// 이미 대응 중이면 덮어쓰기 금지
+                {
+                    // 대응용으로 임시 저장
+                    pendingSkill = skill;
+                    pendingCaster = casterObject;
+                    pendingCharacter = character;
+                    pendingAoeCenterPosition = aoeCenterPosition;
+                    pendingTargetPosition = targetPosition;
+                    waitingForResponse = true;
+
+                    TurnManager.Instance.EnterReactPhase(casterObject); // 대응단계 활성화
+                    ReactManager.Instance.EnterResponsePhase(skill, casterObject);
+
+                } 
+                return; // 대응 우선 처리
+            }
+            else
+            {
+                if (hasReacted)
+                {
+                    Debug.LogWarning("이미 대응한 턴입니다");
+                    return;
+                }
+
+                hasReacted = true;
+                
 
 
-            ResponseManager.Instance.EnterResponsePhase(skill, casterObject);
-            return; // 대응 우선 처리
+                if (TurnManager.Instance.IsPlayerReactPhase())
+                {
+                    if(TurnManager.Instance.playerReactTrun <= TurnManager.Instance.playerUseSkillReactTrun)
+                    {
+                        return;
+                    }
+                    ++TurnManager.Instance.playerUseSkillReactTrun;
+                }
+                else
+                {
+                    if (TurnManager.Instance.enemyReactTrun <= TurnManager.Instance.enemyUseSkillReactTrun)
+                    {
+                        return;
+                    }
+                    ++TurnManager.Instance.enemyUseSkillReactTrun;
+                }
+
+                pendingReactSkill = skill;
+                pendingReactCaster = casterObject;
+                pendingReactCharacter = character;
+                pendingReactAoeCenterPosition = aoeCenterPosition;
+                pendingReactTargetPosition = targetPosition;
+
+                ReactManager.Instance.EnterResponsePhase(skill, casterObject);
+                return; // 대응 우선 처리
+            }
         }
 
         // 7. 스킬 이펙트 프리팹 생성
-        castskillon(skill, aoeCenterPosition, targetPosition, casterObject, character);
+        castskillon(skill, skill.SkillEffectPrefab, aoeCenterPosition, targetPosition, casterObject, character);
     }
 
 
@@ -302,8 +356,9 @@ public class SkillManager : MonoBehaviour
     }
 
     // castskill에서 나온 스킬을 생성
-    public void castskillon(SkillData skill, Vector3 aoeCenterPosition, Vector3 targetPosition, GameObject casterObject, Stats character)
+    public void castskillon(SkillData skill, GameObject skillPrefab, Vector3 aoeCenterPosition, Vector3 targetPosition, GameObject casterObject, Stats character)
     {
+        GameObject prefab = skill.SkillEffectPrefab;
         GameObject skillObject = Instantiate(skillPrefab, aoeCenterPosition, Quaternion.identity);
 
 
@@ -330,9 +385,16 @@ public class SkillManager : MonoBehaviour
     {
         if (waitingForResponse && pendingSkill != null && pendingCaster != null)
         {
-            //Instantiate(pendingSkill.SkillEffectPrefab, pendingPosition, Quaternion.identity);
-            castskillon(pendingSkill, pendingAoeCenterPosition, pendingTargetPosition, pendingCaster, pendingCharacter);
+            castskillon(pendingSkill, pendingSkill.SkillEffectPrefab, pendingAoeCenterPosition, pendingTargetPosition, pendingCaster, pendingCharacter);
+            if (pendingReactSkill != null)
+            {
+                castskillon(pendingReactSkill, pendingReactSkill.SkillEffectPrefab, pendingReactAoeCenterPosition, pendingReactTargetPosition, pendingReactCaster, pendingReactCharacter);
+                Debug.Log($"[SkillManager] 대응 스킬 실행: {pendingReactSkill.skillName}");
+            }
+            
+            
             Debug.Log($"[SkillManager] 대응 후 스킬 실행: {pendingSkill.skillName}");
+            
 
             // 초기화
             pendingSkill = null;
@@ -340,7 +402,14 @@ public class SkillManager : MonoBehaviour
             pendingCharacter = null;
             pendingAoeCenterPosition = Vector3.zero;
             pendingTargetPosition = Vector3.zero;
-            waitingForResponse = false;
+
+            pendingReactSkill = null;
+            pendingReactCaster = null;
+            pendingReactCharacter = null;
+            pendingReactAoeCenterPosition = Vector3.zero;
+            pendingReactTargetPosition = Vector3.zero;
+
+            waitingForResponse = false; 
         }
     }
 
@@ -363,6 +432,8 @@ public class SkillManager : MonoBehaviour
     {
         Debug.Log("[ResponseManager] 대응단계 종료");
 
+        TurnManager.Instance.ExitReactPhase(); // 대응단계에서 일반턴으로 복귀
         SkillManager.Instance.ContinuePendingSkill();
+        hasReacted = false;
     }
 }
