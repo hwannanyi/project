@@ -36,7 +36,7 @@ MonoBehaviour:
   range: 7
   aoetype: 1
   effectRotation: 0
-  Xaoe: 5
+  Xaoe: 1
   Yaoe: 1
   specialAoe: []
   aoecenter: 1
@@ -44,9 +44,10 @@ MonoBehaviour:
   colldownSkill: 0
   basicValue: 10
   increase:
-    keys: 00000000
+    keys: 0000000002000000
     values:
     - 0.5
+    - 0.1
   damageHit: 1
   hitSpeed: 0
   DebuffEffects: []

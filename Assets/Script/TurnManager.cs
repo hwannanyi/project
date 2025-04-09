@@ -95,22 +95,22 @@ public class TurnManager : MonoBehaviour
     }
 
     //  캐릭터가 플레이어 팀인지 판별
-    public bool IsPlayerTeam(GameObject character)
+    public bool IsPlayerTeam(Stats character)
     {
         return CharacterStats.Instance.playerCharacters.Contains(character.name);
     }
 
     //  대응단계 진입 → 대응하는 팀에게 턴을 넘김
-    public void EnterReactPhase(GameObject reactingTeam)
+    public void EnterReactPhase(Stats reactingTeam)
     {
         playerUseSkillReactTrun = 0;
         enemyUseSkillReactTrun = 0;
         previousPhase = currentPhase;
 
         if (IsPlayerTeam(reactingTeam))
-            currentPhase = TurnPhase.ReactPhase_PlayerResponding;
-        else
             currentPhase = TurnPhase.ReactPhase_EnemyResponding;
+        else
+            currentPhase = TurnPhase.ReactPhase_PlayerResponding;
 
         Debug.Log($"[TurnManager] 대응단계 진입: 현재 대응팀 = {currentPhase}");
     }
