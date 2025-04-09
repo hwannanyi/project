@@ -274,9 +274,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb094a1b32d51f2428603e9b43266f04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cooldowns:
-    keys: []
-    values: 
 --- !u!114 &62703694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -289,13 +286,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7d2a772ed3dccb44966417299d044bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TeamTurn: 0
-  IsPlayerTeamTurn: 1
+  currentPhase: 0
+  previousPhase: 0
+  Turn: 0
+  nextTrunCount: 4
+  nextTrunCounting: 0
   playerSkillTurn: 10
-  playerUseSkillTurn: 0
   enemySkillTurn: 10
+  playerUseSkillTurn: 0
   enemyUseSkillTurn: 0
-  counterTrun: 0
+  playerReactTrun: 3
+  enemyReactTrun: 3
+  playerUseSkillReactTrun: 0
+  enemyUseSkillReactTrun: 0
 --- !u!114 &62703695
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -321,7 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   UseSkillList: []
-  skillPrefab: {fileID: 0}
+  waitingForResponse: 0
 --- !u!114 &62703697
 MonoBehaviour:
   m_ObjectHideFlags: 0
