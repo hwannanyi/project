@@ -49,6 +49,8 @@ public class SkillManager : MonoBehaviour
     private Vector3 pendingReactTargetPosition;
     //////////////////////////////////////////
 
+    private GameObject selectedTargetUnit = null;
+    private int selectedTargetIndex = -1;
 
     void Awake()
     {
@@ -91,6 +93,26 @@ public class SkillManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.M))
         {
             EndResponsePhase();
+        }
+
+        // 마우스 클릭으로 타겟 유닛 선택
+        if (Input.GetMouseButtonDown(0))
+        {
+            Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            mouseWorld.z = 0f;
+
+            Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
+            if (hit != null)
+            {
+                GameObject target = hit.gameObject;
+
+                if (target.CompareTag("Character"))
+                {
+                    selectedTargetUnit = target;
+                    selectedTargetIndex = CharacterStats.Instance.characters.IndexOf(target);
+                    Debug.Log($"[SkillManager] 대상 선택됨: {target.name}");
+                }
+            }
         }
     }
 
@@ -479,29 +501,47 @@ public class SkillManager : MonoBehaviour
 
             case StartSkillPosition.target:
                 {
-                    int targetIndex = CharacterSelection.selectedCharacterIndex;
-                    if (targetIndex == -1)
+                    if (selectedTargetUnit == null || selectedTargetIndex == -1)
                     {
-                        Debug.LogWarning("[SkillManager] 대상이 선택되지 않았습니다.");
+                        Debug.LogWarning("[SkillManager] 대상 유닛이 선택되지 않았습니다.");
                         return;
                     }
-
-                    GameObject targetObj = CharacterStats.Instance.characters[targetIndex];
-                    if (targetObj != null)
-                        startPosition = targetObj.transform.position;
-                    else
-                        Debug.LogWarning("[SkillManager] 대상 GameObject를 찾을 수 없습니다.");
+                    startPosition = selectedTargetUnit.transform.position;
                     break;
+
                 }
 
             case StartSkillPosition.mouse:
                 {
-                    Vector3 rawMousePos = Camera.main.ScreenToWorldPoint(
+                    Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(
                         new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
-                    rawMousePos.z = 0f;
+                    mouseWorld.z = 0f;
 
-                    Vector3Int tileCoord = Vector3Int.RoundToInt(rawMousePos);
-                    startPosition = new Vector3(tileCoord.x + 0.5f, tileCoord.y + 0.5f, 0f);
+                    bool evenX = selectedSkill.Xaoe % 2 == 0;
+                    bool evenY = selectedSkill.Yaoe % 2 == 0;
+
+                    float x, y;
+
+                    if (evenX)
+                    {
+                        // 무조건 가장 가까운 0.5 단위로 강제 정렬
+                        x = Mathf.Floor(mouseWorld.x) + 0.5f;
+                    }
+                    else
+                    {
+                        x = Mathf.Round(mouseWorld.x); // 홀수는 정수 위치
+                    }
+
+                    if (evenY)
+                    {
+                        y = Mathf.Floor(mouseWorld.y) + 0.5f;
+                    }
+                    else
+                    {
+                        y = Mathf.Round(mouseWorld.y);
+                    }
+
+                    startPosition = new Vector3(x, y, 0f);
                     break;
                 }
 

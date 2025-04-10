@@ -22,7 +22,7 @@ MonoBehaviour:
   actionsNumber: 1
   skillNumber: 1
   skillCumulative: 1
-  startSkillPosition: 0
+  startSkillPosition: 2
   XstartSkillPosition: 0
   YstartSkillPosition: 0
   projectile: 0
@@ -39,7 +39,7 @@ MonoBehaviour:
   Xaoe: 3
   Yaoe: 3
   specialAoe: []
-  aoecenter: 1
+  aoecenter: 0
   cooldown: 3
   colldownSkill: 0
   basicValue: 10
