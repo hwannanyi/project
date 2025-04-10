@@ -98,10 +98,14 @@ public class SkillManager : MonoBehaviour
         {
             // 2. 위치 계산 (예: 마우스 클릭 기반)
             if(selectedSkill == null || selectedCharacter == null) { Debug.Log("선택한 스킬 또는 대상 없음!!!"); return;}
-            CalculateSkillPosition(selectedSkill, selectedCharacter);
 
-            // 3. 시전 확정 + 대응 체크
-            ConfirmSkillCast();
+            CalculateSkillPosition(selectedSkill, selectedCharacter); // 항상 호출해야 함
+            if (isSkillReady)
+            {
+                // 3. 시전 확정 + 대응 체크
+                ConfirmSkillCast(); // 위치 계산 성공했을 때만 확정
+            }
+
         }
 
         // 대응단계 강제 종료 테스트용 (게임 흐름에 따라 UI 버튼 등으로 대체 가능)
@@ -117,15 +121,28 @@ public class SkillManager : MonoBehaviour
             mouseWorld.z = 0f;
 
             Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
-            if (hit != null)
+            if (hit != null && hit.CompareTag("Character"))
             {
                 GameObject target = hit.gameObject;
-                if (target.CompareTag("Character"))
+
+                if (selectedCharacter != null && selectedSkill != null)
                 {
-                    selectedTargetUnit = target;
-                    selectedTargetIndex = CharacterStats.Instance.characters.IndexOf(target);
-                    Debug.Log($"[SkillManager] 대상 선택됨: {target.name}");
+                    Vector3 unitPos = selectedCharacter.charPosition;
+                    Vector3 targetPos = target.transform.position;
+
+                    int tileDist = Mathf.Abs(Mathf.RoundToInt(unitPos.x - targetPos.x)) +
+                                   Mathf.Abs(Mathf.RoundToInt(unitPos.y - targetPos.y));
+
+                    if (tileDist > selectedSkill.range)
+                    {
+                        Debug.LogWarning("[SkillManager] 사거리 밖의 유닛입니다.");
+                        return;
+                    }
                 }
+
+                selectedTargetUnit = target;
+                selectedTargetIndex = CharacterStats.Instance.characters.IndexOf(target);
+                Debug.Log($"[SkillManager] 대상 선택됨: {target.name}");
             }
         }
     }
@@ -526,33 +543,25 @@ public class SkillManager : MonoBehaviour
 
             case StartSkillPosition.mouse:
                 {
-                    Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(
-                        new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
-                    mouseWorld.z = 0f;
+                    Vector3 rawMouse = Camera.main.ScreenToWorldPoint(
+                    new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
+                    rawMouse.z = 0f;
 
+                    int tileDist = Mathf.Abs(Mathf.RoundToInt(selectedCharacter.charPosition.x - rawMouse.x)) +
+                                   Mathf.Abs(Mathf.RoundToInt(selectedCharacter.charPosition.y - rawMouse.y));
+
+                    if (tileDist > selectedSkill.range)
+                    {
+                        Debug.LogWarning("[SkillManager] 사거리 밖의 위치입니다.");
+                        isSkillReady = false;
+                        return;
+                    }
+
+                    // 기존 위치 보정 로직
                     bool evenX = selectedSkill.Xaoe % 2 == 0;
                     bool evenY = selectedSkill.Yaoe % 2 == 0;
-
-                    float x, y;
-
-                    if (evenX)
-                    {
-                        // 무조건 가장 가까운 0.5 단위로 강제 정렬
-                        x = Mathf.Floor(mouseWorld.x) + 0.5f;
-                    }
-                    else
-                    {
-                        x = Mathf.Round(mouseWorld.x); // 홀수는 정수 위치
-                    }
-
-                    if (evenY)
-                    {
-                        y = Mathf.Floor(mouseWorld.y) + 0.5f;
-                    }
-                    else
-                    {
-                        y = Mathf.Round(mouseWorld.y);
-                    }
+                    float x = evenX ? Mathf.Floor(rawMouse.x) + 0.5f : Mathf.Round(rawMouse.x);
+                    float y = evenY ? Mathf.Floor(rawMouse.y) + 0.5f : Mathf.Round(rawMouse.y);
 
                     startPosition = new Vector3(x, y, 0f);
                     break;
@@ -622,6 +631,7 @@ public class SkillManager : MonoBehaviour
         selectedTargetPosition = targetPosition;
 
         Debug.Log($"[SkillManager] 스킬 위치 계산 완료: 시작={startPosition}, AOE중심={aoeCenterPosition}, 타겟={targetPosition}");
+        return;
     }
 
 
@@ -631,6 +641,21 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     public void ConfirmSkillCast()
     {
+
+        if (!isSkillReady || selectedSkill == null || selectedCaster == null || selectedCharacter == null)
+        {
+            Debug.LogWarning("[SkillManager] 스킬 준비 상태가 아니거나 정보가 부족합니다.");
+            return;
+        }
+
+        // 타겟팅 스킬 또는 타겟 기반 스킬일 경우, 대상이 반드시 필요
+        if ((selectedSkill.targeting || selectedSkill.startSkillPosition == StartSkillPosition.target)
+            && selectedTargetUnit == null)
+        {
+            Debug.LogWarning("[SkillManager] 타겟팅 스킬인데 타겟이 없습니다.");
+            return;
+        }
+
         if (!isSkillReady || selectedSkill == null || selectedCaster == null || selectedCharacter == null)
         {
             Debug.LogWarning("[SkillManager] 스킬 준비 상태가 아니거나 정보가 부족합니다.");

@@ -112,7 +112,7 @@ public class TurnManager : MonoBehaviour
         else
             currentPhase = TurnPhase.ReactPhase_PlayerResponding;
 
-        Debug.Log($"[TurnManager] 대응단계 진입: 현재 대응팀 = {currentPhase}");
+        Debug.Log($"[TurnManager] 대응단계 진입: 현재 대응팀 = {currentPhase}");   
     }
 
     //  대응단계 종료 → 이전 턴 복원

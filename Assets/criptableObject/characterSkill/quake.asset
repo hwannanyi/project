@@ -22,7 +22,7 @@ MonoBehaviour:
   actionsNumber: 1
   skillNumber: 1
   skillCumulative: 1
-  startSkillPosition: 2
+  startSkillPosition: 1
   XstartSkillPosition: 0
   YstartSkillPosition: 0
   projectile: 0
