@@ -25,5 +25,7 @@ MonoBehaviour:
   useSkill:
   - {fileID: 11400000, guid: ef061324dfda5d14ab8b7962c9344a8b, type: 2}
   - {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
+  - {fileID: 11400000, guid: 3685eee51b65a6647b47f28540780771, type: 2}
+  - {fileID: 11400000, guid: 3faea8acad35ac9449d03f5e22db5dc7, type: 2}
   characterillustration: {fileID: 21300000, guid: 0ed4d60afa2f43d4485494f2a4f96fff, type: 3}
   characterPrefab: {fileID: 4344314745404087944, guid: b350271128cd3ca489c78af4523dd393, type: 3}

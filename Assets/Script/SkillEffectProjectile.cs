@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+/*using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -77,5 +77,95 @@ public class SkillEffectProjectile : MonoBehaviour
             Destroy(gameObject);
 
 
+    }
+}
+*/
+using UnityEngine;
+
+public class SkillEffectProjectile : MonoBehaviour
+{
+    private SkillData skill;
+    private Vector3 targetPosition;
+    private GameObject caster;
+    private Stats casterStats;
+
+    private GameObject targetUnit; // 유도 타겟
+    public float speed = 5f;
+
+    private bool isInitialized = false;
+
+    public Transform rotatingVisual;
+
+    public GameObject hitbox;
+    public HitboxTile hitboxProject;
+    private Vector3 direction;
+
+
+    public void Initialize(SkillData skillData, Vector3 targetPos, GameObject casterObject, Stats character, GameObject target = null)
+    {
+        skill = skillData;
+        caster = casterObject;
+        casterStats = character;
+
+        if (skill.targeting && target != null)
+        {
+            targetUnit = target;
+        }
+        else
+        {
+            targetPosition = targetPos;
+        }
+
+        isInitialized = true;
+
+
+        // 초기 방향 계산
+        direction = (targetPosition - transform.position).normalized;
+        if (direction != Vector3.zero && rotatingVisual != null)
+        {
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            rotatingVisual.rotation = Quaternion.Euler(0f, 0f, angle);
+        }
+
+        GameObject HitboxTile = Instantiate(hitbox, this.transform);
+        HitboxTile.transform.localPosition = Vector3.zero;
+        // 2. 그 인스턴스에서 SkillProjectileHitbox 스크립트를 가져와 초기화
+        HitboxTile hitboxScript = HitboxTile.GetComponent<HitboxTile>();
+        if (hitboxScript != null)
+        {
+            hitboxScript.Initialize(skill);
+        }
+        // 충돌 처리 전달
+        SkillHitOn hit = GetComponent<SkillHitOn>();
+        if (hit != null)
+        {
+            hit.Initialize(skill, casterObject, character); // 또는 실제 캐릭터 GameObject
+        }
+
+    }
+
+    void Update()
+    {
+        if (!isInitialized) return;
+
+        Vector3 destination = (skill.targeting && targetUnit != null)
+            ? targetUnit.transform.position
+            : targetPosition;
+
+        Vector3 direction = (destination - transform.position).normalized;
+        transform.position += direction * speed * Time.deltaTime;
+
+        // 도착 판정
+        if (Vector3.Distance(transform.position, destination) < 0.1f)
+        {
+            OnHit();
+        }
+    }
+
+    private void OnHit()
+    {
+        // 데미지, 이펙트 등
+        Debug.Log($"[SkillEffectProjectile] {skill.skillName} 타격 완료");
+        Destroy(gameObject);
     }
 }

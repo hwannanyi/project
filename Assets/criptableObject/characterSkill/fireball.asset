@@ -10,44 +10,43 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
-  m_Name: Skill
+  m_Name: fireball
   m_EditorClassIdentifier: 
-  skillName: sex
-  SkillEffectIllustration: {fileID: 0}
-  SkillEffectPrefab: {fileID: 0}
+  skillName: ' fireball'
+  SkillEffectIllustration: {fileID: 21300000, guid: e8fce6869195caf4b922b75a9ffb1cdb, type: 3}
+  SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
   passive: 1
   skillTypes: 
-  tooltip: sex
+  tooltip: i am fire~
   actionsNumber: 1
   skillNumber: 1
   skillCumulative: 1
   startSkillPosition: 0
   XstartSkillPosition: 0
   YstartSkillPosition: 0
-  projectile: 0
+  projectile: 1
   targeting: 1
   penetration: 0
-  projectileType: 0
+  projectileType: 1
   skillTarget: 00000000
-  projectileSpeed: 0
+  projectileSpeed: 5
   afterdelay: 0
   beforedelay: 0
-  range: 0
-  aoetype: 2
+  range: 10
+  aoetype: 0
   effectRotation: 0
-  Xaoe: 0
-  Yaoe: 0
+  Xaoe: 1
+  Yaoe: 1
   specialAoe:
   - list: []
   aoecenter: 0
   cooldown: 5
   colldownSkill: 0
-  basicValue: 0
+  basicValue: 5
   increase:
-    keys: 0000000000000000
+    keys: 00000000
     values:
-    - 0
-    - 0
+    - 0.1
   damageHit: 0
   hitSpeed: 0
   DebuffEffects: []

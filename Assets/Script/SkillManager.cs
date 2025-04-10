@@ -33,7 +33,7 @@ public class SkillManager : MonoBehaviour
     private Stats pendingCharacter;
     private Vector3 pendingAoeCenterPosition;
     private Vector3 pendingTargetPosition;
-
+    private GameObject pendingTargetUnit = null;
     // 대응 중 한 번만 대응하도록 제한
     private bool hasReacted = false;
 
@@ -42,15 +42,19 @@ public class SkillManager : MonoBehaviour
 
     //대응상대 스킬 저장
     private int pendingSelectedCharacterIndex;
+
     private SkillData pendingReactSkill;
     private GameObject pendingReactCaster;
     private Stats pendingReactCharacter;
     private Vector3 pendingReactAoeCenterPosition;
     private Vector3 pendingReactTargetPosition;
+    private GameObject pendingReactTargetUnit = null;
     //////////////////////////////////////////
 
     private GameObject selectedTargetUnit = null;
     private int selectedTargetIndex = -1;
+    
+    
 
     void Awake()
     {
@@ -79,10 +83,21 @@ public class SkillManager : MonoBehaviour
             PrepareSkillCast(1); // 1. 스킬 선택 (index 1)
         }
 
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            PrepareSkillCast(2); // 1. 스킬 선택 (index 1)
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            PrepareSkillCast(3); // 1. 스킬 선택 (index 1)
+        }
+
         // 마우스 클릭 또는 타겟 방향 확정 후
         if (Input.GetKeyDown(KeyCode.Return)) // Enter로 스킬 확정
         {
             // 2. 위치 계산 (예: 마우스 클릭 기반)
+            if(selectedSkill == null || selectedCharacter == null) { Debug.Log("선택한 스킬 또는 대상 없음!!!"); return;}
             CalculateSkillPosition(selectedSkill, selectedCharacter);
 
             // 3. 시전 확정 + 대응 체크
@@ -105,7 +120,6 @@ public class SkillManager : MonoBehaviour
             if (hit != null)
             {
                 GameObject target = hit.gameObject;
-
                 if (target.CompareTag("Character"))
                 {
                     selectedTargetUnit = target;
@@ -508,7 +522,6 @@ public class SkillManager : MonoBehaviour
                     }
                     startPosition = selectedTargetUnit.transform.position;
                     break;
-
                 }
 
             case StartSkillPosition.mouse:
@@ -655,6 +668,7 @@ public class SkillManager : MonoBehaviour
             pendingReactCharacter = selectedCharacter;
             pendingReactAoeCenterPosition = selectedAoeCenterPosition;
             pendingReactTargetPosition = selectedTargetPosition;
+            pendingReactTargetUnit = selectedTargetUnit; //대응자용 타겟 저장
             hasReacted = true;
 
             Debug.Log($"[SkillManager] 대응 스킬 저장 완료: {pendingReactSkill.skillName}");
@@ -669,25 +683,31 @@ public class SkillManager : MonoBehaviour
             pendingCharacter = selectedCharacter;
             pendingAoeCenterPosition = selectedAoeCenterPosition;
             pendingTargetPosition = selectedTargetPosition;
+            pendingTargetUnit = selectedTargetUnit; //시전자 타겟 저장
             waitingForResponse = true;
 
             TurnManager.Instance.EnterReactPhase(selectedCharacter); // ← 핵심 수정: Stats로 전달
             ReactManager.Instance.EnterResponsePhase(selectedSkill, selectedCaster);
 
             Debug.Log($"[SkillManager] 대응단계 진입: 스킬 = {selectedSkill.skillName}");
+            selectedSkillClear();
             return;
         }
+
+        Vector3 targetPos = selectedSkill.targeting && selectedTargetUnit != null ?
+            selectedTargetUnit.transform.position : selectedTargetPosition; // 타겟정하기
 
         // 대응 조건 없으면 바로 실행
         ExecuteSkill(selectedSkill, selectedAoeCenterPosition, selectedTargetPosition, selectedCaster, selectedCharacter);
         Debug.Log($"[SkillManager] 스킬 즉시 실행: {selectedSkill.skillName}");
+        selectedSkillClear();
 
         // 상태 초기화
         isSkillReady = false;
     }
 
     /// <summary>
-    /// 스킬을 
+    /// 스킬을 실제로 시전한다
     /// </summary>
     /// <param name="skill">스킬정보</param>
     /// <param name="aoeCenterPosition">스킬의 중심점</param>
@@ -715,6 +735,14 @@ public class SkillManager : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// 스킬의 중심점과 시작위치를 정한다
+    /// </summary>
+    /// <param name="skill"></param>
+    /// <param name="closestDirection"></param>
+    /// <param name="startPosition"></param>
+    /// <param name="aoeCenterPosition"></param>
+    /// <param name="Poffset"></param>
     public void AoeCenterPosition(SkillData skill, Vector3 closestDirection, Vector3 startPosition, ref Vector3 aoeCenterPosition, ref Vector3 Poffset)
     {
         float xOffset = (skill.Xaoe - 1) * 0.5f;
@@ -757,7 +785,15 @@ public class SkillManager : MonoBehaviour
         Poffset = offset;
     }
 
-    // castskill에서 나온 스킬을 생성
+    /// <summary>
+    /// 생성될 스킬에서 투사체, 히트스캔을 구분하고 알맞은 프리팹 스킬 오브젝트를 생성한다
+    /// </summary>
+    /// <param name="skill"></param>
+    /// <param name="skillPrefab"></param>
+    /// <param name="aoeCenterPosition"></param>
+    /// <param name="targetPosition"></param>
+    /// <param name="casterObject"></param>
+    /// <param name="character"></param>
     public void castskillon(SkillData skill, GameObject skillPrefab, Vector3 aoeCenterPosition, Vector3 targetPosition, GameObject casterObject, Stats character)
     {
         GameObject prefab = skill.SkillEffectPrefab;
@@ -784,19 +820,29 @@ public class SkillManager : MonoBehaviour
     }
 
 
-
+    /// <summary>
+    /// 대응단계 종료시 스킬을 실행한다, ExecuteSkill을 호출한다
+    /// </summary>
     public void ContinuePendingSkill()
     {
         if (waitingForResponse && pendingSkill != null && pendingCaster != null)
         {
             if (pendingReactSkill != null)
             {
-                ExecuteSkill(pendingReactSkill, pendingReactAoeCenterPosition, pendingReactTargetPosition, pendingReactCaster, pendingReactCharacter);
+                Vector3 reactPos = pendingReactSkill.targeting && pendingReactTargetUnit != null ?
+                    pendingReactTargetUnit.transform.position : pendingReactTargetPosition;
+
+                ExecuteSkill(pendingReactSkill, pendingReactAoeCenterPosition, reactPos, pendingReactCaster, pendingReactCharacter);
                 Debug.Log($"[SkillManager] 대응 스킬 실행: {pendingReactSkill.skillName}");
             }
 
-            ExecuteSkill(pendingSkill, pendingAoeCenterPosition, pendingTargetPosition, pendingCaster, pendingCharacter);
+            Vector3 targetPos = pendingSkill.targeting && pendingTargetUnit != null ?
+                pendingTargetUnit.transform.position : pendingTargetPosition;
+
+            ExecuteSkill(pendingSkill, pendingAoeCenterPosition, targetPos, pendingCaster, pendingCharacter);
             Debug.Log($"[SkillManager] 본 스킬 실행: {pendingSkill.skillName}");
+            selectedSkillClear();
+
 
 
             // 초기화
@@ -805,12 +851,14 @@ public class SkillManager : MonoBehaviour
             pendingCharacter = null;
             pendingAoeCenterPosition = Vector3.zero;
             pendingTargetPosition = Vector3.zero;
+            pendingTargetUnit = null;
 
             pendingReactSkill = null;
             pendingReactCaster = null;
             pendingReactCharacter = null;
             pendingReactAoeCenterPosition = Vector3.zero;
             pendingReactTargetPosition = Vector3.zero;
+            pendingReactTargetUnit = null;
 
             waitingForResponse = false; 
         }
@@ -831,6 +879,10 @@ public class SkillManager : MonoBehaviour
         }
     }
 
+
+    /// <summary>
+    /// 대응단계를 종료한다
+    /// </summary>
     public void EndResponsePhase()
     {
         Debug.Log("[ResponseManager] 대응단계 종료");
@@ -838,5 +890,22 @@ public class SkillManager : MonoBehaviour
         TurnManager.Instance.ExitReactPhase(); // 대응단계에서 일반턴으로 복귀
         SkillManager.Instance.ContinuePendingSkill();
         hasReacted = false;
+    }
+
+
+    /// <summary>
+    /// 플레이어가 선택한 스킬과 대상 등을 초기화한다
+    /// </summary>
+    public void selectedSkillClear()
+    {
+        selectedSkill = null;
+        selectedCaster = null;
+        selectedCharacter = null;
+        selectedAoeCenterPosition = Vector3.zero;
+        selectedTargetPosition = Vector3.zero;
+        selectedTargetUnit = null; //시전자 타겟 저장
+
+        selectedTargetUnit = null;
+        selectedTargetIndex = -1;
     }
 }
