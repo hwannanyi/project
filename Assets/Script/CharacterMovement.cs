@@ -52,13 +52,41 @@ public class CharacterMovement : MonoBehaviour
             // 이동 중이 아니고, 막히지 않았을 때만 마우스 클릭을 처리
             if (moveCount>0 &&!isMoving && !isBlocked && Input.GetMouseButtonDown(0))
             {
-                Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                mousePosition.z = 0f;  // Z 값을 0으로 고정 (2D 타일 이동)
+                // 대응단계 확인
+                if (TurnManager.Instance.IsInReactPhase())
+                {
+                    Stats myStats = CharacterStats.Instance.characterList[characterNumber];
 
+                    if (SkillManager.Instance.GetRespondingCharacter() != myStats)
+                    {
+                        Debug.Log("[React] 현재 대응 중인 캐릭터가 아닙니다.");
+                        return;
+                    }
+
+                    if (SkillManager.Instance.HasMovedInReactPhase() || SkillManager.Instance.HasAlreadyReacted())
+                    {
+                        Debug.Log("[React] 이미 대응 행동을 했습니다.");
+                        return;
+                    }
+
+                    SkillManager.Instance.MarkReactMove();
+                }
+
+                // [수정됨] Perspective 카메라 대응: 마우스 위치를 정확히 가져오기 위한 Raycast 방식
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Plane groundPlane = new Plane(Vector3.forward, Vector3.zero); // z = 0 기준 평면
+                float enter;
+                Vector3 mousePosition = transform.position;
+                if (groundPlane.Raycast(ray, out enter))
+                {
+                    mousePosition = ray.GetPoint(enter);
+                    mousePosition.z = 0f;
+                }
                 Vector3 roundedTarget = new Vector3(Mathf.Round(mousePosition.x), Mathf.Round(mousePosition.y), 0f);
 
                 // 이동 제한 범위를 벗어나면 이동하지 않음
-                if (Mathf.Abs(roundedTarget.x - transform.position.x) > moveRange || Mathf.Abs(roundedTarget.y - transform.position.y) > moveRange)
+                if (Mathf.Abs(roundedTarget.x - transform.position.x) > moveRange 
+                    || Mathf.Abs(roundedTarget.y - transform.position.y) > moveRange)
                 {
                     return;
                 }

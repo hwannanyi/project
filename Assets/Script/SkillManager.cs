@@ -53,8 +53,10 @@ public class SkillManager : MonoBehaviour
 
     private GameObject selectedTargetUnit = null;
     private int selectedTargetIndex = -1;
-    
-    
+
+    private Stats respondingCharacter; // 현재 대응해야 하는 캐릭터
+
+    private bool hasMovedInReact = false; // 대응단계에서 이동 여부
 
     void Awake()
     {
@@ -117,8 +119,15 @@ public class SkillManager : MonoBehaviour
         // 마우스 클릭으로 타겟 유닛 선택
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 mouseWorld = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            mouseWorld.z = 0f;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Plane groundPlane = new Plane(Vector3.forward, Vector3.zero);
+            float enter;
+            Vector3 mouseWorld = Vector3.zero;
+            if (groundPlane.Raycast(ray, out enter))
+            {
+                mouseWorld = ray.GetPoint(enter);
+                mouseWorld.z = 0f;
+            }
 
             Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
             if (hit != null && hit.CompareTag("Character"))
@@ -543,9 +552,15 @@ public class SkillManager : MonoBehaviour
 
             case StartSkillPosition.mouse:
                 {
-                    Vector3 rawMouse = Camera.main.ScreenToWorldPoint(
-                    new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
-                    rawMouse.z = 0f;
+                    Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                    Plane groundPlane = new Plane(Vector3.forward, Vector3.zero);
+                    float enter;
+                    Vector3 rawMouse = Vector3.zero;
+                    if (groundPlane.Raycast(ray, out enter))
+                    {
+                        rawMouse = ray.GetPoint(enter);
+                        rawMouse.z = 0f;
+                    }
 
                     int tileDist = Mathf.Abs(Mathf.RoundToInt(selectedCharacter.charPosition.x - rawMouse.x)) +
                                    Mathf.Abs(Mathf.RoundToInt(selectedCharacter.charPosition.y - rawMouse.y));
@@ -641,7 +656,7 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     public void ConfirmSkillCast()
     {
-
+        respondingCharacter = selectedCharacter;
         if (!isSkillReady || selectedSkill == null || selectedCaster == null || selectedCharacter == null)
         {
             Debug.LogWarning("[SkillManager] 스킬 준비 상태가 아니거나 정보가 부족합니다.");
@@ -670,6 +685,9 @@ public class SkillManager : MonoBehaviour
                 Debug.LogWarning("[SkillManager] 이미 대응했습니다.");
                 return;
             }
+
+            // 이동 허용 → SkillManager 쪽에 이동했음을 알림
+            SkillManager.Instance.MarkReactMove();
 
             // 대응 행동 제한 확인
             if (TurnManager.Instance.IsPlayerReactPhase())
@@ -914,7 +932,8 @@ public class SkillManager : MonoBehaviour
 
         TurnManager.Instance.ExitReactPhase(); // 대응단계에서 일반턴으로 복귀
         SkillManager.Instance.ContinuePendingSkill();
-        hasReacted = false;
+        hasMovedInReact = false; // 대응 이동 초기화
+        hasReacted = false;      // 대응 스킬 초기화
     }
 
 
@@ -932,5 +951,36 @@ public class SkillManager : MonoBehaviour
 
         selectedTargetUnit = null;
         selectedTargetIndex = -1;
+    }
+
+    /// <summary>
+    /// 현제 스킬타겟을 정하고 있는가?
+    /// </summary>
+    /// <returns></returns>
+    public bool IsSkillTargetingActive()
+    {
+        return selectedSkill != null && isSkillReady;
+    }
+
+    public bool HasMovedInReactPhase()
+    {
+        return hasMovedInReact;
+    }
+
+    public void MarkReactMove()
+    {
+        hasMovedInReact = true;
+        hasReacted = true; // 스킬 사용과 동일하게 "반응 1회 완료"로 간주
+        Debug.Log("[SkillManager] 대응단계에서 이동 선택 완료");
+    }
+
+    public bool HasAlreadyReacted()
+    {
+        return hasReacted;
+    }
+
+    public Stats GetRespondingCharacter()
+    {
+        return respondingCharacter;
     }
 }
