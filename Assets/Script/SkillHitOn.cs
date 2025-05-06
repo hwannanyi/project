@@ -117,6 +117,11 @@ public class SkillHitOn : MonoBehaviour
         int damageUp = 0; //증가치
         int damage = Mathf.RoundToInt(skillData.basicValue);//기본위력
 
+        if (skillData.increase.ContainsKey(IncreaseType.none))
+        {
+            FinalDamage = damage + damageUp;
+            return;
+        }
         if (skillData.increase.ContainsKey(IncreaseType.ad))//AD
         {
             float AD = skillData.increase[IncreaseType.ad];

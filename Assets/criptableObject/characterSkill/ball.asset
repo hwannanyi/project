@@ -50,8 +50,17 @@ MonoBehaviour:
     - 0.1
   damageHit: 1
   hitSpeed: 0
-  DebuffEffects: []
-  BuffEffects: []
-  CCEffects: []
+  hitEffects:
+  - DamageEffect:
+    - skillhitEffect: 00000000
+      condition: 
+      baseValue: 0
+      increase:
+        keys: 
+        values: []
+      dot: 0
+    DebuffEffects: []
+    BuffEffects: []
+    CCEffects: []
   conditionalEffects: []
   react: 2

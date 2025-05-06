@@ -9,7 +9,7 @@ public enum StartSkillPosition
 { player, target, mouse, special}
 
 public enum projectileType
-{ shot, throwtype }
+{ straight, throwtype }
 public enum Target
 { self, team, enemy, spTarget}
 public enum aoeType
@@ -20,8 +20,16 @@ public enum aoeCenter
 { center, edge, Rcorner, Lcorner}
 
 public enum IncreaseType
-{ ad, ap, hp }
+{ none, ad, ap, hp }
 
+
+public enum skillhitEffect
+{
+    none,
+    damage,
+    heal,
+    Shields
+}
 
 public enum Debuffs
 { none, corrosion }
@@ -80,22 +88,45 @@ public class Skill : ScriptableObject
     public aoeCenter aoecenter;    // 광역기의 중심점
 
     public int cooldown;        // 쿨타임
-    public int colldownSkill;      // 지속 스킬횟수
+    public int colldownSkill;   // 지속 스킬횟수
     public int basicValue;      // 기본 위력
     public UDictionary<IncreaseType, float> increase; // 위력 계수 (예: {공격력: 0.1}, {방어력: 0.5})
 
     public int damageHit;         // 타격 횟수
     public float hitSpeed;        // 타격 속도
 
-    public List<DebuffEffect> DebuffEffects; //디버프 효과
-    public List<BuffEffect> BuffEffects;   //버프 효과
-    public List<CCEffect> CCEffects;     //CC 효과
+    
+    public List<HitEffects> hitEffects;
 
     public List<ConditionalEffect> conditionalEffects; // 특정 조건부 효과
 
     public React react; //대응가능유무 + 대응가능대상
 
 
+}
+
+[System.Serializable]
+public class HitEffects
+{
+    public List<DamageEffect> DamageEffect; //적중 효과
+    public List<DebuffEffect> DebuffEffects; //디버프 효과
+    public List<BuffEffect> BuffEffects;   //버프 효과
+    public List<CCEffect> CCEffects;     //CC 효과
+}
+
+public class EffectsCondition
+{
+
+}
+
+[System.Serializable]
+public class DamageEffect
+{
+    public List<skillhitEffect> skillhitEffect;
+    public string condition;       // 효과 발동 조건 (예: "공격력 50% 이상")
+    public float baseValue;        // 기본 위력
+    public UDictionary<IncreaseType, float> increase; //위력 계수
+    public int dot;                // 지속 시간 (턴)
 }
 
 [System.Serializable]
@@ -116,11 +147,9 @@ public class DebuffEffect
 {
     public Debuffs Debuff;
     public float baseValue;        // 기본 위력
-    public float increaseValue;    // 위력 계수
-    public int trunDuration;       // 지속 시간 (턴사이클 수)
-    public int skillDuration;      // 지속 스킬횟수
-    public int numberDurations;    // 지속 일반스킬횟수
-    public int counterDurations;   // 지속 대응횟수
+    public UDictionary<IncreaseType, float> increase; //위력 계수
+    public int trunDuration;       // 기본 지속 시간 (턴사이클 수)
+    public UDictionary<IncreaseType, float> timeIncrease; // 지속 시간 계수
 }
 
 [System.Serializable]
