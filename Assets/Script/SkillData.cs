@@ -41,7 +41,7 @@ public class SkillData
     public UDictionary<IncreaseType, float> increase; // 위력 계수 (예: {공격력: 0.1}, {방어력: 0.5})
     public int damageHit;         // 타격 횟수
     public float hitSpeed;        // 타격 속도
-    public List<HitEffects> hitEffects;
+    public UDictionary<Target, HitEffects> hitEffects;
     public List<ConditionalEffect> conditionalEffects; // 특정 조건부 효과
 
     public React react; //대응가능유무 + 대응가능대상
@@ -96,7 +96,7 @@ public class SkillData
         }
         damageHit = data.damageHit;
         hitSpeed = data.hitSpeed;
-        hitEffects = new List<HitEffects>(data.hitEffects);
+        hitEffects = new UDictionary<Target, HitEffects>();
         //BuffEffects = new List<BuffEffect>(data.BuffEffects);
         //CCEffects = new List<CCEffect>(data.CCEffects);
         conditionalEffects = new List<ConditionalEffect>(data.conditionalEffects);

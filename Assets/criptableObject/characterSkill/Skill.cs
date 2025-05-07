@@ -96,7 +96,7 @@ public class Skill : ScriptableObject
     public float hitSpeed;        // 타격 속도
 
     
-    public List<HitEffects> hitEffects;
+    public UDictionary<Target, HitEffects> hitEffects;
 
     public List<ConditionalEffect> conditionalEffects; // 특정 조건부 효과
 
@@ -122,7 +122,7 @@ public class EffectsCondition
 [System.Serializable]
 public class DamageEffect
 {
-    public List<skillhitEffect> skillhitEffect;
+    public List<skillhitEffect> skillhitEffect; //데미지? 힐? 실드?
     public string condition;       // 효과 발동 조건 (예: "공격력 50% 이상")
     public float baseValue;        // 기본 위력
     public UDictionary<IncreaseType, float> increase; //위력 계수
