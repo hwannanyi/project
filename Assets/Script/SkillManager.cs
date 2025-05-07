@@ -25,7 +25,8 @@ public class SkillManager : MonoBehaviour
     private Vector3 selectedTargetPosition = Vector3.zero;
 
     private bool isSkillReady = false;
-    /////////////////////////////////////////////////
+
+
 
     /// 대응을 위한 대기상태 스킬을 저장하는 변수
     private SkillData pendingSkill;
@@ -38,7 +39,9 @@ public class SkillManager : MonoBehaviour
     private bool hasReacted = false;
 
     public bool waitingForResponse = false;
-    /// /////////////////////////////////////
+
+
+
 
     //대응상대 스킬 저장
     private int pendingSelectedCharacterIndex;
@@ -49,7 +52,8 @@ public class SkillManager : MonoBehaviour
     private Vector3 pendingReactAoeCenterPosition;
     private Vector3 pendingReactTargetPosition;
     private GameObject pendingReactTargetUnit = null;
-    //////////////////////////////////////////
+
+
 
     private GameObject selectedTargetUnit = null;
     private int selectedTargetIndex = -1;

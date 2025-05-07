@@ -29,7 +29,7 @@ MonoBehaviour:
   targeting: 0
   penetration: 0
   projectileType: 0
-  skillTarget: 02000000
+  skillTarget: 0200000001000000
   projectileSpeed: 5
   afterdelay: 0
   beforedelay: 0
@@ -44,23 +44,39 @@ MonoBehaviour:
   colldownSkill: 0
   basicValue: 10
   increase:
-    keys: 0000000002000000
+    keys: 01000000
     values:
-    - 0.5
     - 0.1
   damageHit: 1
   hitSpeed: 0
   hitEffects:
-  - DamageEffect:
-    - skillhitEffect: 00000000
-      condition: 
-      baseValue: 0
-      increase:
-        keys: 
-        values: []
-      dot: 0
-    DebuffEffects: []
-    BuffEffects: []
-    CCEffects: []
+  - target: 2
+    effects:
+      DamageEffect:
+      - skillhitEffect: 01000000
+        condition: 
+        baseValue: 5
+        increase:
+          keys: 01000000
+          values:
+          - 0.1
+        dot: 0
+      DebuffEffects: []
+      BuffEffects: []
+      CCEffects: []
+  - target: 1
+    effects:
+      DamageEffect:
+      - skillhitEffect: 01000000
+        condition: 
+        baseValue: 1
+        increase:
+          keys: 01000000
+          values:
+          - 0.2
+        dot: 0
+      DebuffEffects: []
+      BuffEffects: []
+      CCEffects: []
   conditionalEffects: []
-  react: 2
+  react: 0

@@ -28,6 +28,7 @@ public class CharacterMovement : MonoBehaviour
         
     }
 
+
     void Update()
     {
 

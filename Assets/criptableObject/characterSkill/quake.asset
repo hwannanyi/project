@@ -44,13 +44,25 @@ MonoBehaviour:
   colldownSkill: 0
   basicValue: 10
   increase:
-    keys: 00000000
+    keys: 03000000
     values:
     - 0.2
   damageHit: 1
   hitSpeed: 0
-  DebuffEffects: []
-  BuffEffects: []
-  CCEffects: []
+  hitEffects:
+  - target: 2
+    effects:
+      DamageEffect:
+      - skillhitEffect: 01000000
+        condition: 
+        baseValue: 10
+        increase:
+          keys: 03000000
+          values:
+          - 0.2
+        dot: 0
+      DebuffEffects: []
+      BuffEffects: []
+      CCEffects: []
   conditionalEffects: []
   react: 2

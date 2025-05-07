@@ -11,7 +11,7 @@ public enum StartSkillPosition
 public enum projectileType
 { straight, throwtype }
 public enum Target
-{ self, team, enemy, spTarget}
+{ self, team, enemy, all, spTarget}
 public enum aoeType
 { single, square, spAoe}
 
@@ -95,8 +95,8 @@ public class Skill : ScriptableObject
     public int damageHit;         // 타격 횟수
     public float hitSpeed;        // 타격 속도
 
-    
-    public UDictionary<Target, HitEffects> hitEffects;
+
+    public List<HitEffectEntry> hitEffects;
 
     public List<ConditionalEffect> conditionalEffects; // 특정 조건부 효과
 
@@ -105,6 +105,8 @@ public class Skill : ScriptableObject
 
 }
 
+
+
 [System.Serializable]
 public class HitEffects
 {
@@ -112,6 +114,13 @@ public class HitEffects
     public List<DebuffEffect> DebuffEffects; //디버프 효과
     public List<BuffEffect> BuffEffects;   //버프 효과
     public List<CCEffect> CCEffects;     //CC 효과
+}
+
+[System.Serializable]
+public class HitEffectEntry
+{
+    public Target target;
+    public HitEffects effects;
 }
 
 public class EffectsCondition

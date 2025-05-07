@@ -44,14 +44,26 @@ MonoBehaviour:
   colldownSkill: 0
   basicValue: 5
   increase:
-    keys: 00000000
+    keys: 01000000
     values:
     - 0.1
   damageHit: 0
   hitSpeed: 0
-  DebuffEffects: []
-  BuffEffects: []
-  CCEffects: []
+  hitEffects:
+  - target: 2
+    effects:
+      DamageEffect:
+      - skillhitEffect: 01000000
+        condition: 
+        baseValue: 5
+        increase:
+          keys: 01000000
+          values:
+          - 0.1
+        dot: 0
+      DebuffEffects: []
+      BuffEffects: []
+      CCEffects: []
   conditionalEffects:
   - effectName: sex
     condition: sex

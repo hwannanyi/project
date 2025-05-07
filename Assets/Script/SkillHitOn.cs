@@ -52,7 +52,7 @@ public class SkillHitOn : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.tag=="Character")
+        if (other.gameObject.tag == "Character")
         {
             var manager = CharacterStats.Instance;
             if (manager == null)
@@ -87,19 +87,63 @@ public class SkillHitOn : MonoBehaviour
 
             // 여기서 팀 비교 등 처리
             Debug.Log($"'{target.name}' 가 '{casterObj.name}' 의 스킬에 피격됨!");
+
+            if (skillData.skillTarget.Contains(Target.self))
+            {
+                if (targetStats == casterStats)
+                {
+                    float baseValue = skillData.hitEffects
+                    .FirstOrDefault(h => h.target == Target.self)?
+                    .effects.DamageEffect.FirstOrDefault()?.baseValue ?? 0f;
+                    int value = Mathf.RoundToInt(baseValue);
+                    ValueCalculation(ref value, Target.self);
+                    targetStats.hp += value;
+                    Debug.Log($"[Hit] {targetStats.name}이(가) {value} 회복을 함. 남은 HP: {targetStats.hp}");
+                }
+            }
+            if (skillData.skillTarget.Contains(Target.team))
+            {
+                if (targetStats.team == casterStats.team)
+                {
+                    float baseValue = skillData.hitEffects
+                    .FirstOrDefault(h => h.target == Target.team)?
+                    .effects.DamageEffect.FirstOrDefault()?.baseValue ?? 0f;
+                    int value = Mathf.RoundToInt(baseValue);
+                    ValueCalculation(ref value, Target.team);
+                    targetStats.hp += value;
+                    Debug.Log($"[Hit] {targetStats.name}이(가) {value} 회복을 함. 남은 HP: {targetStats.hp}");
+                }
+            }
             if (skillData.skillTarget.Contains(Target.enemy))
             {
                 if (targetStats.team != casterStats.team)
                 {
-                    int value = Mathf.RoundToInt(skillData.basicValue);
-                    ValueCalculation(ref value);
+                    float baseValue = skillData.hitEffects
+                    .FirstOrDefault(h => h.target == Target.enemy)?
+                    .effects.DamageEffect.FirstOrDefault()?.baseValue ?? 0f;
+                    int value = Mathf.RoundToInt(baseValue);
+                    ValueCalculation(ref value, Target.enemy);
                     targetStats.hp -= value;
                     Debug.Log($"[Hit] {targetStats.name}이(가) {value} 피해를 입음. 남은 HP: {targetStats.hp}");
                 }
             }
+            if (skillData.skillTarget.Contains(Target.spTarget))
+            {
+                if (1 == 2)
+                {
+                    float baseValue = skillData.hitEffects
+                    .FirstOrDefault(h => h.target == Target.enemy)?
+                    .effects.DamageEffect.FirstOrDefault()?.baseValue ?? 0f;
+                    int value = Mathf.RoundToInt(baseValue);
+                    ValueCalculation(ref value, Target.enemy);
+                    targetStats.hp -= value;
+                    Debug.Log($"[Hit] {targetStats.name}이(가) {value} 피해를 입음. 남은 HP: {targetStats.hp}");
+                }
+            }
+
         }
 
-        if(other.gameObject.tag == "Tile")
+        if (other.gameObject.tag == "Tile")
         {
             Debug.Log("타일에 충돌!");
         }
@@ -112,33 +156,42 @@ public class SkillHitOn : MonoBehaviour
 
 
     //최종위력 계산기
-    public void ValueCalculation(ref int FinalDamage)
+    public void ValueCalculation(ref int FinalDamage, Target target)
     {
-        int damageUp = 0; //증가치
-        int damage = Mathf.RoundToInt(skillData.basicValue);//기본위력
+        int damageUp = 0;
+        int damage = 0;
 
-        if (skillData.increase.ContainsKey(IncreaseType.none))
+        // 지정된 대상(target)에 맞는 HitEffectEntry 찾기
+        var targetEntry = skillData.hitEffects.FirstOrDefault(h => h.target == target);
+
+        // 없거나 데미지 효과가 없다면 종료
+        if (targetEntry == null || targetEntry.effects.DamageEffect.Count == 0)
         {
-            FinalDamage = damage + damageUp;
+            FinalDamage = 0;
             return;
         }
-        if (skillData.increase.ContainsKey(IncreaseType.ad))//AD
-        {
-            float AD = skillData.increase[IncreaseType.ad];
-            damageUp = damageUp + Mathf.RoundToInt(caster.atk * AD);
-        }
-        if (skillData.increase.ContainsKey(IncreaseType.ap))//AP
-        {
-            float AP = skillData.increase[IncreaseType.ap];
-            damageUp = damageUp + Mathf.RoundToInt(caster.atk * AP);
-        }
-        if (skillData.increase.ContainsKey(IncreaseType.hp))//AP
-        {
-            float HP = skillData.increase[IncreaseType.hp];
-            damageUp = damageUp + Mathf.RoundToInt(caster.maxhp * HP);
-        }
-        FinalDamage = damage + damageUp;
 
+        foreach (var dmgEffect in targetEntry.effects.DamageEffect)
+        {
+            int baseDmg = Mathf.RoundToInt(dmgEffect.baseValue);
+            damage += baseDmg;
+
+            var increaseDict = dmgEffect.increase;
+
+            if (increaseDict != null)
+            {
+                if (increaseDict.TryGetValue(IncreaseType.ad, out float adRatio))
+                    damageUp += Mathf.RoundToInt(caster.atk * adRatio);
+
+                if (increaseDict.TryGetValue(IncreaseType.ap, out float apRatio))
+                    damageUp += Mathf.RoundToInt(caster.atk * apRatio);
+
+                if (increaseDict.TryGetValue(IncreaseType.hp, out float hpRatio))
+                    damageUp += Mathf.RoundToInt(caster.maxhp * hpRatio);
+            }
+        }
+
+        FinalDamage = damage + damageUp;
     }
 }
 
