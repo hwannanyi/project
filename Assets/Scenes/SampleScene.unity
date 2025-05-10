@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 62703698}
   - component: {fileID: 62703695}
   - component: {fileID: 62703696}
+  - component: {fileID: 62703699}
   - component: {fileID: 62703697}
   m_Layer: 0
   m_Name: GameManager
@@ -299,6 +300,84 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2d5df389fc6737438d482de43554e74, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &62703699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62703682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74559eb346df49a4e81fe176e8b00c2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedSkillList:
+    selectedSkill:
+      useCharacterName: 
+      skillName: 
+      SkillEffectIllustration: {fileID: 0}
+      SkillEffectPrefab: {fileID: 0}
+      passive: 0
+      skillTypes: 
+      tooltip: 
+      actionsNumber: 0
+      skillNumber: 0
+      skillCumulative: 0
+      startSkillPosition: 0
+      XstartSkillPosition: 0
+      YstartSkillPosition: 0
+      projectile: 0
+      targeting: 0
+      projectileType: 0
+      skillTarget: 
+      projectileSpeed: 0
+      afterdelay: 0
+      beforedelay: 0
+      range: 0
+      aoetype: 0
+      effectRotation: 0
+      Xaoe: 0
+      Yaoe: 0
+      aoecenter: 0
+      specialAoe: []
+      cooldown: 0
+      colldownSkill: 0
+      basicValue: 0
+      increase:
+        keys: 
+        values: []
+      damageHit: 0
+      hitSpeed: 0
+      hitEffects: []
+      conditionalEffects: []
+      react: 0
+    selectedCaster: {fileID: 0}
+    selectedCharacter:
+      name: 
+      maxhp: 0
+      hp: 0
+      maxmp: 0
+      mp: 0
+      atk: 0
+      def: 0
+      speed: 0
+      movespeed: 0
+      moveCount: 0
+      trun: 0
+      charPosition: {x: 0, y: 0, z: 0}
+      charRotation: {x: 0, y: 0, z: 0, w: 0}
+      isdie: 0
+      team: 0
+      useSkill: []
+      usingSkill: []
+      characterillustration: {fileID: 0}
+      characterPrefab: {fileID: 0}
+    selectedAoeCenterPosition: {x: 0, y: 0, z: 0}
+    selectedTargetPosition: {x: 0, y: 0, z: 0}
+    selectedTargetUnit: {fileID: 0}
+  pendingSkillList: []
+  reactPendingSkillList: []
 --- !u!1 &301464541
 GameObject:
   m_ObjectHideFlags: 0

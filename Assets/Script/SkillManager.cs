@@ -45,7 +45,6 @@ public class SkillManager : MonoBehaviour
 
     //대응상대 스킬 저장
     private int pendingSelectedCharacterIndex;
-
     private SkillData pendingReactSkill;
     private GameObject pendingReactCaster;
     private Stats pendingReactCharacter;

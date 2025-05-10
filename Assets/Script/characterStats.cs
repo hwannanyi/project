@@ -120,6 +120,7 @@ public class CharacterStats : MonoBehaviour
         for (int i = 0; i < characterList.Count; i++)
         {
             GameObject CharacterObject = Instantiate(characterList[i].characterPrefab);
+            CharacterObject.name = characterList[i].name; // 캐릭터 이름 설정
             characters.Add(CharacterObject);
             CharacterObject.transform.position = transform.position;
 
