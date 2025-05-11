@@ -31,6 +31,28 @@ public enum skillhitEffect
     Shields
 }
 
+public enum condition_statement
+{
+    none,       //없음
+    more,       //이상
+    over,       //초과
+    below,      //이하
+    under,      //미만
+    equal,      //같다
+    inequality  //같지않다
+}
+
+public enum condition_effect
+{
+    none,
+    more,
+    over,
+    below,
+    under,
+    equal,
+    inequality
+}
+
 public enum Debuffs
 { none, corrosion }
 
@@ -98,8 +120,6 @@ public class Skill : ScriptableObject
 
     public List<HitEffectEntry> hitEffects;
 
-    public List<ConditionalEffect> conditionalEffects; // 특정 조건부 효과
-
     public React react; //대응가능유무 + 대응가능대상
 
 
@@ -141,15 +161,6 @@ public class DamageEffect
 [System.Serializable]
 public class ConditionalEffect
 {
-    public string effectName;      // 효과 이름 (예: "출혈")
-    public string condition;       // 효과 발동 조건 (예: "공격력 50% 이상")
-    public string target;          // 대상 (자신, 적 등)
-    public float baseValue;        // 기본 위력
-    public float increaseValue;    // 위력 계수
-    public int trunDuration;       // 지속 시간 (턴사이클 수)
-    public int skillDuration;      // 지속 스킬횟수
-    public int numberDurations;    // 지속 일반스킬횟수
-    public int counterDurations;   // 지속 대응횟수
 }
 [System.Serializable]
 public class DebuffEffect

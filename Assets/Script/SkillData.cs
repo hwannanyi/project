@@ -99,7 +99,7 @@ public class SkillData
         hitEffects = new List<HitEffectEntry>(data.hitEffects);
         //BuffEffects = new List<BuffEffect>(data.BuffEffects);
         //CCEffects = new List<CCEffect>(data.CCEffects);
-        conditionalEffects = new List<ConditionalEffect>(data.conditionalEffects);
+        //conditionalEffects = new List<ConditionalEffect>(data.conditionalEffects);
         react = data.react;
     }
 }
