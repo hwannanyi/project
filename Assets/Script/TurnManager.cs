@@ -101,13 +101,13 @@ public class TurnManager : MonoBehaviour
     }
 
     //  대응단계 진입 → 대응하는 팀에게 턴을 넘김
-    public void EnterReactPhase(Stats reactingTeam)
+    public void EnterReactPhase()
     {
         playerUseSkillReactTrun = 0;
         enemyUseSkillReactTrun = 0;
         previousPhase = currentPhase;
 
-        if (IsPlayerTeam(reactingTeam))
+        if (IsPlayerTurn())
             currentPhase = TurnPhase.ReactPhase_EnemyResponding;
         else
             currentPhase = TurnPhase.ReactPhase_PlayerResponding;
