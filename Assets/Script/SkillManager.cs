@@ -125,12 +125,8 @@ public class SkillManager : MonoBehaviour
             {
                 TurnManager.Instance.ExitReactPhase();
             }
-
-            SkillSaveList.Instance.waitingForResponse = true;
             SkillSaveList.Instance.ExecuteAllActions();
-            TurnManager.Instance.EnterReactPhase();
-            ReactManager.Instance.EnterResponsePhase();
-            
+            TurnManager.Instance.EnterReactPhase(selectedCharacter);
             Debug.Log("[전투] 저장된 행동 실행 완료 + 턴 종료");
         }
 
@@ -718,6 +714,10 @@ public class SkillManager : MonoBehaviour
         {
             SkillSaveList.Instance.SelectedSkillList(selectedSkill, selectedCaster, selectedCharacter,
                 selectedAoeCenterPosition, selectedTargetPosition, selectedTargetUnit);
+            SkillSaveList.Instance.waitingForResponse = true;
+
+            TurnManager.Instance.EnterReactPhase(selectedCharacter);
+            ReactManager.Instance.EnterResponsePhase(selectedSkill, selectedCaster);
             selectedSkillClear();
             return;
         }
@@ -725,7 +725,6 @@ public class SkillManager : MonoBehaviour
         // 대응 조건이 없더라도 → 실행하지 않고 저장만
         SkillSaveList.Instance.SelectedSkillList(selectedSkill, selectedCaster, selectedCharacter,
             selectedAoeCenterPosition, selectedTargetPosition, selectedTargetUnit);
-        SkillSaveList.Instance.waitingForResponse = true;
 
         selectedSkillClear();
         isSkillReady = false;
@@ -894,7 +893,6 @@ public class SkillManager : MonoBehaviour
 
     public void ContinuePendingSkill()
     {
-        Debug.Log($"SkillList Count: {SkillSaveList.Instance.SkillList.Count}");
         if (!SkillSaveList.Instance.waitingForResponse) return;
 
         // 1. 대응 스킬 먼저 실행

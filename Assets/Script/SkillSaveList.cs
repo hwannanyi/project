@@ -32,7 +32,7 @@ public class SkillSaveList : MonoBehaviour
             selectedTargetUnit = targetUnit
         };
 
-        SkillList.Add(data);// 저장
+        actionQueue.Add(data); // 큐에 저장
 
         Debug.Log($"스킬 저장 완료: {skill.skillName}");
     }
@@ -49,7 +49,7 @@ public class SkillSaveList : MonoBehaviour
             selectedTargetUnit = targetUnit
         };
 
-        ReactSkillList.Add(data);// 저장
+        reactactionQueue.Add(data); // 큐에 저장
         Debug.Log($"스킬 저장 완료: {skill.skillName}");
     }
 

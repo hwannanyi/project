@@ -38,9 +38,10 @@ public class ReactManager : MonoBehaviour
     /// <summary>
     /// 대응단계를 시작함. UI/입력 대기/아군 지원 등은 여기서 구현
     /// </summary>
-    public void EnterResponsePhase()
+    public void EnterResponsePhase(SkillData skill, GameObject caster)
     {
         CharacterSelection.selectedCharacterIndex = -1;
+        Debug.Log($"[ResponseManager] 대응단계 진입: 스킬: {skill.skillName}");
 
         // 대응 선택 UI, 타이머, 대응 가능한 스킬 목록 표시 등 처리 예정
         // 현재는 로그만 출력하고 바로 대응 없이 종료
