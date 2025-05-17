@@ -725,6 +725,7 @@ public class SkillManager : MonoBehaviour
         // 대응 조건이 없더라도 → 실행하지 않고 저장만
         SkillSaveList.Instance.SelectedSkillList(selectedSkill, selectedCaster, selectedCharacter,
             selectedAoeCenterPosition, selectedTargetPosition, selectedTargetUnit);
+        SkillSaveList.Instance.waitingForResponse = true;
 
         selectedSkillClear();
         isSkillReady = false;
@@ -893,6 +894,7 @@ public class SkillManager : MonoBehaviour
 
     public void ContinuePendingSkill()
     {
+        Debug.Log($"SkillList Count: {SkillSaveList.Instance.SkillList.Count}");
         if (!SkillSaveList.Instance.waitingForResponse) return;
 
         // 1. 대응 스킬 먼저 실행
