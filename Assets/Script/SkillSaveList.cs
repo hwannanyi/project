@@ -23,6 +23,19 @@ public class SkillSaveList : MonoBehaviour
         Skillaction.Add();
     }*/
 
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
 }
 [System.Serializable]
 public class ActionWrapper
