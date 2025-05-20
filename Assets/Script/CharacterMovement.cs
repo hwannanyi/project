@@ -54,7 +54,7 @@ public class CharacterMovement : MonoBehaviour
             if (moveCount>0 &&!isMoving && !isBlocked && Input.GetMouseButtonDown(0))
             {
                 // 대응단계 확인
-                if (TurnManager.Instance.IsInReactPhase())
+                /*if (TurnManager.Instance.IsInReactPhase())
                 {
                     Stats myStats = CharacterStats.Instance.characterList[characterNumber];
 
@@ -71,7 +71,7 @@ public class CharacterMovement : MonoBehaviour
                     }
 
                     SkillManager.Instance.MarkReactMove();
-                }
+                }*/
 
                 // [수정됨] Perspective 카메라 대응: 마우스 위치를 정확히 가져오기 위한 Raycast 방식
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);

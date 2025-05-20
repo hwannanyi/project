@@ -683,11 +683,11 @@ public class SkillManager : MonoBehaviour
         // 대응단계 중인 경우 → 대응자 쪽 처리
         if (TurnManager.Instance.IsInReactPhase())
         {
-            if (hasReacted)
+            /*if (hasReacted)
             {
                 Debug.LogWarning("[SkillManager] 이미 대응했습니다.");
                 return;
-            }
+            }*/
 
             // 이동 허용 → SkillManager 쪽에 이동했음을 알림
             SkillManager.Instance.MarkReactMove();
@@ -712,7 +712,7 @@ public class SkillManager : MonoBehaviour
             SaveSkill(true);//대응자용 타겟 저장
             hasReacted = true;
 
-            Debug.Log($"[SkillManager] 대응 스킬 저장 완료: {pendingReactSkill.skillName}");
+            Debug.Log($"[SkillManager] 대응 스킬 저장 완료: {selectedSkill.skillName}");
             return;
         }
 
@@ -721,9 +721,8 @@ public class SkillManager : MonoBehaviour
         {
             SaveSkill(false);//시전자 타겟 저장
             waitingForResponse = true;
-
-            TurnManager.Instance.EnterReactPhase(selectedCharacter); // ← 핵심 수정: Stats로 전달
-            ReactManager.Instance.EnterResponsePhase(selectedSkill, selectedCaster);
+            //TurnManager.Instance.EnterReactPhase(selectedCharacter); // ← 핵심 수정: Stats로 전달
+            //ReactManager.Instance.EnterResponsePhase(selectedSkill, selectedCaster);
 
             Debug.Log($"[SkillManager] 대응단계 진입: 스킬 = {selectedSkill.skillName}");
             selectedSkillClear();
