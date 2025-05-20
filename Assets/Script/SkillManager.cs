@@ -112,6 +112,7 @@ public class SkillManager : MonoBehaviour
             }
 
         }
+       
 
         // 대응단계 강제 종료 테스트용 (게임 흐름에 따라 UI 버튼 등으로 대체 가능)
         if (Input.GetKeyDown(KeyCode.M))
@@ -716,30 +717,14 @@ public class SkillManager : MonoBehaviour
             return;
         }
 
-        // 일반 시전 시 대응 조건 판단
-        if (selectedSkill.react != React.no && ReactManager.Instance.CanRespond(selectedSkill))
-        {
-            SaveSkill(false);//시전자 타겟 저장
-            waitingForResponse = true;
-            //TurnManager.Instance.EnterReactPhase(selectedCharacter); // ← 핵심 수정: Stats로 전달
-            //ReactManager.Instance.EnterResponsePhase(selectedSkill, selectedCaster);
-
-            Debug.Log($"[SkillManager] 대응단계 진입: 스킬 = {selectedSkill.skillName}");
-            selectedSkillClear();
-            return;
-        }
-
-        Vector3 targetPos = selectedSkill.targeting && selectedTargetUnit != null ?
-            selectedTargetUnit.transform.position : selectedTargetPosition; // 타겟정하기
-
         // 대응 조건 없으면 바로 실행
-        ExecuteSkill(selectedSkill, selectedAoeCenterPosition, selectedTargetPosition, selectedCaster, selectedCharacter);
-        Debug.Log($"[SkillManager] 스킬 즉시 실행: {selectedSkill.skillName}");
+        SaveSkill(false); // 일반 스킬 저장
+        Debug.Log($"[SkillManager] 스킬 저장 완료: {selectedSkill.skillName}");
         selectedSkillClear();
 
         // 상태 초기화
         isSkillReady = false;
-    }
+    }//waitingForResponse = true;
 
     // SaveSkill: 선택된 스킬을 저장하는 함수
     // isReaction이 true이면 대응 스킬로 처리되어 ReactSkillaction 리스트에 저장됨
