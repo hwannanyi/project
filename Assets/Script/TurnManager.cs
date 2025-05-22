@@ -105,12 +105,12 @@ public class TurnManager : MonoBehaviour
     {
         playerUseSkillReactTrun = 0;
         enemyUseSkillReactTrun = 0;
-        previousPhase = currentPhase;
+        //previousPhase = currentPhase;
 
         if (currentPhase == TurnPhase.PlayerTurn)
-            currentPhase = TurnPhase.ReactPhase_PlayerResponding;
-        else if (currentPhase == TurnPhase.EnemyTurn)
             currentPhase = TurnPhase.ReactPhase_EnemyResponding;
+        else if (currentPhase == TurnPhase.EnemyTurn)
+            currentPhase = TurnPhase.ReactPhase_PlayerResponding;
         else
             Debug.LogWarning("[TurnManager] 잘못된 대응단계 진입 시도: 현재 턴이 유효하지 않음");
     }
@@ -119,7 +119,21 @@ public class TurnManager : MonoBehaviour
     public void ExitReactPhase()
     {
         CharacterSelection.selectedCharacterIndex = -1;
-        currentPhase = previousPhase;
+
+        if (currentPhase == TurnPhase.ReactPhase_PlayerResponding)
+            currentPhase = TurnPhase.EnemyTurn;
+        else if (currentPhase == TurnPhase.ReactPhase_EnemyResponding)
+            currentPhase = TurnPhase.PlayerTurn;
+        else
+            Debug.LogWarning("유효하지 못한 턴");
+        //currentPhase = previousPhase;
+        Debug.Log($"[TurnManager] 대응단계 종료: 턴 복귀 = {currentPhase}");
+    }
+
+    //  대응단계 종료 → 이전 턴 복원
+    public void EndReactPhase()
+    {
+        CharacterSelection.selectedCharacterIndex = -1;
         Debug.Log($"[TurnManager] 대응단계 종료: 턴 복귀 = {currentPhase}");
     }
 
