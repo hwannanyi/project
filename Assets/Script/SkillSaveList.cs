@@ -56,7 +56,6 @@ public class Move
     private Vector3 startPosition;   // 이동 시작 위치
     public int moveRange = 5; // 최대 이동 거리 제한
     public int moveCount;     // 이동가능횟수
-    public bool reactionProcessed = false;
 }
 
 [System.Serializable]
@@ -68,5 +67,5 @@ public class SelectedSkillList
     public Vector3 selectedAoeCenterPosition = Vector3.zero;
     public Vector3 selectedTargetPosition = Vector3.zero;
     public GameObject selectedTargetUnit = null;
-    public bool reactionProcessed = false;
+    public bool reactclear;
 }

@@ -113,20 +113,15 @@ public class SkillManager : MonoBehaviour
             }
 
         }
-
+       
 
         // 대응단계 강제 종료 테스트용 (게임 흐름에 따라 UI 버튼 등으로 대체 가능)
         if (Input.GetKeyDown(KeyCode.M))
         {
-            if (TurnManager.Instance.IsInReactPhase())
+            if (!waitingForResponse)
             {
-                // 대응단계 중일 경우: 대응 스킬 먼저 실행하고 일반 스킬 자동 이어짐
-                ExecuteReactSkillList(); // 대응 스킬 실행 → 내부에서 본 스킬 이어짐
-            }
-            else
-            {
-                // 일반 스킬 실행 시작
-                ExecuteSkillListWithReactionCheck();
+                
+                ExecuteSkillListWithReactionCheck(); // 대응 포함 실행 루틴
             }
         }
 
@@ -754,7 +749,7 @@ public class SkillManager : MonoBehaviour
             selectedAoeCenterPosition = selectedAoeCenterPosition,
             selectedTargetPosition = selectedTargetPosition,
             selectedTargetUnit = selectedTargetUnit,
-            reactionProcessed = isReaction // 대응에서 저장될 경우 true
+            reactclear = false
         };
 
         // 구성된 스킬 정보를 ActionWrapper에 포장
@@ -919,41 +914,20 @@ public class SkillManager : MonoBehaviour
         SkillSaveList.Instance.Skillaction.Clear();
     }
 
-    /// <summary>
-    /// 대응 스킬을 실행하고, 대응단계가 종료되면 일반 스킬을 이어서 실행한다.
-    /// </summary>
+    // 대응 스킬 실행 함수
     public void ExecuteReactSkillList()
     {
-        bool executed = false;
-
         foreach (var action in SkillSaveList.Instance.ReactSkillaction)
         {
             if (action.type == ActionType.Skill && action.skillData != null)
             {
+                // 대응 스킬 실행 처리 함수 호출
                 ExecuteSkill(action.skillData);
-                executed = true;
             }
         }
 
+        // 실행 후 리스트 초기화
         SkillSaveList.Instance.ReactSkillaction.Clear();
-
-        // 대응 종료
-        TurnManager.Instance.ExitReactPhase();
-        isWaitingForReaction = false;
-        hasMovedInReact = false;
-        hasReacted = false;
-
-        if (executed)
-        {
-            Debug.Log("[SkillManager] 대응 스킬 실행 완료 → 일반 스킬 이어서 실행");
-        }
-        else
-        {
-            Debug.Log("[SkillManager] 대응 스킬 없음 → 일반 스킬 즉시 실행");
-        }
-
-        // 대응 스킬 유무 관계없이 일반 스킬 이어서 실행
-        ExecuteSkillListWithReactionCheck();
     }
 
     public void ExecuteAfterReactionPhase()
@@ -1036,9 +1010,20 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     public void EndResponsePhase()
     {
-        Debug.Log("[TurnManager] 대응단계 종료 (EndResponsePhase 호출)");
+        Debug.Log("[TurnManager] 대응단계");
 
-        ExecuteReactSkillList(); // 대응 스킬 실행 → 대응 종료 → 일반 스킬 실행까지 처리
+        TurnManager.Instance.ExitReactPhase();
+
+        // 대응 스킬 먼저 실행
+        ExecuteReactSkillList();
+
+        // 대응 상태 초기화
+        isWaitingForReaction = false;
+        hasMovedInReact = false;
+        hasReacted = false;
+
+        // 대응으로 중단되었던 스킬 실행 이어서 처리
+        ExecuteSkillListWithReactionCheck();
     }
 
     /// <summary>
@@ -1062,18 +1047,15 @@ public class SkillManager : MonoBehaviour
             SkillData skill = action.skillData.selectedSkill;
 
             // 대응 가능한 스킬인지 판정
-            if (!TurnManager.Instance.IsInReactPhase() 
-                && !action.skillData.reactionProcessed 
-                && skill.react != React.no 
-                && ReactManager.Instance.CanRespond(skill))
+            if (!action.skillData.reactclear && skill.react != React.no && ReactManager.Instance.CanRespond(skill))
             {
                 Debug.Log($"[SkillManager] 대응 가능한 스킬 발견: {skill.skillName} - 대응단계 진입");
 
+                // 대응단계로 진입 (현재 턴 기준)
                 TurnManager.Instance.EnterReactPhase();
                 ReactManager.Instance.EnterResponsePhase(skill, action.skillData.selectedCaster);
+                action.skillData.reactclear = true;
                 isWaitingForReaction = true;
-                currentSkillIndex++;
-
                 return; // 대응 끝날 때까지 실행 중단
             }
 
@@ -1085,6 +1067,7 @@ public class SkillManager : MonoBehaviour
         // 모든 스킬 실행 완료
         currentSkillIndex = 0;
         SkillSaveList.Instance.Skillaction.Clear();
+        TurnManager.Instance.ExitReactPhase();
         Debug.Log("[SkillManager] 모든 Skillaction 실행 완료");
     }
 
