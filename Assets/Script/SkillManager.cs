@@ -58,9 +58,9 @@ public class SkillManager : MonoBehaviour
     private GameObject selectedTargetUnit = null;
     private int selectedTargetIndex = -1;
 
-    private Stats respondingCharacter; // 현재 대응해야 하는 캐릭터
+    public Stats respondingCharacter; // 현재 대응해야 하는 캐릭터
 
-    private bool hasMovedInReact = false; // 대응단계에서 이동 여부
+    public bool hasMovedInReact = false; // 대응단계에서 이동 여부
 
     void Awake()
     {
@@ -113,15 +113,27 @@ public class SkillManager : MonoBehaviour
             }
 
         }
-       
+
 
         // 대응단계 강제 종료 테스트용 (게임 흐름에 따라 UI 버튼 등으로 대체 가능)
         if (Input.GetKeyDown(KeyCode.M))
         {
-            if (!waitingForResponse)
+            // 대응단계에서 다시 눌렀을 때 → 대응스킬 먼저 실행 후 일반스킬 이어서 실행
+            if (TurnManager.Instance.IsInReactPhase())
             {
-                
-                ExecuteSkillListWithReactionCheck(); // 대응 포함 실행 루틴
+                Debug.Log("대응단계 M키 입력 - 대응스킬 먼저 실행");
+
+                ExecuteAfterReactionPhase();     // 대응스킬 실행 (여기서 reactclear 처리)
+                ResetResponseState();            // 대응 상태 초기화
+                ExecuteSkillListWithReactionCheck(); // 일반스킬 이어서 실행
+
+                // ExitReactPhase는 여기서 호출하지 않음!
+                // 대응단계 종료는 ExecuteSkillListWithReactionCheck()에서 조건에 따라 자동 처리됨
+            }
+            else
+            {
+                Debug.Log("일반 스킬 실행 시도");
+                ExecuteSkillListWithReactionCheck(); // 대응 여부 포함 일반스킬 실행
             }
         }
 
@@ -923,6 +935,11 @@ public class SkillManager : MonoBehaviour
             {
                 // 대응 스킬 실행 처리 함수 호출
                 ExecuteSkill(action.skillData);
+
+                if (currentSkillIndex < SkillSaveList.Instance.Skillaction.Count)
+                {
+                    SkillSaveList.Instance.Skillaction[currentSkillIndex].skillData.reactclear = true;
+                }
             }
         }
 
@@ -938,11 +955,7 @@ public class SkillManager : MonoBehaviour
             ExecuteReactSkillList();
         }
 
-        // 본 스킬 실행
-        if (SkillSaveList.Instance.Skillaction.Count > 0)
-        {
-            ExecuteSkillList();
-        }
+        isWaitingForReaction = false;
     }
 
     public void ResetResponseState()
@@ -1071,10 +1084,26 @@ public class SkillManager : MonoBehaviour
         }
 
         // 모든 스킬 실행 완료
-        currentSkillIndex = 0;
-        SkillSaveList.Instance.Skillaction.Clear();
-        TurnManager.Instance.ExitReactPhase();
-        Debug.Log("[SkillManager] 모든 Skillaction 실행 완료");
+        if (!isWaitingForReaction && TurnManager.Instance.IsInReactPhase())
+        {
+            bool shouldExitReactPhase =
+                SkillSaveList.Instance.ReactSkillaction.Count == 0 &&
+                currentSkillIndex >= SkillSaveList.Instance.Skillaction.Count;
+
+            if (shouldExitReactPhase)
+            {
+                TurnManager.Instance.ExitReactPhase();
+                Debug.Log("[SkillManager] 대응단계 종료: 모든 스킬 완료");
+            }
+            else
+            {
+                Debug.Log("[SkillManager] 대응단계 유지: 아직 남은 스킬 있음");
+            }
+
+            // 정리 위치는 여기!
+            currentSkillIndex = 0;
+            SkillSaveList.Instance.Skillaction.Clear();
+        }
     }
 
 
