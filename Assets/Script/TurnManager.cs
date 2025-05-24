@@ -116,7 +116,7 @@ public class TurnManager : MonoBehaviour
     }
 
     //  대응단계 종료 → 이전 턴 복원
-    public void ExitReactPhase()
+    /*public void ExitReactPhase()
     {
         CharacterSelection.selectedCharacterIndex = -1;
 
@@ -128,6 +128,21 @@ public class TurnManager : MonoBehaviour
             Debug.LogWarning("유효하지 못한 턴");
         //currentPhase = previousPhase;
         Debug.Log($"[TurnManager] 대응단계 종료: 턴 복귀 = {currentPhase}");
+    }*/
+
+    public void ExitReactPhase()
+    {
+        CharacterSelection.selectedCharacterIndex = -1;
+
+        // 대응 스킬 실행
+        SkillManager.Instance.ExecuteAfterReactionPhase();
+
+        // 대응 상태 초기화
+        SkillManager.Instance.ResetResponseState();
+
+        // 턴 복귀
+        currentPhase = previousPhase;
+        Debug.Log($"[TurnManager] 대응단계 종료: 턴 복귀");
     }
 
     //  턴 전환 (일반 턴 순환: 플레이어 <-> 적)

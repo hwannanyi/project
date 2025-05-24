@@ -945,6 +945,12 @@ public class SkillManager : MonoBehaviour
         }
     }
 
+    public void ResetResponseState()
+    {
+        hasReacted = false;
+        waitingForResponse = false;
+    }
+
     /// <summary>
     /// 대응단계 종료시 스킬을 실행한다, ExecuteSkill을 호출한다
     /// </summary>
