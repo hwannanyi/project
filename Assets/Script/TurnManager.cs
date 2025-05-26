@@ -135,7 +135,7 @@ public class TurnManager : MonoBehaviour
         CharacterSelection.selectedCharacterIndex = -1;
 
         // 대응 스킬 실행
-        SkillManager.Instance.ExecuteAfterReactionPhase();
+        SkillManager.Instance.ExecuteReactionThenSkill();
 
         // 대응 상태 초기화
         SkillManager.Instance.ResetResponseState();

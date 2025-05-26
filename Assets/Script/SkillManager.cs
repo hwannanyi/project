@@ -62,6 +62,20 @@ public class SkillManager : MonoBehaviour
 
     public bool hasMovedInReact = false; // 대응단계에서 이동 여부
 
+
+    private SelectedSkill Skillaction
+    {
+        get => SkillSave.Instance.Skillaction;
+        set => SkillSave.Instance.Skillaction = value; // 수정된 부분
+    }
+
+    private SelectedSkill ReactSkillaction
+    {
+        get => SkillSave.Instance.ReactSkillaction;
+        set => SkillSave.Instance.ReactSkillaction = value; // 수정된 부분
+    }
+
+
     void Awake()
     {
         // 싱글턴 패턴 적용 (중복 방지)
@@ -118,22 +132,17 @@ public class SkillManager : MonoBehaviour
         // 대응단계 강제 종료 테스트용 (게임 흐름에 따라 UI 버튼 등으로 대체 가능)
         if (Input.GetKeyDown(KeyCode.M))
         {
-            // 대응단계에서 다시 눌렀을 때 → 대응스킬 먼저 실행 후 일반스킬 이어서 실행
             if (TurnManager.Instance.IsInReactPhase())
             {
                 Debug.Log("대응단계 M키 입력 - 대응스킬 먼저 실행");
-
-                ExecuteAfterReactionPhase();     // 대응스킬 실행 (여기서 reactclear 처리)
-                ResetResponseState();            // 대응 상태 초기화
-                ExecuteSkillListWithReactionCheck(); // 일반스킬 이어서 실행
-
-                // ExitReactPhase는 여기서 호출하지 않음!
-                // 대응단계 종료는 ExecuteSkillListWithReactionCheck()에서 조건에 따라 자동 처리됨
+                ExecuteReactionThenSkill();     // ← 변경됨
+                ResetResponseState();
+                ExecuteSingleSkillWithReactionCheck(); // ← 변경됨
             }
             else
             {
                 Debug.Log("일반 스킬 실행 시도");
-                ExecuteSkillListWithReactionCheck(); // 대응 여부 포함 일반스킬 실행
+                ExecuteSingleSkillWithReactionCheck(); // ← 변경됨
             }
         }
 
@@ -177,290 +186,7 @@ public class SkillManager : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 모든 캐릭터의 스킬을 리스트(UseSkillList)에 추가하는 함수 미사용
-    /// </summary>
-    /*public void Characterform()
-    {
-        // 캐릭터 리스트를 순회하며 각 캐릭터의 스킬을 저장
-        for (int i = 0; i < CharacterStats.Instance.characterList.Count; i++)
-        {
-            for (int j = 0; j < CharacterStats.Instance.characterList[i].useSkill.Count; j++)
-            {
-                // 캐릭터 이름과 스킬을 SkillData로 만들어 리스트에 추가
-                UseSkillList.Add(new SkillData(CharacterStats.Instance.characterList[i].useSkill[j], CharacterStats.Instance.characterList[i].name));
-            }
-        }
-    }*/
-
-    /// <summary>
-    /// 캐릭터의 위치에서 스킬을 생성하고, SkillEffect를 초기화하는 함수
-    /// </summary>
-    /// <summary>
-    /// 선택된 캐릭터의 스킬을 하나만 실행하는 함수
-    /// </summary>
-    /*public void CastSkill(int skillcast)
-    {
-        string name ;
-        int index;
-
-        bool isPlayerTurn = TurnManager.Instance.currentPhase == TurnPhase.PlayerTurn
-                            || TurnManager.Instance.currentPhase == TurnPhase.ReactPhase_PlayerResponding;
-
-        int selectedIndex = CharacterSelection.selectedCharacterIndex;
-        if (selectedIndex == -1)
-        {
-            Debug.LogWarning("[SkillManager] 캐릭터가 선택되지 않아 스킬을 사용할 수 없습니다.");
-            return;
-        }
-
-        // 행동 제한 체크
-        if (isPlayerTurn)
-        {
-            if (TurnManager.Instance.playerUseSkillTurn >= TurnManager.Instance.playerSkillTurn)
-                return;
-
-            if (selectedIndex < 0 || selectedIndex >= CharacterStats.Instance.playerCharacters.Count)
-            {
-                Debug.LogWarning("선택된 플레이어 캐릭터 인덱스가 범위를 벗어났습니다.");
-                return;
-            }
-
-            TurnManager.Instance.playerUseSkillTurn++;
-            name = CharacterStats.Instance.playerCharacters[selectedIndex];
-        }
-        else
-        {
-            if (TurnManager.Instance.enemyUseSkillTurn >= TurnManager.Instance.enemySkillTurn)
-                return;
-
-            int enemyIndex = selectedIndex - CharacterStats.Instance.playerCharacters.Count;
-            if (enemyIndex < 0 || enemyIndex >= CharacterStats.Instance.EnemieCharacters.Count)
-            {
-                Debug.LogWarning("선택된 적 캐릭터 인덱스가 범위를 벗어났습니다.");
-                return;
-            }
-
-            TurnManager.Instance.enemyUseSkillTurn++;
-            name = CharacterStats.Instance.EnemieCharacters[enemyIndex];
-        }
-
-        // name → index 변환
-        index = CharacterStats.Instance.characterList.FindIndex(Character => Character.name == name);*//*
-
-        
-        // 스킬 프리팹을 캐릭터 리스트의 캐리선책번째 캐릭터의 입력번째 스킬 프리팹으로 설정
-        if (CharacterStats.Instance.characterList[index].usingSkill.Count < skillcast+1)
-        {
-            Debug.LogWarning("스킬을 찾을 수 없습니다");
-            return;
-        }*//*
-
-        //코드수정으로 미사용됨
-        //skillPrefab = CharacterStats.Instance.characterList[index].usingSkill[skillcast].SkillEffectPrefab;
-
-        // 1. 캐릭터와 스킬 설정
-        var character = CharacterStats.Instance.characterList[index];
-        var skill = character.usingSkill[skillcast];
-
-        // 실제 씬에 존재하는 캐릭터 인스턴스를 가져온다
-        GameObject casterObject = CharacterStats.Instance.characters[index];
-
-        if (casterObject == null)
-        {
-            Debug.LogWarning("[SkillManager] 캐릭터 인스턴스를 찾을 수 없습니다.");
-            return;
-        }
-
-        // 2. 스킬 시작 위치 결정
-        Vector3 startPosition = Vector3.zero;
-
-        switch (skill.startSkillPosition)
-        {
-            case StartSkillPosition.player:
-                startPosition = character.charPosition;
-                break;
-
-            case StartSkillPosition.target:
-                int targetIndex = CharacterSelection.selectedCharacterIndex;
-                if (targetIndex == -1)
-                {
-                    Debug.LogWarning("대상이 선택되지 않았습니다.");
-                    return;
-                }
-
-                GameObject targetObj = CharacterStats.Instance.characters[targetIndex];
-                if (targetObj != null)
-                {
-                    startPosition = targetObj.transform.position;
-                }
-                else
-                {
-                    Debug.LogWarning("대상 GameObject 없음.");
-                    return;
-                }
-                break;
-
-            case StartSkillPosition.mouse:
-                Vector3 rawMousePos = Camera.main.ScreenToWorldPoint(
-            new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
-                rawMousePos.z = 0f;
-
-                Vector3Int tile = Vector3Int.RoundToInt(rawMousePos);
-                startPosition = new Vector3(tile.x + 0.5f, tile.y + 0.5f, 0f);
-                break;
-
-            case StartSkillPosition.special:
-                startPosition = new Vector3(0, 0, 0);
-                break;
-
-            default:
-                startPosition = character.charPosition;
-                break;
-        }
-
-        startPosition.z = 0f;
-
-        // 3. 8방향 중 가장 가까운 방향 계산
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(
-            new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
-        mouseWorldPos.z = 0f;
-
-        Vector3 direction = (mouseWorldPos - startPosition).normalized;
-
-        // 8방향 벡터
-        Vector3[] directions = new Vector3[]
-        {
-        Vector3.up, Vector3.down, Vector3.left, Vector3.right,
-        //(Vector3.up + Vector3.right).normalized,
-        //(Vector3.up + Vector3.left).normalized,
-        //(Vector3.down + Vector3.right).normalized,
-        //(Vector3.down + Vector3.left).normalized
-        };
-
-        // 가장 가까운 방향 선택
-        Vector3 closestDirection = directions[0];
-        float maxDot = Vector3.Dot(direction, directions[0]);
-
-        foreach (var dir in directions)
-        {
-            float dot = Vector3.Dot(direction, dir);
-            if (dot > maxDot)
-            {
-                maxDot = dot;
-                closestDirection = dir;
-            }
-        }
-
-        // 4. 타겟 위치를 선택된 방향으로 range만큼 떨어진 위치로 설정
-        Vector3 targetPosition = startPosition + closestDirection * skill.range;
-        targetPosition.z = 0f;
-
-
-        // 5. AOE 중심점 계산
-        Vector3 aoeCenterPosition = Vector3.zero;
-        Vector3 Poffset = Vector3.zero;
-
-        switch (skill.aoecenter)
-        {
-            case aoeCenter.center:
-                aoeCenterPosition = startPosition;
-                break;
-
-            case aoeCenter.edge:
-            case aoeCenter.Rcorner:
-            case aoeCenter.Lcorner:
-                AoeCenterPosition(skill, closestDirection, startPosition, ref aoeCenterPosition, ref Poffset);
-                break;
-
-            default:
-                aoeCenterPosition = startPosition;
-                break;
-        }
-
-        // 6. Poffset 적용 (특정 AOE 모드일 경우만)
-        switch (skill.aoecenter)
-        {
-            case aoeCenter.Rcorner:
-            case aoeCenter.Lcorner:
-                targetPosition += Poffset;
-                break;
-        }
-
-        // --- [6. 대응단계 진입] ---
-        GameObject target = null; // 현재 타겟팅 로직 없음. 추후 구현 예정
-
-        if (skill.react != React.no && ReactManager.Instance.CanRespond(skill))
-        {
-            bool phase = TurnManager.Instance.IsInReactPhase();
-            if (!phase)
-            {
-                if (CharacterSelection.selectedCharacterIndex == -1)
-                {
-                    Debug.LogWarning("[SkillManager] 캐릭터가 선택되지 않았습니다.");
-                    return;
-                }
-
-                if (!waitingForResponse)// 이미 대응 중이면 덮어쓰기 금지
-                {
-                    // 대응용으로 임시 저장
-                    pendingSkill = skill;
-                    pendingCaster = casterObject;
-                    pendingCharacter = character;
-                    pendingAoeCenterPosition = aoeCenterPosition;
-                    pendingTargetPosition = targetPosition;
-                    waitingForResponse = true;
-
-                    TurnManager.Instance.EnterReactPhase(character); // 대응단계 활성화
-                    ReactManager.Instance.EnterResponsePhase(skill, casterObject);
-
-                } 
-                return; // 대응 우선 처리
-            }
-            else
-            {
-                if (hasReacted)
-                {
-                    Debug.LogWarning("이미 대응한 턴입니다");
-                    return;
-                }
-                if (TurnManager.Instance.IsPlayerReactPhase())
-                {
-                    if(TurnManager.Instance.playerReactTrun <= TurnManager.Instance.playerUseSkillReactTrun)
-                    {
-                        return;
-                    }
-                    ++TurnManager.Instance.playerUseSkillReactTrun;
-                }
-                else
-                {
-                    if (TurnManager.Instance.enemyReactTrun <= TurnManager.Instance.enemyUseSkillReactTrun)
-                    {
-                        return;
-                    }
-                    ++TurnManager.Instance.enemyUseSkillReactTrun;
-                }
-
-                
-
-                pendingReactSkill = skill;
-                pendingReactCaster = casterObject;
-                pendingReactCharacter = character;
-                pendingReactAoeCenterPosition = aoeCenterPosition;
-                pendingReactTargetPosition = targetPosition;
-                ReactManager.Instance.EnterResponsePhase(skill, casterObject);
-                hasReacted = true;
-
-                return; // 대응 우선 처리
-            }
-        }
-
-        // 7. 스킬 이펙트 프리팹 생성
-        castskillon(skill, skill.SkillEffectPrefab, aoeCenterPosition, targetPosition, casterObject, character);
-    }*/
-    //더이상 미사용
-
-
+   
 
     /// <summary>
     /// 현재 선택된 캐릭터 인덱스가 올바르고, 행동 가능하면 이름을 반환함
@@ -727,6 +453,7 @@ public class SkillManager : MonoBehaviour
             }
 
             // 대응자 스킬 저장
+            Debug.Log($"[SaveSkill] Skill: {selectedSkill.skillName}, Prefab: {selectedSkill.SkillEffectPrefab}");
             SaveSkill(true);//대응자용 타겟 저장
             hasReacted = true;
 
@@ -735,6 +462,7 @@ public class SkillManager : MonoBehaviour
         }
 
         // 대응 조건 없으면 바로 실행
+        Debug.Log($"[SaveSkill] Skill: {selectedSkill.skillName}, Prefab: {selectedSkill.SkillEffectPrefab}");
         SaveSkill(false); // 일반 스킬 저장
         Debug.Log($"[SkillManager] 스킬 저장 완료: {selectedSkill.skillName}");
         selectedSkillClear();
@@ -753,7 +481,7 @@ public class SkillManager : MonoBehaviour
     public void SaveSkill(bool isReaction = false)
     {
         // 현재 선택된 스킬 정보를 SelectedSkillList 형태로 구성
-        var skillInfo = new SelectedSkillList
+        var skillInfo = new SelectedSkill
         {
             selectedSkill = selectedSkill,
             selectedCaster = selectedCaster,
@@ -761,26 +489,25 @@ public class SkillManager : MonoBehaviour
             selectedAoeCenterPosition = selectedAoeCenterPosition,
             selectedTargetPosition = selectedTargetPosition,
             selectedTargetUnit = selectedTargetUnit,
-            reactclear = false
         };
 
-        // 구성된 스킬 정보를 ActionWrapper에 포장
+/*        // 구성된 스킬 정보를 ActionWrapper에 포장
         var action = new ActionWrapper
         {
             type = ActionType.Skill,
             skillData = skillInfo
         };
-
+*/
         // 대응 여부에 따라 다른 리스트에 추가
         if (isReaction)
         {
-            // 대응 스킬인 경우 ReactSkillaction 리스트에 저장
-            SkillSaveList.Instance.ReactSkillaction.Add(action);
+            // 대응 스킬인 경우 ReactSkillaction에 저장
+            ReactSkillaction = skillInfo;
         }
         else
         {
-            // 일반 스킬인 경우 Skillaction 리스트에 저장
-            SkillSaveList.Instance.Skillaction.Add(action);
+            // 일반 스킬인 경우 Skillaction에 저장
+            Skillaction = skillInfo;
         }
     }
 
@@ -813,8 +540,20 @@ public class SkillManager : MonoBehaviour
         Debug.Log($"[SkillManager] 스킬 실행 완료: {skill.skillName}");
     }
 
-    private void ExecuteSkill(SelectedSkillList skill)
+    private void ExecuteSkill(SelectedSkill skill)
     {
+        if (skill == null || skill.selectedSkill == null)
+        {
+            Debug.LogError("[SkillManager] ExecuteSkill: skill 또는 skill.selectedSkill이 null입니다.");
+            return;
+        }
+
+        if (skill.selectedSkill.SkillEffectPrefab == null)
+        {
+            Debug.LogError($"[SkillManager] SkillEffectPrefab이 null입니다. 스킬 이름: {skill.selectedSkill.skillName}");
+            return;
+        }
+
         ExecuteSkill(
             skill.selectedSkill,
             skill.selectedAoeCenterPosition,
@@ -911,51 +650,46 @@ public class SkillManager : MonoBehaviour
 
 
     // 일반 스킬 실행 함수
-    public void ExecuteSkillList()
+    public void ExecuteCurrentSkill()
     {
-        foreach (var action in SkillSaveList.Instance.Skillaction)
+        if (Skillaction != null)
         {
-            if (action.type == ActionType.Skill && action.skillData != null)
-            {
-                // 스킬 실행 처리 함수 호출
-                ExecuteSkill(action.skillData);
-            }
+            ExecuteSkill(Skillaction);
+            Skillaction = null;
         }
-
-        // 실행 후 리스트 초기화
-        SkillSaveList.Instance.Skillaction.Clear();
     }
 
     // 대응 스킬 실행 함수
     public void ExecuteReactSkillList()
     {
-        foreach (var action in SkillSaveList.Instance.ReactSkillaction)
+        if (ReactSkillaction != null)
         {
-            if (action.type == ActionType.Skill && action.skillData != null)
-            {
-                // 대응 스킬 실행 처리 함수 호출
-                ExecuteSkill(action.skillData);
-
-                if (currentSkillIndex < SkillSaveList.Instance.Skillaction.Count)
-                {
-                    SkillSaveList.Instance.Skillaction[currentSkillIndex].skillData.reactclear = true;
-                }
-            }
+            ExecuteSkill(ReactSkillaction);
+            ReactSkillaction = null;
         }
-
-        // 실행 후 리스트 초기화
-        SkillSaveList.Instance.ReactSkillaction.Clear();
     }
 
-    public void ExecuteAfterReactionPhase()
+    public void ExecuteReactionThenSkill()
     {
-        // 대응 스킬 먼저 실행
-        if (SkillSaveList.Instance.ReactSkillaction.Count > 0)
+        if (ReactSkillaction != null)
         {
-            ExecuteReactSkillList();
+            ExecuteSkill(ReactSkillaction);
+            ReactSkillaction = null;
+        }
+
+        if (Skillaction != null)
+        {
+            ExecuteSkill(Skillaction);
+            Skillaction = null;
         }
 
         isWaitingForReaction = false;
+
+        if (TurnManager.Instance.IsInReactPhase())
+        {
+            TurnManager.Instance.ExitReactPhase();
+            Debug.Log("[SkillManager] 대응단계 종료");
+        }
     }
 
     public void ResetResponseState()
@@ -1042,68 +776,39 @@ public class SkillManager : MonoBehaviour
         hasReacted = false;
 
         // 대응으로 중단되었던 스킬 실행 이어서 처리
-        ExecuteSkillListWithReactionCheck();
+        ExecuteSingleSkillWithReactionCheck();
     }
 
     /// <summary>
     /// Skillaction 리스트를 순서대로 실행하며, 대응 가능한 스킬은 대응단계 진입 후 실행을 중단.
     /// 대응단계 종료 시 다시 이 함수를 호출하면 이어서 실행됨.
     /// </summary>
-    public void ExecuteSkillListWithReactionCheck()
+    public void ExecuteSingleSkillWithReactionCheck()
     {
-        var skillList = SkillSaveList.Instance.Skillaction;
-
-        while (currentSkillIndex < skillList.Count)
+        if (Skillaction == null || Skillaction.selectedSkill == null)
         {
-            var action = skillList[currentSkillIndex];
-
-            if (action.type != ActionType.Skill || action.skillData == null)
-            {
-                currentSkillIndex++;
-                continue;
-            }
-
-            SkillData skill = action.skillData.selectedSkill;
-
-            // 대응 가능한 스킬인지 판정
-            if (!action.skillData.reactclear && skill.react != React.no && ReactManager.Instance.CanRespond(skill))
-            {
-                Debug.Log($"[SkillManager] 대응 가능한 스킬 발견: {skill.skillName} - 대응단계 진입");
-
-                // 대응단계로 진입 (현재 턴 기준)
-                TurnManager.Instance.EnterReactPhase();
-                ReactManager.Instance.EnterResponsePhase(skill, action.skillData.selectedCaster);
-                action.skillData.reactclear = true;
-                isWaitingForReaction = true;
-                return; // 대응 끝날 때까지 실행 중단
-            }
-
-            // 대응 불가 → 즉시 실행
-            ExecuteSkill(action.skillData);
-            currentSkillIndex++;
+            Debug.Log("[SkillManager] 실행할 스킬이 없습니다.");
+            return;
         }
 
-        // 모든 스킬 실행 완료
-        if (!isWaitingForReaction && TurnManager.Instance.IsInReactPhase())
+        var skill = Skillaction.selectedSkill;
+
+        if (skill.react != React.no && ReactManager.Instance.CanRespond(skill))
         {
-            bool shouldExitReactPhase =
-                SkillSaveList.Instance.ReactSkillaction.Count == 0 &&
-                currentSkillIndex >= SkillSaveList.Instance.Skillaction.Count;
+            Debug.Log($"[SkillManager] 대응 가능한 스킬 발견: {skill.skillName} - 대응단계 진입");
 
-            if (shouldExitReactPhase)
-            {
-                TurnManager.Instance.ExitReactPhase();
-                Debug.Log("[SkillManager] 대응단계 종료: 모든 스킬 완료");
-            }
-            else
-            {
-                Debug.Log("[SkillManager] 대응단계 유지: 아직 남은 스킬 있음");
-            }
+            TurnManager.Instance.EnterReactPhase();
+            ReactManager.Instance.EnterResponsePhase(skill, Skillaction.selectedCaster);
+            isWaitingForReaction = true;
 
-            // 정리 위치는 여기!
-            currentSkillIndex = 0;
-            SkillSaveList.Instance.Skillaction.Clear();
+            return;
         }
+
+        ExecuteSkill(Skillaction);
+        Skillaction = null;
+        isWaitingForReaction = false;
+
+        Debug.Log("[SkillManager] 스킬 실행 완료");
     }
 
 

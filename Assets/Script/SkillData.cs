@@ -22,6 +22,7 @@ public class SkillData
 
     public bool projectile;       // 투사체 여부 (false면 히트스캔)
     public bool targeting;        // 타겟팅 여부 (false면 논타겟팅)
+    public bool penetration;     // 투사체의 관통 여부
     public projectileType projectileType;
     public List<Target> skillTarget; // 적중 가능한 대상 (자신, 아군, 적 등)
     public float projectileSpeed; // 투사체 속도 (히트스캔이면 0)  //////////(연출용)
@@ -63,6 +64,7 @@ public class SkillData
         startSkillPosition = data.startSkillPosition;
         projectile = data.projectile;
         targeting = data.targeting;
+        penetration = data.penetration;
         projectileType = data.projectileType;
 
         skillTarget = new List<Target>(data.skillTarget);

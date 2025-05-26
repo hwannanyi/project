@@ -10,13 +10,13 @@ public enum ActionType
     Skill
 }
 
-public class SkillSaveList : MonoBehaviour
+public class SkillSave : MonoBehaviour
 {
-    public static SkillSaveList Instance;
+    public static SkillSave Instance;
 
-    public List<ActionWrapper> ReactSkillaction;
-    public List<ActionWrapper> Skillaction;
-    public List<SelectedSkillList> pendingSkillList;
+    public SelectedSkill ReactSkillaction;
+    public SelectedSkill Skillaction;
+    public List<SelectedSkill> pendingSkillList;
 
     /*public void save()
     {
@@ -44,7 +44,7 @@ public class ActionWrapper
 
     // Move 또는 Skill 중 하나만 사용할 예정
     public Move moveData;
-    public SelectedSkillList skillData;
+    public SelectedSkill skillData;
 }
 
 [System.Serializable]
@@ -59,7 +59,7 @@ public class Move
 }
 
 [System.Serializable]
-public class SelectedSkillList
+public class SelectedSkill
 {
     public SkillData selectedSkill = null;
     public GameObject selectedCaster = null;
@@ -67,5 +67,4 @@ public class SelectedSkillList
     public Vector3 selectedAoeCenterPosition = Vector3.zero;
     public Vector3 selectedTargetPosition = Vector3.zero;
     public GameObject selectedTargetUnit = null;
-    public bool reactclear;
 }
