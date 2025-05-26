@@ -63,16 +63,27 @@ public class SkillManager : MonoBehaviour
     public bool hasMovedInReact = false; // 대응단계에서 이동 여부
 
 
+    private SelectedSkill _skillAction;
+    private SelectedSkill _reactSkillAction;
+
     private SelectedSkill Skillaction
     {
-        get => SkillSave.Instance.Skillaction;
-        set => SkillSave.Instance.Skillaction = value; // 수정된 부분
+        get => _skillAction;
+        set
+        {
+            _skillAction = value;
+            SkillSave.Instance.Skillaction = value;
+        }
     }
 
     private SelectedSkill ReactSkillaction
     {
-        get => SkillSave.Instance.ReactSkillaction;
-        set => SkillSave.Instance.ReactSkillaction = value; // 수정된 부분
+        get => _reactSkillAction;
+        set
+        {
+            _reactSkillAction = value;
+            SkillSave.Instance.ReactSkillaction = value;
+        }
     }
 
 
@@ -684,11 +695,11 @@ public class SkillManager : MonoBehaviour
         }
 
         isWaitingForReaction = false;
-
-        if (TurnManager.Instance.IsInReactPhase())
+        Debug.Log("[SkillManager] 대응단계 종료");
+        if(TurnManager.Instance.IsInReactPhase())
         {
             TurnManager.Instance.ExitReactPhase();
-            Debug.Log("[SkillManager] 대응단계 종료");
+            
         }
     }
 
@@ -758,7 +769,7 @@ public class SkillManager : MonoBehaviour
     }
 
 
-    /// <summary>
+/*    /// <summary>
     /// 대응단계 종료 시 대응 스킬 실행 후 본래 중단되었던 스킬 실행 재개
     /// </summary>
     public void EndResponsePhase()
@@ -777,7 +788,7 @@ public class SkillManager : MonoBehaviour
 
         // 대응으로 중단되었던 스킬 실행 이어서 처리
         ExecuteSingleSkillWithReactionCheck();
-    }
+    }*/
 
     /// <summary>
     /// Skillaction 리스트를 순서대로 실행하며, 대응 가능한 스킬은 대응단계 진입 후 실행을 중단.

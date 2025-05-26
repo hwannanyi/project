@@ -163,6 +163,7 @@ MonoBehaviour:
     YstartSkillPosition: 0
     projectile: 0
     targeting: 0
+    penetration: 0
     projectileType: 0
     skillTarget: 
     projectileSpeed: 0

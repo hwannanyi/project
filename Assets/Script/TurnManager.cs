@@ -105,7 +105,7 @@ public class TurnManager : MonoBehaviour
     {
         playerUseSkillReactTrun = 0;
         enemyUseSkillReactTrun = 0;
-        //previousPhase = currentPhase;
+        previousPhase = currentPhase;
 
         if (currentPhase == TurnPhase.PlayerTurn)
             currentPhase = TurnPhase.ReactPhase_EnemyResponding;
@@ -134,14 +134,13 @@ public class TurnManager : MonoBehaviour
     {
         CharacterSelection.selectedCharacterIndex = -1;
 
-        // 대응 스킬 실행
-        SkillManager.Instance.ExecuteReactionThenSkill();
-
-        // 대응 상태 초기화
-        SkillManager.Instance.ResetResponseState();
-
+        if (currentPhase == TurnPhase.ReactPhase_PlayerResponding)
+            currentPhase = TurnPhase.EnemyTurn;
+        else if (currentPhase == TurnPhase.ReactPhase_EnemyResponding)
+            currentPhase = TurnPhase.PlayerTurn;
+        else
+            Debug.LogWarning("유효하지 못한 턴");
         // 턴 복귀
-        currentPhase = previousPhase;
         Debug.Log($"[TurnManager] 대응단계 종료: 턴 복귀");
     }
 
