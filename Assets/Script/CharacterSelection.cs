@@ -43,15 +43,27 @@ public class CharacterSelection : MonoBehaviour
             selectedCharacterIndex = -1;
             return;
         }
+        // 대응단계에서만 유효한 대상 제한
+        if (TurnManager.Instance.IsInReactPhase())
+        {
+            GameObject candidate = CharacterStats.Instance.characters[index];
+            if (!SkillManager.Instance.validReactTargets.Contains(candidate))
+            {
+                Debug.LogWarning("선택된 캐릭터는 대응 대상이 아닙니다.");
+                return;
+            }
+            // 메인 타겟 여부 확인 가능:
+            if (SkillManager.Instance.validMainTarget == candidate)
+            {
+                Debug.Log("이 캐릭터는 메인 타겟입니다.");
+            }
+        }
+
         if (index < CharacterStats.Instance.playerCharacters.Count)
         {
             if (CharacterStats.Instance.playerCharacters[index] != null && selectedCharacterIndex != index)
             {
-                if (!SkillManager.Instance.validReactTargets.Contains(SkillManager.Instance.selectedCharacter.gameObject))
-                {
-                    Debug.LogWarning("선택된 캐릭터는 대응 대상이 아닙니다.");
-                    return;
-                }
+                
                 selectedCharacterIndex = index;
 
                 Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");
@@ -77,7 +89,23 @@ public class CharacterSelection : MonoBehaviour
             selectedCharacterIndex = -1;
             return;
         }
+
         int index1 = index - CharacterStats.Instance.playerCharacters.Count;
+        // 대응단계에서만 유효한 대상 제한
+        if (TurnManager.Instance.IsInReactPhase())
+        {
+            GameObject candidate = CharacterStats.Instance.characters[index];
+            if (!SkillManager.Instance.validReactTargets.Contains(candidate))
+            {
+                Debug.LogWarning("선택된 캐릭터는 대응 대상이 아닙니다.");
+                return;
+            }
+            // 메인 타겟 여부 확인 가능:
+            if (SkillManager.Instance.validMainTarget == candidate)
+            {
+                Debug.Log("이 캐릭터는 메인 타겟입니다.");
+            }
+        }
         if (index1 < CharacterStats.Instance.EnemieCharacters.Count)
         {
             if (CharacterStats.Instance.EnemieCharacters[index1] != null && selectedCharacterIndex != index)

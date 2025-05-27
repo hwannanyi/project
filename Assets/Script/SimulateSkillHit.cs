@@ -39,34 +39,36 @@ public class SimulateSkillHit : MonoBehaviour
         {
             if (character == null || character == caster) continue;
 
-            Stats targetStat = character.GetComponent<Stats>();
-            if (targetStat == null) continue;
+            Stats targetStat;
+            if (!CharacterStats.Instance.characterMap.TryGetValue(character, out targetStat)) continue;
+
+            Stats casterStat;
+            if (!CharacterStats.Instance.characterMap.TryGetValue(caster, out casterStat)) continue;
 
             // 같은 팀 제외
-            if (targetStat.team == caster.GetComponent<Stats>().team) continue;
-
-            // AOE 범위 내에 있는가?
-            Vector3 pos = character.transform.position;
-            bool inRange = false;
-
-            // 사각형 범위 체크 (Xaoe, Yaoe는 float이므로 절대값 기반)
-            if (Mathf.Abs(pos.x - center.x) <= skill.Xaoe / 2f &&
-                Mathf.Abs(pos.y - center.y) <= skill.Yaoe / 2f)
+            if (targetStat.team != casterStat.team)
             {
-                inRange = true;
-            }
+                // AOE 판정 및 적중 여부 등 기존 로직 유지
+                Vector3 pos = character.transform.position;
+                bool inRange = false;
 
-            // 비관통형 투사체일 경우: 첫 번째 대상만 추가
-            if (inRange)
-            {
-                if (!skill.penetration)
+                if (Mathf.Abs(pos.x - center.x) <= skill.Xaoe / 2f &&
+                    Mathf.Abs(pos.y - center.y) <= skill.Yaoe / 2f)
                 {
-                    result.Add(character);
-                    break; // 첫 대상만
+                    inRange = true;
                 }
-                else
+
+                if (inRange)
                 {
-                    result.Add(character);
+                    if (!skill.penetration)
+                    {
+                        result.Add(character);
+                        break; // 관통이 아니면 첫 대상만
+                    }
+                    else
+                    {
+                        result.Add(character);
+                    }
                 }
             }
         }

@@ -89,6 +89,9 @@ public class SkillManager : MonoBehaviour
 
     public List<GameObject> validReactTargets = new(); // 대응 가능 캐릭터 목록
 
+    // 메인 타겟 (타겟팅 스킬일 경우)
+    public GameObject validMainTarget = null;
+
     void Awake()
     {
         // 싱글턴 패턴 적용 (중복 방지)
@@ -707,6 +710,7 @@ public class SkillManager : MonoBehaviour
 
     public void ResetResponseState()
     {
+        validReactTargets.Clear();
         hasReacted = false;
         waitingForResponse = false;
     }
@@ -771,26 +775,26 @@ public class SkillManager : MonoBehaviour
     }
 
 
-/*    /// <summary>
-    /// 대응단계 종료 시 대응 스킬 실행 후 본래 중단되었던 스킬 실행 재개
-    /// </summary>
-    public void EndResponsePhase()
-    {
-        Debug.Log("[TurnManager] 대응단계");
+    /*    /// <summary>
+        /// 대응단계 종료 시 대응 스킬 실행 후 본래 중단되었던 스킬 실행 재개
+        /// </summary>
+        public void EndResponsePhase()
+        {
+            Debug.Log("[TurnManager] 대응단계");
 
-        TurnManager.Instance.ExitReactPhase();
+            TurnManager.Instance.ExitReactPhase();
 
-        // 대응 스킬 먼저 실행
-        ExecuteReactSkillList();
+            // 대응 스킬 먼저 실행
+            ExecuteReactSkillList();
 
-        // 대응 상태 초기화
-        isWaitingForReaction = false;
-        hasMovedInReact = false;
-        hasReacted = false;
+            // 대응 상태 초기화
+            isWaitingForReaction = false;
+            hasMovedInReact = false;
+            hasReacted = false;
 
-        // 대응으로 중단되었던 스킬 실행 이어서 처리
-        ExecuteSingleSkillWithReactionCheck();
-    }*/
+            // 대응으로 중단되었던 스킬 실행 이어서 처리
+            ExecuteSingleSkillWithReactionCheck();
+        }*/
 
     /// <summary>
     /// Skillaction 리스트를 순서대로 실행하며, 대응 가능한 스킬은 대응단계 진입 후 실행을 중단.
@@ -798,13 +802,6 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     public void ExecuteSingleSkillWithReactionCheck()
     {
-        validReactTargets = SimulateSkillHit.Instance.GetHitTargets(
-        Skillaction.selectedSkill,
-        Skillaction.selectedAoeCenterPosition,
-        Skillaction.selectedTargetPosition,
-        Skillaction.selectedCaster
-        );
-
         if (Skillaction == null || Skillaction.selectedSkill == null)
         {
             Debug.Log("[SkillManager] 실행할 스킬이 없습니다.");
@@ -817,6 +814,15 @@ public class SkillManager : MonoBehaviour
         {
             Debug.Log($"[SkillManager] 대응 가능한 스킬 발견: {skill.skillName} - 대응단계 진입");
 
+            validReactTargets = SimulateSkillHit.Instance.GetHitTargets(
+                skill,
+                Skillaction.selectedAoeCenterPosition,
+                Skillaction.selectedTargetPosition,
+                Skillaction.selectedCaster
+            );
+
+            validMainTarget = Skillaction.selectedTargetUnit;
+
             TurnManager.Instance.EnterReactPhase();
             ReactManager.Instance.EnterResponsePhase(skill, Skillaction.selectedCaster);
             isWaitingForReaction = true;
@@ -824,6 +830,7 @@ public class SkillManager : MonoBehaviour
             return;
         }
 
+        // 대응 대상 없으면 스킬 즉시 실행
         ExecuteSkill(Skillaction);
         Skillaction = null;
         isWaitingForReaction = false;

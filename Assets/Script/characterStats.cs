@@ -18,6 +18,15 @@ public class CharacterStats : MonoBehaviour
     public List<Stats> characterList = new List<Stats>();
     public List<GameObject> characters = new List<GameObject>();
 
+    public Dictionary<GameObject, Stats> characterMap = new();
+
+    // 캐릭터 생성 시 등록
+    void RegisterCharacter(GameObject go, Stats stat)
+    {
+        if (!characterMap.ContainsKey(go))
+            characterMap.Add(go, stat);
+    }
+
     void Awake()
     {
 
@@ -130,7 +139,7 @@ public class CharacterStats : MonoBehaviour
             // 수정: 캐릭터 리스트에 인스턴스 등록
             if (!characters.Contains(CharacterObject))
             {
-                characters.Add(CharacterObject); // <-- 수정 또는 추가됨
+                characterMap.Add(CharacterObject, characterList[i]); // <-- 수정 또는 추가됨
             }
 
             // 수정: CharacterStats의 characters 리스트에 인스턴스 등록
