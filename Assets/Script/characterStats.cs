@@ -19,6 +19,7 @@ public class CharacterStats : MonoBehaviour
     public List<GameObject> characters = new List<GameObject>();
 
     public Dictionary<GameObject, Stats> characterMap = new();
+    public GameObject validMainTarget = null;
 
     // 캐릭터 생성 시 등록
     void RegisterCharacter(GameObject go, Stats stat)
