@@ -47,7 +47,11 @@ public class CharacterSelection : MonoBehaviour
         {
             if (CharacterStats.Instance.playerCharacters[index] != null && selectedCharacterIndex != index)
             {
-
+                if (!SkillManager.Instance.validReactTargets.Contains(SkillManager.Instance.selectedCharacter.gameObject))
+                {
+                    Debug.LogWarning("선택된 캐릭터는 대응 대상이 아닙니다.");
+                    return;
+                }
                 selectedCharacterIndex = index;
 
                 Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");

@@ -19,7 +19,7 @@ public class SkillManager : MonoBehaviour
     ///선택한 스킬이 일시적으로 저장되는곳
     private SkillData selectedSkill = null;
     private GameObject selectedCaster = null;
-    private Stats selectedCharacter = null;
+    public Stats selectedCharacter = null;
 
     private Vector3 selectedAoeCenterPosition = Vector3.zero;
     private Vector3 selectedTargetPosition = Vector3.zero;
@@ -86,6 +86,8 @@ public class SkillManager : MonoBehaviour
         }
     }
 
+
+    public List<GameObject> validReactTargets = new(); // 대응 가능 캐릭터 목록
 
     void Awake()
     {
@@ -796,6 +798,13 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     public void ExecuteSingleSkillWithReactionCheck()
     {
+        validReactTargets = SimulateSkillHit.Instance.GetHitTargets(
+        Skillaction.selectedSkill,
+        Skillaction.selectedAoeCenterPosition,
+        Skillaction.selectedTargetPosition,
+        Skillaction.selectedCaster
+        );
+
         if (Skillaction == null || Skillaction.selectedSkill == null)
         {
             Debug.Log("[SkillManager] 실행할 스킬이 없습니다.");
