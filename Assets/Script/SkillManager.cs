@@ -355,7 +355,45 @@ public class SkillManager : MonoBehaviour
         }
 
         // 방향 계산
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(
+        Vector3 direction;
+
+        // ① 마우스 기반 방향 계산이 필요한 경우
+        Vector3 mouseWorldPos = Vector3.zero;
+        Vector3[] directions = { Vector3.up, Vector3.down, Vector3.left, Vector3.right };
+        Vector3 closestDirection = directions[0];
+        if (!skill.targeting || selectedTargetUnit == null)
+        {
+            mouseWorldPos = Camera.main.ScreenToWorldPoint(
+                new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
+            mouseWorldPos.z = 0f;
+        }
+
+        // ② 방향 계산
+        if (skill.targeting && selectedTargetUnit != null)
+        {
+            direction = (selectedTargetUnit.transform.position - startPosition).normalized;
+        }
+        else
+        {
+            direction = (mouseWorldPos - startPosition).normalized;
+
+            // 마우스 기반 스킬만 가장 가까운 4방향으로 제한
+            
+            float maxDot = Vector3.Dot(direction, directions[0]);
+
+            foreach (var dir in directions)
+            {
+                float dot = Vector3.Dot(direction, dir);
+                if (dot > maxDot)
+                {
+                    maxDot = dot;
+                    closestDirection = dir;
+                }
+            }
+
+            direction = closestDirection;
+        }
+        /*Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(
             new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
         mouseWorldPos.z = 0f;
 
@@ -372,7 +410,7 @@ public class SkillManager : MonoBehaviour
                 maxDot = dot;
                 closestDirection = dir;
             }
-        }
+        }*/
 
         // 여기서 타겟팅 스킬인 경우, 타겟 유닛의 위치를 targetPosition으로 강제 지정
         Vector3 targetPosition;
@@ -811,12 +849,19 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     public void ExecuteSingleSkillWithReactionCheck()
     {
+
         if (Skillaction == null || Skillaction.selectedSkill == null)
         {
             Debug.Log("[SkillManager] 실행할 스킬이 없습니다.");
             return;
         }
 
+        Vector3 aoeCenter = Skillaction.selectedAoeCenterPosition;
+        Vector3 targetPos = Skillaction.selectedTargetUnit != null
+            ? Skillaction.selectedTargetUnit.transform.position
+            : Skillaction.selectedTargetPosition;
+
+        
         var skill = Skillaction.selectedSkill;
 
         if (skill.react != React.no && ReactManager.Instance.CanRespond(skill))
@@ -824,11 +869,12 @@ public class SkillManager : MonoBehaviour
             Debug.Log($"[SkillManager] 대응 가능한 스킬 발견: {skill.skillName} - 대응단계 진입");
 
             validReactTargets = SimulateSkillHit.Instance.GetHitTargets(
-                skill,
-                Skillaction.selectedAoeCenterPosition,
-                Skillaction.selectedTargetPosition,
-                Skillaction.selectedCaster
-            );
+            Skillaction.selectedSkill,
+            aoeCenter,
+            targetPos,
+            Skillaction.selectedCaster
+);
+
 
             validMainTarget = Skillaction.selectedTargetUnit;
 
