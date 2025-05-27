@@ -35,6 +35,7 @@ MonoBehaviour:
   beforedelay: 0
   range: 7
   aoetype: 1
+  fourRotation: 0
   effectRotation: 0
   Xaoe: 1
   Yaoe: 1
@@ -78,4 +79,4 @@ MonoBehaviour:
       DebuffEffects: []
       BuffEffects: []
       CCEffects: []
-  react: 0
+  react: 2

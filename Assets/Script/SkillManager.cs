@@ -455,6 +455,10 @@ public class SkillManager : MonoBehaviour
         selectedAoeCenterPosition = aoeCenterPosition;
         selectedTargetPosition = targetPosition;
 
+        // 디버그용 시각화
+        SimulateSkillHit.Instance.SimulateForDebug(skill, startPosition, targetPosition, aoeCenterPosition);
+
+
         Debug.Log($"[SkillManager] 스킬 위치 계산 완료: 시작={startPosition}, AOE중심={aoeCenterPosition}, 타겟={targetPosition}");
         return;
     }
@@ -869,10 +873,10 @@ public class SkillManager : MonoBehaviour
             Debug.Log($"[SkillManager] 대응 가능한 스킬 발견: {skill.skillName} - 대응단계 진입");
 
             validReactTargets = SimulateSkillHit.Instance.GetHitTargets(
-            Skillaction.selectedSkill,
-            aoeCenter,
-            targetPos,
-            Skillaction.selectedCaster
+            skill,
+    Skillaction.selectedAoeCenterPosition,
+    Skillaction.selectedTargetUnit != null ? Skillaction.selectedTargetUnit.transform.position : Skillaction.selectedTargetPosition,
+    Skillaction.selectedCaster
 );
 
 
