@@ -103,6 +103,7 @@ public class Skill : ScriptableObject
 
     public float range;           // 사거리
     public aoeType aoetype;        // 범위 유형 (단일, 직선, 정사각형 등)
+    public bool fourRotation;      // 4방향 회전
     public bool effectRotation;    // 방향에 따른 스킬의 회전
     public float Xaoe;             // 범위 크기
     public float Yaoe;             // 범위 크기

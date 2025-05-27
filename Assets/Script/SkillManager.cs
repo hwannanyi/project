@@ -374,9 +374,18 @@ public class SkillManager : MonoBehaviour
             }
         }
 
-        // 타겟 위치
-        Vector3 targetPosition = startPosition + closestDirection * skill.range;
-        targetPosition.z = 0f;
+        // 여기서 타겟팅 스킬인 경우, 타겟 유닛의 위치를 targetPosition으로 강제 지정
+        Vector3 targetPosition;
+        if (skill.targeting && selectedTargetUnit != null)
+        {
+            targetPosition = selectedTargetUnit.transform.position;
+        }
+        else
+        {
+            // 비타겟팅 스킬 방향 계산
+            targetPosition = startPosition + closestDirection * skill.range;
+            targetPosition.z = 0f;
+        }
 
         // AOE 중심 계산
         Vector3 aoeCenterPosition = Vector3.zero;

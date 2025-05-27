@@ -28,12 +28,13 @@ MonoBehaviour:
   targeting: 1
   penetration: 0
   projectileType: 1
-  skillTarget: 00000000
+  skillTarget: 02000000
   projectileSpeed: 5
   afterdelay: 0
   beforedelay: 0
   range: 10
   aoetype: 0
+  fourRotation: 0
   effectRotation: 0
   Xaoe: 1
   Yaoe: 1
@@ -64,23 +65,4 @@ MonoBehaviour:
       DebuffEffects: []
       BuffEffects: []
       CCEffects: []
-  conditionalEffects:
-  - effectName: sex
-    condition: sex
-    target: sex
-    baseValue: 6
-    increaseValue: 9
-    trunDuration: 0
-    skillDuration: 0
-    numberDurations: 0
-    counterDurations: 0
-  - effectName: 
-    condition: 
-    target: 
-    baseValue: 0
-    increaseValue: 0
-    trunDuration: 0
-    skillDuration: 0
-    numberDurations: 0
-    counterDurations: 0
   react: 2

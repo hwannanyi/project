@@ -30,6 +30,7 @@ public class SkillData
     public float beforedelay; // 후딜 //////////(연출용)
     public float range;           // 사거리
     public aoeType aoetype;        // 범위 유형 (단일, 직선, 정사각형 등)
+    public bool fourRotation;
     public bool effectRotation;
     public float Xaoe;             // 범위 크기
     public float Yaoe;             // 범위 크기
@@ -103,5 +104,6 @@ public class SkillData
         //CCEffects = new List<CCEffect>(data.CCEffects);
         //conditionalEffects = new List<ConditionalEffect>(data.conditionalEffects);
         react = data.react;
+        fourRotation = data.fourRotation; 
     }
 }
