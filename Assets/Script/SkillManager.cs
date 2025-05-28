@@ -63,10 +63,10 @@ public class SkillManager : MonoBehaviour
     public bool hasMovedInReact = false; // 대응단계에서 이동 여부
 
 
-    private SelectedSkill _skillAction;
-    private SelectedSkill _reactSkillAction;
+    public SelectedSkill _skillAction;
+    public SelectedSkill _reactSkillAction;
 
-    private SelectedSkill Skillaction
+    public SelectedSkill Skillaction
     {
         get => _skillAction;
         set
@@ -76,7 +76,7 @@ public class SkillManager : MonoBehaviour
         }
     }
 
-    private SelectedSkill ReactSkillaction
+    public SelectedSkill ReactSkillaction
     {
         get => _reactSkillAction;
         set
@@ -609,6 +609,7 @@ public class SkillManager : MonoBehaviour
 
     private void ExecuteSkill(SelectedSkill skill)
     {
+
         if (skill == null || skill.selectedSkill == null)
         {
             Debug.LogError("[SkillManager] ExecuteSkill: skill 또는 skill.selectedSkill이 null입니다.");
@@ -880,7 +881,15 @@ public class SkillManager : MonoBehaviour
 );
 
 
-            validMainTarget = Skillaction.selectedTargetUnit;
+            // 추가 조건: 타겟팅 스킬일 때만 메인 타겟 저장
+            if (skill.targeting) // ← bool 타입의 타겟팅 여부
+            {
+                validMainTarget = Skillaction.selectedTargetUnit;
+            }
+            else
+            {
+                validMainTarget = null;
+            }
 
             TurnManager.Instance.EnterReactPhase();
             ReactManager.Instance.EnterResponsePhase(skill, Skillaction.selectedCaster);

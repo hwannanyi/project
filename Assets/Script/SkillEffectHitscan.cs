@@ -31,6 +31,15 @@ public class SkillEffectHitscan : MonoBehaviour
 
         startPosition = transform.position;
 
+        // targeting 스킬이면 현재 유닛 위치로 targetPosition 덮어쓰기
+        if (skill.targeting &&
+    SkillManager.Instance != null &&
+    SkillManager.Instance.Skillaction != null &&
+    SkillManager.Instance.Skillaction.selectedTargetUnit != null)
+        {
+            targetPosition = SkillManager.Instance.Skillaction.selectedTargetUnit.transform.position;
+        }
+
         // direction 벡터 계산 (이동 방향)
         targetPosition.z = startPosition.z;
         direction = (targetPosition - startPosition).normalized;
@@ -65,4 +74,6 @@ public class SkillEffectHitscan : MonoBehaviour
     {
             Destroy(gameObject,3);
     }
+
+
 }

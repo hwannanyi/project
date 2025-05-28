@@ -149,13 +149,25 @@ public class SkillEffectProjectile : MonoBehaviour
         if (!isInitialized) return;
 
         Vector3 destination = (skill.targeting && targetUnit != null)
-            ? targetUnit.transform.position
-            : targetPosition;
+        ? targetUnit.transform.position
+        : targetPosition;
 
-        Vector3 direction = (destination - transform.position).normalized;
+        // direction 지역 변수 선언 제거 → 필드 변수로 사용
+        direction = (destination - transform.position).normalized;
+
         transform.position += direction * speed * Time.deltaTime;
+        if (skill.targeting && targetUnit != null)
+        {
+            Debug.Log($"[Destination 추적] TargetUnit: {targetUnit.name}, Position: {targetUnit.transform.position}");
+        }
+        // 실시간 회전
+        if (rotatingVisual != null && direction.magnitude > 0.001f)
+        {
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            rotatingVisual.rotation = Quaternion.Euler(0f, 0f, angle);
+        }
 
-        // 도착 판정
+        // 도착처리
         if (Vector3.Distance(transform.position, destination) < 0.1f)
         {
             OnHit();
