@@ -138,10 +138,11 @@ public class CharacterStats : MonoBehaviour
             characterList[i].characterPrefab = CharacterObject; // <-- 추가됨
 
             // 수정: 캐릭터 리스트에 인스턴스 등록
-            if (!characters.Contains(CharacterObject))
+            CharacterStats.Instance.RegisterCharacter(CharacterObject, characterList[i]);
+            /*if (!characters.Contains(CharacterObject))
             {
                 characterMap.Add(CharacterObject, characterList[i]); // <-- 수정 또는 추가됨
-            }
+            }*/
 
             // 수정: CharacterStats의 characters 리스트에 인스턴스 등록
             if (!CharacterStats.Instance.characters.Contains(CharacterObject))
