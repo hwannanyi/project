@@ -1,9 +1,9 @@
-/*using System.Collections.Generic;
+ï»¿/*using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ½ºÅ³ ÀûÁß ½Ã¹Ä·¹ÀÌ¼ÇÀ» ´ã´çÇÏ´Â Å¬·¡½º
-/// ½ÇÁ¦ ½ºÅ³ ÀÌÆåÆ® ¾øÀÌ µ¥ÀÌÅÍ »ó¿¡¼­ ÀûÁß ´ë»óÀ» ÆÇÁ¤ÇÑ´Ù
+/// ìŠ¤í‚¬ ì ì¤‘ ì‹œë®¬ë ˆì´ì…˜ì„ ë‹´ë‹¹í•˜ëŠ” í´ë˜ìŠ¤
+/// ì‹¤ì œ ìŠ¤í‚¬ ì´í™íŠ¸ ì—†ì´ ë°ì´í„° ìƒì—ì„œ ì ì¤‘ ëŒ€ìƒì„ íŒì •í•œë‹¤
 /// </summary>
 public class SimulateSkillHit : MonoBehaviour
 {
@@ -13,7 +13,7 @@ public class SimulateSkillHit : MonoBehaviour
     public bool showDebugGizmos = true;
 
     /// <summary>
-    /// ¸¶Áö¸· ½Ã¹Ä·¹ÀÌ¼Ç °á°ú ÀúÀå (µğ¹ö±×¿ë)
+    /// ë§ˆì§€ë§‰ ì‹œë®¬ë ˆì´ì…˜ ê²°ê³¼ ì €ì¥ (ë””ë²„ê·¸ìš©)
     /// </summary>
     public void SetDebugTiles(List<Vector3> tiles)
     {
@@ -51,22 +51,22 @@ public class SimulateSkillHit : MonoBehaviour
     }
 
     /// <summary>
-    /// Æ¯Á¤ À§Ä¡¿¡¼­ ½ÃÀüÇÑ ½ºÅ³ÀÇ ÀûÁß ´ë»ó ¸®½ºÆ®¸¦ °è»êÇÑ´Ù
+    /// íŠ¹ì • ìœ„ì¹˜ì—ì„œ ì‹œì „í•œ ìŠ¤í‚¬ì˜ ì ì¤‘ ëŒ€ìƒ ë¦¬ìŠ¤íŠ¸ë¥¼ ê³„ì‚°í•œë‹¤
     /// </summary>
-    /// <param name="skill">½Ã¹Ä·¹ÀÌ¼ÇÇÒ ½ºÅ³</param>
-    /// <param name="center">AOE Áß½É À§Ä¡</param>
-    /// <param name="targetPos">½ºÅ³ÀÌ ÇâÇÏ´Â ¹æÇâ(¶Ç´Â ¸ŞÀÎ Å¸°Ù)</param>
-    /// <param name="caster">½ÃÀüÀÚ</param>
-    /// <returns>ÀûÁß ´ë»ó À¯´Ö ¸®½ºÆ®</returns>
+    /// <param name="skill">ì‹œë®¬ë ˆì´ì…˜í•  ìŠ¤í‚¬</param>
+    /// <param name="center">AOE ì¤‘ì‹¬ ìœ„ì¹˜</param>
+    /// <param name="targetPos">ìŠ¤í‚¬ì´ í–¥í•˜ëŠ” ë°©í–¥(ë˜ëŠ” ë©”ì¸ íƒ€ê²Ÿ)</param>
+    /// <param name="caster">ì‹œì „ì</param>
+    /// <returns>ì ì¤‘ ëŒ€ìƒ ìœ ë‹› ë¦¬ìŠ¤íŠ¸</returns>
     public List<GameObject> GetHitTargets(SkillData skill, Vector3 center, Vector3 targetPos, GameObject caster)
     {
         List<GameObject> result = new();
 
-        // ½ÃÀüÀÚ ½ºÅÈ È®ÀÎ
+        // ì‹œì „ì ìŠ¤íƒ¯ í™•ì¸
         if (!CharacterStats.Instance.characterMap.TryGetValue(caster, out var casterStat))
             return result;
 
-        // --- Åõ»çÃ¼ ¹æ½Ä ---
+        // --- íˆ¬ì‚¬ì²´ ë°©ì‹ ---
         if (skill.projectile)
         {
             Vector3 direction = (targetPos - center).normalized;
@@ -88,12 +88,12 @@ public class SimulateSkillHit : MonoBehaviour
                     {
                         result.Add(character);
 
-                        if (!skill.penetration) return result; // ºñ°üÅëÀÌ¸é Ã¹ Àû¿¡¼­ Á¾·á
+                        if (!skill.penetration) return result; // ë¹„ê´€í†µì´ë©´ ì²« ì ì—ì„œ ì¢…ë£Œ
                     }
                 }
             }
         }
-        // --- ÀÏ¹İ (ºñÅõ»çÃ¼) AOE ¹üÀ§ °¨Áö ---
+        // --- ì¼ë°˜ (ë¹„íˆ¬ì‚¬ì²´) AOE ë²”ìœ„ ê°ì§€ ---
         else
         {
             foreach (GameObject character in CharacterStats.Instance.characters)
@@ -116,12 +116,12 @@ public class SimulateSkillHit : MonoBehaviour
     }
 
     /// <summary>
-    /// Æ¯Á¤ À§Ä¡ ±âÁØÀ¸·Î ½ºÅ³ÀÇ AOE ¹üÀ§ ³» Å¸ÀÏ ÁÂÇ¥ ¸®½ºÆ®¸¦ ¹İÈ¯
-    /// (½Ã°¢Àû µğ¹ö±ë¿ë ¶Ç´Â ¹üÀ§ Ã¼Å©¿ë)
+    /// íŠ¹ì • ìœ„ì¹˜ ê¸°ì¤€ìœ¼ë¡œ ìŠ¤í‚¬ì˜ AOE ë²”ìœ„ ë‚´ íƒ€ì¼ ì¢Œí‘œ ë¦¬ìŠ¤íŠ¸ë¥¼ ë°˜í™˜
+    /// (ì‹œê°ì  ë””ë²„ê¹…ìš© ë˜ëŠ” ë²”ìœ„ ì²´í¬ìš©)
     /// </summary>
-    /// <param name="skill">½ºÅ³ µ¥ÀÌÅÍ</param>
-    /// <param name="center">Áß½É À§Ä¡</param>
-    /// <returns>Å¸ÀÏ ÁÂÇ¥ ¸®½ºÆ®</returns>
+    /// <param name="skill">ìŠ¤í‚¬ ë°ì´í„°</param>
+    /// <param name="center">ì¤‘ì‹¬ ìœ„ì¹˜</param>
+    /// <returns>íƒ€ì¼ ì¢Œí‘œ ë¦¬ìŠ¤íŠ¸</returns>
     *//*public List<Vector3> GetAffectedTiles(SkillData skill, Vector3 center)
     {
         List<Vector3> result = new();
@@ -167,7 +167,7 @@ public class SimulateSkillHit : MonoBehaviour
     }
 
     /// <summary>
-    /// Åõ»çÃ¼ ½ºÅ³ÀÌ Åë°úÇÏ´Â ¸ğµç AOE Áß½É À§Ä¡¸¦ ¹İÈ¯ÇÑ´Ù
+    /// íˆ¬ì‚¬ì²´ ìŠ¤í‚¬ì´ í†µê³¼í•˜ëŠ” ëª¨ë“  AOE ì¤‘ì‹¬ ìœ„ì¹˜ë¥¼ ë°˜í™˜í•œë‹¤
     /// </summary>
     public List<Vector3> GetProjectileAOECenters(SkillData skill, Vector3 center, Vector3 targetPos)
     {
@@ -188,15 +188,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ½ºÅ³ ÀûÁß ½Ã¹Ä·¹ÀÌ¼ÇÀ» ´ã´çÇÏ´Â Å¬·¡½º
-/// ½ÇÁ¦ ½ºÅ³ ÀÌÆåÆ® ¾øÀÌ µ¥ÀÌÅÍ »ó¿¡¼­ ÀûÁß ´ë»óÀ» ÆÇÁ¤ÇÏ¸ç,
-/// µğ¹ö±ë ½Ã ½Ã°¢ÀûÀ¸·Î ¹üÀ§¸¦ Gizmo·Î Ç¥½ÃÇÒ ¼ö ÀÖ´Ù.
+/// ìŠ¤í‚¬ ì ì¤‘ ì‹œë®¬ë ˆì´ì…˜ì„ ë‹´ë‹¹í•˜ëŠ” í´ë˜ìŠ¤
+/// ì‹¤ì œ ìŠ¤í‚¬ ì´í™íŠ¸ ì—†ì´ ë°ì´í„° ìƒì—ì„œ ì ì¤‘ ëŒ€ìƒì„ íŒì •í•˜ë©°,
+/// ë””ë²„ê¹… ì‹œ ì‹œê°ì ìœ¼ë¡œ ë²”ìœ„ë¥¼ Gizmoë¡œ í‘œì‹œí•  ìˆ˜ ìˆë‹¤.
 /// </summary>
 public class SimulateSkillHit : MonoBehaviour
 {
     public static SimulateSkillHit Instance;
 
-    // µğ¹ö±× ½Ã°¢È­¿ë º¯¼öµé
+    // ë””ë²„ê·¸ ì‹œê°í™”ìš© ë³€ìˆ˜ë“¤
     public SkillData debugSkill;
     public Vector3 debugStart;
     public Vector3 debugTarget;
@@ -217,17 +217,21 @@ public class SimulateSkillHit : MonoBehaviour
     }
 
     /// <summary>
-    /// Æ¯Á¤ À§Ä¡¿¡¼­ ½ÃÀüÇÑ ½ºÅ³ÀÇ ÀûÁß ´ë»ó ¸®½ºÆ®¸¦ °è»êÇÑ´Ù
+    /// íŠ¹ì • ìœ„ì¹˜ì—ì„œ ì‹œì „í•œ ìŠ¤í‚¬ì˜ ì ì¤‘ ëŒ€ìƒ ë¦¬ìŠ¤íŠ¸ë¥¼ ê³„ì‚°í•œë‹¤
     /// </summary>
     public List<GameObject> GetHitTargets(SkillData skill, Vector3 startPos, Vector3 targetPos, GameObject caster)
     {
         List<GameObject> result = new();
         Vector3 direction = (targetPos - startPos).normalized;
+        Debug.Log("ì¢Œí‘œ"+targetPos);
+        Debug.Log("ì¢Œí‘œ" + startPos);
+        Debug.Log("ì¢Œí‘œ" + direction);
 
-        for (int i = 0; i < skill.range; i++)
+        for (int i = 0; i <= skill.range; i++)
         {
             Vector3 stepCenter = startPos + direction * i;
-
+            Debug.Log(i);
+            Debug.Log(stepCenter);
             foreach (GameObject character in CharacterStats.Instance.characters)
             {
                 if (!CharacterStats.Instance.characterMap.TryGetValue(character, out var targetStat)) continue;
@@ -236,11 +240,13 @@ public class SimulateSkillHit : MonoBehaviour
                 if (targetStat.team == casterStat.team) continue;
 
                 Vector3 pos = character.transform.position;
+                Debug.Log(pos);
+                Debug.Log(stepCenter);
                 if (Mathf.Abs(pos.x - stepCenter.x) <= skill.Xaoe / 2f &&
                     Mathf.Abs(pos.y - stepCenter.y) <= skill.Yaoe / 2f)
                 {
                     result.Add(character);
-                    if (!skill.penetration) return result; // Ã¹ ´ë»ó¸¸ Ã³¸®
+                    if (!skill.penetration) return result; // ì²« ëŒ€ìƒë§Œ ì²˜ë¦¬
                 }
             }
         }
@@ -249,8 +255,8 @@ public class SimulateSkillHit : MonoBehaviour
     }
 
     /// <summary>
-    /// Æ¯Á¤ À§Ä¡ ±âÁØÀ¸·Î ½ºÅ³ÀÇ AOE ¹üÀ§ ³» Å¸ÀÏ ÁÂÇ¥ ¸®½ºÆ®¸¦ ¹İÈ¯
-    /// (½Ã°¢Àû µğ¹ö±ë¿ë ¶Ç´Â ¹üÀ§ Ã¼Å©¿ë)
+    /// íŠ¹ì • ìœ„ì¹˜ ê¸°ì¤€ìœ¼ë¡œ ìŠ¤í‚¬ì˜ AOE ë²”ìœ„ ë‚´ íƒ€ì¼ ì¢Œí‘œ ë¦¬ìŠ¤íŠ¸ë¥¼ ë°˜í™˜
+    /// (ì‹œê°ì  ë””ë²„ê¹…ìš© ë˜ëŠ” ë²”ìœ„ ì²´í¬ìš©)
     /// </summary>
     public List<Vector3> GetAffectedTiles(SkillData skill, Vector3 startPos, Vector3 targetPos)
     {
@@ -269,6 +275,7 @@ public class SimulateSkillHit : MonoBehaviour
                 {
                     Vector3 tile = new Vector3(stepCenter.x + x, stepCenter.y + y, 0);
                     result.Add(tile);
+                    Debug.Log(tile);
                 }
             }
         }
@@ -277,7 +284,7 @@ public class SimulateSkillHit : MonoBehaviour
     }
 
     /// <summary>
-    /// µğ¹ö±× ½Ã ½Ã°¢Àû ¹üÀ§ ½Ã¹Ä·¹ÀÌ¼Ç
+    /// ë””ë²„ê·¸ ì‹œ ì‹œê°ì  ë²”ìœ„ ì‹œë®¬ë ˆì´ì…˜
     /// </summary>
     public void SimulateForDebug(SkillData skill, Vector3 start, Vector3 target, Vector3 aoe)
     {
