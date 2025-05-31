@@ -586,7 +586,8 @@ public class SkillManager : MonoBehaviour
     /// <param name="targetPosition">대상</param>
     /// <param name="casterObject">스킬의 실제 오브젝트</param>
     /// <param name="character">스킬을 쓰는 캐릭터</param>
-    public void ExecuteSkill(SkillData skill, Vector3 aoeCenterPosition, Vector3 targetPosition, GameObject casterObject, Stats character)
+    public void ExecuteSkill(SkillData skill, Vector3 aoeCenterPosition, Vector3 targetPosition, 
+        GameObject casterObject, Stats character, GameObject target = null)
     {
 
         GameObject skillObject = Instantiate(skill.SkillEffectPrefab, aoeCenterPosition, Quaternion.identity);
@@ -595,13 +596,13 @@ public class SkillManager : MonoBehaviour
         {
             SkillEffectProjectile effect = skillObject.GetComponent<SkillEffectProjectile>();
             if (effect != null)
-                effect.Initialize(skill, targetPosition, casterObject, character);
+                effect.Initialize(skill, targetPosition, casterObject, character, target);
         }
         else
         {
             SkillEffectHitscan effect = skillObject.GetComponent<SkillEffectHitscan>();
             if (effect != null)
-                effect.Initialize(skill, targetPosition, casterObject, character);
+                effect.Initialize(skill, targetPosition, casterObject, character, target);
         }
 
         Debug.Log($"[SkillManager] 스킬 실행 완료: {skill.skillName}");
@@ -627,7 +628,8 @@ public class SkillManager : MonoBehaviour
             skill.selectedAoeCenterPosition,
             skill.selectedTargetPosition,
             skill.selectedCaster,
-            skill.selectedCharacter
+            skill.selectedCharacter,
+            skill.selectedTargetUnit
         );
     }
 
@@ -682,7 +684,7 @@ public class SkillManager : MonoBehaviour
         Poffset = offset;
     }
 
-    /// <summary>
+/*    /// <summary>
     /// 생성될 스킬에서 투사체, 히트스캔을 구분하고 알맞은 프리팹 스킬 오브젝트를 생성한다
     /// </summary>
     /// <param name="skill"></param>
@@ -714,7 +716,7 @@ public class SkillManager : MonoBehaviour
                 skillEffect.Initialize(skill, targetPosition, casterObject, character);
             }
         }
-    }
+    }*/
 
 
     // 일반 스킬 실행 함수

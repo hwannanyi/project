@@ -1,50 +1,58 @@
-using System.Collections.Generic;
+ï»¿using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
+using static UnityEngine.GraphicsBuffer;
 
-// ½ºÅ³ È¿°ú(Åõ»çÃ¼)¸¦ °ü¸®ÇÏ´Â Å¬·¡½º
+// ìŠ¤í‚¬ íš¨ê³¼(íˆ¬ì‚¬ì²´)ë¥¼ ê´€ë¦¬í•˜ëŠ” í´ë˜ìŠ¤
 public class SkillEffectHitscan : MonoBehaviour
 {
-    public float range;  // Åõ»çÃ¼ÀÇ ÃÖ´ë »ç°Å¸®
-    public int damage;   // Åõ»çÃ¼°¡ °¡ÇÏ´Â ÇÇÇØ·®
-    public SkillData skillData;  // ½ºÅ³ µ¥ÀÌÅÍ ÂüÁ¶
+    public float range;  // íˆ¬ì‚¬ì²´ì˜ ìµœëŒ€ ì‚¬ê±°ë¦¬
+    public int damage;   // íˆ¬ì‚¬ì²´ê°€ ê°€í•˜ëŠ” í”¼í•´ëŸ‰
+    public SkillData skillData;  // ìŠ¤í‚¬ ë°ì´í„° ì°¸ì¡°
 
-    private Vector3 startPosition;  // Åõ»çÃ¼ ½ÃÀÛ À§Ä¡
-    private Vector3 direction;      // Åõ»çÃ¼ ÀÌµ¿ ¹æÇâ
-
+    private Vector3 startPosition;  // íˆ¬ì‚¬ì²´ ì‹œì‘ ìœ„ì¹˜
+    private Vector3 direction;      // íˆ¬ì‚¬ì²´ ì´ë™ ë°©í–¥
+    private Vector3 targetPosition;
+    public GameObject targetUnit;
 
     public Transform rotatingVisual;
 
     public GameObject hitbox;
     public HitboxTile hitboxProject;
 
+    public bool isInitialized = false;
+
     private void Awake()
     {
 
     }
 
-    public void Initialize(SkillData skill, Vector3 targetPosition, GameObject charcter, Stats character)
+    public void Initialize(SkillData skill, Vector3 targetPos, GameObject charcter, Stats character, GameObject target = null)
     {
         skillData = skill;
         range = skill.range;
 
-        startPosition = transform.position;
+        
 
-        // targeting ½ºÅ³ÀÌ¸é ÇöÀç À¯´Ö À§Ä¡·Î targetPosition µ¤¾î¾²±â
-        if (skill.targeting &&
-    SkillManager.Instance != null &&
-    SkillManager.Instance.Skillaction != null &&
-    SkillManager.Instance.Skillaction.selectedTargetUnit != null)
+        if (skill.targeting && target != null)
         {
-            targetPosition = SkillManager.Instance.Skillaction.selectedTargetUnit.transform.position;
+            targetUnit = target;
+            transform.position = target.transform.position;
+            startPosition = transform.position;
+            targetPosition = target.transform.position;
+        }
+        else
+        {
+            startPosition = transform.position;
+            targetPosition = targetPos;
         }
 
-        // direction º¤ÅÍ °è»ê (ÀÌµ¿ ¹æÇâ)
+        // direction ë²¡í„° ê³„ì‚° (ì´ë™ ë°©í–¥)
         targetPosition.z = startPosition.z;
         direction = (targetPosition - startPosition).normalized;
 
-        // ÇÊ¼ö: directionÀÌ 0ÀÌ ¾Æ´Ò ¶§¸¸ È¸Àü Ã³¸®
+        // í•„ìˆ˜: directionì´ 0ì´ ì•„ë‹ ë•Œë§Œ íšŒì „ ì²˜ë¦¬
         if (direction != Vector3.zero && rotatingVisual != null)
         {
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
@@ -55,24 +63,58 @@ public class SkillEffectHitscan : MonoBehaviour
         GameObject HitboxTile = Instantiate(hitbox, this.transform);
         HitboxTile.transform.localPosition = Vector3.zero;
 
-        // 2. ±× ÀÎ½ºÅÏ½º¿¡¼­ SkillProjectileHitbox ½ºÅ©¸³Æ®¸¦ °¡Á®¿Í ÃÊ±âÈ­
+        // 2. ê·¸ ì¸ìŠ¤í„´ìŠ¤ì—ì„œ SkillProjectileHitbox ìŠ¤í¬ë¦½íŠ¸ë¥¼ ê°€ì ¸ì™€ ì´ˆê¸°í™”
         HitboxTile hitboxScript = HitboxTile.GetComponent<HitboxTile>();
         if (hitboxScript != null)
         {
             hitboxScript.Initialize(skill);
         }
-        // Ãæµ¹ Ã³¸® Àü´Ş
+        // ì¶©ëŒ ì²˜ë¦¬ ì „ë‹¬
         SkillHitOn hit = GetComponent<SkillHitOn>();
         if (hit != null)
         {
-            hit.Initialize(skill, charcter, character); // ¶Ç´Â ½ÇÁ¦ Ä³¸¯ÅÍ GameObject
+            hit.Initialize(skill, charcter, character); // ë˜ëŠ” ì‹¤ì œ ìºë¦­í„° GameObject
         }
 
+        isInitialized = true;
     }
 
     void Update()
     {
-            Destroy(gameObject,3);
+        if (!isInitialized) return;
+
+
+        if (skillData.targeting && targetPosition != null)
+        {
+            transform.position = targetPosition;
+        }
+
+        // ì‹¤ì‹œê°„ìœ¼ë¡œ íƒ€ê²Ÿ ë°©í–¥ ê°±ì‹ 
+
+        /*        direction = GetDirection();
+                RotateVisual(direction);*/
+
+        // íˆíŠ¸ìŠ¤ìº”ì€ ìœ„ì¹˜ ê°±ì‹ ë§Œ í•˜ê³ , ì´í™íŠ¸ëŠ” ê³§ ì‚¬ë¼ì§
+        Destroy(gameObject, 3); // ì•„ì£¼ ì§§ê²Œ ë‚¨ê¸°ê¸°
+    }
+
+    private Vector3 GetDirection()
+    {
+        Vector3 currentTarget = (skillData.targeting && targetUnit != null)
+            ? targetUnit.transform.position
+            : targetPosition;
+
+        currentTarget.z = startPosition.z;
+        return (currentTarget - startPosition).normalized;
+    }
+
+    private void RotateVisual(Vector3 dir)
+    {
+        if (rotatingVisual != null && dir.magnitude > 0.001f)
+        {
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            rotatingVisual.rotation = Quaternion.Euler(0f, 0f, angle - 90f); // ë³´ì • í•„ìš” ì‹œ -90f
+        }
     }
 
 
