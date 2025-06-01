@@ -123,12 +123,20 @@ public class SkillEffectProjectile : MonoBehaviour
         direction = (targetPosition - transform.position).normalized;
         if (direction != Vector3.zero && rotatingVisual != null)
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            rotatingVisual.rotation = Quaternion.Euler(0f, 0f, angle);
+            float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
+            rotatingVisual.rotation = Quaternion.Euler(0f, angle, 0f);
         }
 
         GameObject HitboxTile = Instantiate(hitbox, this.transform);
         HitboxTile.transform.localPosition = Vector3.zero;
+
+        // 병합 실행
+        ColliderMerger merger = GetComponent<ColliderMerger>();
+        if (merger != null)
+        {
+            merger.MergeChildBoxColliders();
+        }
+
         // 2. 그 인스턴스에서 SkillProjectileHitbox 스크립트를 가져와 초기화
         HitboxTile hitboxScript = HitboxTile.GetComponent<HitboxTile>();
         if (hitboxScript != null)
@@ -163,8 +171,8 @@ public class SkillEffectProjectile : MonoBehaviour
         // 실시간 회전
         if (rotatingVisual != null && direction.magnitude > 0.001f)
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            rotatingVisual.rotation = Quaternion.Euler(0f, 0f, angle);
+            float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
+            rotatingVisual.rotation = Quaternion.Euler(0f, angle, 0f);
         }
 
         // 도착처리

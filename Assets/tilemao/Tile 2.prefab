@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6577390557555242703}
   - component: {fileID: -3183120123732108701}
   m_Layer: 0
-  m_Name: Tile
+  m_Name: Tile 2
   m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102,6 +102,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2317687216868805606, guid: 6d1ac9ba14dd51647bff5ca30f5dc483, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -1478420430, guid: 678c6531b1ceb6f4b9cf32bbd3cb342c, type: 3}
     - target: {fileID: 4715261470374218877, guid: 6d1ac9ba14dd51647bff5ca30f5dc483, type: 3}
       propertyPath: m_Name
       value: t_0

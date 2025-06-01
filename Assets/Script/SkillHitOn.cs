@@ -32,7 +32,7 @@ public class SkillHitOn : MonoBehaviour
     private IEnumerator EnableColliderNextFrame()
     {
         yield return new WaitForSeconds(0.05f); // 확실히 타이밍 확보
-        var col = GetComponent<Collider2D>();
+        var col = GetComponent<Collider>();
         if (col != null)
         {
             col.enabled = true;
@@ -41,16 +41,16 @@ public class SkillHitOn : MonoBehaviour
 
     private void IgnoreCasterCollision()
     {
-        var skillCollider = GetComponent<Collider2D>();
-        var casterCollider = casterObj.GetComponent<Collider2D>();
+        var skillCollider = GetComponent<Collider>();
+        var casterCollider = casterObj.GetComponent<Collider>();
 
         if (skillCollider != null && casterCollider != null)
         {
-            Physics2D.IgnoreCollision(skillCollider, casterCollider, true);
+            Physics.IgnoreCollision(skillCollider, casterCollider, true);
         }
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Character")
         {

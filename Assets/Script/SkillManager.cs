@@ -166,38 +166,42 @@ public class SkillManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Plane groundPlane = new Plane(Vector3.forward, Vector3.zero);
+            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
             float enter;
             Vector3 mouseWorld = Vector3.zero;
             if (groundPlane.Raycast(ray, out enter))
             {
                 mouseWorld = ray.GetPoint(enter);
-                mouseWorld.z = 0f;
+                mouseWorld.y = 0f;
             }
 
-            Collider2D hit = Physics2D.OverlapPoint(mouseWorld);
-            if (hit != null && hit.CompareTag("Character"))
+            Collider[] hits = Physics.OverlapSphere(mouseWorld, 0.1f);
+            foreach (var hit in hits)
             {
-                GameObject target = hit.gameObject;
-
-                if (selectedCharacter != null && selectedSkill != null)
+                if (hit.CompareTag("Character"))
                 {
-                    Vector3 unitPos = selectedCharacter.charPosition;
-                    Vector3 targetPos = target.transform.position;
+                    GameObject target = hit.gameObject;
 
-                    int tileDist = Mathf.Abs(Mathf.RoundToInt(unitPos.x - targetPos.x)) +
-                                   Mathf.Abs(Mathf.RoundToInt(unitPos.y - targetPos.y));
-
-                    if (tileDist > selectedSkill.range)
+                    if (selectedCharacter != null && selectedSkill != null)
                     {
-                        Debug.LogWarning("[SkillManager] 사거리 밖의 유닛입니다.");
-                        return;
-                    }
-                }
+                        Vector3 unitPos = selectedCharacter.charPosition;
+                        Vector3 targetPos = target.transform.position;
 
-                selectedTargetUnit = target;
-                selectedTargetIndex = CharacterStats.Instance.characters.IndexOf(target);
-                Debug.Log($"[SkillManager] 대상 선택됨: {target.name}");
+                        int tileDist = Mathf.Abs(Mathf.RoundToInt(unitPos.x - targetPos.x)) +
+                                       Mathf.Abs(Mathf.RoundToInt(unitPos.z - targetPos.z));
+
+                        if (tileDist > selectedSkill.range)
+                        {
+                            Debug.LogWarning("[SkillManager] 사거리 밖의 유닛입니다.");
+                            return;
+                        }
+                    }
+
+                    selectedTargetUnit = target;
+                    selectedTargetIndex = CharacterStats.Instance.characters.IndexOf(target);
+                    Debug.Log($"[SkillManager] 대상 선택됨: {target.name}");
+                    break; // 첫 번째 캐릭터만 처리
+                }
             }
         }
     }
@@ -316,17 +320,17 @@ public class SkillManager : MonoBehaviour
             case StartSkillPosition.mouse:
                 {
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    Plane groundPlane = new Plane(Vector3.forward, Vector3.zero);
+                    Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
                     float enter;
                     Vector3 rawMouse = Vector3.zero;
                     if (groundPlane.Raycast(ray, out enter))
                     {
                         rawMouse = ray.GetPoint(enter);
-                        rawMouse.z = 0f;
+                        rawMouse.y = 0f;
                     }
 
                     int tileDist = Mathf.Abs(Mathf.RoundToInt(selectedCharacter.charPosition.x - rawMouse.x)) +
-                                   Mathf.Abs(Mathf.RoundToInt(selectedCharacter.charPosition.y - rawMouse.y));
+                                   Mathf.Abs(Mathf.RoundToInt(selectedCharacter.charPosition.z - rawMouse.z));
 
                     if (tileDist > selectedSkill.range)
                     {
@@ -339,9 +343,9 @@ public class SkillManager : MonoBehaviour
                     bool evenX = selectedSkill.Xaoe % 2 == 0;
                     bool evenY = selectedSkill.Yaoe % 2 == 0;
                     float x = evenX ? Mathf.Floor(rawMouse.x) + 0.5f : Mathf.Round(rawMouse.x);
-                    float y = evenY ? Mathf.Floor(rawMouse.y) + 0.5f : Mathf.Round(rawMouse.y);
+                    float y = evenY ? Mathf.Floor(rawMouse.z) + 0.5f : Mathf.Round(rawMouse.z);
 
-                    startPosition = new Vector3(x, y, 0f);
+                    startPosition = new Vector3(x, 0f, y);
                     break;
                 }
 
@@ -364,8 +368,8 @@ public class SkillManager : MonoBehaviour
         if (!skill.targeting || selectedTargetUnit == null)
         {
             mouseWorldPos = Camera.main.ScreenToWorldPoint(
-                new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
-            mouseWorldPos.z = 0f;
+                new Vector3(Input.mousePosition.x, 10f,Input.mousePosition.z));
+            mouseWorldPos.y = 0f;
         }
 
         // ② 방향 계산
@@ -422,7 +426,7 @@ public class SkillManager : MonoBehaviour
         {
             // 비타겟팅 스킬 방향 계산
             targetPosition = startPosition + closestDirection * skill.range;
-            targetPosition.z = 0f;
+            targetPosition.y = 0f;
         }
 
         // AOE 중심 계산
@@ -663,9 +667,9 @@ public class SkillManager : MonoBehaviour
                     yOffset = -yOffset;
                 }
                 if(closestDirection.x == 0)
-                    offset = (closestDirection * xOffset) + new Vector3(-yOffset * closestDirection.y, 0f, 0f);
+                    offset = (closestDirection * xOffset) + new Vector3(0f, 0f, -yOffset * closestDirection.y);
                 else
-                    offset = (closestDirection * xOffset) + new Vector3(0f, yOffset, 0f);
+                    offset = (closestDirection * xOffset) + new Vector3(0f, 0f, yOffset);
                 break;
 
             case aoeCenter.Lcorner:
@@ -676,7 +680,7 @@ public class SkillManager : MonoBehaviour
                 if (closestDirection.x == 0)
                     offset = (closestDirection * xOffset) + new Vector3(yOffset * closestDirection.y, 0f, 0f);
                 else
-                    offset = (closestDirection * xOffset) + new Vector3(0f, -yOffset, 0f);
+                    offset = (closestDirection * xOffset) + new Vector3(0f, 0f, -yOffset);
                 break;
         }
 

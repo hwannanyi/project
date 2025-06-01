@@ -103,10 +103,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  range: 10
-  Xaoe: 0
-  damage: 10
-  skillData: {fileID: 11400000, guid: ef061324dfda5d14ab8b7962c9344a8b, type: 2}
   rotatingVisual: {fileID: 83700010622626048}
   hitbox: {fileID: 6478507458708094152, guid: 6a4c9e45a832e684b970444b1b9f7ee9, type: 3}
   hitboxProject: {fileID: 419652966581439005, guid: 6a4c9e45a832e684b970444b1b9f7ee9, type: 3}

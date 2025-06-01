@@ -8,17 +8,17 @@ public class HitboxTile : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     public SkillData skillData;  // 스킬 데이터 참조
-    private BoxCollider2D boxCollider; // 콜라이더 캐시
+    private BoxCollider boxCollider; // 콜라이더 캐시
     public Transform rotating;
-    private Collider2D col;
+    private Collider col;
 
 
     private void Awake()
     {
         // Collider 크기 조절 (초기화 전에 호출될 수 있으므로 Initialize에서도 한 번 더 호출)
-        boxCollider = GetComponent<BoxCollider2D>();
+        boxCollider = GetComponent<BoxCollider>();
         rotating = GetComponent<Transform>();
-        col = GetComponent<Collider2D>();
+        col = GetComponent<Collider>();
         if (col != null)
         {
             col.enabled = false; // 기본적으로 꺼져 있어야 함
@@ -38,7 +38,7 @@ public class HitboxTile : MonoBehaviour
 
     public void EnableCollider()
     {
-        if (col == null) col = GetComponent<Collider2D>();
+        if (col == null) col = GetComponent<Collider>();
         if (col != null)
         {
             col.enabled = true;

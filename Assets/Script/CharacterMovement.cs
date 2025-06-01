@@ -75,19 +75,19 @@ public class CharacterMovement : MonoBehaviour
 
                 // [수정됨] Perspective 카메라 대응: 마우스 위치를 정확히 가져오기 위한 Raycast 방식
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                Plane groundPlane = new Plane(Vector3.forward, Vector3.zero); // z = 0 기준 평면
+                Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // y = 0 기준 평면
                 float enter;
                 Vector3 mousePosition = transform.position;
                 if (groundPlane.Raycast(ray, out enter))
                 {
                     mousePosition = ray.GetPoint(enter);
-                    mousePosition.z = 0f;
+                    mousePosition.y = 0f;
                 }
-                Vector3 roundedTarget = new Vector3(Mathf.Round(mousePosition.x), Mathf.Round(mousePosition.y), 0f);
+                Vector3 roundedTarget = new Vector3(Mathf.Round(mousePosition.x), 0f, Mathf.Round(mousePosition.z));
 
                 // 이동 제한 범위를 벗어나면 이동하지 않음
                 if (Mathf.Abs(roundedTarget.x - transform.position.x) > moveRange 
-                    || Mathf.Abs(roundedTarget.y - transform.position.y) > moveRange)
+                    || Mathf.Abs(roundedTarget.z - transform.position.z) > moveRange)
                 {
                     return;
                 }
@@ -132,7 +132,7 @@ public class CharacterMovement : MonoBehaviour
     }
 
     // 타일에 부딪혔을 때 호출되는 메서드
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerEnter(Collider other)
     {
         // 충돌한 오브젝트가 타일인 경우
         if (other.CompareTag("Tile"))
@@ -159,9 +159,9 @@ public class CharacterMovement : MonoBehaviour
     {
         // 현재 위치에서 가장 가까운 타일의 좌표를 계산
         float x = Mathf.Round(currentPosition.x);
-        float y = Mathf.Round(currentPosition.y);
+        float y = Mathf.Round(currentPosition.z);
 
-        return new Vector3(x, y, 0f);  // 가장 가까운 타일로 반환
+        return new Vector3(x, 0f, y);  // 가장 가까운 타일로 반환
     }
 
     // 가장 가까운 타일로 이동하는 코루틴
@@ -181,7 +181,7 @@ public class CharacterMovement : MonoBehaviour
     }
 
     // 충돌이 끝났을 때 이동을 재개하도록 설정
-    private void OnTriggerExit2D(Collider2D other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Tile"))
         {

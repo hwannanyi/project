@@ -243,7 +243,7 @@ public class SimulateSkillHit : MonoBehaviour
                 Debug.Log(pos);
                 Debug.Log(stepCenter);
                 if (Mathf.Abs(pos.x - stepCenter.x) <= skill.Xaoe / 2f &&
-                    Mathf.Abs(pos.y - stepCenter.y) <= skill.Yaoe / 2f)
+                    Mathf.Abs(pos.z - stepCenter.z) <= skill.Yaoe / 2f)
                 {
                     result.Add(character);
                     if (!skill.penetration) return result; // 첫 대상만 처리
@@ -273,7 +273,7 @@ public class SimulateSkillHit : MonoBehaviour
             {
                 for (int y = -halfY; y <= halfY; y++)
                 {
-                    Vector3 tile = new Vector3(stepCenter.x + x, stepCenter.y + y, 0);
+                    Vector3 tile = new Vector3(stepCenter.x + x, 0, stepCenter.z + y);
                     result.Add(tile);
                     Debug.Log(tile);
                 }
