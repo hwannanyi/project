@@ -10,7 +10,7 @@ public class CharacterSelection : MonoBehaviour
 {
     public static CharacterSelection Instance;
     public static int selectedCharacterIndex = -1; // 선택된 캐릭터 (-1: 선택 없음)
-
+    public CharacterUIManager uiManager;
 
     void Awake()
     {
@@ -65,7 +65,7 @@ public class CharacterSelection : MonoBehaviour
             {
                 
                 selectedCharacterIndex = index;
-
+                OnCharacterSelected(index);
                 Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");
 
             }
@@ -132,6 +132,15 @@ public class CharacterSelection : MonoBehaviour
     {
         selectedCharacterIndex = -1;
     }
-
+    public void OnCharacterSelected(int index)
+    {
+        if (index < 0 || index >= CharacterStats.Instance.characterList.Count)
+        {
+            Debug.LogError("잘못된 캐릭터 인덱스입니다.");
+            return;
+        }
+        var character = CharacterStats.Instance.characterList[index];
+        uiManager.UpdateCharacterProfile(character);
+    }
 
 }

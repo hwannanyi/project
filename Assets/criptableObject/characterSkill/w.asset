@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: w
   m_EditorClassIdentifier: 
   skillName: w
+  skillIcon: {fileID: 817463358, guid: 0f5854b920323934c8c25a4b2979001d, type: 3}
   SkillEffectIllustration: {fileID: 21300000, guid: 23b63e3eb1db8614d94fd36ff137c86c, type: 3}
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
   passive: 0
@@ -35,6 +36,7 @@ MonoBehaviour:
   beforedelay: 0
   range: 7
   aoetype: 1
+  fourRotation: 0
   effectRotation: 0
   Xaoe: 3
   Yaoe: 3
@@ -64,5 +66,4 @@ MonoBehaviour:
       DebuffEffects: []
       BuffEffects: []
       CCEffects: []
-  conditionalEffects: []
   react: 2

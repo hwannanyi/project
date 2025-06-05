@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: ball
   m_EditorClassIdentifier: 
   skillName: ball
+  skillIcon: {fileID: -1829394237, guid: d2736e599297c954fabb954320e029fc, type: 3}
   SkillEffectIllustration: {fileID: 21300000, guid: d1c1bfea4adf00f40902d66a315d1849, type: 3}
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
   passive: 0

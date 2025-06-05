@@ -19,6 +19,7 @@ public class Character : ScriptableObject
     public Team team;             // ÆÀ
     public List<Skill> useSkill;   // »ç¿ë½ºÅ³
     public Sprite characterillustration;
+    public Sprite characterProfileillustration;
     public GameObject characterPrefab;
 }
     

@@ -1,3 +1,4 @@
+using Microsoft.Unity.VisualStudio.Editor;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -78,6 +79,7 @@ public class DoubleList_Vector2
 public class Skill : ScriptableObject
 {
     public string skillName;      // 스킬 이름
+    public Sprite skillIcon;        // 스킬 아이콘
     public Sprite SkillEffectIllustration;
     public GameObject SkillEffectPrefab;
     public bool passive;          // 패시브 여부 (false면 액티브)

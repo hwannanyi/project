@@ -26,6 +26,7 @@ public class Stats
     public List<Skill> useSkill;   // 사용스킬
     public List<SkillData> usingSkill = new();   // 사용스킬
     public Sprite characterillustration;
+    public Sprite characterProfileillustration;
     public GameObject characterPrefab;
 
 
@@ -53,6 +54,7 @@ public class Stats
         this.usingSkill = usingSkill;
 
         characterillustration = data.characterillustration;
+        characterProfileillustration = data.characterProfileillustration;
         characterPrefab = data.characterPrefab;
     }
 

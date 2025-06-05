@@ -8,6 +8,7 @@ public class SkillData
 {
     public string useCharacterName; // 시전자 이름
     public string skillName;      // 스킬 이름
+    public Sprite skillIcon;        // 스킬 아이콘
     public Sprite SkillEffectIllustration;
     public GameObject SkillEffectPrefab;
     public bool passive;          // 패시브 여부 (false면 액티브)
@@ -53,6 +54,7 @@ public class SkillData
         skillName = data.skillName;
         useCharacterName = characterName; // 직접 문자열을 할당
 
+        skillIcon = data.skillIcon;
         SkillEffectIllustration = data.SkillEffectIllustration;
         SkillEffectPrefab = data.SkillEffectPrefab;
 
