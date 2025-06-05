@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4fb224b23c118ee44b2594ce07772646
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 308049
+  packageName: GameAIfy
+  packageVersion: 1.0.0
+  assetPath: Assets/GameAIfy/Resources/SampleMotion/PunchSmpl.json
+  uploadId: 742565

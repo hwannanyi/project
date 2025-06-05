@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 455795da1c9b4b84ba3760fb2d8bd6f7
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 308049
+  packageName: GameAIfy
+  packageVersion: 1.0.0
+  assetPath: Assets/GameAIfy/Editor/Utilities/APIHandler.cs
+  uploadId: 742565

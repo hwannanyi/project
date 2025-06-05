@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 15a8e40ef86ca1b42970f76f0a36cd72
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 4300000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 308049
+  packageName: GameAIfy
+  packageVersion: 1.0.0
+  assetPath: Assets/GameAIfy/Resources/OriginalMesh.mesh
+  uploadId: 742565

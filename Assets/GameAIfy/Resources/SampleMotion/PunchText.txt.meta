@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d40c8295af406974e91ffaa2c8670a5f
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 308049
+  packageName: GameAIfy
+  packageVersion: 1.0.0
+  assetPath: Assets/GameAIfy/Resources/SampleMotion/PunchText.txt
+  uploadId: 742565

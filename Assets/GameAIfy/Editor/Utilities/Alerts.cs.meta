@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: b7a6d4d2753f8664cbef14d746fc2212
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 308049
+  packageName: GameAIfy
+  packageVersion: 1.0.0
+  assetPath: Assets/GameAIfy/Editor/Utilities/Alerts.cs
+  uploadId: 742565

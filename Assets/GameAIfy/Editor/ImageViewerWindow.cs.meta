@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a6b4d5cd58118c94686011bda6f27520
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 308049
+  packageName: GameAIfy
+  packageVersion: 1.0.0
+  assetPath: Assets/GameAIfy/Editor/ImageViewerWindow.cs
+  uploadId: 742565

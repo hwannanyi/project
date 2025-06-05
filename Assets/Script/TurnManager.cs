@@ -13,6 +13,7 @@ public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
 
+    public TurnPhase nowtrun = TurnPhase.PlayerTurn;
     public TurnPhase currentPhase = TurnPhase.PlayerTurn;
     public TurnPhase previousPhase;
 
@@ -68,6 +69,12 @@ public class TurnManager : MonoBehaviour
     }
 
     //  현재 턴 판별 함수들
+
+    public bool nowPlayerTurn()
+    {
+        return nowtrun == TurnPhase.PlayerTurn;
+    }
+
     public bool IsPlayerTurn()
     {
         return currentPhase == TurnPhase.PlayerTurn;

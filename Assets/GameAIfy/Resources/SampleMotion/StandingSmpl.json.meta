@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 62a2aa87810521043b11bf3fa5b53cbf
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 308049
+  packageName: GameAIfy
+  packageVersion: 1.0.0
+  assetPath: Assets/GameAIfy/Resources/SampleMotion/StandingSmpl.json
+  uploadId: 742565

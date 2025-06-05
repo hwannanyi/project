@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 296d393bfd2383c4bbc7d3d584528e18
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 308049
+  packageName: GameAIfy
+  packageVersion: 1.0.0
+  assetPath: Assets/GameAIfy/Editor/Utilities/CommonUI.cs
+  uploadId: 742565
