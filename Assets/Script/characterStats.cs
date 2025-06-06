@@ -11,15 +11,18 @@ using UnityEngine.TextCore.Text;
 public class CharacterStats : MonoBehaviour
 {
     public static CharacterStats Instance;
+    public TurnUIManager uiManager;
 
     public Character[] ALLcharacterList;
     public List<string> playerCharacters = new List<string>();
     public List<string> EnemieCharacters = new List<string>();
     public List<Stats> characterList = new List<Stats>();
     public List<GameObject> characters = new List<GameObject>();
+    public int wave = 1; // 현재 웨이브
 
     public Dictionary<GameObject, Stats> characterMap = new();
     public GameObject validMainTarget = null;
+
 
     // 캐릭터 생성 시 등록
     void RegisterCharacter(GameObject obj, Stats stats)
@@ -30,9 +33,10 @@ public class CharacterStats : MonoBehaviour
 
     void Awake()
     {
+        wave = 2;
+        uiManager.UpdateWaveCount(wave);
 
-        
-            if (Instance == null)
+        if (Instance == null)
                 Instance = this;
             else
             {
@@ -100,6 +104,15 @@ public class CharacterStats : MonoBehaviour
         };*/
     }
 
+    public void Update()
+    {
+        if (characterList != null ) {
+            UEmenyCount(); }
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            WaveUpdate();
+        }
+    }
     public void CharacterAdd(string chname)
     {
         
@@ -117,10 +130,18 @@ public class CharacterStats : MonoBehaviour
         // 캐릭터 리스트에 있는 스킬 리스트를 순회하며 각 캐릭터의 스킬을 저장
 
         int index1 = characterList.FindIndex(Character => Character.name == chname);
+        
         for (int i = 0; i < characterList[index1].useSkill.Count; i++)
         {
             // 캐릭터 이름과 스킬을 SkillData로 만들어 리스트에 추가
-            characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name));
+            if (characterList[index1].useSkill[i] == null)
+            {
+                characterList[index1].usingSkill.Add(new SkillData(null, characterList[index1].name));
+            }
+            else
+            {
+                characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name));
+            }
         }
 
     }
@@ -163,5 +184,16 @@ public class CharacterStats : MonoBehaviour
         return null;
     }
 
+    public void UEmenyCount()
+    {
+        int enemyAliveCount = characterList
+    .Count(stats => stats.team == Team.enemy && stats.isdie == false);
+        uiManager.Updatenemytcount(enemyAliveCount);
+    }
 
+    public void WaveUpdate()
+    {
+        wave--;
+        uiManager.UpdateWaveCount(wave);
+    }
 }

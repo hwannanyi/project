@@ -2,10 +2,14 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Runtime.Serialization;
+using UnityEngine.TextCore.Text;
+using UnityEngine.EventSystems;
+using System.Collections.Generic;
 
 
 public class CharacterMovement : MonoBehaviour
 {
+
     public int characterNumber;
     public int moveSpeed = 5;  // 이동 속도
     private Vector3 targetPosition;  // 목표 위치
@@ -17,6 +21,9 @@ public class CharacterMovement : MonoBehaviour
     public int moveRange = 5; // 최대 이동 거리 제한
     public int moveCount;     // 이동가능횟수
 
+    public GameObject highlightPrefab; // 하이라이트 프리팹
+    private List<GameObject> highlights = new List<GameObject>();
+
     void Start()
     {  
         targetPosition = transform.position;  // 시작 위치 설정
@@ -25,7 +32,7 @@ public class CharacterMovement : MonoBehaviour
     }
     void Awake()
     {
-        
+
     }
 
 
@@ -40,18 +47,39 @@ public class CharacterMovement : MonoBehaviour
                 characterNumber = index;
                 moveSpeed = CharacterStats.Instance.characterList[index].speed;
                 moveRange = CharacterStats.Instance.characterList[index].movespeed;
-                moveCount = CharacterStats.Instance.characterList[index].moveCount;
+                CharacterStats.Instance.characterList[index].NowMoveCount = CharacterStats.Instance.characterList[index].moveCount;
 
             }
         }
-        if (characterNumber == CharacterSelection.selectedCharacterIndex)
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+        int indexnumber = CharacterSelection.selectedCharacterIndex;
+        if(indexnumber < 0 || indexnumber >= CharacterStats.Instance.characters.Count)
+        {
+            ClearHighlights(); // 선택 해제 시 하이라이트 제거
+            return; // 유효하지 않은 인덱스인 경우 아무 작업도 하지 않음
+        }
+        int nowmoveCount = CharacterStats.Instance.characterList[indexnumber].NowMoveCount;
+        if (characterNumber == indexnumber)
         {
             if (SkillManager.Instance.waitingForResponse == true)
             {
                 return;
             }
+
+            if (!isMoving) { 
+            // 현재 위치
+            Vector2Int startTile = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+
+            // 이동 가능 타일 계산
+            List<Vector2Int> movableTiles = GetMovableTiles(startTile, moveRange);
+
+            // 하이라이트 표시
+            ShowMoveHighlights(movableTiles);
+            }
+
             // 이동 중이 아니고, 막히지 않았을 때만 마우스 클릭을 처리
-            if (moveCount>0 &&!isMoving && !isBlocked && Input.GetMouseButtonDown(0))
+            if (nowmoveCount > 0 &&!isMoving && !isBlocked && Input.GetMouseButtonDown(1))
             {
                 // 대응단계 확인
                 /*if (TurnManager.Instance.IsInReactPhase())
@@ -85,9 +113,17 @@ public class CharacterMovement : MonoBehaviour
                 }
                 Vector3 roundedTarget = new Vector3(Mathf.Round(mousePosition.x), 0f, Mathf.Round(mousePosition.z));
 
-                // 이동 제한 범위를 벗어나면 이동하지 않음
-                if (Mathf.Abs(roundedTarget.x - transform.position.x) > moveRange 
-                    || Mathf.Abs(roundedTarget.z - transform.position.z) > moveRange)
+                // 현재 위치
+                Vector2Int startTile = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+
+                // 목표 위치
+                Vector2Int targetTile = new Vector2Int(Mathf.RoundToInt(roundedTarget.x), Mathf.RoundToInt(roundedTarget.z));
+
+                // 이동 가능 타일 계산
+                List<Vector2Int> movableTiles = GetMovableTiles(startTile, moveRange);
+
+                // 이동 가능 타일이 아니면 이동하지 않음
+                if (!movableTiles.Contains(targetTile))
                 {
                     return;
                 }
@@ -97,9 +133,11 @@ public class CharacterMovement : MonoBehaviour
                 moveCoroutine = StartCoroutine(MoveToTarget());  // 이동을 코루틴으로 처리
             }
         }
-
-
-
+        else
+        {
+            // 선택 해제 시 하이라이트 제거
+                ClearHighlights();
+        }
 
     }
 
@@ -124,8 +162,7 @@ public class CharacterMovement : MonoBehaviour
 
         // 이동 완료 후 정확한 목표 위치로 설정
         transform.position = targetPosition;
-        //SendSignal(true);
-        moveCount = moveCount - 1;
+        //SendSignal(true)
         isMoving = false;  // 이동 완료 후 이동 가능 상태로 변경
         PositionUpdate();
 
@@ -148,12 +185,11 @@ public class CharacterMovement : MonoBehaviour
             // 현재 위치에서 가장 가까운 타일로 이동
             Vector3 nearestTile = GetNearestTile(transform.position);
             StartCoroutine(MoveToTargetFromCurrent(nearestTile));  // 가장 가까운 타일로 이동
-            moveCount = moveCount - 1;
             PositionUpdate();
             //SendSignal(true);
         }
     }
-
+    
     // 가장 가까운 타일을 찾는 메서드
     private Vector3 GetNearestTile(Vector3 currentPosition)
     {
@@ -189,9 +225,72 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
+    // 장애물 체크 함수 예시 (장애물 레이어 등으로 구현)
+    private bool IsBlockedTile(Vector2Int pos)
+    {
+        // 예시: Physics.OverlapBox 등으로 해당 위치에 장애물이 있는지 체크
+        // 실제 구현은 프로젝트 상황에 맞게 수정
+        Collider[] cols = Physics.OverlapBox(new Vector3(pos.x, 0, pos.y), Vector3.one * 0.4f, Quaternion.identity, LayerMask.GetMask("Obstacle"));
+        return cols.Length > 0;
+    }
+
+    // BFS로 이동 가능한 타일 계산
+    public List<Vector2Int> GetMovableTiles(Vector2Int start, int moveRange)
+    {
+        var visited = new HashSet<Vector2Int>();
+        var queue = new Queue<(Vector2Int pos, int dist)>();
+        var result = new List<Vector2Int>();
+
+        queue.Enqueue((start, 0));
+        visited.Add(start);
+
+        Vector2Int[] dirs = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
+
+        while (queue.Count > 0)
+        {
+            var (pos, dist) = queue.Dequeue();
+            if (dist > moveRange) continue;
+            result.Add(pos);
+
+            foreach (var dir in dirs)
+            {
+                var next = pos + dir;
+                if (visited.Contains(next)) continue;
+                if (IsBlockedTile(next)) continue;
+
+                visited.Add(next);
+                queue.Enqueue((next, dist + 1));
+            }
+        }
+        return result;
+    }
+
     private void PositionUpdate()
     {
+        ClearHighlights();
+        CharacterStats.Instance.characterList[characterNumber].NowMoveCount--;
         CharacterStats.Instance.characterList[characterNumber].charPosition = transform.position;
     }
 
+
+    public void ShowMoveHighlights(List<Vector2Int> movableTiles)
+    {
+        ClearHighlights();
+
+        foreach (var tile in movableTiles)
+        {
+            Vector3 pos = new Vector3(tile.x, 0.01f, tile.y); // 살짝 띄워서 z-fighting 방지
+            GameObject highlight = Instantiate(highlightPrefab, pos, Quaternion.Euler(90, 0, 0));
+            highlights.Add(highlight);
+        }
+    }
+
+    public void ClearHighlights()
+    {
+        foreach (var go in highlights)
+        {
+            Destroy(go);
+        }
+        highlights.Clear();
+    }
 }

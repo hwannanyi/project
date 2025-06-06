@@ -27,11 +27,11 @@ public class EventManager : MonoBehaviour
 
     public void FinishTurn(bool value)
     {
-        ++TurnManager.Instance.nextTrunCounting;
+/*        ++TurnManager.Instance.nextTrunCounting;
         if (TurnManager.Instance.nextTrunCounting >= TurnManager.Instance.nextTrunCount)
         {
             TurnManager.Instance.ResetTurn();
-        }
+        }*/
         //Debug.Log($"[EventManager] Ω≈»£ ∫∏≥ø: {value}");
         TurnEnd?.Invoke(value);
     }

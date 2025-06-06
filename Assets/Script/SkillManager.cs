@@ -14,6 +14,7 @@ public class SkillManager : MonoBehaviour
     public List<SkillData> UseSkillList = new(); // 현재 사용 가능한 스킬 목록
     //
     //public GameObject skillPrefab; // 생성할 스킬 프리팹 미사용
+    public ButtonHandler uiManager;
 
 
     ///선택한 스킬이 일시적으로 저장되는곳
@@ -92,6 +93,10 @@ public class SkillManager : MonoBehaviour
     // 메인 타겟 (타겟팅 스킬일 경우)
     public GameObject validMainTarget = null;
 
+    // 예시: 스킬 사용 시 범위 표시
+    //SkillRangeVisualizer visualizer = FindObjectOfType<SkillRangeVisualizer>();
+
+
     void Awake()
     {
         // 싱글턴 패턴 적용 (중복 방지)
@@ -121,12 +126,17 @@ public class SkillManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            PrepareSkillCast(2); // 1. 스킬 선택 (index 1)
+            PrepareSkillCast(2); // 1. 스킬 선택 (index 2)
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            PrepareSkillCast(3); // 1. 스킬 선택 (index 1)
+            PrepareSkillCast(3); // 1. 스킬 선택 (index 3)
+        }
+
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            PrepareSkillCast(4); // 1. 스킬 선택 (index 4)
         }
 
         // 마우스 클릭 또는 타겟 방향 확정 후
@@ -273,8 +283,14 @@ public class SkillManager : MonoBehaviour
             Debug.LogWarning("캐릭터가 선택되지 않았습니다.");
             return;
         }
-
+        
         var character = CharacterStats.Instance.characterList[index];
+        if (character.usingSkill[skillIndex].skillName == null)
+        {
+            Debug.LogWarning($"선택된 캐릭터의 스킬이 비어있습니다. 인덱스: {skillIndex}");
+            return;
+        }
+
         var skill = character.usingSkill[skillIndex];
         GameObject caster = CharacterStats.Instance.characters[index];
 

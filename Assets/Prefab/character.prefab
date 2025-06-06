@@ -109,6 +109,7 @@ MonoBehaviour:
   isBlocked: 0
   moveRange: 5
   moveCount: 0
+  highlightPrefab: {fileID: 7146173340283780072, guid: 2dee0d61832042e46b2ee6a471fa15fc, type: 3}
 --- !u!114 &4141925944930643250
 MonoBehaviour:
   m_ObjectHideFlags: 0

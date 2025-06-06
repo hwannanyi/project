@@ -13,13 +13,12 @@ public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
 
+    public TurnUIManager uiManager;
     public TurnPhase nowtrun = TurnPhase.PlayerTurn;
     public TurnPhase currentPhase = TurnPhase.PlayerTurn;
     public TurnPhase previousPhase;
 
-    public int Turn = 0;
-    public int nextTrunCount = 4;
-    public int nextTrunCounting = 0;
+    public int Turn = 1;
 
     public int playerSkillTurn = 10;
     public int enemySkillTurn = 10;
@@ -36,6 +35,8 @@ public class TurnManager : MonoBehaviour
 
     private void Awake()
     {
+    Turn = 1;
+    UITrunCount(Turn);//  턴 UI 업데이트
         if (Instance == null)
         {
             Instance = this;
@@ -45,6 +46,11 @@ public class TurnManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void Update()
+    {
+
     }
 
     //  EventManager 연동 유지 (턴 종료 이벤트로 외부에서 턴 넘기기 가능)
@@ -70,7 +76,7 @@ public class TurnManager : MonoBehaviour
 
     //  현재 턴 판별 함수들
 
-    public bool nowPlayerTurn()
+    public bool NowPlayerTurn()
     {
         return nowtrun == TurnPhase.PlayerTurn;
     }
@@ -100,6 +106,7 @@ public class TurnManager : MonoBehaviour
     {
         return currentPhase == TurnPhase.ReactPhase_EnemyResponding;
     }
+
 
     //  캐릭터가 플레이어 팀인지 판별
     public bool IsPlayerTeam(Stats character)
@@ -161,8 +168,11 @@ public class TurnManager : MonoBehaviour
         else if (currentPhase == TurnPhase.EnemyTurn)
         {
             currentPhase = TurnPhase.PlayerTurn;
-        }  
+        }
+        nowtrun = currentPhase;
         CharacterSelection.selectedCharacterIndex = -1;
+        Turn++;
+        UITrunCount(Turn);//  턴 UI 업데이트
         Debug.Log($"[TurnManager] 턴 전환됨: 현재 턴 = {currentPhase}");
     }
 
@@ -178,5 +188,11 @@ public class TurnManager : MonoBehaviour
     {
         playerUseSkillTurn = 0;
         enemyUseSkillTurn = 0;
+    }
+
+    public void UITrunCount(int turnCount)
+    {
+        uiManager.UpdateTrunCount(turnCount);
+        uiManager.UpdateReactTurn(NowPlayerTurn());
     }
 }

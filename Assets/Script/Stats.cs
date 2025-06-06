@@ -18,6 +18,7 @@ public class Stats
     public int speed;             // 속도
     public int movespeed;         // 이속
     public int moveCount;         // 이동가능횟수
+    public int NowMoveCount;         // 이동가능횟수
     public int trun;              // 보유 턴
     public Vector3 charPosition;  // 현제위치
     public Quaternion charRotation;  // 현재 방향
@@ -42,6 +43,7 @@ public class Stats
         speed = data.speed;
         movespeed = data.movespeed;
         moveCount = data.moveCount;
+        NowMoveCount = data.moveCount;
         trun = data.trun;
 
         this.charPosition = charPosition;

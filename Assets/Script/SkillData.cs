@@ -51,6 +51,10 @@ public class SkillData
 
     public SkillData(Skill data, string characterName)
     {
+        if (data == null)
+        {
+            return;
+        }
         skillName = data.skillName;
         useCharacterName = characterName; // 직접 문자열을 할당
 

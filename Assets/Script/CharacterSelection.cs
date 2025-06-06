@@ -12,6 +12,7 @@ public class CharacterSelection : MonoBehaviour
     public static int selectedCharacterIndex = -1; // 선택된 캐릭터 (-1: 선택 없음)
     public CharacterUIManager uiManager;
 
+
     void Awake()
     {
         
@@ -21,6 +22,7 @@ public class CharacterSelection : MonoBehaviour
     void Update()
     {
         HandleCharacterSelection();
+        OnCharacterSelectedMoveCount(selectedCharacterIndex);
     }
 
     void HandleCharacterSelection()
@@ -140,7 +142,20 @@ public class CharacterSelection : MonoBehaviour
             return;
         }
         var character = CharacterStats.Instance.characterList[index];
+        
         uiManager.UpdateCharacterProfile(character);
+        uiManager.UpdateCharacterProfileSkill(character);
+    }
+
+    public void OnCharacterSelectedMoveCount(int index)
+    {
+        if (index < 0 || index >= CharacterStats.Instance.characterList.Count)
+        {
+            uiManager.UpdateMoveCount(0);
+            return;
+        }
+        var character = CharacterStats.Instance.characterList[index];
+        uiManager.UpdateMoveCount(character.NowMoveCount);
     }
 
 }
