@@ -19,7 +19,7 @@ public class SkillManager : MonoBehaviour
 
 
     ///선택한 스킬이 일시적으로 저장되는곳
-    private SkillData selectedSkill = null;
+    public SkillData selectedSkill = null;
     private GameObject selectedCaster = null;
     public Stats selectedCharacter = null;
 
@@ -350,6 +350,7 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     public void CalculateSkillPosition(SkillData skill, Stats character)
     {
+        isSkillReady = true;
         Vector3 startPosition = Vector3.zero;
 
         switch (skill.startSkillPosition)

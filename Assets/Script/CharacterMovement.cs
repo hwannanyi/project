@@ -56,7 +56,7 @@ public class CharacterMovement : MonoBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
             return;
         int indexnumber = CharacterSelection.selectedCharacterIndex;
-        if(indexnumber < 0 || indexnumber >= CharacterStats.Instance.characters.Count || SkillManager.Instance.isSkillReady || SkillManager.Instance.isSkillReadyFinal)
+        if(indexnumber < 0 || indexnumber >= CharacterStats.Instance.characters.Count || SkillManager.Instance.selectedSkill != null || SkillManager.Instance.isSkillReadyFinal)
         {
             ClearHighlights(); // 선택 해제 시 하이라이트 제거
             return; // 유효하지 않은 인덱스인 경우 아무 작업도 하지 않음
