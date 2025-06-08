@@ -40,6 +40,7 @@ public class ReactManager : MonoBehaviour
     /// </summary>
     public void EnterResponsePhase(SkillData skill, GameObject caster)
     {
+
         CharacterSelection.selectedCharacterIndex = -1;
         Debug.Log($"[ResponseManager] 대응단계 진입: 스킬: {skill.skillName}");
 
@@ -47,5 +48,10 @@ public class ReactManager : MonoBehaviour
         // 현재는 로그만 출력하고 바로 대응 없이 종료
 
         // 추후: 대응 입력을 받아 스킬 차단/회피/반격 등 처리
+    }
+
+    public void StartReact()
+    {
+        
     }
 }

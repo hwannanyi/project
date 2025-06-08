@@ -42,7 +42,8 @@ public class ColliderMerger : MonoBehaviour
         BoxCollider merged = gameObject.AddComponent<BoxCollider>();
         merged.center = transform.InverseTransformPoint(combinedBounds.center);
         merged.size = combinedBounds.size;
+        merged.isTrigger = true; // 트리거 활성화
 
-        Debug.Log("[ColliderMerger] 병합된 BoxCollider 생성 완료");
+        Debug.Log("[ColliderMerger] 병합된 BoxCollider 생성 완료 (isTrigger = true)");
     }
 }

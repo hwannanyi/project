@@ -15,7 +15,17 @@ public class CharacterSelection : MonoBehaviour
 
     void Awake()
     {
-        
+        // 싱글턴 패턴 적용 (중복 방지)
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // 씬이 변경되어도 삭제되지 않음
+        }
+        else
+        {
+            Destroy(gameObject); // 이미 인스턴스가 존재하면 새로운 객체 삭제
+            return;
+        }
     }
 
     //  1, 2, 3 키 입력으로 캐릭터 선택
@@ -37,8 +47,9 @@ public class CharacterSelection : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha7)) SelectCharacter2P(6);// 2
         if (Input.GetKeyDown(KeyCode.Alpha8)) SelectCharacter2P(7);// 3
     }
-    void SelectCharacter(int index)
+    public void SelectCharacter(int index)
     {
+        SkillManager.Instance.Skillcancel();
         if (TurnManager.Instance.currentPhase == TurnPhase.EnemyTurn
             || TurnManager.Instance.currentPhase == TurnPhase.ReactPhase_EnemyResponding)
         {
@@ -52,7 +63,7 @@ public class CharacterSelection : MonoBehaviour
             if (!SkillManager.Instance.validReactTargets.Contains(candidate))
             {
                 Debug.LogWarning("선택된 캐릭터는 대응 대상이 아닙니다.");
-                return;
+                //return;
             }
             // 메인 타겟 여부 확인 가능:
             if (SkillManager.Instance.validMainTarget == candidate)
@@ -83,7 +94,7 @@ public class CharacterSelection : MonoBehaviour
         }
     }
 
-    void SelectCharacter2P(int index)
+    public void SelectCharacter2P(int index)
     {
         if (TurnManager.Instance.currentPhase == TurnPhase.PlayerTurn
             || TurnManager.Instance.currentPhase == TurnPhase.ReactPhase_PlayerResponding)
@@ -100,7 +111,7 @@ public class CharacterSelection : MonoBehaviour
             if (!SkillManager.Instance.validReactTargets.Contains(candidate))
             {
                 Debug.LogWarning("선택된 캐릭터는 대응 대상이 아닙니다.");
-                return;
+                //return;
             }
             // 메인 타겟 여부 확인 가능:
             if (SkillManager.Instance.validMainTarget == candidate)

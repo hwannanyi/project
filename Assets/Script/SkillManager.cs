@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.TextCore.Text;
 
 [System.Serializable]
@@ -25,7 +26,8 @@ public class SkillManager : MonoBehaviour
     private Vector3 selectedAoeCenterPosition = Vector3.zero;
     private Vector3 selectedTargetPosition = Vector3.zero;
 
-    private bool isSkillReady = false;
+    public bool isSkillReady = false;
+    public bool isSkillReadyFinal = false;
     private int currentSkillIndex = 0;            // Skillaction 실행 인덱스 기억
     private bool isWaitingForReaction = false;    // 대응단계로 인해 중단되었는지 여부
 
@@ -87,15 +89,13 @@ public class SkillManager : MonoBehaviour
         }
     }
 
+    public bool isCastingSkill = false; // 스킬 시전 중인지 여부
+    public float ReactTime = 0.0f; // 대응단계 시간 (초 단위)
 
     public List<GameObject> validReactTargets = new(); // 대응 가능 캐릭터 목록
 
     // 메인 타겟 (타겟팅 스킬일 경우)
     public GameObject validMainTarget = null;
-
-    // 예시: 스킬 사용 시 범위 표시
-    //SkillRangeVisualizer visualizer = FindObjectOfType<SkillRangeVisualizer>();
-
 
     void Awake()
     {
@@ -139,20 +139,6 @@ public class SkillManager : MonoBehaviour
             PrepareSkillCast(4); // 1. 스킬 선택 (index 4)
         }
 
-        // 마우스 클릭 또는 타겟 방향 확정 후
-        if (Input.GetKeyDown(KeyCode.Return)) // Enter로 스킬 확정
-        {
-            // 2. 위치 계산 (예: 마우스 클릭 기반)
-            if(selectedSkill == null || selectedCharacter == null) { Debug.Log("선택한 스킬 또는 대상 없음!!!"); return;}
-
-            CalculateSkillPosition(selectedSkill, selectedCharacter); // 항상 호출해야 함
-            if (isSkillReady)
-            {
-                // 3. 시전 확정 + 대응 체크
-                ConfirmSkillCast(); // 위치 계산 성공했을 때만 확정
-            }
-
-        }
 
 
         // 대응단계 강제 종료 테스트용 (게임 흐름에 따라 UI 버튼 등으로 대체 가능)
@@ -163,18 +149,23 @@ public class SkillManager : MonoBehaviour
                 Debug.Log("대응단계 M키 입력 - 대응스킬 먼저 실행");
                 ExecuteReactionThenSkill();     // ← 변경됨
                 ResetResponseState();
-                ExecuteSingleSkillWithReactionCheck(); // ← 변경됨
+                //ExecuteSingleSkillWithReactionCheck(); // ← 변경됨
             }
             else
             {
-                Debug.Log("일반 스킬 실행 시도");
-                ExecuteSingleSkillWithReactionCheck(); // ← 변경됨
+                Debug.Log("스킬 실행 시도");
+                ExecuteSingleSkillWithReactionCheck(); // 스킬실행
             }
         }
 
         // 마우스 클릭으로 타겟 유닛 선택
         if (Input.GetMouseButtonDown(0))
         {
+            //UI클릭시 클릭 무시
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            // 타겟 유닛 선택 로직
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
             float enter;
@@ -206,6 +197,15 @@ public class SkillManager : MonoBehaviour
                             return;
                         }
                     }
+                    else if(CharacterSelection.selectedCharacterIndex == -1)
+                    {
+                        CharacterMovement movement = target.GetComponent<CharacterMovement>();
+                        if (movement != null)
+                        {
+                            int number = movement.characterNumber;
+                            CharacterSelection.Instance.SelectCharacter(number);
+                        }
+                    }
 
                     selectedTargetUnit = target;
                     selectedTargetIndex = CharacterStats.Instance.characters.IndexOf(target);
@@ -213,7 +213,21 @@ public class SkillManager : MonoBehaviour
                     break; // 첫 번째 캐릭터만 처리
                 }
             }
+            if (selectedSkill != null && selectedCharacter != null) //스킬 확정 기준
+            {
+                CalculateSkillPosition(selectedSkill, selectedCharacter); // 항상 호출해야 함
+                if (isSkillReady)
+                {
+                    // 3. 시전 확정
+                    SkillRangeVisualizer.Instance.HideSkillRange();
+                    ConfirmSkillCast(); // 위치 계산 성공했을 때만 확정
+                }
+
+            }
+
         }
+        
+
     }
 
    
@@ -277,6 +291,7 @@ public class SkillManager : MonoBehaviour
     /// <param name="skillIndex">선택할 스킬의 인덱스 (예: 0 = Q, 1 = W)</param>
     public void PrepareSkillCast(int skillIndex)
     {
+        Skillcancel();
         int index = CharacterSelection.selectedCharacterIndex;
         if (index == -1)
         {
@@ -301,6 +316,27 @@ public class SkillManager : MonoBehaviour
         isSkillReady = true;
 
         Debug.Log($"[SkillManager] 스킬 선택 완료: {skill.skillName}");
+
+        // 스킬 범위 하이라이트 표시
+        if (skill.projectile && !skill.targeting) // 논타겟 투사체라면
+        {
+            Vector3 start = caster.transform.position;
+            Vector3 direction = caster.transform.forward; // 기본값, 실제로는 방향 입력 받아야 함
+            float range = skill.range;
+            float Xaoe = skill.Xaoe;
+            float Yaoe = skill.Yaoe;
+            SkillRangeVisualizer.Instance.StartNonTargetProjectileRange(start, Xaoe, Yaoe, range);
+        }
+        else // 일반 스킬이라면
+        {
+            Vector3 casterPosition = caster.transform.position;
+            float range = skill.range;
+            float Xaoe = skill.Xaoe;
+            float Yaoe = skill.Yaoe;
+            Vector3 mouseWorldPos = casterPosition; // 실제로는 마우스 위치 받아야 함
+            SkillRangeVisualizer.Instance.ShowNormalSkillRange(casterPosition, range);
+            SkillRangeVisualizer.Instance.StartSkillRangePreview(casterPosition, Xaoe, Yaoe);
+        }
 
         // 이 시점에서 방향/타겟 UI 활성화
         // 예: ShowTargetingUI(skill.range) 등
@@ -377,15 +413,27 @@ public class SkillManager : MonoBehaviour
         // 방향 계산
         Vector3 direction;
 
-        // ① 마우스 기반 방향 계산이 필요한 경우
-        Vector3 mouseWorldPos = Vector3.zero;
-        Vector3[] directions = { Vector3.up, Vector3.down, Vector3.left, Vector3.right };
+        // XZ 평면 기준 4방향
+Vector3[] directions = {
+    new Vector3(0, 0, 1),   // 위(북)
+    new Vector3(0, 0, -1),  // 아래(남)
+    new Vector3(-1, 0, 0),  // 왼쪽(서)
+    new Vector3(1, 0, 0)    // 오른쪽(동)
+};
         Vector3 closestDirection = directions[0];
+        // 마우스 기반 방향 계산이 필요한 경우
+        Vector3 mouseWorldPos = Vector3.zero;
+
         if (!skill.targeting || selectedTargetUnit == null)
         {
-            mouseWorldPos = Camera.main.ScreenToWorldPoint(
-                new Vector3(Input.mousePosition.x, 10f,Input.mousePosition.z));
-            mouseWorldPos.y = 0f;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+            float enter;
+            if (groundPlane.Raycast(ray, out enter))
+            {
+                mouseWorldPos = ray.GetPoint(enter);
+                mouseWorldPos.y = 0f;
+            }
         }
 
         // ② 방향 계산
@@ -397,10 +445,8 @@ public class SkillManager : MonoBehaviour
         {
             direction = (mouseWorldPos - startPosition).normalized;
 
-            // 마우스 기반 스킬만 가장 가까운 4방향으로 제한
-            
+            // 4방향 중 가장 가까운 방향 찾기
             float maxDot = Vector3.Dot(direction, directions[0]);
-
             foreach (var dir in directions)
             {
                 float dot = Vector3.Dot(direction, dir);
@@ -410,7 +456,6 @@ public class SkillManager : MonoBehaviour
                     closestDirection = dir;
                 }
             }
-
             direction = closestDirection;
         }
         /*Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(
@@ -490,6 +535,7 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     public void ConfirmSkillCast()
     {
+        isSkillReadyFinal = true;
         respondingCharacter = selectedCharacter;
         if (!isSkillReady || selectedSkill == null || selectedCaster == null || selectedCharacter == null)
         {
@@ -552,7 +598,7 @@ public class SkillManager : MonoBehaviour
         Debug.Log($"[SaveSkill] Skill: {selectedSkill.skillName}, Prefab: {selectedSkill.SkillEffectPrefab}");
         SaveSkill(false); // 일반 스킬 저장
         Debug.Log($"[SkillManager] 스킬 저장 완료: {selectedSkill.skillName}");
-        selectedSkillClear();
+        SelectedSkillClear();
 
         // 상태 초기화
         isSkillReady = false;
@@ -589,11 +635,13 @@ public class SkillManager : MonoBehaviour
         if (isReaction)
         {
             // 대응 스킬인 경우 ReactSkillaction에 저장
+            selectedSkill.isreactSkill = true;
             ReactSkillaction = skillInfo;
         }
         else
         {
             // 일반 스킬인 경우 Skillaction에 저장
+            selectedSkill.isreactSkill = false;
             Skillaction = skillInfo;
         }
     }
@@ -773,13 +821,7 @@ public class SkillManager : MonoBehaviour
             Skillaction = null;
         }
 
-        isWaitingForReaction = false;
-        Debug.Log("[SkillManager] 대응단계 종료");
-        if(TurnManager.Instance.IsInReactPhase())
-        {
-            TurnManager.Instance.ExitReactPhase();
-            
-        }
+        //isWaitingForReaction = false;
     }
 
     public void ResetResponseState()
@@ -810,7 +852,7 @@ public class SkillManager : MonoBehaviour
 
             ExecuteSkill(pendingSkill, pendingAoeCenterPosition, targetPos, pendingCaster, pendingCharacter);
             Debug.Log($"[SkillManager] 본 스킬 실행: {pendingSkill.skillName}");
-            selectedSkillClear();
+            SelectedSkillClear();
 
 
 
@@ -876,7 +918,7 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     public void ExecuteSingleSkillWithReactionCheck()
     {
-
+        isSkillReadyFinal = false;
         if (Skillaction == null || Skillaction.selectedSkill == null)
         {
             Debug.Log("[SkillManager] 실행할 스킬이 없습니다.");
@@ -894,33 +936,31 @@ public class SkillManager : MonoBehaviour
         if (skill.react != React.no && ReactManager.Instance.CanRespond(skill))
         {
             Debug.Log($"[SkillManager] 대응 가능한 스킬 발견: {skill.skillName} - 대응단계 진입");
-
-            validReactTargets = SimulateSkillHit.Instance.GetHitTargets(
+            hasMovedInReact = true;
+/*            validReactTargets = SimulateSkillHit.Instance.GetHitTargets(
             skill,
     Skillaction.selectedAoeCenterPosition,
     Skillaction.selectedTargetUnit != null ? Skillaction.selectedTargetUnit.transform.position : Skillaction.selectedTargetPosition,
     Skillaction.selectedCaster
-);
+);*/
 
-
-            // 추가 조건: 타겟팅 스킬일 때만 메인 타겟 저장
-            if (skill.targeting) // ← bool 타입의 타겟팅 여부
-            {
-                validMainTarget = Skillaction.selectedTargetUnit;
-            }
-            else
-            {
-                validMainTarget = null;
-            }
+            /*
+                        // 추가 조건: 타겟팅 스킬일 때만 메인 타겟 저장
+                        if (skill.targeting) // ← bool 타입의 타겟팅 여부
+                        {
+                            validMainTarget = Skillaction.selectedTargetUnit;
+                        }
+                        else
+                        {
+                            validMainTarget = null;
+                        }*/
 
             TurnManager.Instance.EnterReactPhase();
             ReactManager.Instance.EnterResponsePhase(skill, Skillaction.selectedCaster);
             isWaitingForReaction = true;
-
-            return;
         }
 
-        // 대응 대상 없으면 스킬 즉시 실행
+        //스킬 실행
         ExecuteSkill(Skillaction);
         Skillaction = null;
         isWaitingForReaction = false;
@@ -932,7 +972,7 @@ public class SkillManager : MonoBehaviour
     /// <summary>
     /// 플레이어가 선택한 스킬과 대상 등을 초기화한다
     /// </summary>
-    public void selectedSkillClear()
+    public void SelectedSkillClear()
     {
         selectedSkill = null;
         selectedCaster = null;
@@ -974,5 +1014,15 @@ public class SkillManager : MonoBehaviour
     public Stats GetRespondingCharacter()
     {
         return respondingCharacter;
+    }
+
+    public void Skillcancel()
+    {
+        SelectedSkillClear();
+        isSkillReady = false;
+        isSkillReadyFinal = false;
+        SkillRangeVisualizer.Instance.StopNonTargetProjectileRange();
+        SkillRangeVisualizer.Instance.StopSkillRangePreview();
+        SkillRangeVisualizer.Instance.HideSkillRange();
     }
 }

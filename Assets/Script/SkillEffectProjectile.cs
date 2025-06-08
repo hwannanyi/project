@@ -117,14 +117,14 @@ public class SkillEffectProjectile : MonoBehaviour
         }
 
         isInitialized = true;
-
+        rotatingVisual.rotation = Quaternion.Euler(90f, 0, 0f);
 
         // 초기 방향 계산
         direction = (targetPosition - transform.position).normalized;
         if (direction != Vector3.zero && rotatingVisual != null)
         {
             float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-            rotatingVisual.rotation = Quaternion.Euler(0f, angle, 0f);
+            rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f);
         }
 
         GameObject HitboxTile = Instantiate(hitbox, this.transform);
@@ -160,6 +160,7 @@ public class SkillEffectProjectile : MonoBehaviour
         ? targetUnit.transform.position
         : targetPosition;
 
+
         // direction 지역 변수 선언 제거 → 필드 변수로 사용
         direction = (destination - transform.position).normalized;
 
@@ -172,7 +173,7 @@ public class SkillEffectProjectile : MonoBehaviour
         if (rotatingVisual != null && direction.magnitude > 0.001f)
         {
             float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-            rotatingVisual.rotation = Quaternion.Euler(0f, angle, 0f);
+            rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f);
         }
 
         // 도착처리
@@ -187,5 +188,6 @@ public class SkillEffectProjectile : MonoBehaviour
         // 데미지, 이펙트 등
         Debug.Log($"[SkillEffectProjectile] {skill.skillName} 타격 완료");
         Destroy(gameObject);
+        TurnManager.Instance.ExitReactPhase();
     }
 }

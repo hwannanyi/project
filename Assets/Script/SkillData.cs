@@ -48,13 +48,15 @@ public class SkillData
     public List<ConditionalEffect> conditionalEffects; // 특정 조건부 효과
 
     public React react; //대응가능유무 + 대응가능대상
+    public bool isreactSkill; // 4방향 회전
 
-    public SkillData(Skill data, string characterName)
+    public SkillData(Skill data, string characterName, bool isreactSkill)
     {
         if (data == null)
         {
             return;
         }
+        isreactSkill = this.isreactSkill;
         skillName = data.skillName;
         useCharacterName = characterName; // 직접 문자열을 할당
 

@@ -21,6 +21,8 @@ public class SkillEffectHitscan : MonoBehaviour
     public GameObject hitbox;
     public HitboxTile hitboxProject;
 
+    private bool hasExitedPhase = false;
+
     public bool isInitialized = false;
 
     private void Awake()
@@ -32,8 +34,8 @@ public class SkillEffectHitscan : MonoBehaviour
     {
         skillData = skill;
         range = skill.range;
-
-        
+        rotatingVisual.rotation = Quaternion.Euler(90f, 0, 0f);
+        hasExitedPhase = false;
 
         if (skill.targeting && target != null)
         {
@@ -56,7 +58,7 @@ public class SkillEffectHitscan : MonoBehaviour
         if (direction != Vector3.zero && rotatingVisual != null)
         {
             float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-            rotatingVisual.rotation = Quaternion.Euler(0f, angle, 0f);
+            rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f);
         }
 
 
@@ -102,27 +104,36 @@ public class SkillEffectHitscan : MonoBehaviour
                 RotateVisual(direction);*/
 
         // 히트스캔은 위치 갱신만 하고, 이펙트는 곧 사라짐
-        Destroy(gameObject, 3); // 아주 짧게 남기기
+        Destroy(gameObject, 15); // 아주 짧게 남기기
     }
 
-    private Vector3 GetDirection()
+    void OnDestroy()
     {
-        Vector3 currentTarget = (skillData.targeting && targetUnit != null)
-            ? targetUnit.transform.position
-            : targetPosition;
-
-        currentTarget.y = startPosition.y;
-        return (currentTarget - startPosition).normalized;
-    }
-
-    private void RotateVisual(Vector3 dir)
-    {
-        if (rotatingVisual != null && dir.magnitude > 0.001f)
+        if (!hasExitedPhase && !skillData.isreactSkill)
         {
-            float angle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
-            rotatingVisual.rotation = Quaternion.Euler(0f, angle - 90f, 0f); // 보정 필요 시 -90f
+            TurnManager.Instance.ExitReactPhase();
+            hasExitedPhase = true;
         }
     }
+
+    /*    private Vector3 GetDirection()
+        {
+            Vector3 currentTarget = (skillData.targeting && targetUnit != null)
+                ? targetUnit.transform.position
+                : targetPosition;
+
+            currentTarget.y = startPosition.y;
+            return (currentTarget - startPosition).normalized;
+        }
+
+        private void RotateVisual(Vector3 dir)
+        {
+            if (rotatingVisual != null && dir.magnitude > 0.001f)
+            {
+                float angle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
+                rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f); // 보정 필요 시 -90f
+            }
+        }*/
 
 
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -5966116219226963984}
   - component: {fileID: 2377216055779192893}
   - component: {fileID: 2926054394679664602}
-  - component: {fileID: 8344698244456422161}
+  - component: {fileID: 3011920393000721282}
   m_Layer: 0
   m_Name: skillHitScan
   m_TagString: skill
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: d1c1bfea4adf00f40902d66a315d1849, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -108,6 +108,7 @@ MonoBehaviour:
   skillData:
     useCharacterName: 
     skillName: 
+    skillIcon: {fileID: 0}
     SkillEffectIllustration: {fileID: 0}
     SkillEffectPrefab: {fileID: 0}
     passive: 0
@@ -147,9 +148,9 @@ MonoBehaviour:
     conditionalEffects: []
     react: 0
   targetUnit: {fileID: 0}
-  rotatingVisual: {fileID: 4978613006717625041, guid: 6a4c9e45a832e684b970444b1b9f7ee9, type: 3}
+  rotatingVisual: {fileID: 4978613006717625041}
   hitbox: {fileID: 6478507458708094152, guid: 6a4c9e45a832e684b970444b1b9f7ee9, type: 3}
-  hitboxProject: {fileID: 0}
+  hitboxProject: {fileID: 419652966581439005, guid: 6a4c9e45a832e684b970444b1b9f7ee9, type: 3}
   isInitialized: 0
 --- !u!114 &2377216055779192893
 MonoBehaviour:
@@ -191,24 +192,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &8344698244456422161
-BoxCollider:
+--- !u!114 &3011920393000721282
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6478507458708094152}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.2}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ca315e5f44858a47ada2969af80b536, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mergeOnStart: 1

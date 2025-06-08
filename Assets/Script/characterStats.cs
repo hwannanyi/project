@@ -136,11 +136,11 @@ public class CharacterStats : MonoBehaviour
             // 캐릭터 이름과 스킬을 SkillData로 만들어 리스트에 추가
             if (characterList[index1].useSkill[i] == null)
             {
-                characterList[index1].usingSkill.Add(new SkillData(null, characterList[index1].name));
+                characterList[index1].usingSkill.Add(new SkillData(null, characterList[index1].name, false));
             }
             else
             {
-                characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name));
+                characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name, false));
             }
         }
 

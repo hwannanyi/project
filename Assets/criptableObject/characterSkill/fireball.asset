@@ -33,7 +33,7 @@ MonoBehaviour:
   projectileSpeed: 5
   afterdelay: 0
   beforedelay: 0
-  range: 10
+  range: 4
   aoetype: 0
   fourRotation: 0
   effectRotation: 0

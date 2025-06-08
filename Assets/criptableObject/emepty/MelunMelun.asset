@@ -18,11 +18,12 @@ MonoBehaviour:
   atk: 10
   def: 10
   speed: 10
-  movespeed: 10
-  moveCount: 3
+  movespeed: 5
+  moveCount: 8
   trun: 3
   team: 1
   useSkill:
   - {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
   characterillustration: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
+  characterProfileillustration: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
   characterPrefab: {fileID: 4344314745404087944, guid: b350271128cd3ca489c78af4523dd393, type: 3}

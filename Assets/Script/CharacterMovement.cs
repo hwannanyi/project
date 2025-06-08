@@ -23,6 +23,7 @@ public class CharacterMovement : MonoBehaviour
 
     public GameObject highlightPrefab; // 하이라이트 프리팹
     private List<GameObject> highlights = new List<GameObject>();
+    public bool isShowMoveHighlights;
 
     void Start()
     {  
@@ -32,7 +33,7 @@ public class CharacterMovement : MonoBehaviour
     }
     void Awake()
     {
-
+        isShowMoveHighlights = false; // 초기값 설정
     }
 
 
@@ -51,10 +52,11 @@ public class CharacterMovement : MonoBehaviour
 
             }
         }
+        //UI클릭시 클릭 무시
         if (EventSystem.current.IsPointerOverGameObject())
             return;
         int indexnumber = CharacterSelection.selectedCharacterIndex;
-        if(indexnumber < 0 || indexnumber >= CharacterStats.Instance.characters.Count)
+        if(indexnumber < 0 || indexnumber >= CharacterStats.Instance.characters.Count || SkillManager.Instance.isSkillReady || SkillManager.Instance.isSkillReadyFinal)
         {
             ClearHighlights(); // 선택 해제 시 하이라이트 제거
             return; // 유효하지 않은 인덱스인 경우 아무 작업도 하지 않음
@@ -140,6 +142,7 @@ public class CharacterMovement : MonoBehaviour
         }
 
     }
+
 
 
     /*public void SendSignal(bool end)
@@ -275,6 +278,10 @@ public class CharacterMovement : MonoBehaviour
 
     public void ShowMoveHighlights(List<Vector2Int> movableTiles)
     {
+        if(isShowMoveHighlights)
+        {
+            return;
+        }
         ClearHighlights();
 
         foreach (var tile in movableTiles)
@@ -283,10 +290,12 @@ public class CharacterMovement : MonoBehaviour
             GameObject highlight = Instantiate(highlightPrefab, pos, Quaternion.Euler(90, 0, 0));
             highlights.Add(highlight);
         }
+        isShowMoveHighlights = true;
     }
 
     public void ClearHighlights()
     {
+        isShowMoveHighlights = false; // 하이라이트 표시 상태 초기화
         foreach (var go in highlights)
         {
             Destroy(go);
