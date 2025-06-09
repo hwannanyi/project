@@ -36,6 +36,7 @@ public class SkillRangeVisualizer : MonoBehaviour
             return;
         }
         Instance = this;
+        DontDestroyOnLoad(gameObject);
 
         for (int i = 0; i < rangePoolSize; i++)
         {

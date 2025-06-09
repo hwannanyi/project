@@ -23,6 +23,9 @@ MonoBehaviour:
   actionsNumber: 1
   skillNumber: 1
   skillCumulative: 1
+  cost:
+    keys: 00000000
+    values: 05000000
   startSkillPosition: 1
   XstartSkillPosition: 0
   YstartSkillPosition: 0
@@ -42,7 +45,7 @@ MonoBehaviour:
   Yaoe: 5
   specialAoe: []
   aoecenter: 0
-  cooldown: 3
+  cooldown: 5
   colldownSkill: 0
   basicValue: 10
   increase:
@@ -67,3 +70,4 @@ MonoBehaviour:
       BuffEffects: []
       CCEffects: []
   react: 2
+  reactTime: 0

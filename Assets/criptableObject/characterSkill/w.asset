@@ -23,6 +23,9 @@ MonoBehaviour:
   actionsNumber: 1
   skillNumber: 1
   skillCumulative: 1
+  cost:
+    keys: 01000000
+    values: 02000000
   startSkillPosition: 0
   XstartSkillPosition: 0
   YstartSkillPosition: 0
@@ -67,3 +70,4 @@ MonoBehaviour:
       BuffEffects: []
       CCEffects: []
   react: 2
+  reactTime: 0

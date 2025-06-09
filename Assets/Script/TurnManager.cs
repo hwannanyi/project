@@ -173,6 +173,17 @@ public class TurnManager : MonoBehaviour
         CharacterSelection.selectedCharacterIndex = -1;
         Turn++;
         UITrunCount(Turn);//  턴 UI 업데이트
+                          // 모든 캐릭터의 스킬 쿨타임 감소
+        foreach (var character in CharacterStats.Instance.characterList)
+        {
+            foreach (var skill in character.usingSkill)
+            {
+                if (skill.colldownTime > 0)
+                {
+                    skill.ReduceCooldown(1);
+                }
+            }
+        }
         Debug.Log($"[TurnManager] 턴 전환됨: 현재 턴 = {currentPhase}");
     }
 

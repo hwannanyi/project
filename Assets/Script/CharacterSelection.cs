@@ -49,6 +49,7 @@ public class CharacterSelection : MonoBehaviour
     }
     public void SelectCharacter(int index)
     {
+        
         SkillManager.Instance.Skillcancel();
         if (TurnManager.Instance.currentPhase == TurnPhase.EnemyTurn
             || TurnManager.Instance.currentPhase == TurnPhase.ReactPhase_EnemyResponding)
@@ -79,12 +80,14 @@ public class CharacterSelection : MonoBehaviour
                 
                 selectedCharacterIndex = index;
                 OnCharacterSelected(index);
+                uiManager.ProfileUIOn();
                 Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");
 
             }
             else if (CharacterStats.Instance.playerCharacters[index] != null && selectedCharacterIndex == index)
             {
                 selectedCharacterIndex = -1;
+                uiManager.ProfileUIOn();
                 Debug.Log("캐릭선택취소");
             }
             else

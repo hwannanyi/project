@@ -17,6 +17,10 @@ public class SkillData
     public int actionsNumber;     // 스킬 행동 개수 (기본 1)
     public int skillNumber;       // 스킬의 갯수 (변형 가능)
     public int skillCumulative;   // 최대 충전 횟수 (기본 1)
+
+    public UDictionary<costType, int> cost; // 코스트
+    public UDictionary<costType, int> currentcost; // 기본코스트
+
     public StartSkillPosition startSkillPosition; // 스킬 시작 위치 (플레이어, 지정된 대상 등)
     public int XstartSkillPosition;
     public int YstartSkillPosition;
@@ -38,8 +42,12 @@ public class SkillData
     public aoeCenter aoecenter;
 
     public DoubleList_Vector2[] specialAoe; // 특수 범위 (2차원 좌표 리스트)
-    public int cooldown;        // 쿨타임
+
+    public int cooldown;        // 기본쿨타임
+    public int currentCooldown; //현제 쿨타임
+    public int colldownTime;        // 쿨타임
     public int colldownSkill;      // 지속 스킬횟수
+
     public int basicValue;      // 기본 위력
     public UDictionary<IncreaseType, float> increase; // 위력 계수 (예: {공격력: 0.1}, {방어력: 0.5})
     public int damageHit;         // 타격 횟수
@@ -49,6 +57,8 @@ public class SkillData
 
     public React react; //대응가능유무 + 대응가능대상
     public bool isreactSkill; // 4방향 회전
+    public float reactTime;
+    
 
     public SkillData(Skill data, string characterName, bool isreactSkill)
     {
@@ -70,6 +80,10 @@ public class SkillData
         actionsNumber = data.actionsNumber;
         skillNumber = data.skillNumber;
         skillCumulative = data.skillCumulative;
+
+        cost = data.cost;
+        currentcost = data.cost;
+
         startSkillPosition = data.startSkillPosition;
         projectile = data.projectile;
         targeting = data.targeting;
@@ -98,7 +112,11 @@ public class SkillData
         }
 
         cooldown = data.cooldown;
+        currentCooldown = data.cooldown;
         colldownSkill = data.colldownSkill;
+        colldownTime = 0;
+
+
         basicValue = data.basicValue;
         increase = new UDictionary<IncreaseType, float>();
         foreach (var pair in data.increase)
@@ -113,5 +131,21 @@ public class SkillData
         //conditionalEffects = new List<ConditionalEffect>(data.conditionalEffects);
         react = data.react;
         fourRotation = data.fourRotation; 
+        reactTime = data.reactTime;
+    }
+
+    public void StartCooldown()
+    {
+        colldownTime = currentCooldown;
+    }
+
+    public void ReduceCooldown(int amount)
+    {
+        colldownTime = Mathf.Max(0, colldownTime - amount);
+    }
+    
+    public bool IsAvailable()
+    {
+        return colldownTime <= 0;
     }
 }

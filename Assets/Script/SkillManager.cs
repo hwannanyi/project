@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.TextCore.Text;
 
-[System.Serializable]
+
 public class SkillManager : MonoBehaviour
 {
     public static SkillManager Instance; // 싱글턴 인스턴스 (전역 접근 가능)
@@ -16,18 +16,19 @@ public class SkillManager : MonoBehaviour
     //
     //public GameObject skillPrefab; // 생성할 스킬 프리팹 미사용
     public ButtonHandler uiManager;
+    public CharacterUIManager ProfileuiManager; // 캐릭터 프로필 UI 매니저
 
 
     ///선택한 스킬이 일시적으로 저장되는곳
-    public SkillData selectedSkill = null;
-    private GameObject selectedCaster = null;
-    public Stats selectedCharacter = null;
+    [HideInInspector] public SkillData selectedSkill = null;
+    [HideInInspector]  private GameObject selectedCaster = null;
+    [HideInInspector]public Stats selectedCharacter = null;
 
     private Vector3 selectedAoeCenterPosition = Vector3.zero;
     private Vector3 selectedTargetPosition = Vector3.zero;
 
-    public bool isSkillReady = false;
-    public bool isSkillReadyFinal = false;
+    [HideInInspector] public bool isSkillReady = false;
+    [HideInInspector] public bool isSkillReadyFinal = false;
     private int currentSkillIndex = 0;            // Skillaction 실행 인덱스 기억
     private bool isWaitingForReaction = false;    // 대응단계로 인해 중단되었는지 여부
 
@@ -99,17 +100,29 @@ public class SkillManager : MonoBehaviour
 
     void Awake()
     {
+        // 상태 변수 초기화
+        selectedSkill = null;
+        selectedCharacter = null;
+        isSkillReady = false;
+        isSkillReadyFinal = false;
+        hasReacted = false;
+        waitingForResponse = false;
+        hasMovedInReact = false;
+        isCastingSkill = false;
+
+        SelectedSkillClear();
+        isSkillReady = false;
+        isSkillReadyFinal = false;
         // 싱글턴 패턴 적용 (중복 방지)
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // 씬이 변경되어도 삭제되지 않음
-        }
-        else
-        {
-            Destroy(gameObject); // 이미 인스턴스가 존재하면 새로운 객체 삭제
+            Destroy(gameObject);
             return;
         }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+
     }
 
     void Update()
@@ -221,6 +234,11 @@ public class SkillManager : MonoBehaviour
                     // 3. 시전 확정
                     SkillRangeVisualizer.Instance.HideSkillRange();
                     ConfirmSkillCast(); // 위치 계산 성공했을 때만 확정
+                    if (TurnManager.Instance.IsInReactPhase())
+                    {
+                        ExecuteReactionThenSkill();
+                        ResetResponseState();
+                    }
                 }
 
             }
@@ -306,6 +324,8 @@ public class SkillManager : MonoBehaviour
             return;
         }
 
+
+
         var skill = character.usingSkill[skillIndex];
         GameObject caster = CharacterStats.Instance.characters[index];
 
@@ -313,6 +333,25 @@ public class SkillManager : MonoBehaviour
         selectedSkill = skill;
         selectedCaster = caster;
         selectedCharacter = character;
+        if (skill.cost.ContainsKey(costType.mp) && skill.cost[costType.mp] > character.mp)
+        {// mp 코스트가 캐릭터 mp보다 많을 때 실행할 코드(mp 부족)
+            isSkillReady = false;
+            selectedSkill = null;
+            selectedCaster = null;
+            selectedCharacter = null;
+            Debug.Log($"[SkillManager] 코스트가 부족합니다: {skill.skillName}");
+            return;
+        }
+        if (!skill.IsAvailable())
+        {
+            isSkillReady = false;
+            selectedSkill = null;
+            selectedCaster = null;
+            selectedCharacter = null;
+            Debug.Log($"[SkillManager] 스킬이 현제 쿨타임입니다: {skill.skillName}");
+            return;
+        }
+
         isSkillReady = true;
 
         Debug.Log($"[SkillManager] 스킬 선택 완료: {skill.skillName}");
@@ -350,7 +389,7 @@ public class SkillManager : MonoBehaviour
     /// </summary>
     public void CalculateSkillPosition(SkillData skill, Stats character)
     {
-        isSkillReady = true;
+        //isSkillReady = true;
         Vector3 startPosition = Vector3.zero;
 
         switch (skill.startSkillPosition)
@@ -659,6 +698,24 @@ Vector3[] directions = {
         GameObject casterObject, Stats character, GameObject target = null)
     {
 
+        // 코스트 차감
+        if (skill.cost != null && character != null)
+        {
+            foreach (var pair in skill.cost)
+            {
+                switch (pair.Key)
+                {
+                    case costType.mp:
+                        character.mp -= pair.Value;
+                        break;
+                    case costType.hp:
+                        character.hp -= pair.Value;
+                        break;
+                        // 필요에 따라 다른 코스트 타입도 추가
+                }
+            }
+        }
+
         GameObject skillObject = Instantiate(skill.SkillEffectPrefab, aoeCenterPosition, Quaternion.identity);
 
         if (skill.projectile)
@@ -674,6 +731,13 @@ Vector3[] directions = {
                 effect.Initialize(skill, targetPosition, casterObject, character, target);
         }
 
+        // 쿨타임 시작
+        skill.StartCooldown();
+        //프로필 업데이트
+        ProfileuiManager.UpdateCharacterProfileSkill(character);
+        //선택된 스킬범위 삭제
+        SkillRangeVisualizer.Instance.StopNonTargetProjectileRange();
+        SkillRangeVisualizer.Instance.StopSkillRangePreview();
         Debug.Log($"[SkillManager] 스킬 실행 완료: {skill.skillName}");
     }
 
