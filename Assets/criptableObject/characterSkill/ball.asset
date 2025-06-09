@@ -60,7 +60,7 @@ MonoBehaviour:
       DamageEffect:
       - skillhitEffect: 01000000
         condition: 
-        baseValue: 5
+        baseValue: 2
         increase:
           keys: 01000000
           values:

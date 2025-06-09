@@ -17,7 +17,7 @@ MonoBehaviour:
   maxmp: 10
   atk: 10
   def: 10
-  speed: 5
+  speed: 10
   movespeed: 5
   moveCount: 8
   trun: 3
