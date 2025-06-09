@@ -12,6 +12,7 @@ public class CharacterStats : MonoBehaviour
 {
     public static CharacterStats Instance;
     public TurnUIManager uiManager;
+    public CharacterUIManager ProfileuiManager; // 캐릭터 프로필 UI 매니저
 
     public Character[] ALLcharacterList;
     public List<string> playerCharacters = new List<string>();
@@ -66,6 +67,7 @@ public class CharacterStats : MonoBehaviour
             CharacterAdd(EnemieCharacters[j]);
         }
         Charactercreation();
+        
 
         /*characterStats["melun"] = new Dictionary<string, int>
         {
@@ -171,7 +173,8 @@ public class CharacterStats : MonoBehaviour
                 CharacterStats.Instance.characters.Add(CharacterObject); // <-- 추가됨
             }
         }
-
+        ProfileuiManager.AssignMiniprofileTargets();
+        ProfileuiManager.AssignMiniprofileTargets2P();
     }
 
     public Stats GetStats(GameObject obj)
@@ -196,4 +199,7 @@ public class CharacterStats : MonoBehaviour
         wave--;
         uiManager.UpdateWaveCount(wave);
     }
+
+
+
 }

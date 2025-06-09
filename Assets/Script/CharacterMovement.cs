@@ -302,4 +302,6 @@ public class CharacterMovement : MonoBehaviour
         }
         highlights.Clear();
     }
+
+    
 }

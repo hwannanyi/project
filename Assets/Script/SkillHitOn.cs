@@ -4,12 +4,14 @@ using static UnityEngine.GraphicsBuffer;
 using System.Linq;
 using UnityEngine.TextCore.Text;
 using System;
+using System.Collections.Generic;
 
 public class SkillHitOn : MonoBehaviour
 {
     private SkillData skillData;
     public GameObject casterObj;
     private Stats caster;
+    private HashSet<GameObject> hitTargets = new HashSet<GameObject>();
     private bool isInitialized = false;
 
     public void Initialize(SkillData skill, GameObject casterObject, Stats character)
@@ -54,6 +56,14 @@ public class SkillHitOn : MonoBehaviour
     {
         if (other.gameObject.tag == "Character")
         {
+            var target = other.transform.root.gameObject;
+
+            // 이미 데미지를 준 대상이면 무시
+            if (hitTargets.Contains(target))
+                return;
+
+            hitTargets.Add(target);
+
             var manager = CharacterStats.Instance;
             if (manager == null)
             {
@@ -61,7 +71,7 @@ public class SkillHitOn : MonoBehaviour
                 return;
             }
 
-            var target = other.transform.root.gameObject;
+
             var self = casterObj.transform.root.gameObject;
 
             if (target == self)
@@ -125,6 +135,7 @@ public class SkillHitOn : MonoBehaviour
                     ValueCalculation(ref value, Target.enemy);
                     targetStats.hp -= value;
                     Debug.Log($"[Hit] {targetStats.name}이(가) {value} 피해를 입음. 남은 HP: {targetStats.hp}");
+                    CheckDeathOnly(target);
                 }
             }
             if (skillData.skillTarget.Contains(Target.spTarget))
@@ -192,6 +203,25 @@ public class SkillHitOn : MonoBehaviour
         }
 
         FinalDamage = damage + damageUp;
+    }
+
+    public void CheckDeathOnly(GameObject targetObj)
+    {
+        // Stats를 CharacterStats 매니저에서 가져오기
+        Stats targetStats = CharacterStats.Instance.GetStats(targetObj);
+        if (targetStats != null && !targetStats.isdie && targetStats.hp <= 0)
+        {
+            Characterdeath death = targetObj.GetComponent<Characterdeath>();
+            if (death != null)
+            {
+                death.CheckDeath(targetStats);
+            }
+        }
+    }
+
+    public void OnHit()
+    {
+        hitTargets.Clear();
     }
 }
 

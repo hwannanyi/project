@@ -4,22 +4,23 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEditor.Experimental.GraphView;
 
-public class CharacterUIManager : MonoBehaviour
+public class MiniprofileUIManager : MonoBehaviour
 {
     [Header("UI 이미지 연결")]
     public Image characterProfileUI;  // UI에 표시될 이미지 컴포넌트
+    public Sprite characterProfiledefortUI;
 
     [Header("UI프로필")]
     public GameObject ProfileUI;
-
-    [Header("스킬")]
-    public Sprite characterProfileSkillUI;
-    public List<Image> characterProfileSkillListUI;
+    [HideInInspector] public Stats targetCharacter; // 이 미니프로필이 표시할 캐릭터
 
     [Header("스킬쿨타임")]
     public List<TextMeshProUGUI> characterProfileSkillTextListUI;
     public Color cooldownColor = new();
     public Color nompdownColor = new();
+
+    [Header("스킬")]
+    public List<Image> characterProfileSkillListUI;
 
 
     [Header("이동")]
@@ -31,12 +32,17 @@ public class CharacterUIManager : MonoBehaviour
     [Header("이동")]
     public Image hpBar; // Fill Amount 방식
     public Image mpBar;
-    public TextMeshProUGUI hpText;
-    public TextMeshProUGUI mpText;
 
-    [Header("미니프로필")]
-    public List<MiniprofileUIManager> miniprofileUIManagers;
-    public List<MiniprofileUIManager> miniprofileUIManagers2P;
+    void Update()
+    {
+        if (targetCharacter != null)
+        {
+            UpdateCharacterProfile(targetCharacter);
+            UpdateCharacterProfileSkill(targetCharacter);
+            UpdateMoveCount(targetCharacter.NowMoveCount);
+            UpdateHpMpBar(targetCharacter);
+        }
+    }
 
     public void UpdateCharacterProfile(Stats character)
     {
@@ -44,20 +50,25 @@ public class CharacterUIManager : MonoBehaviour
         {
             characterProfileUI.sprite = character.characterProfileillustration;
             characterProfileUI.enabled = true;
+            if (character.isdie)
+            {
+                characterProfileUI.color = new Color(0.5f, 0.5f, 0.5f, 1f);  // 죽은 캐릭터는 반투명 처리
+            }
         }
         else
         {
-            characterProfileUI.sprite = characterProfileSkillUI; // 이미지가 없으면 안 보이게
+            characterProfileUI.sprite = characterProfiledefortUI; // 이미지가 없으면 안 보이게
         }
     }
 
     public void UpdateCharacterProfileSkill(Stats character)
     {
-        if(character == null) return; // 캐릭터가 null이면 아무것도 하지 않음
+        if (character == null) return; // 캐릭터가 null이면 아무것도 하지 않음
 
         // 쿨타임 중일 때 적용할 색상
 
-        Color normalColor = Color.white;
+        Color normalColor = new Color(0f, 0f, 0f, 1f); ;
+
 
         // 스킬 슬롯 개수만큼 반복
         for (int i = 0; i < characterProfileSkillListUI.Count; i++)
@@ -69,7 +80,6 @@ public class CharacterUIManager : MonoBehaviour
             if (character.usingSkill.Count > i && character.usingSkill[i].skillName != null)
             {
                 var skill = character.usingSkill[i];
-                skillImage.sprite = skill.skillIcon; // 스킬 아이콘 표시
                 skillImage.color = skill.colldownTime > 0 ? cooldownColor : normalColor; // 쿨타임 색상 처리
 
                 // MP 부족 시 색상 처리
@@ -83,8 +93,7 @@ public class CharacterUIManager : MonoBehaviour
             }
             else // 스킬이 없는 슬롯
             {
-                skillImage.sprite = characterProfileSkillUI; // 기본 아이콘
-                skillImage.color = normalColor;
+                skillImage.color = new Color(0.5f, 0.5f, 0.5f, 1f);
                 skillText.text = null;
             }
             skillImage.enabled = true; // 아이콘 활성화
@@ -125,47 +134,5 @@ public class CharacterUIManager : MonoBehaviour
             hpBar.fillAmount = (float)character.hp / character.maxhp;
         if (mpBar != null)
             mpBar.fillAmount = (float)character.mp / character.maxmp;
-
-        if (hpText != null)
-            hpText.text = $"{character.hp} / {character.maxhp}";
-        if (mpText != null)
-            mpText.text = $"{character.mp} / {character.maxmp}";
     }
-
-    public void AssignMiniprofileTargets()
-    {
-        for (int i = 0; i < miniprofileUIManagers.Count; i++)
-        {
-            List<Stats>  characterStatsList = CharacterStats.Instance.characterList;
-
-            if (i < CharacterStats.Instance.playerCharacters.Count)
-            {
-                miniprofileUIManagers[i].targetCharacter = characterStatsList[i];
-            }
-            else
-            {
-                miniprofileUIManagers[i].targetCharacter = null; // 남는 미니프로필은 비활성화
-                miniprofileUIManagers[i].ProfileUIOff();
-            }
-        }
-    }
-
-   public void AssignMiniprofileTargets2P()
-    {
-        for (int i = 0; i < miniprofileUIManagers2P.Count; i++)
-        {
-            List<Stats> characterStatsList = CharacterStats.Instance.characterList;
-
-            if (i <= CharacterStats.Instance.EnemieCharacters.Count)
-            {
-                miniprofileUIManagers2P[i].targetCharacter = characterStatsList[i + CharacterStats.Instance.playerCharacters.Count];
-            }
-            else
-            {
-                miniprofileUIManagers2P[i].targetCharacter = null; // 남는 미니프로필은 비활성화
-                miniprofileUIManagers2P[i].ProfileUIOff();
-            }
-        }
-    }
-
 }

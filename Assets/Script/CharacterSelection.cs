@@ -32,7 +32,13 @@ public class CharacterSelection : MonoBehaviour
     void Update()
     {
         HandleCharacterSelection();
+        if(selectedCharacterIndex >= CharacterStats.Instance.playerCharacters.Count)
+        {
+            OnCharacterSelectedMoveCount2P(selectedCharacterIndex);
+            return;
+        }
         OnCharacterSelectedMoveCount(selectedCharacterIndex);
+        
     }
 
     void HandleCharacterSelection()
@@ -75,6 +81,12 @@ public class CharacterSelection : MonoBehaviour
 
         if (index < CharacterStats.Instance.playerCharacters.Count)
         {
+            var character = CharacterStats.Instance.characterList[index];
+            if (character.isdie)
+            {
+                Debug.Log("죽은 캐릭터는 선택할 수 없습니다.");
+                return;
+            }
             if (CharacterStats.Instance.playerCharacters[index] != null && selectedCharacterIndex != index)
             {
                 
@@ -124,11 +136,18 @@ public class CharacterSelection : MonoBehaviour
         }
         if (index1 < CharacterStats.Instance.EnemieCharacters.Count)
         {
+            var character = CharacterStats.Instance.characterList[index];
+            if (character.isdie)
+            {
+                Debug.Log("죽은 캐릭터는 선택할 수 없습니다.");
+                return;
+            }
             if (CharacterStats.Instance.EnemieCharacters[index1] != null && selectedCharacterIndex != index)
             {
 
                 selectedCharacterIndex = index;
-
+                OnCharacterSelected2P(index1);
+                uiManager.ProfileUIOn();
                 Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.EnemieCharacters[index1]}");
 
             }
@@ -169,6 +188,33 @@ public class CharacterSelection : MonoBehaviour
             return;
         }
         var character = CharacterStats.Instance.characterList[index];
+        uiManager.UpdateMoveCount(character.NowMoveCount);
+    }
+
+
+
+    public void OnCharacterSelected2P(int index)
+    {
+        int index1 = index - CharacterStats.Instance.playerCharacters.Count;
+        if (index1 < 0 || index1 >= CharacterStats.Instance.characterList.Count)
+        {
+            Debug.LogError("잘못된 캐릭터 인덱스입니다.");
+            return;
+        }
+        var character = CharacterStats.Instance.characterList[index1];
+
+        uiManager.UpdateCharacterProfile(character);
+        uiManager.UpdateCharacterProfileSkill(character);
+    }
+    public void OnCharacterSelectedMoveCount2P(int index)
+    {
+        int index1 = index - CharacterStats.Instance.playerCharacters.Count;
+        if (index1 < 0 || index1 >= CharacterStats.Instance.characterList.Count)
+        {
+            uiManager.UpdateMoveCount(0);
+            return;
+        }
+        var character = CharacterStats.Instance.characterList[index1];
         uiManager.UpdateMoveCount(character.NowMoveCount);
     }
 

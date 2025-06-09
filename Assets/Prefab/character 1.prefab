@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4141925944930643250}
   - component: {fileID: -5074020689779194566}
   - component: {fileID: 5603390711221192010}
+  - component: {fileID: 7729087819119715423}
   m_Layer: 0
   m_Name: character 1
   m_TagString: Character
@@ -110,6 +111,7 @@ MonoBehaviour:
   moveRange: 5
   moveCount: 0
   highlightPrefab: {fileID: 7146173340283780072, guid: 2dee0d61832042e46b2ee6a471fa15fc, type: 3}
+  isShowMoveHighlights: 0
 --- !u!114 &4141925944930643250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,3 +174,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &7729087819119715423
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4344314745404087944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ed3c46ab3c8bf64e87f6a518370ec03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
