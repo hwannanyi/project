@@ -1,16 +1,35 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TestTools;
 public class CharacterForm : MonoBehaviour
 {
     public Sprite character;
     public SpriteRenderer spriteRenderer;
+    public Sprite blueTeam;
+    public Sprite redTeam;
+    public bool isTeamForm;
+    public GameObject parentObject;
+    public GameObject highlightEffect; // 인스펙터에서 할당
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
 
+    }
+
+    private void Awake()
+    {
+        StartCoroutine(TrySetCharacterData());
+    }
+
+    private IEnumerator TrySetCharacterData()
+    {
+        while (!CharacterStats.Instance.characters.Contains(parentObject))
+        {
+            yield return null; // 다음 프레임까지 대기
+        }
+
+        Characterform();
+        SetHighlight(false);
     }
 
     // Update is called once per frame
@@ -25,10 +44,41 @@ public class CharacterForm : MonoBehaviour
 
     public void Characterform()
     {
-        if (CharacterStats.Instance.characters.Contains(gameObject))
+        if (isTeamForm)
         {
-            int index = CharacterStats.Instance.characters.IndexOf(gameObject);
-            spriteRenderer.sprite = CharacterStats.Instance.characterList[index].characterillustration;
+            if (CharacterStats.Instance.characters.Contains(gameObject))
+            {
+                int index = CharacterStats.Instance.characters.IndexOf(gameObject);
+                if(CharacterStats.Instance.characterList[index].team == Team.team) 
+                {
+                    spriteRenderer.sprite = blueTeam;
+                }
+                else
+                {
+                    spriteRenderer.sprite = redTeam;
+                }
+
+            }
+            else
+            {
+                Debug.Log("실패");
+            }
         }
+        else
+        {
+            if (CharacterStats.Instance.characters.Contains(parentObject))
+            {
+                int index = CharacterStats.Instance.characters.IndexOf(parentObject);
+                spriteRenderer.sprite = CharacterStats.Instance.characterList[index].characterillustration;
+            }
+        }
+    }
+
+    public void SetHighlight(bool isOn)
+    {
+        if (isTeamForm)
+            return;
+        if (highlightEffect != null)
+        highlightEffect.SetActive(isOn);
     }
 }

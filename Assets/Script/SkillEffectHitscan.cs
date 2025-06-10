@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
-using UnityEngine;
-using UnityEngine.TextCore.Text;
-using static UnityEngine.GraphicsBuffer;
+﻿using UnityEngine;
+
 
 // 스킬 효과(투사체)를 관리하는 클래스
 public class SkillEffectHitscan : MonoBehaviour
@@ -25,6 +22,8 @@ public class SkillEffectHitscan : MonoBehaviour
 
     public bool isInitialized = false;
 
+    public SpriteRenderer spriteRenderer; // Inspector에서 할당하거나 GetComponent로 가져오기
+
     private void Awake()
     {
 
@@ -36,6 +35,12 @@ public class SkillEffectHitscan : MonoBehaviour
         range = skill.range;
         rotatingVisual.rotation = Quaternion.Euler(90f, 0, 0f);
         hasExitedPhase = false;
+
+        // 외형 변경
+        if (spriteRenderer != null && skill.SkillEffectIllustration != null)
+        {
+            spriteRenderer.sprite = skill.SkillEffectIllustration;
+        }
 
         if (skill.targeting && target != null)
         {
@@ -104,7 +109,7 @@ public class SkillEffectHitscan : MonoBehaviour
                 RotateVisual(direction);*/
 
         // 히트스캔은 위치 갱신만 하고, 이펙트는 곧 사라짐
-        Destroy(gameObject, 15); // 아주 짧게 남기기
+        Destroy(gameObject, 3); // 아주 짧게 남기기
     }
 
     void OnDestroy()

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: quake
   skillIcon: {fileID: -2073700193, guid: d2736e599297c954fabb954320e029fc, type: 3}
-  SkillEffectIllustration: {fileID: 21300000, guid: 0ed4d60afa2f43d4485494f2a4f96fff, type: 3}
+  SkillEffectIllustration: {fileID: 21300000, guid: 9ec939b811544dc46887223af40163df, type: 3}
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: 996504ae6dec45d428cf8f9a8938b2b4, type: 3}
   passive: 0
   skillTypes: 00000000
@@ -70,4 +70,4 @@ MonoBehaviour:
       BuffEffects: []
       CCEffects: []
   react: 2
-  reactTime: 0
+  reactTime: 4

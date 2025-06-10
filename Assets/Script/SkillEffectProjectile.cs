@@ -99,6 +99,7 @@ public class SkillEffectProjectile : MonoBehaviour
     public GameObject hitbox;
     public HitboxTile hitboxProject;
     private Vector3 direction;
+    public SpriteRenderer spriteRenderer;
 
 
     public void Initialize(SkillData skillData, Vector3 targetPos, GameObject casterObject, Stats character, GameObject target = null)
@@ -106,6 +107,12 @@ public class SkillEffectProjectile : MonoBehaviour
         skill = skillData;
         caster = casterObject;
         casterStats = character;
+
+        // 외형 변경
+        if (spriteRenderer != null && skill.SkillEffectIllustration != null)
+        {
+            spriteRenderer.sprite = skill.SkillEffectIllustration;
+        }
 
         if (skill.targeting && target != null)
         {

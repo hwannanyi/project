@@ -31,6 +31,13 @@ public class Stats
     public GameObject characterPrefab;
 
 
+    public GameObject highlightEffect; // 인스펙터에서 하이라이트 오브젝트 할당
+    public void SetHighlight(bool isOn)
+    {
+        if (highlightEffect != null)
+            highlightEffect.SetActive(isOn);
+    }
+
     public Stats(Character data, Vector3 charPosition, Quaternion charRotation, bool die, List<SkillData> usingSkill)
     {
         name = data.charactername;

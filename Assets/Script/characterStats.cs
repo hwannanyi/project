@@ -34,7 +34,7 @@ public class CharacterStats : MonoBehaviour
 
     void Awake()
     {
-        wave = 2;
+        wave = 1;
         uiManager.UpdateWaveCount(wave);
 
         if (Instance == null)
@@ -48,8 +48,8 @@ public class CharacterStats : MonoBehaviour
             DontDestroyOnLoad(gameObject);
 
         playerCharacters.Add("TonTonJung");
-        playerCharacters.Add("Deus");
-        playerCharacters.Add("JuInGong");
+        //playerCharacters.Add("Deus");
+        //playerCharacters.Add("JuInGong");
         playerCharacters.Add("ShellLin");
         EnemieCharacters.Add("melun");
         EnemieCharacters.Add("melunDago");
@@ -150,31 +150,90 @@ public class CharacterStats : MonoBehaviour
 
     public void Charactercreation()
     {
+        //임시
+        Vector3 playerStartPos = new Vector3(4, 0, 0); // 아군 시작 위치 (오른쪽)
+        Vector3 enemyStartPos = new Vector3(-6, 0, 0); // 적군 시작 위치 (왼쪽)
+        float yOffset = 1f; // 캐릭터 간 세로 간격
+
+        int playerIndex = 0;
+        int enemyIndex = 0;
+
+        //암사
         for (int i = 0; i < characterList.Count; i++)
         {
             GameObject CharacterObject = Instantiate(characterList[i].characterPrefab);
-            CharacterObject.name = characterList[i].name; // 캐릭터 이름 설정
+
+            CharacterObject.name = characterList[i].name;
             characters.Add(CharacterObject);
-            CharacterObject.transform.position = transform.position;
 
-            // 수정: 프리팹 원본 대신 씬 인스턴스를 Stats에 저장
-            characterList[i].characterPrefab = CharacterObject; // <-- 추가됨
-
-            // 수정: 캐릭터 리스트에 인스턴스 등록
-            CharacterStats.Instance.RegisterCharacter(CharacterObject, characterList[i]);
-            /*if (!characters.Contains(CharacterObject))
+            // 팀에 따라 위치 지정
+            if (characterList[i].team == Team.team)
             {
-                characterMap.Add(CharacterObject, characterList[i]); // <-- 수정 또는 추가됨
-            }*/
+                CharacterObject.transform.position = playerStartPos + new Vector3(0, 0, playerIndex * yOffset);
+                playerIndex++;
+            }
+            else if (characterList[i].team == Team.enemy)
+            {
+                CharacterObject.transform.position = enemyStartPos + new Vector3(0, 0, enemyIndex * yOffset);
+                enemyIndex++;
+            }
+            else
+            {
+                CharacterObject.transform.position = transform.position;
+            }
 
-            // 수정: CharacterStats의 characters 리스트에 인스턴스 등록
+            characterList[i].characterPrefab = CharacterObject;
+
+            Transform highlight = CharacterObject.transform.Find("HighlightEffect");
+            if (highlight != null)
+                characterList[i].highlightEffect = highlight.gameObject;
+            else
+                characterList[i].highlightEffect = null;
+
+            CharacterStats.Instance.RegisterCharacter(CharacterObject, characterList[i]);
+
             if (!CharacterStats.Instance.characters.Contains(CharacterObject))
             {
-                CharacterStats.Instance.characters.Add(CharacterObject); // <-- 추가됨
+                CharacterStats.Instance.characters.Add(CharacterObject);
             }
         }
         ProfileuiManager.AssignMiniprofileTargets();
         ProfileuiManager.AssignMiniprofileTargets2P();
+
+        /* for (int i = 0; i < characterList.Count; i++)
+         {
+             GameObject CharacterObject = Instantiate(characterList[i].characterPrefab);
+
+             CharacterObject.name = characterList[i].name; // 캐릭터 이름 설정
+             characters.Add(CharacterObject);
+             CharacterObject.transform.position = transform.position;
+
+             // 프리팹 원본 대신 씬 인스턴스를 Stats에 저장
+             characterList[i].characterPrefab = CharacterObject; // <-- 추가됨
+
+
+             // 하이라이트 오브젝트 연결 (자식 오브젝트 이름이 "HighlightEffect"라고 가정)
+             Transform highlight = CharacterObject.transform.Find("HighlightEffect");
+             if (highlight != null)
+                 characterList[i].highlightEffect = highlight.gameObject;
+             else
+                 characterList[i].highlightEffect = null; // 없으면 null
+
+             // 캐릭터 리스트에 인스턴스 등록
+             CharacterStats.Instance.RegisterCharacter(CharacterObject, characterList[i]);
+             *//*if (!characters.Contains(CharacterObject))
+             {
+                 characterMap.Add(CharacterObject, characterList[i]); // <-- 수정 또는 추가됨
+             }*//*
+
+             // 수정: CharacterStats의 characters 리스트에 인스턴스 등록
+             if (!CharacterStats.Instance.characters.Contains(CharacterObject))
+             {
+                 CharacterStats.Instance.characters.Add(CharacterObject); // <-- 추가됨
+             }
+         }
+         ProfileuiManager.AssignMiniprofileTargets();
+         ProfileuiManager.AssignMiniprofileTargets2P();*/
     }
 
     public Stats GetStats(GameObject obj)

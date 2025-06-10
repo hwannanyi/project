@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: w
   m_EditorClassIdentifier: 
   skillName: w
-  skillIcon: {fileID: 817463358, guid: 0f5854b920323934c8c25a4b2979001d, type: 3}
-  SkillEffectIllustration: {fileID: 21300000, guid: 23b63e3eb1db8614d94fd36ff137c86c, type: 3}
+  skillIcon: {fileID: 21300000, guid: 3cd21e6340737894b92c9313bd485b1b, type: 3}
+  SkillEffectIllustration: {fileID: 21300000, guid: 8dc5461ea90073942bb580f1b3f7b389, type: 3}
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
   passive: 0
   skillTypes: 00000000
@@ -70,4 +70,4 @@ MonoBehaviour:
       BuffEffects: []
       CCEffects: []
   react: 2
-  reactTime: 0
+  reactTime: 3

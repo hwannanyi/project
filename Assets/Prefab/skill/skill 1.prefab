@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: d1c1bfea4adf00f40902d66a315d1849, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -106,6 +106,7 @@ MonoBehaviour:
   rotatingVisual: {fileID: 83700010622626048}
   hitbox: {fileID: 6478507458708094152, guid: 6a4c9e45a832e684b970444b1b9f7ee9, type: 3}
   hitboxProject: {fileID: 0}
+  spriteRenderer: {fileID: 413142599655507594}
 --- !u!66 &8342079234020811833
 CompositeCollider2D:
   m_ObjectHideFlags: 0

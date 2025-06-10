@@ -10,6 +10,7 @@ public class CharacterSelection : MonoBehaviour
 {
     public static CharacterSelection Instance;
     public static int selectedCharacterIndex = -1; // 선택된 캐릭터 (-1: 선택 없음)
+    public static int prevSelectedIndex = -1; // 이전에 선택된 캐릭터 인덱스
     public CharacterUIManager uiManager;
 
 
@@ -38,6 +39,10 @@ public class CharacterSelection : MonoBehaviour
             return;
         }
         OnCharacterSelectedMoveCount(selectedCharacterIndex);
+        if (selectedCharacterIndex == -1 && prevSelectedIndex != -1)
+        {
+            CharacterStats.Instance.characterList[prevSelectedIndex].SetHighlight(true);
+        }
         
     }
 
@@ -45,13 +50,14 @@ public class CharacterSelection : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1)) SelectCharacter(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SelectCharacter(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectCharacter(2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) SelectCharacter(3);
-
+        //if (Input.GetKeyDown(KeyCode.Alpha3)) SelectCharacter(2);
+        //if (Input.GetKeyDown(KeyCode.Alpha4)) SelectCharacter(3);
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectCharacter2P(2);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) SelectCharacter2P(3);
         if (Input.GetKeyDown(KeyCode.Alpha5)) SelectCharacter2P(4);// 0
         if (Input.GetKeyDown(KeyCode.Alpha6)) SelectCharacter2P(5);// 1
-        if (Input.GetKeyDown(KeyCode.Alpha7)) SelectCharacter2P(6);// 2
-        if (Input.GetKeyDown(KeyCode.Alpha8)) SelectCharacter2P(7);// 3
+        //if (Input.GetKeyDown(KeyCode.Alpha7)) SelectCharacter2P(6);// 2
+        //if (Input.GetKeyDown(KeyCode.Alpha8)) SelectCharacter2P(7);// 3
     }
     public void SelectCharacter(int index)
     {
@@ -89,8 +95,18 @@ public class CharacterSelection : MonoBehaviour
             }
             if (CharacterStats.Instance.playerCharacters[index] != null && selectedCharacterIndex != index)
             {
-                
+                // 이전 캐릭터 하이라이트 끄기
+                if (prevSelectedIndex >= 0 && prevSelectedIndex < CharacterStats.Instance.characterList.Count)
+                {
+                    CharacterStats.Instance.characterList[prevSelectedIndex].SetHighlight(false);
+                }
+
                 selectedCharacterIndex = index;
+                prevSelectedIndex = index;
+
+                // 새 캐릭터 하이라이트 켜기
+                CharacterStats.Instance.characterList[selectedCharacterIndex].SetHighlight(true);
+
                 OnCharacterSelected(index);
                 uiManager.ProfileUIOn();
                 Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");
@@ -98,6 +114,8 @@ public class CharacterSelection : MonoBehaviour
             }
             else if (CharacterStats.Instance.playerCharacters[index] != null && selectedCharacterIndex == index)
             {
+                // 선택 해제 시 하이라이트 끄기
+                CharacterStats.Instance.characterList[selectedCharacterIndex].SetHighlight(false);
                 selectedCharacterIndex = -1;
                 uiManager.ProfileUIOn();
                 Debug.Log("캐릭선택취소");
@@ -144,16 +162,30 @@ public class CharacterSelection : MonoBehaviour
             }
             if (CharacterStats.Instance.EnemieCharacters[index1] != null && selectedCharacterIndex != index)
             {
+                // 이전 캐릭터 하이라이트 끄기
+                if (prevSelectedIndex >= 0 && prevSelectedIndex < CharacterStats.Instance.characterList.Count)
+                {
+                    CharacterStats.Instance.characterList[prevSelectedIndex].SetHighlight(false);
+                }
 
                 selectedCharacterIndex = index;
-                OnCharacterSelected2P(index1);
+                prevSelectedIndex = index;
+
+                // 새 캐릭터 하이라이트 켜기
+                CharacterStats.Instance.characterList[selectedCharacterIndex].SetHighlight(true);
+
+                OnCharacterSelected2P(index);
                 uiManager.ProfileUIOn();
                 Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.EnemieCharacters[index1]}");
 
             }
             else if (CharacterStats.Instance.EnemieCharacters[index1] != null && selectedCharacterIndex == index)
             {
+                // 선택 해제 시 하이라이트 끄기
+                CharacterStats.Instance.characterList[selectedCharacterIndex].SetHighlight(false);
                 selectedCharacterIndex = -1;
+                prevSelectedIndex = -1;
+
                 Debug.Log("캐릭선택취소");
             }
             else
@@ -217,5 +249,4 @@ public class CharacterSelection : MonoBehaviour
         var character = CharacterStats.Instance.characterList[index1];
         uiManager.UpdateMoveCount(character.NowMoveCount);
     }
-
 }

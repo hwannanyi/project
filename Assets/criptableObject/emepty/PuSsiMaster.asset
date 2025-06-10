@@ -22,7 +22,9 @@ MonoBehaviour:
   moveCount: 8
   trun: 10
   team: 1
-  useSkill: []
-  characterillustration: {fileID: 21300000, guid: 23b63e3eb1db8614d94fd36ff137c86c, type: 3}
-  characterProfileillustration: {fileID: 21300000, guid: 23b63e3eb1db8614d94fd36ff137c86c, type: 3}
+  useSkill:
+  - {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
+  - {fileID: 11400000, guid: 3faea8acad35ac9449d03f5e22db5dc7, type: 2}
+  characterillustration: {fileID: 21300000, guid: 4e02d8d650a2b60429df1902bf562cfb, type: 3}
+  characterProfileillustration: {fileID: 21300000, guid: 48b0b642eb9ea4f478f87f0c4db58470, type: 3}
   characterPrefab: {fileID: 4344314745404087944, guid: b350271128cd3ca489c78af4523dd393, type: 3}

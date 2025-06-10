@@ -24,6 +24,7 @@ public class CharacterMovement : MonoBehaviour
     public GameObject highlightPrefab; // 하이라이트 프리팹
     private List<GameObject> highlights = new List<GameObject>();
     public bool isShowMoveHighlights;
+    public SpriteRenderer spriteRenderer;
 
     void Start()
     {  
@@ -34,29 +35,31 @@ public class CharacterMovement : MonoBehaviour
     void Awake()
     {
         isShowMoveHighlights = false; // 초기값 설정
+        StartCoroutine(TrySetCharacterData());
     }
 
 
+    private IEnumerator TrySetCharacterData()
+    {
+        while (!CharacterStats.Instance.characters.Contains(gameObject))
+        {
+            yield return null; // 다음 프레임까지 대기
+        }
+        int index = CharacterStats.Instance.characters.IndexOf(gameObject);
+        characterNumber = index;
+        moveSpeed = CharacterStats.Instance.characterList[index].speed;
+        moveRange = CharacterStats.Instance.characterList[index].movespeed;
+        CharacterStats.Instance.characterList[index].NowMoveCount = CharacterStats.Instance.characterList[index].moveCount;
+
+    }
+
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.Alpha0))
-        {
-            if (CharacterStats.Instance.characters.Contains(gameObject))
-            {
-                int index = CharacterStats.Instance.characters.IndexOf(gameObject);
-                characterNumber = index;
-                moveSpeed = CharacterStats.Instance.characterList[index].speed;
-                moveRange = CharacterStats.Instance.characterList[index].movespeed;
-                CharacterStats.Instance.characterList[index].NowMoveCount = CharacterStats.Instance.characterList[index].moveCount;
-
-            }
-        }
         //UI클릭시 클릭 무시
         if (EventSystem.current.IsPointerOverGameObject())
             return;
         int indexnumber = CharacterSelection.selectedCharacterIndex;
-        if(indexnumber < 0 || indexnumber >= CharacterStats.Instance.characters.Count || SkillManager.Instance.selectedSkill != null || SkillManager.Instance.isSkillReadyFinal)
+        if(indexnumber < 0 || indexnumber >= CharacterStats.Instance.characters.Count || SkillManager.Instance.selectedSkill != null || (SkillManager.Instance.isSkillReadyFinal && !TurnManager.Instance.IsInReactPhase()))
         {
             ClearHighlights(); // 선택 해제 시 하이라이트 제거
             return; // 유효하지 않은 인덱스인 경우 아무 작업도 하지 않음
@@ -64,6 +67,29 @@ public class CharacterMovement : MonoBehaviour
         int nowmoveCount = CharacterStats.Instance.characterList[indexnumber].NowMoveCount;
         if (characterNumber == indexnumber)
         {
+            // --- [추가] 마우스 방향에 따라 x축 반전 ---
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // y = 0 기준 평면
+            float enter;
+            Vector3 mousePosition = transform.position;
+            if (groundPlane.Raycast(ray, out enter))
+            {
+                mousePosition = ray.GetPoint(enter);
+                mousePosition.y = 0f;
+            }
+            if (!isMoving)
+            {
+                if (mousePosition.x > transform.position.x)
+                {
+                    spriteRenderer.flipX = false;
+                }
+                else if (mousePosition.x < transform.position.x)
+                {
+                    spriteRenderer.flipX = true;
+                }
+            }
+            //
+
             if (SkillManager.Instance.waitingForResponse == true)
             {
                 return;
@@ -104,10 +130,10 @@ public class CharacterMovement : MonoBehaviour
                 }*/
 
                 // [수정됨] Perspective 카메라 대응: 마우스 위치를 정확히 가져오기 위한 Raycast 방식
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                /*Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // y = 0 기준 평면
                 float enter;
-                Vector3 mousePosition = transform.position;
+                Vector3 mousePosition = transform.position;*/
                 if (groundPlane.Raycast(ray, out enter))
                 {
                     mousePosition = ray.GetPoint(enter);
@@ -155,6 +181,18 @@ public class CharacterMovement : MonoBehaviour
     private IEnumerator MoveToTarget()
     {
         isMoving = true;  // 이동 중 상태로 설정
+
+        // 이동 방향 계산 및 x축 반전 처리
+        Vector3 moveDir = targetPosition - transform.position;
+        if (moveDir.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (moveDir.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
+        // 위/아래 이동은 x축 반전 없음
 
         // 목표 위치로 이동할 때까지
         while (Vector3.Distance(transform.position, targetPosition) > 0.05f && !isBlocked)

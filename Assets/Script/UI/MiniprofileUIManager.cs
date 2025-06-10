@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEditor.Experimental.GraphView;
 
 public class MiniprofileUIManager : MonoBehaviour
 {
@@ -18,7 +17,7 @@ public class MiniprofileUIManager : MonoBehaviour
     public List<TextMeshProUGUI> characterProfileSkillTextListUI;
     public Color cooldownColor = new();
     public Color nompdownColor = new();
-
+    public Color normalColor = new();
     [Header("스킬")]
     public List<Image> characterProfileSkillListUI;
 
@@ -52,7 +51,7 @@ public class MiniprofileUIManager : MonoBehaviour
             characterProfileUI.enabled = true;
             if (character.isdie)
             {
-                characterProfileUI.color = new Color(0.5f, 0.5f, 0.5f, 1f);  // 죽은 캐릭터는 반투명 처리
+                characterProfileUI.color = new Color(0.7f, 0.7f, 0.7f, 1f);  // 죽은 캐릭터는 반투명 처리
             }
         }
         else
@@ -64,11 +63,6 @@ public class MiniprofileUIManager : MonoBehaviour
     public void UpdateCharacterProfileSkill(Stats character)
     {
         if (character == null) return; // 캐릭터가 null이면 아무것도 하지 않음
-
-        // 쿨타임 중일 때 적용할 색상
-
-        Color normalColor = new Color(0f, 0f, 0f, 1f); ;
-
 
         // 스킬 슬롯 개수만큼 반복
         for (int i = 0; i < characterProfileSkillListUI.Count; i++)
@@ -93,7 +87,7 @@ public class MiniprofileUIManager : MonoBehaviour
             }
             else // 스킬이 없는 슬롯
             {
-                skillImage.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+                skillImage.color = new Color(0f, 0f, 0f, 0f);
                 skillText.text = null;
             }
             skillImage.enabled = true; // 아이콘 활성화

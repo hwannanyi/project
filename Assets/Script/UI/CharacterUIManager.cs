@@ -2,7 +2,6 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
-using UnityEditor.Experimental.GraphView;
 
 public class CharacterUIManager : MonoBehaviour
 {

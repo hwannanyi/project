@@ -146,6 +146,7 @@ public class TurnManager : MonoBehaviour
 
     public void ExitReactPhase()
     {
+        //CharacterSelection.prevSelectedIndex = CharacterSelection.selectedCharacterIndex;
         CharacterSelection.selectedCharacterIndex = -1;
 
         if (currentPhase == TurnPhase.ReactPhase_PlayerResponding)
@@ -182,6 +183,20 @@ public class TurnManager : MonoBehaviour
                 {
                     skill.ReduceCooldown(1);
                 }
+            }
+        }
+        foreach (var character in CharacterStats.Instance.characterList)
+        {
+            if (character.NowMoveCount < 8)
+            {
+                character.NowMoveCount += 1;
+            }
+        }
+        foreach (var character in CharacterStats.Instance.characterList)
+        {
+            if (character.mp < 10)
+            {
+                character.mp += 1;
             }
         }
         Debug.Log($"[TurnManager] 턴 전환됨: 현재 턴 = {currentPhase}");

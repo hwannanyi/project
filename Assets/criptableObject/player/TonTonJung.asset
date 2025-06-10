@@ -28,6 +28,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3685eee51b65a6647b47f28540780771, type: 2}
   - {fileID: 11400000, guid: 3faea8acad35ac9449d03f5e22db5dc7, type: 2}
   - {fileID: 0}
-  characterillustration: {fileID: 21300000, guid: 0ed4d60afa2f43d4485494f2a4f96fff, type: 3}
-  characterProfileillustration: {fileID: 1321304671, guid: cfdd6bc0cf2fde74489ab8a1aad0a64a, type: 3}
+  characterillustration: {fileID: 21300000, guid: efdbf385d8c261b4cb75ed2d689a6cda, type: 3}
+  characterProfileillustration: {fileID: 21300000, guid: 5c86266b553d3e4468a6b5b78fe3269a, type: 3}
   characterPrefab: {fileID: 4344314745404087944, guid: b350271128cd3ca489c78af4523dd393, type: 3}

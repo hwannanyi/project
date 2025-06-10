@@ -1,12 +1,6 @@
-using Microsoft.Win32.SafeHandles;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using TMPro;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.TextCore.Text;
 
 
 public class SkillManager : MonoBehaviour
@@ -17,6 +11,7 @@ public class SkillManager : MonoBehaviour
     //public GameObject skillPrefab; // 생성할 스킬 프리팹 미사용
     public ButtonHandler uiManager;
     public CharacterUIManager ProfileuiManager; // 캐릭터 프로필 UI 매니저
+    public ReactTimeUI reactTimeUIManager; // 대응시간 UI 매니저
 
 
     ///선택한 스킬이 일시적으로 저장되는곳
@@ -57,6 +52,8 @@ public class SkillManager : MonoBehaviour
     private Vector3 pendingReactTargetPosition;
     private GameObject pendingReactTargetUnit = null;
 
+
+    public GameObject targetIndicator; // 타겟 선택 UI 오브젝트
 
 
     private GameObject selectedTargetUnit = null;
@@ -244,7 +241,16 @@ public class SkillManager : MonoBehaviour
             }
 
         }
-        
+
+
+        if (Skillaction != null && Skillaction.selectedTargetUnit != null)
+        {
+            targetIndicator.SetActive(true);
+        }
+        else
+        {
+            targetIndicator.SetActive(false);
+        }
 
     }
 
@@ -983,7 +989,7 @@ Vector3[] directions = {
     /// </summary>
     public void ExecuteSingleSkillWithReactionCheck()
     {
-        isSkillReadyFinal = false;
+        
         if (Skillaction == null || Skillaction.selectedSkill == null)
         {
             Debug.Log("[SkillManager] 실행할 스킬이 없습니다.");
@@ -1002,12 +1008,12 @@ Vector3[] directions = {
         {
             Debug.Log($"[SkillManager] 대응 가능한 스킬 발견: {skill.skillName} - 대응단계 진입");
             hasMovedInReact = true;
-/*            validReactTargets = SimulateSkillHit.Instance.GetHitTargets(
-            skill,
-    Skillaction.selectedAoeCenterPosition,
-    Skillaction.selectedTargetUnit != null ? Skillaction.selectedTargetUnit.transform.position : Skillaction.selectedTargetPosition,
-    Skillaction.selectedCaster
-);*/
+            /*            validReactTargets = SimulateSkillHit.Instance.GetHitTargets(
+                        skill,
+                Skillaction.selectedAoeCenterPosition,
+                Skillaction.selectedTargetUnit != null ? Skillaction.selectedTargetUnit.transform.position : Skillaction.selectedTargetPosition,
+                Skillaction.selectedCaster
+            );*/
 
             /*
                         // 추가 조건: 타겟팅 스킬일 때만 메인 타겟 저장
@@ -1020,17 +1026,40 @@ Vector3[] directions = {
                             validMainTarget = null;
                         }*/
 
+
             TurnManager.Instance.EnterReactPhase();
             ReactManager.Instance.EnterResponsePhase(skill, Skillaction.selectedCaster);
             isWaitingForReaction = true;
+
+            // 대응시간 UI 시작
+            if (reactTimeUIManager != null)
+                reactTimeUIManager.SetReactTime(skill.reactTime); // 메서드명 변경
+
+            // reactTime만큼 기다렸다가 스킬 실행
+            float waitTime = skill.reactTime;
+            Instance.StartCoroutine(ExecuteSkillAfterDelay(waitTime));
+            return; // 대응단계에서는 return
         }
 
         //스킬 실행
+        isSkillReadyFinal = false;
         ExecuteSkill(Skillaction);
         Skillaction = null;
         isWaitingForReaction = false;
 
         Debug.Log("[SkillManager] 스킬 실행 완료");
+    }
+
+    // 대응시간 코루틴
+    private System.Collections.IEnumerator ExecuteSkillAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        // 대응시간이 끝난 뒤 스킬 실행
+        isSkillReadyFinal = false;
+        ExecuteSkill(Skillaction);
+        Skillaction = null;
+        isWaitingForReaction = false;
+        Debug.Log("[SkillManager] 스킬 실행 완료 (reactTime 대기 후)");
     }
 
 

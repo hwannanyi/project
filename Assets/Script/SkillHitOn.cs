@@ -108,6 +108,7 @@ public class SkillHitOn : MonoBehaviour
                     int value = Mathf.RoundToInt(baseValue);
                     ValueCalculation(ref value, Target.self);
                     targetStats.hp += value;
+                    DamageText.Instance.ShowDamage(target.transform.position + Vector3.up * 1.5f, value, true);
                     Debug.Log($"[Hit] {targetStats.name}이(가) {value} 회복을 함. 남은 HP: {targetStats.hp}");
                 }
             }
@@ -121,6 +122,7 @@ public class SkillHitOn : MonoBehaviour
                     int value = Mathf.RoundToInt(baseValue);
                     ValueCalculation(ref value, Target.team);
                     targetStats.hp += value;
+                    DamageText.Instance.ShowDamage(target.transform.position + Vector3.up * 1.5f, value, true);
                     Debug.Log($"[Hit] {targetStats.name}이(가) {value} 회복을 함. 남은 HP: {targetStats.hp}");
                 }
             }
@@ -134,6 +136,9 @@ public class SkillHitOn : MonoBehaviour
                     int value = Mathf.RoundToInt(baseValue);
                     ValueCalculation(ref value, Target.enemy);
                     targetStats.hp -= value;
+                    // 예시: 캐릭터가 데미지/회복을 받을 때
+                    DamageText.Instance.ShowDamage(target.transform.position + Vector3.up * 1.5f, value, false);
+
                     Debug.Log($"[Hit] {targetStats.name}이(가) {value} 피해를 입음. 남은 HP: {targetStats.hp}");
                     CheckDeathOnly(target);
                 }

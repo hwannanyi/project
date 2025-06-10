@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: barsa
   m_EditorClassIdentifier: 
   skillName: barsa
-  skillIcon: {fileID: -398341292, guid: d2736e599297c954fabb954320e029fc, type: 3}
-  SkillEffectIllustration: {fileID: 21300000, guid: e8fce6869195caf4b922b75a9ffb1cdb, type: 3}
+  skillIcon: {fileID: 21300000, guid: abc68fc252f01744a950181ca3ad5cc2, type: 3}
+  SkillEffectIllustration: {fileID: 21300000, guid: 43ac82573ec88df49ab10820bd76d9e4, type: 3}
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: 996504ae6dec45d428cf8f9a8938b2b4, type: 3}
   passive: 0
   skillTypes: 00000000
@@ -70,4 +70,4 @@ MonoBehaviour:
       BuffEffects: []
       CCEffects: []
   react: 2
-  reactTime: 0
+  reactTime: 1
