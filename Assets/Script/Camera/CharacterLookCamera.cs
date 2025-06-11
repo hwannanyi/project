@@ -9,6 +9,18 @@ public class CharacterLookCamera : MonoBehaviour
         CameraForwardInverted, //* 반전 시켜 보기
     }
 
+    public SpriteRenderer spriteRenderer;
+
+    void Update()
+    {
+        float camYaw = CameraZoom.NormalizedYaw;
+        // 카메라가 ±90도 넘으면 x축 반전, 아니면 원래대로
+        bool needFlip = Mathf.Abs(camYaw) > 90f;
+        Vector3 scale = transform.localScale;
+        scale.x = Mathf.Abs(scale.x) * (needFlip ? -1 : 1);
+        transform.localScale = scale;
+    }
+
     [SerializeField] private Mode mode;
     private void LateUpdate()
     {
@@ -34,5 +46,7 @@ public class CharacterLookCamera : MonoBehaviour
 
                 break;
         }
+
+
     }
 }

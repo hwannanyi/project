@@ -12,10 +12,11 @@ public class CharacterSelection : MonoBehaviour
     public static int selectedCharacterIndex = -1; // 선택된 캐릭터 (-1: 선택 없음)
     public static int prevSelectedIndex = -1; // 이전에 선택된 캐릭터 인덱스
     public CharacterUIManager uiManager;
-
+    public SkillManager skillManager;
 
     void Awake()
     {
+        skillManager = GetComponent<SkillManager>();
         // 싱글턴 패턴 적용 (중복 방지)
         if (Instance == null)
         {
@@ -32,6 +33,7 @@ public class CharacterSelection : MonoBehaviour
     //  1, 2, 3 키 입력으로 캐릭터 선택
     void Update()
     {
+        if (CameraZoom.isControlMode) return;
         HandleCharacterSelection();
         if(selectedCharacterIndex >= CharacterStats.Instance.playerCharacters.Count)
         {
@@ -227,7 +229,7 @@ public class CharacterSelection : MonoBehaviour
 
     public void OnCharacterSelected2P(int index)
     {
-        int index1 = index - CharacterStats.Instance.playerCharacters.Count;
+        int index1 = index;// - CharacterStats.Instance.playerCharacters.Count;
         if (index1 < 0 || index1 >= CharacterStats.Instance.characterList.Count)
         {
             Debug.LogError("잘못된 캐릭터 인덱스입니다.");

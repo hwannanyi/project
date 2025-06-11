@@ -239,7 +239,7 @@ MonoBehaviour:
   blueTeam: {fileID: 21300000, guid: 0ed4d60afa2f43d4485494f2a4f96fff, type: 3}
   redTeam: {fileID: 21300000, guid: 23b63e3eb1db8614d94fd36ff137c86c, type: 3}
   isTeamForm: 1
-  parentObject: {fileID: 0}
+  parentObject: {fileID: 4344314745404087944}
   highlightEffect: {fileID: 7146173340283780072, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
 --- !u!65 &-2257571768671622552
 BoxCollider:
@@ -346,6 +346,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45181f2cc32f71c4294b159de92bfe12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 8694669764875988480}
   mode: 2
 --- !u!1001 &5525901985616031106
 PrefabInstance:

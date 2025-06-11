@@ -124,6 +124,7 @@ public class SkillManager : MonoBehaviour
 
     void Update()
     {
+        if (CameraZoom.isControlMode) return;
         if (Input.GetKeyDown(KeyCode.Q))
         {
             PrepareSkillCast(0); // 1. 스킬 선택 (index 0)
