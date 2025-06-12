@@ -46,7 +46,7 @@ public class SkillEffectHitscan : MonoBehaviour
         {
             targetUnit = target;
             transform.position = target.transform.position;
-            startPosition = transform.position;
+            startPosition = target.transform.position;
             targetPosition = target.transform.position;
         }
         else

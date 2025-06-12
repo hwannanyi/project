@@ -109,6 +109,13 @@ public class CharacterUIManager : MonoBehaviour
         }
     }
 
+    public void ProfileUpdate(Stats character)
+    {
+        UpdateCharacterProfile(character);
+        UpdateCharacterProfileSkill(character);
+        UpdateMoveCount(character.NowMoveCount);
+    }
+
     public void ProfileUIOff()
     {
         ProfileUI.SetActive(false);
@@ -167,4 +174,14 @@ public class CharacterUIManager : MonoBehaviour
         }
     }
 
+    public void UpdateProfileUIBySelection()
+    {
+        bool isActive = CharacterSelection.selectedCharacterIndex != -1;
+
+        // ProfileUI의 모든 자식 오브젝트 활성/비활성화
+        foreach (Transform child in ProfileUI.transform)
+        {
+            child.gameObject.SetActive(isActive);
+        }
+    }
 }

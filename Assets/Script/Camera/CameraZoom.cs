@@ -38,7 +38,7 @@ public class CameraZoom : MonoBehaviour
         Vector3 angles = transform.eulerAngles;
         pitch = angles.x;
         yaw = angles.y;
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()
@@ -47,11 +47,12 @@ public class CameraZoom : MonoBehaviour
         // C키로 카메라 조정 모드 토글
         if (Input.GetKeyDown(KeyCode.C))
         {
-            isControlMode = !isControlMode;
-            Cursor.lockState = isControlMode ? CursorLockMode.Locked : CursorLockMode.None;
-            Cursor.visible = !isControlMode;
+            CameraMoveMode();
         }
-
+        if(Input.GetMouseButtonDown(1) && isControlMode)
+        {
+            CameraMoveMode();
+        }
         if (!isControlMode) return;
 
         // 마우스 회전
@@ -95,5 +96,12 @@ public class CameraZoom : MonoBehaviour
             cam.fieldOfView -= scroll * zoomSpeed;
             cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, minFOV, maxFOV);
         }
+    }
+
+    public void CameraMoveMode()
+    {
+        isControlMode = !isControlMode;
+        Cursor.lockState = isControlMode ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !isControlMode;
     }
 }

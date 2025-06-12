@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
+using static UnityEditor.PlayerSettings;
+using UnityEditor;
 
 public class SkillRangeVisualizer : MonoBehaviour
 {
@@ -28,8 +30,20 @@ public class SkillRangeVisualizer : MonoBehaviour
     //마우스 좌표 저장
     private Vector3 prevMouseWorldTile = Vector3.positiveInfinity;
 
+    //스킬 유형 표시
+    public Sprite ProjectileLine;
+    public Sprite projectileParabola;
+    public Sprite whiteTile;
+
+    public SkillManager skillManager;
+
+    public GameObject maintarget;
+    public SkillSave skillSave;
+
     void Awake()
     {
+        skillManager = GetComponent<SkillManager>();
+        skillSave = GetComponent<SkillSave>();
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -44,11 +58,25 @@ public class SkillRangeVisualizer : MonoBehaviour
             obj.SetActive(false);
             rangePool.Enqueue(obj);
         }
+        // areaPool도 미리 생성
+        for (int i = 0; i < areaPoolSize; i++)
+        {
+            GameObject obj = Instantiate(areaHighlightPrefab, transform);
+            obj.SetActive(false);
+            areaPool.Enqueue(obj);
+        }
     }
 
     void Update()
     {
-        if (isSkillRangeActive && !SkillManager.Instance.isSkillReadyFinal)
+        // 타겟팅 스킬이고, 스킬 준비가 끝났으면 타겟 위치로 범위 표시
+        if (skillSave.Skillaction != null && isSkillRangeActive && skillManager.isSkillReadyFinal)
+        {
+            if(skillSave.Skillaction.selectedSkill.targeting)
+            ShowRectSkillRangeByTarget(maintarget, Xaoe, Yaoe);
+        }
+
+        if (isSkillRangeActive && !skillManager.isSkillReadyFinal)
         {
             Vector3 mouseWorldTile = GetMouseTileCenterPosition(); // 마우스의 월드 타일 중심 좌표
             if (mouseWorldTile != prevMouseWorldTile)
@@ -58,7 +86,7 @@ public class SkillRangeVisualizer : MonoBehaviour
             }
         }
 
-        if (isNonTargetProjectileMode && !SkillManager.Instance.isSkillReadyFinal)
+        if (isNonTargetProjectileMode && !skillManager.isSkillReadyFinal)
         {
             Vector3 mouseWorldTile = GetMouseTileCenterPosition(); // 마우스의 월드 타일 중심 좌표
             if (mouseWorldTile != prevMouseWorldTile)
@@ -74,6 +102,11 @@ public class SkillRangeVisualizer : MonoBehaviour
     public void ShowNonTargetProjectileRange(Vector3 casterPosition, float Xaoe, float Yaoe, float range)
     {
         HideAreaSkillRange();
+
+
+
+
+
 
         // 1. 마우스 위치를 월드 좌표로 변환
         Vector3 mouseWorld = GetMouseTileCenterPosition();
@@ -117,11 +150,24 @@ public class SkillRangeVisualizer : MonoBehaviour
         }
 
         // 5. 하이라이트 표시 (areaHighlightPrefab 사용)
+        // mainDir에 따라 Z축 회전 각도 결정
+        float angle = 0f;
+        if (mainDir == Vector3.forward) angle = 90f;
+        else if (mainDir == Vector3.right) angle = 0f;
+        else if (mainDir == Vector3.back) angle = -90;
+        else if (mainDir == Vector3.left) angle = 180f;
+
         foreach (var pos in tiles)
         {
             GameObject highlight = GetFromAreaPool();
+            // SpriteRenderer 교체
+            var sr = highlight.GetComponentInChildren<SpriteRenderer>();
+            if (sr != null && ProjectileLine != null)
+            {
+                sr.sprite = ProjectileLine;
+            }
             highlight.transform.position = pos;
-            highlight.transform.rotation = Quaternion.Euler(90, 0, 0);
+            highlight.transform.rotation = Quaternion.Euler(90, 0, angle);
             highlight.SetActive(true);
             activeAreaHighlights.Add(highlight);
         }
@@ -241,6 +287,16 @@ public class SkillRangeVisualizer : MonoBehaviour
         obj.SetActive(false);
         return obj;
     }
+    // areaPool에서 오브젝트 가져오기
+    private GameObject GetFromAreaPool()
+    {
+            if (areaPool.Count > 0)
+                return areaPool.Dequeue();
+            GameObject obj = Instantiate(areaHighlightPrefab, transform);
+            obj.SetActive(false);
+            return obj;
+    }
+
     // 월드 좌표를 타일 중심으로 변환
     private Vector3 GetMouseTileCenterPosition()
     {
@@ -310,21 +366,47 @@ public class SkillRangeVisualizer : MonoBehaviour
         }
     }
 
-    // areaPool에서 오브젝트 가져오기
-    private GameObject GetFromAreaPool()
+    //타겟팅 스킬 범위의 타겟추적
+    public void ShowRectSkillRangeByTarget(GameObject target, float Xaoe, float Yaoe)
     {
-        if (areaPool.Count > 0)
-            return areaPool.Dequeue();
-        GameObject obj = Instantiate(areaHighlightPrefab, transform);
-        obj.SetActive(false);
-        return obj;
+        if (target == null) return;
+
+        HideAreaSkillRange();
+
+        // 타겟의 위치를 타일 중심으로 스냅
+        Vector3 targetPos = target.transform.position;
+        Vector3 tileCenter = new Vector3(
+            Mathf.Floor(targetPos.x) + 0.5f,
+            targetPos.y,
+            Mathf.Floor(targetPos.z) + 0.5f
+        );
+
+        // 사각형 범위 타일 구하기
+        var tiles = GetRectAreaTiles(tileCenter, Xaoe, Yaoe);
+
+        // 하이라이트 표시
+        foreach (var pos in tiles)
+        {
+            GameObject highlight = GetFromAreaPool();
+            highlight.transform.position = pos;
+            highlight.transform.rotation = Quaternion.Euler(90, 0, 0);
+            highlight.SetActive(true);
+            activeAreaHighlights.Add(highlight);
+        }
     }
+
 
     // 스킬 범위 하이라이트 숨기기
     public void HideAreaSkillRange()
     {
         foreach (var obj in activeAreaHighlights)
         {
+            // 비활성화 전에 Sprite를 whiteTile로 변경
+            var sr = obj.GetComponentInChildren<SpriteRenderer>();
+            if (sr != null && whiteTile != null)
+            {
+                sr.sprite = whiteTile;
+            }
             obj.SetActive(false);
             areaPool.Enqueue(obj);
         }
@@ -351,6 +433,13 @@ public class SkillRangeVisualizer : MonoBehaviour
         Xaoe = xRange;
         Yaoe = yRange;
         isSkillRangeActive = true;
+    }
+
+    // 타겟팅 스킬의 타겟 결정
+    public void StartSkillTargetRangePreview(GameObject target)
+    {
+        maintarget = target;
+
     }
 
     public void StartNonTargetProjectileRange(Vector3 casterPos, float xAoe, float yAoe, float skillRange)

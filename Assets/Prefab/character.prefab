@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 2057510401982273238}
   - component: {fileID: 8694669764875988480}
   - component: {fileID: 5723915232967125904}
+  - component: {fileID: 3675397492612416123}
+  - component: {fileID: 8509678210191685441}
   m_Layer: 0
   m_Name: UI_17
   m_TagString: Untagged
@@ -56,7 +58,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: 9b7f2ebc907f503488d72a23761c911a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -76,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 0ed4d60afa2f43d4485494f2a4f96fff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -107,6 +109,35 @@ MonoBehaviour:
   isTeamForm: 0
   parentObject: {fileID: 4344314745404087944}
   highlightEffect: {fileID: 0}
+--- !u!114 &3675397492612416123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3169559077108412857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3afcc64728ea80c41aa4b8d14e16f0fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  color: {r: 1, g: 0.55620337, b: 0, a: 1}
+  outlineSize: 0
+--- !u!114 &8509678210191685441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3169559077108412857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0d85f7ee022d814aa5b070fe339da31, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterForm: {fileID: 4141925944930643250}
+  outline: {fileID: 0}
+  outlineSize: 3
 --- !u!1 &4344314745404087944
 GameObject:
   m_ObjectHideFlags: 0
@@ -347,6 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 8694669764875988480}
+  norotate: 0
   mode: 2
 --- !u!1001 &5525901985616031106
 PrefabInstance:
@@ -395,6 +427,18 @@ PrefabInstance:
     - target: {fileID: 2273953605623041967, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574404389363864771, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574404389363864771, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574404389363864771, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
+      propertyPath: m_Color.r
+      value: 0.52875423
       objectReference: {fileID: 0}
     - target: {fileID: 2574404389363864771, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
       propertyPath: m_SortingOrder

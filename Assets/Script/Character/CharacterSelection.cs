@@ -11,11 +11,15 @@ public class CharacterSelection : MonoBehaviour
     public static CharacterSelection Instance;
     public static int selectedCharacterIndex = -1; // 선택된 캐릭터 (-1: 선택 없음)
     public static int prevSelectedIndex = -1; // 이전에 선택된 캐릭터 인덱스
-    public CharacterUIManager uiManager;
+
+    public CharacterUIManager characterUIManager;
     public SkillManager skillManager;
 
+    public GameObject selectedCharacter;
+    public CharacterStats characterStats;
     void Awake()
     {
+        characterStats = GetComponent<CharacterStats>();
         skillManager = GetComponent<SkillManager>();
         // 싱글턴 패턴 적용 (중복 방지)
         if (Instance == null)
@@ -35,12 +39,14 @@ public class CharacterSelection : MonoBehaviour
     {
         if (CameraZoom.isControlMode) return;
         HandleCharacterSelection();
-        if(selectedCharacterIndex >= CharacterStats.Instance.playerCharacters.Count)
+
+       
+        if (selectedCharacterIndex >= CharacterStats.Instance.playerCharacters.Count)
         {
             OnCharacterSelectedMoveCount2P(selectedCharacterIndex);
             return;
         }
-        OnCharacterSelectedMoveCount(selectedCharacterIndex);
+        OnCharacterSelectedMoveCount(selectedCharacterIndex); 
         if (selectedCharacterIndex == -1 && prevSelectedIndex != -1)
         {
             CharacterStats.Instance.characterList[prevSelectedIndex].SetHighlight(true);
@@ -110,7 +116,8 @@ public class CharacterSelection : MonoBehaviour
                 CharacterStats.Instance.characterList[selectedCharacterIndex].SetHighlight(true);
 
                 OnCharacterSelected(index);
-                uiManager.ProfileUIOn();
+                //characterUIManager.ProfileUIOn();
+                //characterUIManager.UpdateProfileUIBySelection();
                 Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");
 
             }
@@ -119,7 +126,7 @@ public class CharacterSelection : MonoBehaviour
                 // 선택 해제 시 하이라이트 끄기
                 CharacterStats.Instance.characterList[selectedCharacterIndex].SetHighlight(false);
                 selectedCharacterIndex = -1;
-                uiManager.ProfileUIOn();
+                //characterUIManager.ProfileUIOn();
                 Debug.Log("캐릭선택취소");
             }
             else
@@ -177,7 +184,8 @@ public class CharacterSelection : MonoBehaviour
                 CharacterStats.Instance.characterList[selectedCharacterIndex].SetHighlight(true);
 
                 OnCharacterSelected2P(index);
-                uiManager.ProfileUIOn();
+                //characterUIManager.ProfileUIOn();
+                //characterUIManager.UpdateProfileUIBySelection();
                 Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.EnemieCharacters[index1]}");
 
             }
@@ -210,19 +218,19 @@ public class CharacterSelection : MonoBehaviour
         }
         var character = CharacterStats.Instance.characterList[index];
         
-        uiManager.UpdateCharacterProfile(character);
-        uiManager.UpdateCharacterProfileSkill(character);
+        characterUIManager.UpdateCharacterProfile(character);
+        characterUIManager.UpdateCharacterProfileSkill(character);
     }
 
     public void OnCharacterSelectedMoveCount(int index)
     {
         if (index < 0 || index >= CharacterStats.Instance.characterList.Count)
         {
-            uiManager.UpdateMoveCount(0);
+            characterUIManager.UpdateMoveCount(0);
             return;
         }
         var character = CharacterStats.Instance.characterList[index];
-        uiManager.UpdateMoveCount(character.NowMoveCount);
+        characterUIManager.UpdateMoveCount(character.NowMoveCount);
     }
 
 
@@ -237,18 +245,18 @@ public class CharacterSelection : MonoBehaviour
         }
         var character = CharacterStats.Instance.characterList[index1];
 
-        uiManager.UpdateCharacterProfile(character);
-        uiManager.UpdateCharacterProfileSkill(character);
+        characterUIManager.UpdateCharacterProfile(character);
+        characterUIManager.UpdateCharacterProfileSkill(character);
     }
     public void OnCharacterSelectedMoveCount2P(int index)
     {
         int index1 = index - CharacterStats.Instance.playerCharacters.Count;
         if (index1 < 0 || index1 >= CharacterStats.Instance.characterList.Count)
         {
-            uiManager.UpdateMoveCount(0);
+            characterUIManager.UpdateMoveCount(0);
             return;
         }
         var character = CharacterStats.Instance.characterList[index1];
-        uiManager.UpdateMoveCount(character.NowMoveCount);
+        characterUIManager.UpdateMoveCount(character.NowMoveCount);
     }
 }

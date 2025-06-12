@@ -12,6 +12,7 @@ public class SkillManager : MonoBehaviour
     public ButtonHandler uiManager;
     public CharacterUIManager ProfileuiManager; // 캐릭터 프로필 UI 매니저
     public ReactTimeUI reactTimeUIManager; // 대응시간 UI 매니저
+    public SkillRangeVisualizer skillRangeVisualizer; // 스킬 범위 시각화 매니저
 
 
     ///선택한 스킬이 일시적으로 저장되는곳
@@ -97,6 +98,7 @@ public class SkillManager : MonoBehaviour
 
     void Awake()
     {
+        skillRangeVisualizer = GetComponent<SkillRangeVisualizer>();
         // 상태 변수 초기화
         selectedSkill = null;
         selectedCharacter = null;
@@ -244,7 +246,7 @@ public class SkillManager : MonoBehaviour
         }
 
 
-        if (Skillaction != null && Skillaction.selectedTargetUnit != null)
+        if (Skillaction != null && Skillaction.selectedSkill.targeting && Skillaction.selectedTargetUnit != null)
         {
             targetIndicator.SetActive(true);
         }
@@ -741,11 +743,12 @@ Vector3[] directions = {
         // 쿨타임 시작
         skill.StartCooldown();
         //프로필 업데이트
-        ProfileuiManager.UpdateCharacterProfileSkill(character);
+        ProfileuiManager.ProfileUpdate(character);
         //선택된 스킬범위 삭제
         SkillRangeVisualizer.Instance.StopNonTargetProjectileRange();
         SkillRangeVisualizer.Instance.StopSkillRangePreview();
         Debug.Log($"[SkillManager] 스킬 실행 완료: {skill.skillName}");
+        skillRangeVisualizer.StartSkillTargetRangePreview(null);
     }
 
     private void ExecuteSkill(SelectedSkill skill)
@@ -886,13 +889,6 @@ Vector3[] directions = {
             ExecuteSkill(ReactSkillaction);
             ReactSkillaction = null;
         }
-
-        if (Skillaction != null)
-        {
-            ExecuteSkill(Skillaction);
-            Skillaction = null;
-        }
-
         //isWaitingForReaction = false;
     }
 
@@ -1027,7 +1023,7 @@ Vector3[] directions = {
                             validMainTarget = null;
                         }*/
 
-
+            if (skill.targeting) { skillRangeVisualizer.StartSkillTargetRangePreview(Skillaction.selectedTargetUnit); }
             TurnManager.Instance.EnterReactPhase();
             ReactManager.Instance.EnterResponsePhase(skill, Skillaction.selectedCaster);
             isWaitingForReaction = true;
@@ -1078,6 +1074,7 @@ Vector3[] directions = {
 
         selectedTargetUnit = null;
         selectedTargetIndex = -1;
+        skillRangeVisualizer.StartSkillTargetRangePreview(null);
     }
 
     /// <summary>

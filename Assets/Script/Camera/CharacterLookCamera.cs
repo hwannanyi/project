@@ -10,9 +10,12 @@ public class CharacterLookCamera : MonoBehaviour
     }
 
     public SpriteRenderer spriteRenderer;
+    public bool norotate = false; // 카메라 회전 무시 여부
 
     void Update()
     {
+        if(norotate)
+            return;
         float camYaw = CameraZoom.NormalizedYaw;
         // 카메라가 ±90도 넘으면 x축 반전, 아니면 원래대로
         bool needFlip = Mathf.Abs(camYaw) > 90f;
