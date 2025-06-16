@@ -40,6 +40,10 @@ public class CharacterForm : MonoBehaviour
         {
             Characterform();
         }
+        if(CharacterSelection.selectedCharacterIndex == -1)
+        {
+            SetHighlight(false);
+        }
     }
 
     public void Characterform()
@@ -76,9 +80,11 @@ public class CharacterForm : MonoBehaviour
 
     public void SetHighlight(bool isOn)
     {
-        if (isTeamForm)
+        if (!isTeamForm)
             return;
         if (highlightEffect != null)
         highlightEffect.SetActive(isOn);
     }
+
+
 }

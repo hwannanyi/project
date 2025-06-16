@@ -26,11 +26,11 @@ MonoBehaviour:
   cost:
     keys: 00000000
     values: 05000000
-  startSkillPosition: 1
+  startSkillPosition: 0
   XstartSkillPosition: 0
   YstartSkillPosition: 0
   projectile: 0
-  targeting: 1
+  targeting: 0
   penetration: 0
   projectileType: 0
   skillTarget: 02000000

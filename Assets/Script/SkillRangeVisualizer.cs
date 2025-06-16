@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using static UnityEditor.PlayerSettings;
 using UnityEditor;
+using static UnityEngine.GraphicsBuffer;
 
 public class SkillRangeVisualizer : MonoBehaviour
 {
@@ -81,7 +82,15 @@ public class SkillRangeVisualizer : MonoBehaviour
             Vector3 mouseWorldTile = GetMouseTileCenterPosition(); // 마우스의 월드 타일 중심 좌표
             if (mouseWorldTile != prevMouseWorldTile)
             {
-                ShowRectSkillRangeByMouse(casterPosition, Xaoe, Yaoe);
+                if(skillManager.selectedSkill.startSkillPosition != StartSkillPosition.player)
+                {
+                    ShowRectSkillRangeByMouse(casterPosition, Xaoe, Yaoe);
+                }
+                else
+                {
+                    ShowRectSkillRangeByMe(casterPosition, Xaoe, Yaoe);
+                }
+                //ShowRectSkillRangeByMouse(casterPosition, Xaoe, Yaoe);
                 prevMouseWorldTile = mouseWorldTile;
             }
         }
@@ -395,6 +404,31 @@ public class SkillRangeVisualizer : MonoBehaviour
         }
     }
 
+    //자신에게서 써지는 스킬
+    public void ShowRectSkillRangeByMe(Vector3 casterPosition, float Xaoe, float Yaoe)
+    {
+        HideAreaSkillRange();
+
+        // 시전자 위치를 타일 중심으로 스냅
+        Vector3 tileCenter = new Vector3(
+            Mathf.Floor(casterPosition.x) + 0.5f,
+            casterPosition.y,
+            Mathf.Floor(casterPosition.z) + 0.5f
+        );
+
+        // 사각형 범위 타일 구하기
+        var tiles = GetRectAreaTiles(tileCenter, Xaoe, Yaoe);
+
+        // 하이라이트 표시
+        foreach (var pos in tiles)
+        {
+            GameObject highlight = GetFromAreaPool();
+            highlight.transform.position = pos;
+            highlight.transform.rotation = Quaternion.Euler(90, 0, 0);
+            highlight.SetActive(true);
+            activeAreaHighlights.Add(highlight);
+        }
+    }
 
     // 스킬 범위 하이라이트 숨기기
     public void HideAreaSkillRange()

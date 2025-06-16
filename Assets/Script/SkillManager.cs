@@ -16,9 +16,9 @@ public class SkillManager : MonoBehaviour
 
 
     ///선택한 스킬이 일시적으로 저장되는곳
-    [HideInInspector] public SkillData selectedSkill = null;
+    public SkillData selectedSkill = null;
     [HideInInspector]  private GameObject selectedCaster = null;
-    [HideInInspector]public Stats selectedCharacter = null;
+    public Stats selectedCharacter = null;
 
     private Vector3 selectedAoeCenterPosition = Vector3.zero;
     private Vector3 selectedTargetPosition = Vector3.zero;
@@ -57,7 +57,7 @@ public class SkillManager : MonoBehaviour
     public GameObject targetIndicator; // 타겟 선택 UI 오브젝트
 
 
-    private GameObject selectedTargetUnit = null;
+    public GameObject selectedTargetUnit = null;
     private int selectedTargetIndex = -1;
 
     public Stats respondingCharacter; // 현재 대응해야 하는 캐릭터
@@ -174,6 +174,7 @@ public class SkillManager : MonoBehaviour
         // 마우스 클릭으로 타겟 유닛 선택
         if (Input.GetMouseButtonDown(0))
         {
+            selectedTargetUnit=null; // 클릭시 타겟 초기화
             //UI클릭시 클릭 무시
             if (EventSystem.current.IsPointerOverGameObject())
                 return;
@@ -210,7 +211,7 @@ public class SkillManager : MonoBehaviour
                             return;
                         }
                     }
-                    else if(CharacterSelection.selectedCharacterIndex == -1)
+                    else if(!isSkillReady)
                     {
                         CharacterMovement movement = target.GetComponent<CharacterMovement>();
                         if (movement != null)
@@ -231,6 +232,10 @@ public class SkillManager : MonoBehaviour
                 CalculateSkillPosition(selectedSkill, selectedCharacter); // 항상 호출해야 함
                 if (isSkillReady)
                 {
+
+                    if (selectedSkill.targeting && selectedTargetUnit == null)
+                        return;
+
                     // 3. 시전 확정
                     SkillRangeVisualizer.Instance.HideSkillRange();
                     ConfirmSkillCast(); // 위치 계산 성공했을 때만 확정
@@ -382,7 +387,10 @@ public class SkillManager : MonoBehaviour
             float Xaoe = skill.Xaoe;
             float Yaoe = skill.Yaoe;
             Vector3 mouseWorldPos = casterPosition; // 실제로는 마우스 위치 받아야 함
-            SkillRangeVisualizer.Instance.ShowNormalSkillRange(casterPosition, range);
+            if (skill.startSkillPosition != StartSkillPosition.player) 
+            { 
+                SkillRangeVisualizer.Instance.ShowNormalSkillRange(casterPosition, range);
+            }
             SkillRangeVisualizer.Instance.StartSkillRangePreview(casterPosition, Xaoe, Yaoe);
         }
 
@@ -1111,6 +1119,7 @@ Vector3[] directions = {
     public void Skillcancel()
     {
         SelectedSkillClear();
+        selectedTargetUnit = null; // 클릭시 타겟 초기화
         isSkillReady = false;
         isSkillReadyFinal = false;
         SkillRangeVisualizer.Instance.StopNonTargetProjectileRange();

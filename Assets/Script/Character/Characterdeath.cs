@@ -4,6 +4,11 @@ public class Characterdeath : MonoBehaviour
 {
     public CharacterMovement characterMovement;
 
+    public void Awake()
+    {
+        characterMovement = GetComponent<CharacterMovement>();
+    }
+
     // 체력이 0 이하일 때 호출
     public void CheckDeath(Stats stats)
     {

@@ -35,10 +35,12 @@ public class TurnManager : MonoBehaviour
     public int enemyUseSkillReactTrun = 0;
 
     public CharacterSelection characterSelection;
+    public CharacterStats characterStats;
 
     private void Awake()
     {
         characterSelection = GetComponent<CharacterSelection>();
+        characterStats = GetComponent<CharacterStats>();
 
     Turn = 1;
     UITrunCount(Turn);//  턴 UI 업데이트
@@ -152,8 +154,9 @@ public class TurnManager : MonoBehaviour
     public void ExitReactPhase()
     {
         //CharacterSelection.prevSelectedIndex = CharacterSelection.selectedCharacterIndex;
+        //characterStats.characterList[CharacterSelection.selectedCharacterIndex].SetHighlight(false);
         CharacterSelection.selectedCharacterIndex = -1;
-        //characterUIManager.UpdateProfileUIBySelection();
+        characterUIManager.UpdateProfileUIBySelection();
 
         if (currentPhase == TurnPhase.ReactPhase_PlayerResponding)
         { currentPhase = TurnPhase.EnemyTurn;}
@@ -178,7 +181,7 @@ public class TurnManager : MonoBehaviour
         }
         nowtrun = currentPhase;
         CharacterSelection.selectedCharacterIndex = -1;
-        //characterUIManager.UpdateProfileUIBySelection();
+        characterUIManager.UpdateProfileUIBySelection();
         Turn++;
         UITrunCount(Turn);//  턴 UI 업데이트
                           // 모든 캐릭터의 스킬 쿨타임 감소

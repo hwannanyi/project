@@ -11,6 +11,7 @@ public class CharacterSelection : MonoBehaviour
     public static CharacterSelection Instance;
     public static int selectedCharacterIndex = -1; // 선택된 캐릭터 (-1: 선택 없음)
     public static int prevSelectedIndex = -1; // 이전에 선택된 캐릭터 인덱스
+    public int asd;
 
     public CharacterUIManager characterUIManager;
     public SkillManager skillManager;
@@ -37,6 +38,7 @@ public class CharacterSelection : MonoBehaviour
     //  1, 2, 3 키 입력으로 캐릭터 선택
     void Update()
     {
+        asd = selectedCharacterIndex;
         if (CameraZoom.isControlMode) return;
         HandleCharacterSelection();
 
@@ -47,10 +49,11 @@ public class CharacterSelection : MonoBehaviour
             return;
         }
         OnCharacterSelectedMoveCount(selectedCharacterIndex); 
-        if (selectedCharacterIndex == -1 && prevSelectedIndex != -1)
+/*        if (selectedCharacterIndex == -1 && prevSelectedIndex != -1)
         {
             CharacterStats.Instance.characterList[prevSelectedIndex].SetHighlight(true);
-        }
+        }*/
+
         
     }
 
@@ -117,7 +120,7 @@ public class CharacterSelection : MonoBehaviour
 
                 OnCharacterSelected(index);
                 //characterUIManager.ProfileUIOn();
-                //characterUIManager.UpdateProfileUIBySelection();
+                characterUIManager.UpdateProfileUIBySelection();
                 Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");
 
             }
@@ -127,6 +130,8 @@ public class CharacterSelection : MonoBehaviour
                 CharacterStats.Instance.characterList[selectedCharacterIndex].SetHighlight(false);
                 selectedCharacterIndex = -1;
                 //characterUIManager.ProfileUIOn();
+                prevSelectedIndex = -1;
+                characterUIManager.UpdateProfileUIBySelection();
                 Debug.Log("캐릭선택취소");
             }
             else
@@ -185,7 +190,7 @@ public class CharacterSelection : MonoBehaviour
 
                 OnCharacterSelected2P(index);
                 //characterUIManager.ProfileUIOn();
-                //characterUIManager.UpdateProfileUIBySelection();
+                characterUIManager.UpdateProfileUIBySelection();
                 Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.EnemieCharacters[index1]}");
 
             }
@@ -195,7 +200,7 @@ public class CharacterSelection : MonoBehaviour
                 CharacterStats.Instance.characterList[selectedCharacterIndex].SetHighlight(false);
                 selectedCharacterIndex = -1;
                 prevSelectedIndex = -1;
-
+                characterUIManager.UpdateProfileUIBySelection();
                 Debug.Log("캐릭선택취소");
             }
             else
