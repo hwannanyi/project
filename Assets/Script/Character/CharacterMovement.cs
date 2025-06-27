@@ -47,6 +47,7 @@ public class CharacterMovement : MonoBehaviour
         }
         int index = CharacterStats.Instance.characters.IndexOf(gameObject);
         characterNumber = index;
+        CharacterStats.Instance.characterList[index].characterNumber = index;
         moveSpeed = CharacterStats.Instance.characterList[index].speed;
         moveRange = CharacterStats.Instance.characterList[index].movespeed;
         CharacterStats.Instance.characterList[index].NowMoveCount = CharacterStats.Instance.characterList[index].moveCount;
@@ -58,6 +59,10 @@ public class CharacterMovement : MonoBehaviour
         //UI클릭시 클릭 무시
         if (EventSystem.current.IsPointerOverGameObject())
             return;
+        var stats = CharacterStats.Instance;
+        var character = stats.GetStats(gameObject);
+
+
         int indexnumber = CharacterSelection.selectedCharacterIndex;
         if(indexnumber < 0 || indexnumber >= CharacterStats.Instance.characters.Count || SkillManager.Instance.selectedSkill != null || (SkillManager.Instance.isSkillReadyFinal && !TurnManager.Instance.IsInReactPhase()))
         {
@@ -87,6 +92,13 @@ public class CharacterMovement : MonoBehaviour
         int nowmoveCount = CharacterStats.Instance.characterList[indexnumber].NowMoveCount;
         if (characterNumber == indexnumber)
         {
+            //이동불가 상태라면 이동금지
+            if (character.movable == false)
+            {
+                ClearHighlights();
+                return;
+            }
+
             // --- [추가] 마우스 방향에 따라 x축 반전 ---
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // y = 0 기준 평면

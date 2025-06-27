@@ -108,6 +108,7 @@ public class SkillEffectProjectile : MonoBehaviour
         caster = casterObject;
         casterStats = character;
 
+
         // 외형 변경
         if (spriteRenderer != null && skill.SkillEffectIllustration != null)
         {
@@ -183,6 +184,20 @@ public class SkillEffectProjectile : MonoBehaviour
             rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f);
         }
 
+        // 이동기이라면 시전자를 스킬 위치로 이동시킴
+        if (skill.skillTypes.Contains(skillType.movement))
+        {
+            var manager = CharacterStats.Instance;
+
+            var casterStats = manager.GetStats(caster);
+            // charcterUnit의 위치를 스킬 위치로 이동한뒤 위치 갱신
+            if (caster != null)
+            {
+                caster.transform.position = transform.position;
+                casterStats.charPosition = transform.position;
+            }
+        }
+
         // 도착처리
         if (Vector3.Distance(transform.position, destination) < 0.1f)
         {
@@ -194,7 +209,32 @@ public class SkillEffectProjectile : MonoBehaviour
     {
         // 데미지, 이펙트 등
         Debug.Log($"[SkillEffectProjectile] {skill.skillName} 타격 완료");
+
+        // 이동기이라면 시전자를 스킬 위치로 이동시킴
+        if (skill.skillTypes.Contains(skillType.movement))
+        {
+            var manager = CharacterStats.Instance;
+
+            var casterStats = manager.GetStats(caster);
+            // charcterUnit의 위치를 스킬 위치로 이동한뒤 위치 갱신
+            if (caster != null)
+            {
+                caster.transform.position = GetNearestTile(caster.transform.position);
+                casterStats.charPosition = GetNearestTile(caster.transform.position);
+            }
+        }
+
         Destroy(gameObject);
         TurnManager.Instance.ExitReactPhase();
+    }
+
+    // 가장 가까운 타일을 찾는 메서드
+    private Vector3 GetNearestTile(Vector3 currentPosition)
+    {
+        // 현재 위치에서 가장 가까운 타일의 좌표를 계산
+        float x = Mathf.Round(currentPosition.x);
+        float y = Mathf.Round(currentPosition.z);
+
+        return new Vector3(x, 0f, y);  // 가장 가까운 타일로 반환
     }
 }

@@ -8,13 +8,19 @@ using UnityEngine;
 [System.Serializable]
 public class Stats
 {
+    public int characterNumber; // 캐릭터 번호
+
     public string name;  // 캐릭 이름
     public int maxhp;             // 최대체력
     public int hp;                // 체력
+    public int shields;           // 보호막
     public int maxmp;             // 최대코스트
     public int mp;                // 코스트
     public int atk;               // 공격력
     public int def;               // 방어력
+    public float damageReduction; // 받피감
+    public float damageIncreased; //주피증
+
     public int speed;             // 속도
     public int movespeed;         // 이속
     public int moveCount;         // 이동가능횟수
@@ -30,6 +36,12 @@ public class Stats
     public Sprite characterProfileillustration;
     public GameObject characterPrefab;
 
+    public List<Debuffa> debuffEffects = new(); // 디버프 효과 리스트
+    public List<Buffa> buffEffects = new(); // 버프 효과 리스트
+    public List<CC> ccEffects = new();     //CC 효과
+
+    public bool available = true; // 행동 여부
+    public bool movable = true; // 이동 가능 여부
 
     public GameObject highlightEffect; // 인스펙터에서 하이라이트 오브젝트 할당
     public void SetHighlight(bool isOn)
@@ -40,13 +52,19 @@ public class Stats
 
     public Stats(Character data, Vector3 charPosition, Quaternion charRotation, bool die, List<SkillData> usingSkill)
     {
+
+        characterNumber = 0;
         name = data.charactername;
         maxhp = data.maxhp;
         hp = data.maxhp;
+        shields = 0;
         maxmp = data.maxmp;
         mp = data.maxmp;
         atk = data.atk;
         def = data.def;
+        damageReduction = 1f;
+        damageIncreased = 1f;
+
         speed = data.speed;
         movespeed = data.movespeed;
         moveCount = data.moveCount;
@@ -65,11 +83,42 @@ public class Stats
         characterillustration = data.characterillustration;
         characterProfileillustration = data.characterProfileillustration;
         characterPrefab = data.characterPrefab;
+
+        debuffEffects = new List<Debuffa>();
+        buffEffects = new List<Buffa>();
+        ccEffects = new List<CC>();
+
+        available = true;
+        movable = true;
     }
 
     public Transform GetCharacterTransform()
     {
         return characterPrefab != null ? characterPrefab.transform : null;
+    }
+
+    [System.Serializable]
+    public class Debuffa
+    {
+        public Debuffs effect;
+        public float Value;        // 기본 위력
+        public int trun;       // 지속 시간
+    }
+
+    [System.Serializable]
+    public class Buffa
+    {
+        public Buffs effect;
+        public float Value;        // 기본 위력
+        public int trun;       // 지속 시간
+    }
+
+    [System.Serializable]
+    public class CC
+    {
+        public CCs effect;
+        public float Value;        // 기본 위력
+        public int trun;       // 지속 시간
     }
 }
 

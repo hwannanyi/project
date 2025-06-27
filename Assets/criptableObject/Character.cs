@@ -22,4 +22,6 @@ public class Character : ScriptableObject
     public Sprite characterProfileillustration;
     public GameObject characterPrefab;
 }
+
+
     

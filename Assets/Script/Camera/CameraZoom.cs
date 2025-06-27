@@ -56,7 +56,7 @@ public class CameraZoom : MonoBehaviour
         if (!isControlMode) return;
 
         // 마우스 회전
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+/*        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
         float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         yaw += mouseX;
@@ -68,7 +68,7 @@ public class CameraZoom : MonoBehaviour
         yaw = Mathf.Clamp(yaw, -maxYrotate, maxYrotate); // y축 회전 제한
         pitch -= mouseY;
         pitch = Mathf.Clamp(pitch, -maxXrotate, maxXrotate); // 짐벌락 방지
-
+*/
         Yaw = yaw; // static 프로퍼티에 저장
 
         // roll(좌우 기울기) 방지

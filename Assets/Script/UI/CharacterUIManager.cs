@@ -72,7 +72,7 @@ public class CharacterUIManager : MonoBehaviour
                 skillImage.color = skill.colldownTime > 0 ? cooldownColor : normalColor; // 쿨타임 색상 처리
 
                 // MP 부족 시 색상 처리
-                if (skill.cost.ContainsKey(costType.mp) && skill.cost[costType.mp] > character.mp)
+                if (skill.cost.ContainsKey(CostType.mp) && skill.cost[CostType.mp] > character.mp)
                 {
                     skillImage.color = nompdownColor;
                 }

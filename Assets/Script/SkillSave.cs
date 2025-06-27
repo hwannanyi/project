@@ -14,8 +14,8 @@ public class SkillSave : MonoBehaviour
 {
     public static SkillSave Instance;
 
-    public SelectedSkill ReactSkillaction;
-    public SelectedSkill Skillaction;
+    public ActionWrapper ReactSkillaction;
+    public ActionWrapper Skillaction;
     public List<SelectedSkill> pendingSkillList;
 
     /*public void save()

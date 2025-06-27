@@ -12,6 +12,7 @@ public class SkillEffectHitscan : MonoBehaviour
     private Vector3 direction;      // 투사체 이동 방향
     private Vector3 targetPosition;
     public GameObject targetUnit;
+    public GameObject charcterUnit;
 
     public Transform rotatingVisual;
 
@@ -35,6 +36,7 @@ public class SkillEffectHitscan : MonoBehaviour
         range = skill.range;
         rotatingVisual.rotation = Quaternion.Euler(90f, 0, 0f);
         hasExitedPhase = false;
+        charcterUnit = charcter;
 
         // 외형 변경
         if (spriteRenderer != null && skill.SkillEffectIllustration != null)
@@ -97,7 +99,6 @@ public class SkillEffectHitscan : MonoBehaviour
     {
         if (!isInitialized) return;
 
-
         if (skillData.targeting && targetPosition != null)
         {
             transform.position = targetPosition;
@@ -108,7 +109,20 @@ public class SkillEffectHitscan : MonoBehaviour
         /*        direction = GetDirection();
                 RotateVisual(direction);*/
 
-        // 히트스캔은 위치 갱신만 하고, 이펙트는 곧 사라짐
+        // 이동기이라면 시전자를 스킬 위치로 이동시킴
+        if (skillData.skillTypes.Contains(skillType.movement))
+        {
+            var manager = CharacterStats.Instance;
+
+            var casterStats = manager.GetStats(charcterUnit);
+            // charcterUnit의 위치를 스킬 위치로 이동한뒤 위치 갱신
+            if (charcterUnit != null)
+            {
+                charcterUnit.transform.position = transform.position;
+                casterStats.charPosition = transform.position;
+            }
+        }
+
         Destroy(gameObject, 3); // 아주 짧게 남기기
     }
 

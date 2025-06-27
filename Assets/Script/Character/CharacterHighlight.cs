@@ -19,12 +19,17 @@ public class CharacterHighlight : MonoBehaviour
         if (outline == null || characterForm == null)
             return;
 
-        if (SkillSave.Instance.Skillaction == null || SkillSave.Instance.Skillaction.selectedTargetUnit == null)
+        // 모든 중간 객체에 대해 null 체크 추가
+        if (SkillSave.Instance == null ||
+            SkillSave.Instance.Skillaction == null ||
+            SkillSave.Instance.Skillaction.skillData == null ||
+            SkillSave.Instance.Skillaction.skillData.selectedTargetUnit == null)
         {
             outline.outlineSize = 0;
             return;
         }
-        if (characterForm.parentObject == SkillSave.Instance.Skillaction.selectedTargetUnit)
+
+        if (characterForm.parentObject == SkillSave.Instance.Skillaction.skillData.selectedTargetUnit)
         {
             outline.outlineSize = 2;
         }

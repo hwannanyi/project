@@ -14,6 +14,8 @@ public class SkillHitOn : MonoBehaviour
     private HashSet<GameObject> hitTargets = new HashSet<GameObject>();
     private bool isInitialized = false;
 
+    public SkillHitEffects skillHitEffects;
+
     public void Initialize(SkillData skill, GameObject casterObject, Stats character)
     {
         skillData = skill;
@@ -29,7 +31,10 @@ public class SkillHitOn : MonoBehaviour
 
     }
 
-
+    public void Awake()
+    {
+        skillHitEffects = GetComponent<SkillHitEffects>();
+    }
 
     private IEnumerator EnableColliderNextFrame()
     {
@@ -74,11 +79,11 @@ public class SkillHitOn : MonoBehaviour
 
             var self = casterObj.transform.root.gameObject;
 
-            if (target == self)
+/*            if (target == self)
             {
                 Debug.Log("[SkillHitOn] 자기 자신과 충돌 - 무시");
                 return;
-            }
+            }*/
 
             var targetStats = manager.GetStats(target);
             var casterStats = manager.GetStats(self);
@@ -98,64 +103,10 @@ public class SkillHitOn : MonoBehaviour
             // 여기서 팀 비교 등 처리
             Debug.Log($"'{target.name}' 가 '{casterObj.name}' 의 스킬에 피격됨!");
 
-            if (skillData.skillTarget.Contains(Target.self))
-            {
-                if (targetStats == casterStats)
-                {
-                    float baseValue = skillData.hitEffects
-                    .FirstOrDefault(h => h.target == Target.self)?
-                    .effects.DamageEffect.FirstOrDefault()?.baseValue ?? 0f;
-                    int value = Mathf.RoundToInt(baseValue);
-                    ValueCalculation(ref value, Target.self);
-                    targetStats.hp += value;
-                    DamageText.Instance.ShowDamage(target.transform.position + Vector3.up * 1.5f, value, true);
-                    Debug.Log($"[Hit] {targetStats.name}이(가) {value} 회복을 함. 남은 HP: {targetStats.hp}");
-                }
-            }
-            if (skillData.skillTarget.Contains(Target.team))
-            {
-                if (targetStats.team == casterStats.team)
-                {
-                    float baseValue = skillData.hitEffects
-                    .FirstOrDefault(h => h.target == Target.team)?
-                    .effects.DamageEffect.FirstOrDefault()?.baseValue ?? 0f;
-                    int value = Mathf.RoundToInt(baseValue);
-                    ValueCalculation(ref value, Target.team);
-                    targetStats.hp += value;
-                    DamageText.Instance.ShowDamage(target.transform.position + Vector3.up * 1.5f, value, true);
-                    Debug.Log($"[Hit] {targetStats.name}이(가) {value} 회복을 함. 남은 HP: {targetStats.hp}");
-                }
-            }
-            if (skillData.skillTarget.Contains(Target.enemy))
-            {
-                if (targetStats.team != casterStats.team)
-                {
-                    float baseValue = skillData.hitEffects
-                    .FirstOrDefault(h => h.target == Target.enemy)?
-                    .effects.DamageEffect.FirstOrDefault()?.baseValue ?? 0f;
-                    int value = Mathf.RoundToInt(baseValue);
-                    ValueCalculation(ref value, Target.enemy);
-                    targetStats.hp -= value;
-                    // 예시: 캐릭터가 데미지/회복을 받을 때
-                    DamageText.Instance.ShowDamage(target.transform.position + Vector3.up * 1.5f, value, false);
 
-                    Debug.Log($"[Hit] {targetStats.name}이(가) {value} 피해를 입음. 남은 HP: {targetStats.hp}");
-                    CheckDeathOnly(target);
-                }
-            }
-            if (skillData.skillTarget.Contains(Target.spTarget))
-            {
-                if (1 == 2)
-                {
-                    float baseValue = skillData.hitEffects
-                    .FirstOrDefault(h => h.target == Target.enemy)?
-                    .effects.DamageEffect.FirstOrDefault()?.baseValue ?? 0f;
-                    int value = Mathf.RoundToInt(baseValue);
-                    ValueCalculation(ref value, Target.enemy);
-                    targetStats.hp -= value;
-                    Debug.Log($"[Hit] {targetStats.name}이(가) {value} 피해를 입음. 남은 HP: {targetStats.hp}");
-                }
-            }
+            skillHitEffects.TargetOnHit(target, self, skillData, Target.self);
+            skillHitEffects.TargetOnHit(target, self, skillData, Target.enemy);
+            skillHitEffects.TargetOnHit(target, self, skillData, Target.team);
 
         }
 
@@ -171,44 +122,6 @@ public class SkillHitOn : MonoBehaviour
     }
 
 
-    //최종위력 계산기
-    public void ValueCalculation(ref int FinalDamage, Target target)
-    {
-        int damageUp = 0;
-        int damage = 0;
-
-        // 지정된 대상(target)에 맞는 HitEffectEntry 찾기
-        var targetEntry = skillData.hitEffects.FirstOrDefault(h => h.target == target);
-
-        // 없거나 데미지 효과가 없다면 종료
-        if (targetEntry == null || targetEntry.effects.DamageEffect.Count == 0)
-        {
-            FinalDamage = 0;
-            return;
-        }
-
-        foreach (var dmgEffect in targetEntry.effects.DamageEffect)
-        {
-            int baseDmg = Mathf.RoundToInt(dmgEffect.baseValue);
-            damage += baseDmg;
-
-            var increaseDict = dmgEffect.increase;
-
-            if (increaseDict != null)
-            {
-                if (increaseDict.TryGetValue(IncreaseType.ad, out float adRatio))
-                    damageUp += Mathf.RoundToInt(caster.atk * adRatio);
-
-                if (increaseDict.TryGetValue(IncreaseType.ap, out float apRatio))
-                    damageUp += Mathf.RoundToInt(caster.atk * apRatio);
-
-                if (increaseDict.TryGetValue(IncreaseType.hp, out float hpRatio))
-                    damageUp += Mathf.RoundToInt(caster.maxhp * hpRatio);
-            }
-        }
-
-        FinalDamage = damage + damageUp;
-    }
 
     public void CheckDeathOnly(GameObject targetObj)
     {

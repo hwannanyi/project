@@ -18,8 +18,8 @@ public class SkillData
     public int skillNumber;       // 스킬의 갯수 (변형 가능)
     public int skillCumulative;   // 최대 충전 횟수 (기본 1)
 
-    public UDictionary<costType, int> cost; // 코스트
-    public UDictionary<costType, int> currentcost; // 기본코스트
+    public UDictionary<CostType, int> cost; // 코스트
+    public UDictionary<CostType, int> currentcost; // 기본코스트
 
     public StartSkillPosition startSkillPosition; // 스킬 시작 위치 (플레이어, 지정된 대상 등)
     public int XstartSkillPosition;
@@ -34,12 +34,12 @@ public class SkillData
     public float afterdelay; // 선딜 //////////(연출용)
     public float beforedelay; // 후딜 //////////(연출용)
     public float range;           // 사거리
-    public aoeType aoetype;        // 범위 유형 (단일, 직선, 정사각형 등)
+    public AoeType aoetype;        // 범위 유형 (단일, 직선, 정사각형 등)
     public bool fourRotation;
     public bool effectRotation;
     public float Xaoe;             // 범위 크기
     public float Yaoe;             // 범위 크기
-    public aoeCenter aoecenter;
+    public AoeCenter aoecenter;
 
     public DoubleList_Vector2[] specialAoe; // 특수 범위 (2차원 좌표 리스트)
 

@@ -58,7 +58,7 @@ MonoBehaviour:
   - target: 2
     effects:
       DamageEffect:
-      - skillhitEffect: 01000000
+      - skillhitEffect: 1
         condition: 
         baseValue: 1
         increase:
@@ -68,6 +68,17 @@ MonoBehaviour:
         dot: 0
       DebuffEffects: []
       BuffEffects: []
-      CCEffects: []
+      CCEffects:
+      - CC: 1
+        baseValue: 1
+        increase:
+          keys: 01000000
+          values:
+          - 0.1
+        trunDuration: 2
+        timeIncrease:
+          keys: 03000000
+          values:
+          - 0.1
   react: 2
   reactTime: 4

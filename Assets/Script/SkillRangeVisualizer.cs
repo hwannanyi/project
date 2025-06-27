@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
-using static UnityEditor.PlayerSettings;
-using UnityEditor;
+//using static UnityEditor.PlayerSettings;
+//using UnityEditor;
 using static UnityEngine.GraphicsBuffer;
 
 public class SkillRangeVisualizer : MonoBehaviour
@@ -73,7 +73,7 @@ public class SkillRangeVisualizer : MonoBehaviour
         // 타겟팅 스킬이고, 스킬 준비가 끝났으면 타겟 위치로 범위 표시
         if (skillSave.Skillaction != null && isSkillRangeActive && skillManager.isSkillReadyFinal)
         {
-            if(skillSave.Skillaction.selectedSkill.targeting)
+            if(skillSave.Skillaction.skillData.selectedSkill.targeting)
             ShowRectSkillRangeByTarget(maintarget, Xaoe, Yaoe);
         }
 
@@ -199,6 +199,7 @@ public class SkillRangeVisualizer : MonoBehaviour
 
     public void HideSkillRange()
     {
+
         foreach (var obj in activeRangeHighlights)
         {
             obj.SetActive(false);
@@ -433,6 +434,7 @@ public class SkillRangeVisualizer : MonoBehaviour
     // 스킬 범위 하이라이트 숨기기
     public void HideAreaSkillRange()
     {
+        SkillManager.Instance.validReactTargets.Clear(); // 여기서 한 번만 비우기
         foreach (var obj in activeAreaHighlights)
         {
             // 비활성화 전에 Sprite를 whiteTile로 변경

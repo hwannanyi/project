@@ -11,21 +11,21 @@ public enum projectileType
 { straight, throwtype }
 public enum Target
 { self, team, enemy, all, spTarget}
-public enum aoeType
+public enum AoeType
 { single, square, spAoe}
 
 
-public enum aoeCenter
+public enum AoeCenter
 { center, edge, Rcorner, Lcorner}
 
 public enum IncreaseType
 { none, ad, ap, hp }
 
-public enum costType
+public enum CostType
 { mp, hp}
 
 
-public enum skillhitEffect
+public enum SkillhitEffect
 {
     none,
     damage,
@@ -33,7 +33,7 @@ public enum skillhitEffect
     Shields
 }
 
-public enum condition_statement
+public enum Condition_statement
 {
     none,       //없음
     more,       //이상
@@ -44,7 +44,7 @@ public enum condition_statement
     inequality  //같지않다
 }
 
-public enum condition_effect
+public enum Condition_effect
 {
     none,
     more,
@@ -94,7 +94,7 @@ public class Skill : ScriptableObject
     public int skillCumulative = 1; // 최대 충전 횟수 (기본 1)
 
     [Header("코스트")]
-    public UDictionary<costType, int> cost; // 코스트
+    public UDictionary<CostType, int> cost; // 코스트
 
     [Header("스킬 시작위치")]
     public StartSkillPosition startSkillPosition; // 스킬 시작 위치 (플레이어, 지정된 대상 등)
@@ -115,13 +115,13 @@ public class Skill : ScriptableObject
 
     [Header("사거리와 범위")]
     public float range;           // 사거리
-    public aoeType aoetype;        // 범위 유형 (단일, 직선, 정사각형 등)
+    public AoeType aoetype;        // 범위 유형 (단일, 직선, 정사각형 등)
     public bool fourRotation;      // 4방향 회전
     public bool effectRotation;    // 방향에 따른 스킬의 회전
     public float Xaoe;             // 범위 크기
     public float Yaoe;             // 범위 크기
     public DoubleList_Vector2[] specialAoe; // 특수 범위 (2차원 좌표 리스트)
-    public aoeCenter aoecenter;    // 광역기의 중심점
+    public AoeCenter aoecenter;    // 광역기의 중심점
 
     [Header("쿨타임")]
     public int cooldown;        // 쿨타임
@@ -142,7 +142,6 @@ public class Skill : ScriptableObject
     public float reactTime;
 
 }
-
 
 
 [System.Serializable]
@@ -169,7 +168,7 @@ public class EffectsCondition
 [System.Serializable]
 public class DamageEffect
 {
-    public List<skillhitEffect> skillhitEffect; //데미지? 힐? 실드?
+    public SkillhitEffect skillhitEffect; //데미지? 힐? 실드?
     public string condition;       // 효과 발동 조건 (예: "공격력 50% 이상")
     public float baseValue;        // 기본 위력
     public UDictionary<IncreaseType, float> increase; //위력 계수
@@ -193,23 +192,19 @@ public class DebuffEffect
 [System.Serializable]
 public class BuffEffect
 {
-    public Buffs Debuff;
+    public Buffs Buff;
     public float baseValue;        // 기본 위력
-    public float increaseValue;    // 위력 계수
-    public int trunDuration;       // 지속 시간 (턴사이클 수)
-    public int skillDuration;      // 지속 스킬횟수
-    public int numberDurations;    // 지속 일반스킬횟수
-    public int counterDurations;   // 지속 대응횟수
+    public UDictionary<IncreaseType, float> increase; //위력 계수
+    public int trunDuration;       // 기본 지속 시간 (턴사이클 수)
+    public UDictionary<IncreaseType, float> timeIncrease; // 지속 시간 계수
 }
 
 [System.Serializable]
 public class CCEffect
 {
-    public CCs Debuff;
+    public CCs CC;
     public float baseValue;        // 기본 위력
-    public float increaseValue;    // 위력 계수
-    public int trunDuration;       // 지속 시간 (턴사이클 수)
-    public int skillDuration;      // 지속 스킬횟수
-    public int numberDurations;    // 지속 일반스킬횟수
-    public int counterDurations;   // 지속 대응횟수
+    public UDictionary<IncreaseType, float> increase; //위력 계수
+    public int trunDuration;       // 기본 지속 시간 (턴사이클 수)
+    public UDictionary<IncreaseType, float> timeIncrease; // 지속 시간 계수
 }

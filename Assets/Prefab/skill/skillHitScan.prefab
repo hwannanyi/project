@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2377216055779192893}
   - component: {fileID: 2926054394679664602}
   - component: {fileID: 3011920393000721282}
+  - component: {fileID: -8471460395893588580}
   m_Layer: 0
   m_Name: skillHitScan
   m_TagString: skill
@@ -176,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   casterObj: {fileID: 0}
+  SkillHitEffects: {fileID: 0}
 --- !u!54 &2926054394679664602
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -216,3 +218,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mergeOnStart: 1
+--- !u!114 &-8471460395893588580
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6478507458708094152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 934dd2fe3e5898c4e9178da98451a6da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

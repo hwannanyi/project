@@ -58,7 +58,7 @@ MonoBehaviour:
   - target: 2
     effects:
       DamageEffect:
-      - skillhitEffect: 01000000
+      - skillhitEffect: 1
         condition: 
         baseValue: 2
         increase:
@@ -72,7 +72,7 @@ MonoBehaviour:
   - target: 1
     effects:
       DamageEffect:
-      - skillhitEffect: 01000000
+      - skillhitEffect: 1000000
         condition: 
         baseValue: 1
         increase:
