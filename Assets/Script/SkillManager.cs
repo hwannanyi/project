@@ -65,10 +65,11 @@ public class SkillManager : MonoBehaviour
     public bool hasMovedInReact = false; // 대응단계에서 이동 여부
 
 
-    public SelectedSkill _skillAction;
-    public SelectedSkill _reactSkillAction;
+    // 필드 선언도 리스트로 변경
+    public List<SelectedSkill> _skillAction;
+    public List<SelectedSkill> _reactSkillAction;
 
-    public SelectedSkill Skillaction
+    public List<SelectedSkill> Skillaction
     {
         get => _skillAction;
         set
@@ -78,7 +79,7 @@ public class SkillManager : MonoBehaviour
         }
     }
 
-    public SelectedSkill ReactSkillaction
+    public List<SelectedSkill> ReactSkillaction
     {
         get => _reactSkillAction;
         set

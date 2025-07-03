@@ -116,7 +116,7 @@ public class CharacterMovement : MonoBehaviour
                 return;
             }
 
-            if (!isMoving) { 
+            if (!isMoving && !TurnManager.Instance.IsPlayerReactPhase()) { 
             // 현재 위치
             Vector2Int startTile = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
 
@@ -174,7 +174,10 @@ public class CharacterMovement : MonoBehaviour
                 // 이동 가능 타일이 아니면 이동하지 않음
                 if (!movableTiles.Contains(targetTile))
                 {
-                    return;
+                    if (!TurnManager.Instance.IsPlayerReactPhase()) {
+                        return;
+                    }
+                    
                 }
 
                 targetPosition = roundedTarget;
