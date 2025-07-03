@@ -20,33 +20,20 @@ public class CharacterHighlight : MonoBehaviour
         if (outline == null || characterForm == null)
             return;
 
-        // skillData 리스트에 selectedTargetUnit이 characterForm와 일치하는 게 없으면 true
-        bool isNotSelected = SkillSave.Instance != null &&
-                     SkillSave.Instance.Skillaction != null &&
-                     SkillSave.Instance.Skillaction.skillData != null &&
-                     !SkillSave.Instance.Skillaction.skillData
-                        .Any(s => s.selectedTargetUnit == characterForm.parentObject);
-
-        bool isSelected = SkillSave.Instance != null &&
-             SkillSave.Instance.Skillaction != null &&
-             SkillSave.Instance.Skillaction.skillData != null &&
-             SkillSave.Instance.Skillaction.skillData
-                .Any(s => s.selectedTargetUnit == characterForm.parentObject);
-
-        // 모든 중간 객체에 대해 null 체크 추가
-        if (isNotSelected)
+        // SkillSave.Instance와 Skillaction 리스트가 null이거나 비어있는지 체크
+        if (SkillSave.Instance == null ||
+            SkillSave.Instance.Skillaction == null ||
+            SkillSave.Instance.Skillaction.Count == 0)
         {
             outline.outlineSize = 0;
             return;
         }
 
-        if (isSelected)
-        {
-            outline.outlineSize = 2;
-        }
-        else
-        {
-            outline.outlineSize = 0;
-        }
+        // Skillaction 리스트 중 selectedTargetUnit이 characterForm.parentObject와 일치하는지 검사
+        bool isTarget = SkillSave.Instance.Skillaction
+            .Any(action => action.skillData != null &&
+                           action.skillData.selectedTargetUnit == characterForm.parentObject);
+
+        outline.outlineSize = isTarget ? 2 : 0;
     }
 }

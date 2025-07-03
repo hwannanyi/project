@@ -10,7 +10,7 @@ public class SkilltargetUI : MonoBehaviour
     }
     void Update()
     {
-        if(skillSave.Skillaction == null || skillSave.Skillaction.skillData.selectedTargetUnit == null)
+/*        if(skillSave.Skillaction == null || skillSave.Skillaction.skillData.selectedTargetUnit == null)
         {
             return; // 선택된 대상이 없으면 업데이트 중지
         }
@@ -18,6 +18,6 @@ public class SkilltargetUI : MonoBehaviour
         if (target != null)
         {
             transform.position = target.transform.position;
-        }
+        }*/
     }
 }

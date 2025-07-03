@@ -14,8 +14,8 @@ public class SkillSave : MonoBehaviour
 {
     public static SkillSave Instance;
 
-    public ActionWrapper ReactSkillaction;
-    public ActionWrapper Skillaction;
+    public List<ActionWrapper> ReactSkillaction;
+    public List<ActionWrapper> Skillaction;
     public List<SelectedSkill> pendingSkillList;
 
     /*public void save()
@@ -43,8 +43,8 @@ public class ActionWrapper
     public ActionType type;
 
     // Move 또는 Skill 중 하나만 사용할 예정
-    public List<Move> moveData;
-    public List<SelectedSkill> skillData;
+    public Move moveData;
+    public SelectedSkill skillData;
 }
 
 [System.Serializable]
