@@ -26,6 +26,7 @@ public class CharacterMovement : MonoBehaviour
     public bool isShowMoveHighlights;
     public SpriteRenderer spriteRenderer;
 
+
     void Start()
     {  
         targetPosition = transform.position;  // 시작 위치 설정
@@ -99,6 +100,13 @@ public class CharacterMovement : MonoBehaviour
                 return;
             }
 
+/*            // 이동 중이 아니고, 차단되지 않았을 때만 하이라이트 표시
+            if (!isMoving && !isBlocked)
+            {
+                ClearHighlights();
+                ShowMoveHighlights();
+            }*/
+
             // --- [추가] 마우스 방향에 따라 x축 반전 ---
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // y = 0 기준 평면
@@ -116,73 +124,74 @@ public class CharacterMovement : MonoBehaviour
                 return;
             }
 
-            if (!isMoving && !TurnManager.Instance.IsPlayerReactPhase()) { 
-            // 현재 위치
-            Vector2Int startTile = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
-
-            // 이동 가능 타일 계산
-            List<Vector2Int> movableTiles = GetMovableTiles(startTile, moveRange);
-
-            // 하이라이트 표시
-            ShowMoveHighlights(movableTiles);
-            }
-
-            // 이동 중이 아니고, 막히지 않았을 때만 마우스 클릭을 처리
-            if (nowmoveCount > 0 &&!isMoving && !isBlocked && Input.GetMouseButtonDown(1))
+            /*// 마우스 우클릭 시 4방향 중 마우스 방향으로 한 칸 이동
+            if (!isMoving && !isBlocked && Input.GetMouseButtonDown(1))
             {
-                // 대응단계 확인
-                /*if (TurnManager.Instance.IsInReactPhase())
-                {
-                    Stats myStats = CharacterStats.Instance.characterList[characterNumber];
-
-                    if (SkillManager.Instance.GetRespondingCharacter() != myStats)
-                    {
-                        Debug.Log("[React] 현재 대응 중인 캐릭터가 아닙니다.");
-                        return;
-                    }
-
-                    if (SkillManager.Instance.HasMovedInReactPhase() || SkillManager.Instance.HasAlreadyReacted())
-                    {
-                        Debug.Log("[React] 이미 대응 행동을 했습니다.");
-                        return;
-                    }
-
-                    SkillManager.Instance.MarkReactMove();
-                }*/
-
-                // [수정됨] Perspective 카메라 대응: 마우스 위치를 정확히 가져오기 위한 Raycast 방식
-                /*Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // y = 0 기준 평면
-                float enter;
-                Vector3 mousePosition = transform.position;*/
                 if (groundPlane.Raycast(ray, out enter))
                 {
-                    mousePosition = ray.GetPoint(enter);
-                    mousePosition.y = 0f;
-                }
-                Vector3 roundedTarget = new Vector3(Mathf.Round(mousePosition.x), 0f, Mathf.Round(mousePosition.z));
+                    Vector3 mousePos = ray.GetPoint(enter);
+                    mousePos.y = 0f;
 
-                // 현재 위치
-                Vector2Int startTile = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
-
-                // 목표 위치
-                Vector2Int targetTile = new Vector2Int(Mathf.RoundToInt(roundedTarget.x), Mathf.RoundToInt(roundedTarget.z));
-
-                // 이동 가능 타일 계산
-                List<Vector2Int> movableTiles = GetMovableTiles(startTile, moveRange);
-
-                // 이동 가능 타일이 아니면 이동하지 않음
-                if (!movableTiles.Contains(targetTile))
-                {
-                    if (!TurnManager.Instance.IsPlayerReactPhase()) {
+                    // 캐릭터 위치와 마우스 위치(타일 위치)가 같으면 이동하지 않음
+                    Vector2Int charTile = new Vector2Int(Mathf.RoundToInt(transform.position.x), Mathf.RoundToInt(transform.position.z));
+                    Vector2Int mouseTile = new Vector2Int(Mathf.RoundToInt(mousePos.x), Mathf.RoundToInt(mousePos.z));
+                    if (charTile == mouseTile)
                         return;
-                    }
-                    
-                }
 
-                targetPosition = roundedTarget;
-                startPosition = transform.position;  // 이동 시작 위치 저장
-                moveCoroutine = StartCoroutine(MoveToTarget());  // 이동을 코루틴으로 처리
+                    Vector3 dir = mousePos - transform.position;
+                    dir.y = 0f;
+
+                    // 4방향 중 가장 가까운 방향 구하기
+                    Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
+                    float maxDot = float.NegativeInfinity;
+                    Vector3 chosenDir = Vector3.zero;
+                    foreach (var d in directions)
+                    {
+                        float dot = Vector3.Dot(dir.normalized, d);
+                        if (dot > maxDot)
+                        {
+                            maxDot = dot;
+                            chosenDir = d;
+                        }
+                    }
+
+                    Vector3 nextPos = transform.position + chosenDir;
+                    // 장애물 체크 (필요 없으면 아래 if문 제거)
+                    Vector2Int nextTile = new Vector2Int(Mathf.RoundToInt(nextPos.x), Mathf.RoundToInt(nextPos.z));
+                    if (!IsBlockedTile(nextTile))
+                    {
+                        targetPosition = new Vector3(nextTile.x, 0f, nextTile.y);
+                        startPosition = transform.position;
+                        moveCoroutine = StartCoroutine(MoveToTarget());
+                    }
+                }
+            }*/
+
+            //키보드 이동
+            if (!isMoving && !isBlocked)
+            {
+                Vector3 chosenDir = Vector3.zero;
+
+                if (Input.GetKey(KeyCode.UpArrow))
+                    chosenDir = Vector3.forward;
+                else if (Input.GetKey(KeyCode.DownArrow))
+                    chosenDir = Vector3.back;
+                else if (Input.GetKey(KeyCode.LeftArrow))
+                    chosenDir = Vector3.left;
+                else if (Input.GetKey(KeyCode.RightArrow))
+                    chosenDir = Vector3.right;
+
+                if (chosenDir != Vector3.zero)
+                {
+                    Vector3 nextPos = transform.position + chosenDir;
+                    Vector2Int nextTile = new Vector2Int(Mathf.RoundToInt(nextPos.x), Mathf.RoundToInt(nextPos.z));
+                    if (!IsBlockedTile(nextTile))
+                    {
+                        targetPosition = new Vector3(nextTile.x, 0f, nextTile.y);
+                        startPosition = transform.position;
+                        moveCoroutine = StartCoroutine(MoveToTarget());
+                    }
+                }
             }
         }
         else
@@ -206,31 +215,27 @@ public class CharacterMovement : MonoBehaviour
     {
         isMoving = true;  // 이동 중 상태로 설정
 
-        // 이동 방향 계산 및 x축 반전 처리
         Vector3 moveDir = targetPosition - transform.position;
         if (moveDir.x > 0)
-        {
             spriteRenderer.flipX = false;
-        }
         else if (moveDir.x < 0)
-        {
             spriteRenderer.flipX = true;
-        }
-        // 위/아래 이동은 x축 반전 없음
 
-        // 목표 위치로 이동할 때까지
-        while (Vector3.Distance(transform.position, targetPosition) > 0.05f && !isBlocked)
+        Vector3 velocity = Vector3.zero; // SmoothDamp에서 사용할 속도 참조 변수
+        float smoothTime = 0.05f; // 감속에 걸리는 시간 (값이 작을수록 더 빠르게 멈춤)
+
+        // 목표 위치에 가까워질수록 점점 느려지며 이동
+        while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-            yield return null;  // 다음 프레임까지 대기
+            // SmoothDamp를 사용해 자연스럽게 감속하며 이동
+            // moveSpeed는 최대 속도, smoothTime은 감속 시간
+            transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime, moveSpeed);
+            yield return null; // 다음 프레임까지 대기
         }
 
-        // 이동 완료 후 정확한 목표 위치로 설정
-        transform.position = targetPosition;
-        //SendSignal(true)
-        isMoving = false;  // 이동 완료 후 이동 가능 상태로 변경
-        PositionUpdate();
-
+        transform.position = targetPosition; // 정확한 목표 위치로 위치 보정
+        isMoving = false; // 이동 완료 후 이동 가능 상태로 변경
+        PositionUpdate(); // 위치 갱신 및 이동 횟수 차감 등 처리
     }
 
     // 타일에 부딪혔을 때 호출되는 메서드
@@ -338,22 +343,53 @@ public class CharacterMovement : MonoBehaviour
     }
 
 
-    public void ShowMoveHighlights(List<Vector2Int> movableTiles)
+    public void ShowMoveHighlights()
     {
-        if(isShowMoveHighlights)
-        {
+        if (isShowMoveHighlights)
             return;
-        }
+
         ClearHighlights();
 
-        foreach (var tile in movableTiles)
+        // 마우스 방향 계산
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+        float enter;
+        Vector3 mousePosition = transform.position;
+        if (groundPlane.Raycast(ray, out enter))
         {
-            Vector3 pos = new Vector3(tile.x, 0.01f, tile.y); // 살짝 띄워서 z-fighting 방지
+            mousePosition = ray.GetPoint(enter);
+            mousePosition.y = 0f;
+        }
+
+        Vector3 dir = mousePosition - transform.position;
+        dir.y = 0f;
+
+        Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
+        float maxDot = float.NegativeInfinity;
+        Vector3 chosenDir = Vector3.zero;
+        foreach (var d in directions)
+        {
+            float dot = Vector3.Dot(dir.normalized, d);
+            if (dot > maxDot)
+            {
+                maxDot = dot;
+                chosenDir = d;
+            }
+        }
+
+        Vector3 nextPos = transform.position + chosenDir;
+        Vector2Int nextTile = new Vector2Int(Mathf.RoundToInt(nextPos.x), Mathf.RoundToInt(nextPos.z));
+
+        // 장애물 체크
+        if (!IsBlockedTile(nextTile))
+        {
+            Vector3 pos = new Vector3(nextTile.x, 0.01f, nextTile.y);
             GameObject highlight = Instantiate(highlightPrefab, pos, Quaternion.Euler(90, 0, 0));
             highlights.Add(highlight);
         }
         isShowMoveHighlights = true;
     }
+
 
     public void ClearHighlights()
     {
