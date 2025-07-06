@@ -2,17 +2,56 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+public enum TargetTypeX
+{
+    none, Character, Skill
+}
+
+public enum TargetTypeY
+{
+    none, Character, Skill
+}
+public enum Rotation
+{
+    none, Character, Skill
+}
+
+public enum DesignationType
+{
+    none, near, hp, hpRatio, Character
+}
+
 [CreateAssetMenu(fileName = "BossPattern", menuName = "Scriptable Objects/BossPattern")]
 public class BossPattern : ScriptableObject
 {
     [Header("스킬순서")]
-    public List<SkillData> skill; // 스킬 데이터
+    public SkillQueue[] skillQueue; // 스킬 큐
 }
 
 
 [System.Serializable]
-public class SkillQueue
+public struct SkillQueue
 {
-    public List<SkillData> skill; //스킬
+    public Skill skill; //스킬
+    [Header("스킬시전턴")]
     public int currentIndex; // 현재 인덱스
+    [Header("이전 스킬 사용후 현제스킬 사용까지의 시간")]
+    public float delay; // 딜레이
+    [Header("시전 위치로부터")] 
+    public Vector3 coordinate;
+
+    [Header("스킬 방향")]
+    public Vector3 Rotation;
+
+    [Header("타겟팅 스킬이면 미사용 좌표, 위치, " +
+        "none은 시전자 위치가 시전 위치")]
+    public TargetTypeX targetTypeX; // X축 타겟 타입
+    public TargetTypeY targetTypeY; // Y축 타겟 타입
+
+    [Header("타겟팅 스킬이면 미사용 좌표, 방향")]
+    public Rotation RotationType;
+
+    [Header("캐릭선택 방식, 역순")]
+    public DesignationType Designation;
+    public bool reverse_order;
 }

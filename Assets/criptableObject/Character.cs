@@ -21,6 +21,8 @@ public class Character : ScriptableObject
     public Sprite characterillustration;
     public Sprite characterProfileillustration;
     public GameObject characterPrefab;
+
+    public BossPattern skillQueue; // ½ºÅ³ Å¥
 }
 
 

@@ -44,6 +44,9 @@ public class Stats
     public bool movable = true; // 이동 가능 여부
 
     public GameObject highlightEffect; // 인스펙터에서 하이라이트 오브젝트 할당
+
+
+    public AIPattern aIPattern; // AI 패턴
     public void SetHighlight(bool isOn)
     {
         if (highlightEffect != null)
@@ -90,6 +93,8 @@ public class Stats
 
         available = true;
         movable = true;
+
+        aIPattern = new AIPattern(data.skillQueue);
     }
 
     public Transform GetCharacterTransform()

@@ -19,11 +19,11 @@ public class SkillManager : MonoBehaviour
 
     ///선택한 스킬이 일시적으로 저장되는곳
     public SkillData selectedSkill = null;
-    [HideInInspector]  private GameObject selectedCaster = null;
+    [HideInInspector] public GameObject selectedCaster = null;
     public Stats selectedCharacter = null;
 
-    private Vector3 selectedAoeCenterPosition = Vector3.zero;
-    private Vector3 selectedTargetPosition = Vector3.zero;
+    public Vector3 selectedAoeCenterPosition = Vector3.zero;
+    public Vector3 selectedTargetPosition = Vector3.zero;
 
     [HideInInspector] public bool isSkillReady = false;
     [HideInInspector] public bool isSkillReadyFinal = false;
@@ -233,7 +233,7 @@ public class SkillManager : MonoBehaviour
             }
             if (selectedSkill != null && selectedCharacter != null) //스킬 확정 기준
             {
-                CalculateSkillPosition(selectedSkill, selectedCharacter); // 항상 호출해야 함
+                CalculateSkillPosition(selectedSkill, selectedCharacter,false,Vector3.zero); // 항상 호출해야 함
                 if (isSkillReady)
                 {
 
@@ -416,7 +416,7 @@ public class SkillManager : MonoBehaviour
     /// 선택된 스킬과 캐릭터 정보를 기반으로 방향, 시작위치, 중심점, 타겟 위치를 계산합니다.
     /// 이 함수는 ConfirmSkillCast() 전에 호출되어야 합니다.
     /// </summary>
-    public void CalculateSkillPosition(SkillData skill, Stats character)
+    public void CalculateSkillPosition(SkillData skill, Stats character,bool AI, Vector3 AIDirection)
     {
         //isSkillReady = true;
         Vector3 startPosition = Vector3.zero;
@@ -512,7 +512,17 @@ Vector3[] directions = {
         }
         else
         {
-            direction = (mouseWorldPos - startPosition).normalized;
+            
+
+            //AI 캐릭터의 경우, 방향을 AI가 지정한 방향으로 설정
+            if (AI)
+            {
+                direction = (mouseWorldPos - startPosition).normalized;
+            }
+            else
+            {
+                direction = (AIDirection - startPosition).normalized;
+            }
 
             // 4방향 중 가장 가까운 방향 찾기
             float maxDot = Vector3.Dot(direction, directions[0]);
@@ -526,6 +536,8 @@ Vector3[] directions = {
                 }
             }
             direction = closestDirection;
+
+
         }
         /*Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(
             new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));

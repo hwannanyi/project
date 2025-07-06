@@ -144,6 +144,17 @@ public class CharacterStats : MonoBehaviour
             {
                 characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name, false));
             }
+
+
+/*
+            if (characterList[index1].skillQueue == null)
+            {
+                characterList[index1].usingSkill.Add(new SkillData(null, characterList[index1].name, false));
+            }
+            else
+            {
+                characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name, false));
+            }*/
         }
 
     }
