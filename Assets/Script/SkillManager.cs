@@ -65,8 +65,8 @@ public class SkillManager : MonoBehaviour
     public bool hasMovedInReact = false; // 대응단계에서 이동 여부
 
 
-    public List<ActionWrapper> _skillAction;
-    public List<ActionWrapper> _reactSkillAction;
+    public List<ActionWrapper> _skillAction = new();
+    public List<ActionWrapper> _reactSkillAction = new();
 
     public List<ActionWrapper> Skillaction
     {
@@ -233,7 +233,7 @@ public class SkillManager : MonoBehaviour
             }
             if (selectedSkill != null && selectedCharacter != null) //스킬 확정 기준
             {
-                CalculateSkillPosition(selectedSkill, selectedCharacter,false,Vector3.zero); // 항상 호출해야 함
+                CalculateSkillPosition(selectedSkill, selectedCharacter,false,Vector3.zero, Vector3.zero); // 항상 호출해야 함
                 if (isSkillReady)
                 {
 
@@ -416,7 +416,7 @@ public class SkillManager : MonoBehaviour
     /// 선택된 스킬과 캐릭터 정보를 기반으로 방향, 시작위치, 중심점, 타겟 위치를 계산합니다.
     /// 이 함수는 ConfirmSkillCast() 전에 호출되어야 합니다.
     /// </summary>
-    public void CalculateSkillPosition(SkillData skill, Stats character,bool AI, Vector3 AIDirection)
+    public void CalculateSkillPosition(SkillData skill, Stats character,bool AI, Vector3 AIDirection, Vector3 Position)
     {
         //isSkillReady = true;
         Vector3 startPosition = Vector3.zero;
@@ -440,6 +440,13 @@ public class SkillManager : MonoBehaviour
 
             case StartSkillPosition.mouse:
                 {
+
+                    if (AI)
+                    {
+                        startPosition = Position;
+                        break;
+                    }
+
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
                     float enter;
@@ -467,6 +474,8 @@ public class SkillManager : MonoBehaviour
                     float y = evenY ? Mathf.Floor(rawMouse.z) + 0.5f : Mathf.Round(rawMouse.z);
 
                     startPosition = new Vector3(x, 0f, y);
+
+
                     break;
                 }
 
@@ -668,7 +677,7 @@ Vector3[] directions = {
 
             // 대응자 스킬 저장
             Debug.Log($"[SaveSkill] Skill: {selectedSkill.skillName}, Prefab: {selectedSkill.SkillEffectPrefab}");
-            SaveSkill(true);//대응자용 타겟 저장
+            SaveSkill(false);//대응자용 타겟 저장
             hasReacted = true;
 
             Debug.Log($"[SkillManager] 대응 스킬 저장 완료: {selectedSkill.skillName}");
@@ -1006,7 +1015,6 @@ Vector3[] directions = {
     /// </summary>
     public void ExecuteSingleSkillWithReactionCheck()
     {
-
         // Skillaction이 null이거나 비어있으면 실행하지 않음
         if (Skillaction == null || Skillaction.Count == 0 || Skillaction[0].skillData == null)
         {
@@ -1081,13 +1089,19 @@ Vector3[] directions = {
                 }
             }
 
-            // 대응시간 UI 시작
+/*            // 대응시간 UI 시작
             if (reactTimeUIManager != null)
-                reactTimeUIManager.SetReactTime(skill.reactTime); // 메서드명 변경
+                reactTimeUIManager.SetReactTime(skill.reactTime); // 메서드명 변경*/
 
             // reactTime만큼 기다렸다가 스킬 실행
-            float waitTime = skill.reactTime;
-            Instance.StartCoroutine(ExecuteSkillAfterDelay(waitTime, skillData));
+            /*            float waitTime = skill.reactTime;
+                        Instance.StartCoroutine(ExecuteSkillAfterDelay(waitTime, skillData));*/
+
+            isSkillReadyFinal = false;
+            ExecuteSkill(skillData);
+            Skillaction = null;
+            ReactSkillaction = null;
+            isWaitingForReaction = false;
             return; // 대응단계에서는 return
         }
 
