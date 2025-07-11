@@ -13,6 +13,7 @@ public class SkillManager : MonoBehaviour
     public CharacterUIManager ProfileuiManager; // 캐릭터 프로필 UI 매니저
     public ReactTimeUI reactTimeUIManager; // 대응시간 UI 매니저
     public SkillRangeVisualizer skillRangeVisualizer; // 스킬 범위 시각화 매니저
+    public TurnManager turnManager; // 턴 매니저
 
     public CharacterSelection characterSelection; // 캐릭터 선택 스크립트
 
@@ -100,6 +101,7 @@ public class SkillManager : MonoBehaviour
     {
         skillRangeVisualizer = GetComponent<SkillRangeVisualizer>();
         characterSelection = GetComponent<CharacterSelection>();
+        turnManager = GetComponent<TurnManager>();
 
         validReactTargets = new List<GameObject>();
 
@@ -288,10 +290,8 @@ public class SkillManager : MonoBehaviour
             return false;
         }
 
-        bool isPlayerTurn = TurnManager.Instance.currentPhase == TurnPhase.PlayerTurn
-                         || TurnManager.Instance.currentPhase == TurnPhase.ReactPhase_PlayerResponding;
 
-        if (isPlayerTurn)
+        if (turnManager.IsPlayerActive())
         {
             if (TurnManager.Instance.playerUseSkillTurn >= TurnManager.Instance.playerSkillTurn)
                 return false;

@@ -15,6 +15,7 @@ public class CharacterSelection : MonoBehaviour
 
     public CharacterUIManager characterUIManager;
     public SkillManager skillManager;
+    public TurnManager turnManager;
 
     public GameObject selectedCharacter;
     public CharacterStats characterStats;
@@ -22,6 +23,7 @@ public class CharacterSelection : MonoBehaviour
     {
         characterStats = GetComponent<CharacterStats>();
         skillManager = GetComponent<SkillManager>();
+        turnManager = GetComponent<TurnManager>();
         // 싱글턴 패턴 적용 (중복 방지)
         if (Instance == null)
         {
@@ -74,8 +76,7 @@ public class CharacterSelection : MonoBehaviour
     {
         
         SkillManager.Instance.Skillcancel();
-        if (TurnManager.Instance.currentPhase == TurnPhase.EnemyTurn
-            || TurnManager.Instance.currentPhase == TurnPhase.ReactPhase_EnemyResponding)
+        if (turnManager.IsEnemyActive())
         {
             selectedCharacterIndex = -1;
             return;
@@ -143,8 +144,7 @@ public class CharacterSelection : MonoBehaviour
 
     public void SelectCharacter2P(int index)
     {
-        if (TurnManager.Instance.currentPhase == TurnPhase.PlayerTurn
-            || TurnManager.Instance.currentPhase == TurnPhase.ReactPhase_PlayerResponding)
+        if (turnManager.IsPlayerActive())
         {
             selectedCharacterIndex = -1;
             return;

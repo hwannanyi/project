@@ -174,7 +174,7 @@ public class CharacterMovement : MonoBehaviour
             if (!isMoving && !isBlocked)
             {
 
-                if (nowmoveCount <= 0 && TurnManager.Instance.IsPlayerTurn())//이동횟수가 있어야 이동가능
+                if (nowmoveCount <= 0 && TurnManager.Instance.isPlayerTurn)//이동횟수가 있어야 이동가능
                      return;
 
                 Vector3 chosenDir = Vector3.zero;

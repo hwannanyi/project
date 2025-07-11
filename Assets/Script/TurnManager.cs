@@ -96,37 +96,37 @@ public class TurnManager : MonoBehaviour
 
     //  현재 턴 판별 함수들
 
-/*    public bool NowPlayerTurn()
+/*/   public bool NowPlayerTurn()
     {
         return nowtrun == TurnPhase.PlayerTurn;
     }
+*/
 
-    public bool IsPlayerTurn()
-    {
-        return currentPhase == TurnPhase.PlayerTurn;
-    }
-
-    public bool IsEnemyTurn()
-    {
-        return currentPhase == TurnPhase.EnemyTurn;
-    }
 
     public bool IsInReactPhase()
     {
-        return currentPhase == TurnPhase.ReactPhase_PlayerResponding ||
-               currentPhase == TurnPhase.ReactPhase_EnemyResponding;
+        return Reacttrun != ReactTurnPhase.None; 
     }
 
     public bool IsPlayerReactPhase()
     {
-        return currentPhase == TurnPhase.ReactPhase_PlayerResponding;
+        return Reacttrun == ReactTurnPhase.PlayerTurn;
     }
 
     public bool IsEnemyReactPhase()
     {
-        return currentPhase == TurnPhase.ReactPhase_EnemyResponding;
-    }*/
+        return Reacttrun == ReactTurnPhase.EnemyTurn;
+    }
 
+    public bool IsPlayerActive()
+    {
+        return IsPlayerReactPhase() || isPlayerTurn;
+    }
+
+    public bool IsEnemyActive()
+    {
+        return IsEnemyReactPhase() || !isPlayerTurn;
+    }
 
     //  캐릭터가 플레이어 팀인지 판별
     public bool IsPlayerTeam(Stats character)
@@ -165,12 +165,7 @@ public class TurnManager : MonoBehaviour
         CharacterSelection.selectedCharacterIndex = -1;
         characterUIManager.UpdateProfileUIBySelection();
 
-        if (currentPhase == TurnPhase.ReactPhase_PlayerResponding)
-        { currentPhase = TurnPhase.EnemyTurn;}
-        else if (currentPhase == TurnPhase.ReactPhase_EnemyResponding)
-        { currentPhase = TurnPhase.PlayerTurn;}
-        else
-            Debug.LogWarning("유효하지 못한 턴");
+        Reacttrun = ReactTurnPhase.None;
         // 턴 복귀
         Debug.Log($"[TurnManager] 대응단계 종료: 턴 복귀");
     }
@@ -178,15 +173,8 @@ public class TurnManager : MonoBehaviour
     //  턴 전환 (일반 턴 순환: 플레이어 <-> 적)
     public void NextTurn()
     {
-        if (currentPhase == TurnPhase.PlayerTurn)
-        {
-            currentPhase = TurnPhase.EnemyTurn;
-        }
-        else if (currentPhase == TurnPhase.EnemyTurn)
-        {
-            currentPhase = TurnPhase.PlayerTurn;
-        }
-        nowtrun = currentPhase;
+        isPlayerTurn = !isPlayerTurn; // 플레이어 턴 여부 토글
+
         CharacterSelection.selectedCharacterIndex = -1;
         characterUIManager.UpdateProfileUIBySelection();
         Turn++;
@@ -216,7 +204,7 @@ public class TurnManager : MonoBehaviour
                 character.mp += 1;
             }
         }
-        Debug.Log($"[TurnManager] 턴 전환됨: 현재 턴 = {currentPhase}");
+        Debug.Log($"[TurnManager] 턴 전환됨");
     }
 
     //  EventManager 이벤트용

@@ -11764,6 +11764,7 @@ MonoBehaviour:
   asd: 0
   characterUIManager: {fileID: 781908732}
   skillManager: {fileID: 0}
+  turnManager: {fileID: 0}
   selectedCharacter: {fileID: 0}
   characterStats: {fileID: 0}
 --- !u!114 &62703693
@@ -11792,9 +11793,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   uiManager: {fileID: 781908733}
   characterUIManager: {fileID: 781908732}
-  nowtrun: 0
-  currentPhase: 0
-  previousPhase: 0
+  isPlayerTurn: 1
+  Reacttrun: 0
   Turn: 0
   playerSkillTurn: 10
   enemySkillTurn: 10
@@ -11835,6 +11835,7 @@ MonoBehaviour:
   ProfileuiManager: {fileID: 781908732}
   reactTimeUIManager: {fileID: 781908735}
   skillRangeVisualizer: {fileID: 0}
+  turnManager: {fileID: 0}
   characterSelection: {fileID: 0}
   selectedSkill:
     useCharacterName: 
@@ -18293,13 +18294,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.271727, y: -0, z: -0, w: 0.9623744}
-  m_LocalPosition: {x: 0, y: 4.32, z: -7.4}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 8.4, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 31.534, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0

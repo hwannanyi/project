@@ -23,7 +23,7 @@ public class EventManager : MonoBehaviour
     public event SignalEvent TurnEnd;
 
     public delegate void SignalUseSkill(bool value);
-    public event SignalUseSkill Useskill;
+    //public event SignalUseSkill Useskill;
 
     public void FinishTurn(bool value)
     {
