@@ -76,12 +76,12 @@ public class CharacterSelection : MonoBehaviour
     {
         
         SkillManager.Instance.Skillcancel();
-        if (turnManager.IsEnemyActive())
+        if (!turnManager.isPlayerTurn && !turnManager.IsInReactPhase())
         {
             selectedCharacterIndex = -1;
             return;
         }
-        // 대응단계에서만 유효한 대상 제한
+/*        // 대응단계에서만 유효한 대상 제한
         if (TurnManager.Instance.IsInReactPhase())
         {
             GameObject candidate = CharacterStats.Instance.characters[index];
@@ -95,7 +95,7 @@ public class CharacterSelection : MonoBehaviour
             {
                 Debug.Log("이 캐릭터는 메인 타겟입니다.");
             }
-        }
+        }*/
 
         if (index < CharacterStats.Instance.playerCharacters.Count)
         {
@@ -151,7 +151,7 @@ public class CharacterSelection : MonoBehaviour
         }
 
         int index1 = index - CharacterStats.Instance.playerCharacters.Count;
-        // 대응단계에서만 유효한 대상 제한
+/*        // 대응단계에서만 유효한 대상 제한
         if (TurnManager.Instance.IsInReactPhase())
         {
             GameObject candidate = CharacterStats.Instance.characters[index];
@@ -165,7 +165,7 @@ public class CharacterSelection : MonoBehaviour
             {
                 Debug.Log("이 캐릭터는 메인 타겟입니다.");
             }
-        }
+        }*/
         if (index1 < CharacterStats.Instance.EnemieCharacters.Count)
         {
             var character = CharacterStats.Instance.characterList[index];

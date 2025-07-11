@@ -21,13 +21,20 @@ public enum DesignationType
     none, near, hp, hpRatio, Character
 }
 
+
+
 [CreateAssetMenu(fileName = "BossPattern", menuName = "Scriptable Objects/BossPattern")]
 public class BossPattern : ScriptableObject
 {
     [Header("스킬순서")]
-    public SkillQueue[] skillQueue; // 스킬 큐
+    public List<DoubleList_SkillQueue> skillQueue; // 스킬 큐
 }
 
+[System.Serializable]
+public class DoubleList_SkillQueue
+{
+    public List<SkillQueue> skillQueue; //행에 들어갈 배열들
+}
 
 [System.Serializable]
 public struct SkillQueue

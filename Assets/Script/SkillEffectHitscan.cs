@@ -130,7 +130,7 @@ public class SkillEffectHitscan : MonoBehaviour
     {
         if (!hasExitedPhase && !skillData.isreactSkill)
         {
-            TurnManager.Instance.ExitReactPhase();
+            //TurnManager.Instance.ExitReactPhase(); //미사용, 스킬종료로 인해 대응단계가 종료되지 않도록 변경
             hasExitedPhase = true;
         }
     }

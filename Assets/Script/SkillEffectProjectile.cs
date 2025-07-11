@@ -225,7 +225,7 @@ public class SkillEffectProjectile : MonoBehaviour
         }
 
         Destroy(gameObject);
-        TurnManager.Instance.ExitReactPhase();
+        //TurnManager.Instance.ExitReactPhase(); //미사용, 스킬종료로 인해 대응단계가 종료되지 않도록 변경
     }
 
     // 가장 가까운 타일을 찾는 메서드

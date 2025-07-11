@@ -28,8 +28,8 @@ public class SkillManager : MonoBehaviour
 
     [HideInInspector] public bool isSkillReady = false;
     [HideInInspector] public bool isSkillReadyFinal = false;
-    private int currentSkillIndex = 0;            // Skillaction 실행 인덱스 기억
-    private bool isWaitingForReaction = false;    // 대응단계로 인해 중단되었는지 여부
+
+    //private bool isWaitingForReaction = false;    // 대응단계로 인해 중단되었는지 여부
 
 
     /// 대응을 위한 대기상태 스킬을 저장하는 변수
@@ -1031,43 +1031,22 @@ Vector3[] directions = {
         var selectedAction = TeamSkill[0];
         var skillData = selectedAction.skillData;
 
-/*        Vector3 aoeCenter = skillData.selectedAoeCenterPosition;
+        /*Vector3 aoeCenter = skillData.selectedAoeCenterPosition;
         Vector3 targetPos = skillData.selectedTargetUnit != null
             ? skillData.selectedTargetUnit.transform.position
-            : skillData.selectedTargetPosition;*/
+            : skillData.selectedTargetPosition;
 
-        /*var skill = skillData.selectedSkill;
+        var skill = skillData.selectedSkill;
 
         if (skill.react != React.no && ReactManager.Instance.CanRespond(skill))
         {
-            Debug.Log($"[SkillManager] 대응 가능한 스킬 발견: {skill.skillName} - 대응단계 진입");
-            hasMovedInReact = true;
-
-            *//*            validReactTargets = SimulateSkillHit.Instance.GetHitTargets(
-                        skill,
-                Skillaction.selectedAoeCenterPosition,
-                Skillaction.selectedTargetUnit != null ? Skillaction.selectedTargetUnit.transform.position : Skillaction.selectedTargetPosition,
-                Skillaction.selectedCaster
-            );*/
-
-            /*
-                        // 추가 조건: 타겟팅 스킬일 때만 메인 타겟 저장
-                        if (skill.targeting) // ← bool 타입의 타겟팅 여부
-                        {
-                            validMainTarget = Skillaction.selectedTargetUnit;
-                        }
-                        else
-                        {
-                            validMainTarget = null;
-                        }*//*
-
+            
             if (skill.targeting) { skillRangeVisualizer.StartSkillTargetRangePreview(skillData.selectedTargetUnit); }
-            TurnManager.Instance.EnterReactPhase();
-            ReactManager.Instance.EnterResponsePhase(skill, skillData.selectedCaster);
-            isWaitingForReaction = true;
+
+            //isWaitingForReaction = true; //미사용
 
             // validReactTargets의 첫 번째 오브젝트만 처리
-            if (validReactTargets != null && validReactTargets.Count > 0)
+           *//* if (validReactTargets != null && validReactTargets.Count > 0)
             {
                 var enumerator = validReactTargets.GetEnumerator();
                 if (enumerator.MoveNext())
@@ -1082,8 +1061,8 @@ Vector3[] directions = {
                         // 오브젝트 이름과 characterNumber 디버그 출력
                         Debug.Log($"이름: {obj.name}, characterNumber: {cm.characterNumber}");
                         // characterSelection에 characterNumber 전달
-*//*                        CharacterSelection.prevSelectedIndex = CharacterSelection.selectedCharacterIndex;
-                        CharacterSelection.selectedCharacterIndex = cm.characterNumber;*//*
+                      CharacterSelection.prevSelectedIndex = CharacterSelection.selectedCharacterIndex;
+                        CharacterSelection.selectedCharacterIndex = cm.characterNumber;
                         characterSelection.SelectCharacter(cm.characterNumber);
                     }
                     else
@@ -1092,29 +1071,14 @@ Vector3[] directions = {
                         Debug.LogWarning($"{obj.name}에 CharacterMovement 컴포넌트가 없습니다.");
                     }
                 }
-            }
-
-*//*            // 대응시간 UI 시작
-            if (reactTimeUIManager != null)
-                reactTimeUIManager.SetReactTime(skill.reactTime); // 메서드명 변경*//*
-
-            // reactTime만큼 기다렸다가 스킬 실행
-            *//*            float waitTime = skill.reactTime;
-                        Instance.StartCoroutine(ExecuteSkillAfterDelay(waitTime, skillData));*//*
-
-            isSkillReadyFinal = false;
-            ExecuteSkill(skillData);
-            Skillaction = null;
-            ReactSkillaction = null;
-            isWaitingForReaction = false;
-            return; // 대응단계에서는 return
-        }*/
-
+            }*//*
+        }
+*/
         //스킬 실행
         isSkillReadyFinal = false;
         ExecuteSkill(skillData);
         TeamSkill = null;
-        isWaitingForReaction = false;
+        //isWaitingForReaction = false; //미사용
 
         Debug.Log("[SkillManager] 스킬 실행 완료");
     }
@@ -1215,7 +1179,7 @@ Vector3[] directions = {
         isSkillReadyFinal = false;
         ExecuteSkill(skillData);
         EnemySkill = null;
-        isWaitingForReaction = false;
+        //isWaitingForReaction = false; //미사용
     }
 
     // 대응시간 코루틴
@@ -1227,7 +1191,7 @@ Vector3[] directions = {
         ExecuteSkill(skillData);
         TeamSkill = null;
         EnemySkill = null;
-        isWaitingForReaction = false;
+        //isWaitingForReaction = false; //미사용
         Debug.Log("[SkillManager] 스킬 실행 완료 (reactTime 대기 후)");
     }
 

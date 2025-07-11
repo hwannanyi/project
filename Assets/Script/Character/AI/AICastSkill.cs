@@ -90,12 +90,20 @@ public class AICastSkill : MonoBehaviour
         var manager = CharacterStats.Instance;
         var character = manager.GetStats(gameObject);
 
-        if (character.aIPattern.skillQueueList == null)
+        if (character.aIPattern.skillQueueList == null || character.aIPattern.skillQueueList.Count == 0)
             yield break;
 
-        if (turnManager.Turn % 2 == 0)
-        {
-            for (int i = 0; i < character.aIPattern.skillQueueList.Count; i++)
+        int patternCount = (turnManager.Turn) % character.aIPattern.skillQueueList.Count == 0 ? 
+            character.aIPattern.skillQueueList.Count - 1 : (turnManager.Turn) % character.aIPattern.skillQueueList.Count - 1;
+
+        Debug.Log(patternCount);
+            if (character.aIPattern.skillQueueList == null ||
+            character.aIPattern.skillQueueList.Count <= 1 ||
+            character.aIPattern.skillQueueList[patternCount] == null)
+                yield break;
+
+
+            for (int i = 0; i < character.aIPattern.skillQueueList[patternCount].Count; i++)
             {
 
 
@@ -105,20 +113,20 @@ public class AICastSkill : MonoBehaviour
                 }*/
                 Debug.Log("d");
 
-                var pattern = character.aIPattern.skillQueueList[i];
+                var pattern = character.aIPattern.skillQueueList[patternCount][i];
                 var targetSkill = new SkillData(pattern.skill, character.name, false);
                 if (character.usingSkill.Any(x => x.skillName == pattern.skill.skillName))
                 {
-                    yield return new WaitForSeconds(character.aIPattern.skillQueueList[i].delay);
+                    yield return new WaitForSeconds(pattern.delay);
                     int index = character.usingSkill.FindIndex(x => x.skillName == pattern.skill.skillName);
                     //CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
                     //CharacterSelection.selectedCharacterIndex = character.characterNumber;
                     skillManager.PrepareSkillCast(index, character.characterNumber);
-                    /*
-                                        if (!skillManager.isSkillReady)
+                    
+/*                                        if (!skillManager.isSkillReady)
                                         {
                                             yield break;
-                                        } */
+                                        }*/
                     skillManager.CalculateSkillPosition(character.usingSkill[index], character, true,
                         pattern.Rotation, GetClosestCharacterPosition(character));
                     skillManager.selectedTargetUnit = null;
@@ -127,7 +135,7 @@ public class AICastSkill : MonoBehaviour
                     Debug.Log("스킬실행완료");
                 }
             }
-        }
+        
     }
 
     public Vector3 GetClosestCharacterPosition(Stats self)

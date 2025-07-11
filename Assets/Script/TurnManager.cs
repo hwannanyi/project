@@ -30,7 +30,7 @@ public class TurnManager : MonoBehaviour
         public TurnPhase currentPhase = TurnPhase.PlayerTurn;
         public TurnPhase previousPhase;*/
 
-    public ReactTurnPhase Reacttrun = ReactTurnPhase.None;
+    public ReactTurnPhase Reacttrun = ReactTurnPhase.EnemyTurn;
 
     public int Turn = 1;
 
@@ -174,7 +174,7 @@ public class TurnManager : MonoBehaviour
     public void NextTurn()
     {
         isPlayerTurn = !isPlayerTurn; // 플레이어 턴 여부 토글
-
+        EnterReactPhase();
         CharacterSelection.selectedCharacterIndex = -1;
         characterUIManager.UpdateProfileUIBySelection();
         Turn++;

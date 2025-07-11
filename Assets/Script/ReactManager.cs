@@ -38,7 +38,7 @@ public class ReactManager : MonoBehaviour
     /// <summary>
     /// 대응단계를 시작함. UI/입력 대기/아군 지원 등은 여기서 구현
     /// </summary>
-    public void EnterResponsePhase(SkillData skill, GameObject caster)
+/*    public void EnterResponsePhase(SkillData skill, GameObject caster)
     {
 
         CharacterSelection.selectedCharacterIndex = -1;
@@ -48,7 +48,7 @@ public class ReactManager : MonoBehaviour
         // 현재는 로그만 출력하고 바로 대응 없이 종료
 
         // 추후: 대응 입력을 받아 스킬 차단/회피/반격 등 처리
-    }
+    }*/
 
     public void StartReact()
     {

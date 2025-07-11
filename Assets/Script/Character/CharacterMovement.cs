@@ -174,7 +174,9 @@ public class CharacterMovement : MonoBehaviour
             if (!isMoving && !isBlocked)
             {
 
-                if (nowmoveCount <= 0 && TurnManager.Instance.isPlayerTurn)//이동횟수가 있어야 이동가능
+                bool teamTurn = (character.team == Team.team && TurnManager.Instance.isPlayerTurn) || 
+                    (character.team == Team.enemy && !TurnManager.Instance.isPlayerTurn);
+                if (nowmoveCount <= 0 && teamTurn)//이동횟수가 있어야 이동가능
                      return;
 
                 Vector3 chosenDir = Vector3.zero;

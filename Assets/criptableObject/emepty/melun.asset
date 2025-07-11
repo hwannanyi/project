@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charactername: melun
   maxhp: 10
-  maxmp: 10
+  maxmp: 99
   atk: 10
   def: 10
   speed: 10
@@ -28,6 +28,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 3faea8acad35ac9449d03f5e22db5dc7, type: 2}
   - {fileID: 11400000, guid: 3a47032e9e1b4bd4b98a5dbcea9e6a02, type: 2}
   - {fileID: 11400000, guid: 871cd6011f5ba24448a04642d97d3670, type: 2}
+  - {fileID: 11400000, guid: c9b8b31d638b40d4da50d4111063d677, type: 2}
+  - {fileID: 11400000, guid: 1435ccd56f30f63478d0b899653863b9, type: 2}
+  - {fileID: 11400000, guid: 9c11d0421fab6ec45beb13019a7bef03, type: 2}
   characterillustration: {fileID: 21300000, guid: 4e02d8d650a2b60429df1902bf562cfb, type: 3}
   characterProfileillustration: {fileID: 21300000, guid: 48b0b642eb9ea4f478f87f0c4db58470, type: 3}
   characterPrefab: {fileID: 4344314745404087944, guid: b350271128cd3ca489c78af4523dd393, type: 3}
