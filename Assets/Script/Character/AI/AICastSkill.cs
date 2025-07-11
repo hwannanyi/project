@@ -33,11 +33,8 @@ public class AICastSkill : MonoBehaviour
         var character = manager.GetStats(gameObject);
         if (character.aIPattern.skillQueueList == null)
             return;
+        StartCoroutine(OnTurnEndCoroutine());
 
-        for (int i = 0; i < character.aIPattern.skillQueueList.Count; i++)
-        {
-            StartCoroutine(OnTurnEndCoroutine(i));
-        }
     }
 
     /*private void OnTurnEnd(bool value)  
@@ -85,7 +82,7 @@ public class AICastSkill : MonoBehaviour
         }
     }*/
 
-    private IEnumerator OnTurnEndCoroutine(int i)
+    private IEnumerator OnTurnEndCoroutine()
     {
         TurnManager turnManager = TurnManager.Instance;
         SkillManager skillManager = SkillManager.Instance;
@@ -98,11 +95,15 @@ public class AICastSkill : MonoBehaviour
 
         if (turnManager.Turn % 2 == 0)
         {
-            while (skillManager.isSkillReadyFinal)
+            for (int i = 0; i < character.aIPattern.skillQueueList.Count; i++)
             {
-                yield return null; // skillManager.isSkillReadyFinal이 false가 될 때까지 대기
-            }
-            Debug.Log("d");
+
+
+/*                while (skillManager.isSkillReadyFinal)
+                {
+                    yield return null; // skillManager.isSkillReadyFinal이 false가 될 때까지 대기
+                }*/
+                Debug.Log("d");
 
                 var pattern = character.aIPattern.skillQueueList[i];
                 var targetSkill = new SkillData(pattern.skill, character.name, false);
@@ -113,11 +114,11 @@ public class AICastSkill : MonoBehaviour
                     CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
                     CharacterSelection.selectedCharacterIndex = character.characterNumber;
                     skillManager.PrepareSkillCast(index);
-
+/*
                     if (!skillManager.isSkillReady)
                     {
                         yield break;
-                    }
+                    } */
                     skillManager.CalculateSkillPosition(skillManager.selectedSkill, skillManager.selectedCharacter, true,
                         pattern.Rotation, GetClosestCharacterPosition(character));
                     skillManager.selectedTargetUnit = null;
@@ -125,7 +126,7 @@ public class AICastSkill : MonoBehaviour
                     skillManager.ExecuteSingleSkillWithReactionCheck();
                     Debug.Log("스킬실행완료");
                 }
-            
+            }
         }
     }
 

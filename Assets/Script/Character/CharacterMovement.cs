@@ -52,6 +52,7 @@ public class CharacterMovement : MonoBehaviour
         moveSpeed = CharacterStats.Instance.characterList[index].speed;
         moveRange = CharacterStats.Instance.characterList[index].movespeed;
         CharacterStats.Instance.characterList[index].NowMoveCount = CharacterStats.Instance.characterList[index].moveCount;
+        PositionUpdate();
 
     }
 

@@ -73,8 +73,8 @@ public class SkillRangeVisualizer : MonoBehaviour
         // 타겟팅 스킬이고, 스킬 준비가 끝났으면 타겟 위치로 범위 표시
         if (skillSave.Skillaction != null && isSkillRangeActive && skillManager.isSkillReadyFinal)
         {
-            if (skillSave.Skillaction[0].skillData.selectedSkill.targeting)
-            ShowRectSkillRangeByTarget(maintarget, Xaoe, Yaoe);
+            //if (skillSave.Skillaction[0].skillData.selectedSkill.targeting)
+            //ShowRectSkillRangeByTarget(maintarget, Xaoe, Yaoe);
         }
 
         if (isSkillRangeActive && !skillManager.isSkillReadyFinal)

@@ -444,7 +444,7 @@ public class SkillManager : MonoBehaviour
                     if (AI)
                     {
                         startPosition = Position;
-                        break;
+                        return;
                     }
 
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -526,11 +526,11 @@ Vector3[] directions = {
             //AI 캐릭터의 경우, 방향을 AI가 지정한 방향으로 설정
             if (AI)
             {
-                direction = (mouseWorldPos - startPosition).normalized;
+                direction = (AIDirection - startPosition).normalized;
             }
             else
             {
-                direction = (AIDirection - startPosition).normalized;
+                direction = (mouseWorldPos - startPosition).normalized;
             }
 
             // 4방향 중 가장 가까운 방향 찾기
@@ -729,7 +729,7 @@ Vector3[] directions = {
             selectedSkill.isreactSkill = true;
             if (ReactSkillaction == null)
                 ReactSkillaction = new List<ActionWrapper>();
-            ReactSkillaction.Add(action);
+            ReactSkillaction[0]=action;
         }
         else
         {
@@ -737,7 +737,7 @@ Vector3[] directions = {
             selectedSkill.isreactSkill = false;
             if (Skillaction == null)
                 Skillaction = new List<ActionWrapper>();
-            Skillaction.Add(action);
+            Skillaction[0]=action;
         }
     }
 
@@ -752,6 +752,21 @@ Vector3[] directions = {
     public void ExecuteSkill(SkillData skill, Vector3 aoeCenterPosition, Vector3 targetPosition, 
         GameObject casterObject, Stats character, GameObject target = null)
     {
+
+        GameObject skillObject = Instantiate(skill.SkillEffectPrefab, aoeCenterPosition, Quaternion.identity);
+
+        if (skill.projectile)
+        {
+            SkillEffectProjectile effect = skillObject.GetComponent<SkillEffectProjectile>();
+            if (effect != null)
+                effect.Initialize(skill, targetPosition, casterObject, character, target);
+        }
+        else
+        {
+            SkillEffectHitscan effect = skillObject.GetComponent<SkillEffectHitscan>();
+            if (effect != null)
+                effect.Initialize(skill, targetPosition, casterObject, character, target);
+        }
 
         // 코스트 차감
         if (skill.cost != null && character != null)
@@ -771,20 +786,6 @@ Vector3[] directions = {
             }
         }
 
-        GameObject skillObject = Instantiate(skill.SkillEffectPrefab, aoeCenterPosition, Quaternion.identity);
-
-        if (skill.projectile)
-        {
-            SkillEffectProjectile effect = skillObject.GetComponent<SkillEffectProjectile>();
-            if (effect != null)
-                effect.Initialize(skill, targetPosition, casterObject, character, target);
-        }
-        else
-        {
-            SkillEffectHitscan effect = skillObject.GetComponent<SkillEffectHitscan>();
-            if (effect != null)
-                effect.Initialize(skill, targetPosition, casterObject, character, target);
-        }
 
         // 쿨타임 시작
         skill.StartCooldown();
@@ -1026,19 +1027,19 @@ Vector3[] directions = {
         var selectedAction = Skillaction[0];
         var skillData = selectedAction.skillData;
 
-        Vector3 aoeCenter = skillData.selectedAoeCenterPosition;
+/*        Vector3 aoeCenter = skillData.selectedAoeCenterPosition;
         Vector3 targetPos = skillData.selectedTargetUnit != null
             ? skillData.selectedTargetUnit.transform.position
-            : skillData.selectedTargetPosition;
+            : skillData.selectedTargetPosition;*/
 
-        var skill = skillData.selectedSkill;
+        /*var skill = skillData.selectedSkill;
 
         if (skill.react != React.no && ReactManager.Instance.CanRespond(skill))
         {
             Debug.Log($"[SkillManager] 대응 가능한 스킬 발견: {skill.skillName} - 대응단계 진입");
             hasMovedInReact = true;
 
-            /*            validReactTargets = SimulateSkillHit.Instance.GetHitTargets(
+            *//*            validReactTargets = SimulateSkillHit.Instance.GetHitTargets(
                         skill,
                 Skillaction.selectedAoeCenterPosition,
                 Skillaction.selectedTargetUnit != null ? Skillaction.selectedTargetUnit.transform.position : Skillaction.selectedTargetPosition,
@@ -1054,7 +1055,7 @@ Vector3[] directions = {
                         else
                         {
                             validMainTarget = null;
-                        }*/
+                        }*//*
 
             if (skill.targeting) { skillRangeVisualizer.StartSkillTargetRangePreview(skillData.selectedTargetUnit); }
             TurnManager.Instance.EnterReactPhase();
@@ -1077,8 +1078,8 @@ Vector3[] directions = {
                         // 오브젝트 이름과 characterNumber 디버그 출력
                         Debug.Log($"이름: {obj.name}, characterNumber: {cm.characterNumber}");
                         // characterSelection에 characterNumber 전달
-/*                        CharacterSelection.prevSelectedIndex = CharacterSelection.selectedCharacterIndex;
-                        CharacterSelection.selectedCharacterIndex = cm.characterNumber;*/
+*//*                        CharacterSelection.prevSelectedIndex = CharacterSelection.selectedCharacterIndex;
+                        CharacterSelection.selectedCharacterIndex = cm.characterNumber;*//*
                         characterSelection.SelectCharacter(cm.characterNumber);
                     }
                     else
@@ -1089,13 +1090,13 @@ Vector3[] directions = {
                 }
             }
 
-/*            // 대응시간 UI 시작
+*//*            // 대응시간 UI 시작
             if (reactTimeUIManager != null)
-                reactTimeUIManager.SetReactTime(skill.reactTime); // 메서드명 변경*/
+                reactTimeUIManager.SetReactTime(skill.reactTime); // 메서드명 변경*//*
 
             // reactTime만큼 기다렸다가 스킬 실행
-            /*            float waitTime = skill.reactTime;
-                        Instance.StartCoroutine(ExecuteSkillAfterDelay(waitTime, skillData));*/
+            *//*            float waitTime = skill.reactTime;
+                        Instance.StartCoroutine(ExecuteSkillAfterDelay(waitTime, skillData));*//*
 
             isSkillReadyFinal = false;
             ExecuteSkill(skillData);
@@ -1103,7 +1104,7 @@ Vector3[] directions = {
             ReactSkillaction = null;
             isWaitingForReaction = false;
             return; // 대응단계에서는 return
-        }
+        }*/
 
         //스킬 실행
         isSkillReadyFinal = false;
