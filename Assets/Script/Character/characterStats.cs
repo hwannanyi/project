@@ -181,15 +181,18 @@ public class CharacterStats : MonoBehaviour
             if (characterList[i].team == Team.team)
             {
                 CharacterObject.transform.position = playerStartPos + new Vector3(0, 0, playerIndex * yOffset);
+                //characterList[i].charPosition = CharacterObject.transform.position; // 캐릭터 위치 저장
                 playerIndex++;
             }
             else if (characterList[i].team == Team.enemy)
             {
                 CharacterObject.transform.position = enemyStartPos + new Vector3(0, 0, enemyIndex * yOffset);
+                //characterList[i].charPosition = CharacterObject.transform.position; // 캐릭터 위치 저장
                 enemyIndex++;
             }
             else
             {
+                //characterList[i].charPosition = CharacterObject.transform.position; // 캐릭터 위치 저장
                 CharacterObject.transform.position = transform.position;
             }
 

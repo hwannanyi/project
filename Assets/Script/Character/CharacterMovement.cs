@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using UnityEngine.TextCore.Text;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 
 
 public class CharacterMovement : MonoBehaviour
@@ -52,7 +53,7 @@ public class CharacterMovement : MonoBehaviour
         moveSpeed = CharacterStats.Instance.characterList[index].speed;
         moveRange = CharacterStats.Instance.characterList[index].movespeed;
         CharacterStats.Instance.characterList[index].NowMoveCount = CharacterStats.Instance.characterList[index].moveCount;
-        PositionUpdate();
+
 
     }
 
@@ -66,7 +67,8 @@ public class CharacterMovement : MonoBehaviour
 
 
         int indexnumber = CharacterSelection.selectedCharacterIndex;
-        if(indexnumber < 0 || indexnumber >= CharacterStats.Instance.characters.Count || SkillManager.Instance.selectedSkill != null || (SkillManager.Instance.isSkillReadyFinal && !TurnManager.Instance.IsInReactPhase()))
+        if(indexnumber < 0 || indexnumber >= CharacterStats.Instance.characters.Count || SkillManager.Instance.selectedSkill != null 
+            || (SkillManager.Instance.isSkillReadyFinal && !TurnManager.Instance.IsInReactPhase()))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // y = 0 기준 평면
@@ -171,6 +173,10 @@ public class CharacterMovement : MonoBehaviour
             //키보드 이동
             if (!isMoving && !isBlocked)
             {
+
+                if (nowmoveCount <= 0 && TurnManager.Instance.IsPlayerTurn())//이동횟수가 있어야 이동가능
+                     return;
+
                 Vector3 chosenDir = Vector3.zero;
 
                 if (Input.GetKey(KeyCode.UpArrow))
@@ -225,7 +231,7 @@ public class CharacterMovement : MonoBehaviour
         Vector3 velocity = Vector3.zero; // SmoothDamp에서 사용할 속도 참조 변수
         float smoothTime = 0.05f; // 감속에 걸리는 시간 (값이 작을수록 더 빠르게 멈춤)
 
-        // 목표 위치에 가까워질수록 점점 느려지며 이동
+        // 목표 위치에 가까워질수록 점점 느려``지며 이동
         while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
         {
             // SmoothDamp를 사용해 자연스럽게 감속하며 이동

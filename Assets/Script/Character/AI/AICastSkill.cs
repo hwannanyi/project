@@ -111,19 +111,19 @@ public class AICastSkill : MonoBehaviour
                 {
                     yield return new WaitForSeconds(character.aIPattern.skillQueueList[i].delay);
                     int index = character.usingSkill.FindIndex(x => x.skillName == pattern.skill.skillName);
-                    CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
-                    CharacterSelection.selectedCharacterIndex = character.characterNumber;
-                    skillManager.PrepareSkillCast(index);
-/*
-                    if (!skillManager.isSkillReady)
-                    {
-                        yield break;
-                    } */
-                    skillManager.CalculateSkillPosition(skillManager.selectedSkill, skillManager.selectedCharacter, true,
+                    //CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
+                    //CharacterSelection.selectedCharacterIndex = character.characterNumber;
+                    skillManager.PrepareSkillCast(index, character.characterNumber);
+                    /*
+                                        if (!skillManager.isSkillReady)
+                                        {
+                                            yield break;
+                                        } */
+                    skillManager.CalculateSkillPosition(character.usingSkill[index], character, true,
                         pattern.Rotation, GetClosestCharacterPosition(character));
                     skillManager.selectedTargetUnit = null;
-                    skillManager.ConfirmSkillCast();
-                    skillManager.ExecuteSingleSkillWithReactionCheck();
+                    skillManager.ConfirmSkillCast(character.team);
+                    skillManager.SkillCastEnemyAI();
                     Debug.Log("스킬실행완료");
                 }
             }

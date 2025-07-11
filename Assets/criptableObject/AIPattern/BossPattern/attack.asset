@@ -35,7 +35,7 @@ MonoBehaviour:
     reverse_order: 0
   - skill: {fileID: 11400000, guid: 871cd6011f5ba24448a04642d97d3670, type: 2}
     currentIndex: 2
-    delay: 0
+    delay: 0.1
     coordinate: {x: 0, y: 0, z: 0}
     Rotation: {x: -1, y: 0, z: 0}
     targetTypeX: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
     reverse_order: 0
   - skill: {fileID: 11400000, guid: 871cd6011f5ba24448a04642d97d3670, type: 2}
     currentIndex: 2
-    delay: 0
+    delay: 0.1
     coordinate: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: 1}
     targetTypeX: 0
@@ -55,7 +55,7 @@ MonoBehaviour:
     reverse_order: 0
   - skill: {fileID: 11400000, guid: 871cd6011f5ba24448a04642d97d3670, type: 2}
     currentIndex: 2
-    delay: 0
+    delay: 0.1
     coordinate: {x: 0, y: 0, z: 0}
     Rotation: {x: 0, y: 0, z: -1}
     targetTypeX: 0

@@ -1,12 +1,20 @@
 using UnityEngine;
 using System;
 
-public enum TurnPhase
+/*public enum TurnPhase
 {
     PlayerTurn,
     EnemyTurn,
     ReactPhase_PlayerResponding,
     ReactPhase_EnemyResponding
+}*/
+
+
+public enum ReactTurnPhase
+{
+    None,
+    PlayerTurn,
+    EnemyTurn,
 }
 
 public class TurnManager : MonoBehaviour
@@ -15,9 +23,14 @@ public class TurnManager : MonoBehaviour
 
     public TurnUIManager uiManager;
     public CharacterUIManager characterUIManager; // 캐릭터 프로필 UI 매니저
-    public TurnPhase nowtrun = TurnPhase.PlayerTurn;
-    public TurnPhase currentPhase = TurnPhase.PlayerTurn;
-    public TurnPhase previousPhase;
+
+    public bool isPlayerTurn = true; // 플레이어 턴 여부
+
+    /*    public TurnPhase nowtrun = TurnPhase.PlayerTurn;
+        public TurnPhase currentPhase = TurnPhase.PlayerTurn;
+        public TurnPhase previousPhase;*/
+
+    public ReactTurnPhase Reacttrun = ReactTurnPhase.None;
 
     public int Turn = 1;
 
@@ -83,7 +96,7 @@ public class TurnManager : MonoBehaviour
 
     //  현재 턴 판별 함수들
 
-    public bool NowPlayerTurn()
+/*    public bool NowPlayerTurn()
     {
         return nowtrun == TurnPhase.PlayerTurn;
     }
@@ -112,7 +125,7 @@ public class TurnManager : MonoBehaviour
     public bool IsEnemyReactPhase()
     {
         return currentPhase == TurnPhase.ReactPhase_EnemyResponding;
-    }
+    }*/
 
 
     //  캐릭터가 플레이어 팀인지 판별
@@ -126,14 +139,8 @@ public class TurnManager : MonoBehaviour
     {
         playerUseSkillReactTrun = 0;
         enemyUseSkillReactTrun = 0;
-        previousPhase = currentPhase;
-
-        if (currentPhase == TurnPhase.PlayerTurn)
-            currentPhase = TurnPhase.ReactPhase_EnemyResponding;
-        else if (currentPhase == TurnPhase.EnemyTurn)
-            currentPhase = TurnPhase.ReactPhase_PlayerResponding;
-        else
-            Debug.LogWarning("[TurnManager] 잘못된 대응단계 진입 시도: 현재 턴이 유효하지 않음");
+        
+        Reacttrun = isPlayerTurn ? ReactTurnPhase.PlayerTurn : ReactTurnPhase.EnemyTurn;
     }
 
     //  대응단계 종료 → 이전 턴 복원
@@ -229,6 +236,6 @@ public class TurnManager : MonoBehaviour
     public void UITrunCount(int turnCount)
     {
         uiManager.UpdateTrunCount(turnCount);
-        uiManager.UpdateReactTurn(NowPlayerTurn());
+        uiManager.UpdateReactTurn(isPlayerTurn);
     }
 }

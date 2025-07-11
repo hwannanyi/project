@@ -22,15 +22,15 @@ public class CharacterHighlight : MonoBehaviour
 
         // SkillSave.Instance와 Skillaction 리스트가 null이거나 비어있는지 체크
         if (SkillSave.Instance == null ||
-            SkillSave.Instance.Skillaction == null ||
-            SkillSave.Instance.Skillaction.Count == 0)
+            SkillSave.Instance.TeamSkill == null ||
+            SkillSave.Instance.TeamSkill.Count == 0)
         {
             outline.outlineSize = 0;
             return;
         }
 
         // Skillaction 리스트 중 selectedTargetUnit이 characterForm.parentObject와 일치하는지 검사
-        bool isTarget = SkillSave.Instance.Skillaction
+        bool isTarget = SkillSave.Instance.TeamSkill
             .Any(action => action.skillData != null &&
                            action.skillData.selectedTargetUnit == characterForm.parentObject);
 
