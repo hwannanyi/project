@@ -68,17 +68,6 @@ MonoBehaviour:
         dot: 0
       DebuffEffects: []
       BuffEffects: []
-      CCEffects:
-      - CC: 1
-        baseValue: 1
-        increase:
-          keys: 01000000
-          values:
-          - 0.1
-        trunDuration: 2
-        timeIncrease:
-          keys: 03000000
-          values:
-          - 0.1
+      CCEffects: []
   react: 2
   reactTime: 4

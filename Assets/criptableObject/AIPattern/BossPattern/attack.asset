@@ -24,6 +24,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 0
     - skill: {fileID: 11400000, guid: 871cd6011f5ba24448a04642d97d3670, type: 2}
       currentIndex: 0
       delay: 3
@@ -34,6 +35,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 0
     - skill: {fileID: 11400000, guid: 871cd6011f5ba24448a04642d97d3670, type: 2}
       currentIndex: 0
       delay: 0
@@ -44,6 +46,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 0
     - skill: {fileID: 11400000, guid: 871cd6011f5ba24448a04642d97d3670, type: 2}
       currentIndex: 0
       delay: 0
@@ -54,6 +57,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 0
     - skill: {fileID: 11400000, guid: 871cd6011f5ba24448a04642d97d3670, type: 2}
       currentIndex: 0
       delay: 0
@@ -64,6 +68,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 0
     - skill: {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
       currentIndex: 0
       delay: 1
@@ -74,6 +79,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 0
     - skill: {fileID: 11400000, guid: c9b8b31d638b40d4da50d4111063d677, type: 2}
       currentIndex: 0
       delay: 0.5
@@ -84,6 +90,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 0
     - skill: {fileID: 11400000, guid: 3faea8acad35ac9449d03f5e22db5dc7, type: 2}
       currentIndex: 0
       delay: 5
@@ -94,6 +101,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 0
   - skillQueue:
     - skill: {fileID: 11400000, guid: 3a47032e9e1b4bd4b98a5dbcea9e6a02, type: 2}
       currentIndex: 0
@@ -102,9 +110,10 @@ MonoBehaviour:
       Rotation: {x: 1, y: 0, z: 0}
       targetTypeX: 0
       targetTypeY: 0
-      RotationType: 0
+      RotationType: 1
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: 871cd6011f5ba24448a04642d97d3670, type: 2}
       currentIndex: 0
       delay: 3
@@ -115,6 +124,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: 871cd6011f5ba24448a04642d97d3670, type: 2}
       currentIndex: 0
       delay: 0
@@ -125,6 +135,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: 871cd6011f5ba24448a04642d97d3670, type: 2}
       currentIndex: 0
       delay: 0
@@ -135,6 +146,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: 871cd6011f5ba24448a04642d97d3670, type: 2}
       currentIndex: 0
       delay: 0
@@ -145,6 +157,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
       currentIndex: 0
       delay: 1
@@ -155,6 +168,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: c9b8b31d638b40d4da50d4111063d677, type: 2}
       currentIndex: 0
       delay: 0.5
@@ -164,7 +178,8 @@ MonoBehaviour:
       targetTypeY: 0
       RotationType: 0
       Designation: 0
-      reverse_order: 0
+      reverse_order: 1
+      index: 1
     - skill: {fileID: 11400000, guid: 3faea8acad35ac9449d03f5e22db5dc7, type: 2}
       currentIndex: 0
       delay: 5
@@ -175,6 +190,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 1
   - skillQueue: []
   - skillQueue:
     - skill: {fileID: 11400000, guid: 9c11d0421fab6ec45beb13019a7bef03, type: 2}
@@ -184,9 +200,10 @@ MonoBehaviour:
       Rotation: {x: 1, y: 0, z: 0}
       targetTypeX: 0
       targetTypeY: 0
-      RotationType: 0
+      RotationType: 1
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: 1435ccd56f30f63478d0b899653863b9, type: 2}
       currentIndex: 0
       delay: 0
@@ -197,6 +214,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: 9c11d0421fab6ec45beb13019a7bef03, type: 2}
       currentIndex: 0
       delay: 1
@@ -204,9 +222,10 @@ MonoBehaviour:
       Rotation: {x: 1, y: 0, z: 0}
       targetTypeX: 0
       targetTypeY: 0
-      RotationType: 0
+      RotationType: 1
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: 1435ccd56f30f63478d0b899653863b9, type: 2}
       currentIndex: 0
       delay: 0
@@ -217,6 +236,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: 9c11d0421fab6ec45beb13019a7bef03, type: 2}
       currentIndex: 0
       delay: 1
@@ -224,9 +244,10 @@ MonoBehaviour:
       Rotation: {x: 1, y: 0, z: 0}
       targetTypeX: 0
       targetTypeY: 0
-      RotationType: 0
+      RotationType: 1
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: 1435ccd56f30f63478d0b899653863b9, type: 2}
       currentIndex: 0
       delay: 0
@@ -237,6 +258,7 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: 9c11d0421fab6ec45beb13019a7bef03, type: 2}
       currentIndex: 0
       delay: 1
@@ -244,9 +266,10 @@ MonoBehaviour:
       Rotation: {x: 1, y: 0, z: 0}
       targetTypeX: 0
       targetTypeY: 0
-      RotationType: 0
+      RotationType: 1
       Designation: 0
       reverse_order: 0
+      index: 1
     - skill: {fileID: 11400000, guid: 1435ccd56f30f63478d0b899653863b9, type: 2}
       currentIndex: 0
       delay: 0
@@ -257,3 +280,4 @@ MonoBehaviour:
       RotationType: 0
       Designation: 0
       reverse_order: 0
+      index: 1

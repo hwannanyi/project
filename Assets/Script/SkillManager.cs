@@ -528,7 +528,7 @@ Vector3[] directions = {
             //AI 캐릭터의 경우, 방향을 AI가 지정한 방향으로 설정
             if (AI)
             {
-                direction = (AIDirection).normalized;
+                direction = (AIDirection - startPosition).normalized;
             }
             else
             {

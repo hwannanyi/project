@@ -32,7 +32,8 @@ public class AIPattern
                     targetTypeY = src.targetTypeY,
                     RotationType = src.RotationType,
                     Designation = src.Designation,
-                    reverse_order = src.reverse_order
+                    reverse_order = src.reverse_order,
+                    index = src.index,
                 });
             }
             skillQueueList.Add(skillList);

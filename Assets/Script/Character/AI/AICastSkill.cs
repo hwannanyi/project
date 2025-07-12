@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.TextCore.Text;
 using System.Xml.Linq;
 using System.Collections;
+using System;
 
 public class AICastSkill : MonoBehaviour
 {
@@ -122,13 +123,62 @@ public class AICastSkill : MonoBehaviour
                     //CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
                     //CharacterSelection.selectedCharacterIndex = character.characterNumber;
                     skillManager.PrepareSkillCast(index, character.characterNumber);
-                    
-/*                                        if (!skillManager.isSkillReady)
-                                        {
-                                            yield break;
-                                        }*/
-                    skillManager.CalculateSkillPosition(character.usingSkill[index], character, true,
-                        pattern.Rotation, GetClosestCharacterPosition(character));
+
+                /*                                        if (!skillManager.isSkillReady)
+                                                        {
+                                                            yield break;
+                                                        }*/
+                Vector3 rotatoin = Vector3.zero;// 기본값 초기화
+                switch(pattern.RotationType) // 방향 방식에 따라 방향 지정
+                {
+                    case Rotation.none:
+                        rotatoin = gameObject.transform.position + pattern.Rotation;
+                        break;
+                    case Rotation.Character:
+                        rotatoin = GetClosestCharacterPosition(character, pattern.index, pattern.reverse_order);
+                        break;
+                    case Rotation.Skill:
+                        rotatoin = Vector3.zero; // 임의
+                        break;
+
+                }
+
+                float targetPositionX = 0; // 기본값 초기화
+                switch (pattern.targetTypeX) // X축 타겟팅 방식에 따라 위치 지정
+                {
+                    case TargetTypeX.none:
+                        targetPositionX = (pattern.coordinate).x;
+                        break;
+                    case TargetTypeX.Character:
+                        targetPositionX = GetClosestCharacterPosition(character, pattern.index, pattern.reverse_order).x;
+                        break;
+                    case TargetTypeX.Skill:
+                        targetPositionX = gameObject.transform.position.x; // 임의
+                        break;
+                }
+
+
+                float targetPositionY = 0; // 기본값 초기화
+                switch (pattern.targetTypeX) // Y축 타겟팅 방식에 따라 위치 지정
+                {
+                    case TargetTypeX.none:
+                        targetPositionY = (pattern.coordinate).y;
+                        break;
+                    case TargetTypeX.Character:
+                        targetPositionY = GetClosestCharacterPosition(character, pattern.index, pattern.reverse_order).y;
+                        break;
+                    case TargetTypeX.Skill:
+                        targetPositionY = gameObject.transform.position.y; // 임의
+                        break;
+                }
+
+                Vector3 targetPosition = Vector3.zero; // 기본값 초기화
+                targetPosition = new Vector3(targetPositionX, 0f, targetPositionY); // Y축은 0으로 설정
+
+
+
+                skillManager.CalculateSkillPosition(character.usingSkill[index], character, true,
+                        rotatoin, targetPosition);
                     skillManager.selectedTargetUnit = null;
                     skillManager.ConfirmSkillCast(character.team);
                     skillManager.SkillCastEnemyAI();
@@ -138,25 +188,32 @@ public class AICastSkill : MonoBehaviour
         
     }
 
-    public Vector3 GetClosestCharacterPosition(Stats self)
-    {
-        Stats closest = null;
-        float minDist = float.MaxValue;
 
+    public Vector3 GetClosestCharacterPosition(Stats self, int n, bool reverse)
+    {
+        // 자기 자신, 죽은 캐릭터, 같은 팀 제외
+        var candidates = new List<Stats>();
         foreach (var character in CharacterStats.Instance.characterList)
         {
-            // 자기 자신, 죽은 캐릭터, 같은 팀 제외
             if (character == self || character.isdie || character.team == self.team) continue;
-
-            float dist = Vector3.Distance(self.charPosition, character.charPosition);
-            if (dist < minDist)
-            {
-                minDist = dist;
-                closest = character;
-            }
+            candidates.Add(character);
         }
 
-        return closest != null ? closest.charPosition : self.charPosition;
+        // 거리순 정렬 (reverse가 true면 역순)
+        candidates.Sort((a, b) =>
+            Vector3.Distance(self.charPosition, a.charPosition)
+            .CompareTo(Vector3.Distance(self.charPosition, b.charPosition)));
+
+        if (reverse)
+            candidates.Reverse();
+
+        // n번째(1-based) 캐릭터 반환
+        if (candidates.Count >= n)
+            return candidates[n - 1].charPosition;
+        else if (candidates.Count > 0)
+            return reverse ? candidates[candidates.Count - 1].charPosition : candidates[0].charPosition;
+        else
+            return self.charPosition;
     }
 
 }

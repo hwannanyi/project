@@ -58,7 +58,8 @@ public struct SkillQueue
     [Header("타겟팅 스킬이면 미사용 좌표, 방향")]
     public Rotation RotationType;
 
-    [Header("캐릭선택 방식, 역순")]
+    [Header("캐릭선택 방식, 역순, 몇등")]
     public DesignationType Designation;
     public bool reverse_order;
+    public int index;
 }
