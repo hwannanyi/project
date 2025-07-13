@@ -105,6 +105,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  colliderMerger: {fileID: 0}
   rotatingVisual: {fileID: 4978613006717625041}
   hitbox: {fileID: 6478507458708094152, guid: 6a4c9e45a832e684b970444b1b9f7ee9, type: 3}
   hitboxProject: {fileID: 419652966581439005, guid: 6a4c9e45a832e684b970444b1b9f7ee9, type: 3}
@@ -122,7 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   casterObj: {fileID: 0}
-  SkillHitEffects: {fileID: 0}
+  skillHitEffects: {fileID: 0}
 --- !u!114 &141739932848812281
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca315e5f44858a47ada2969af80b536, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mergeOnStart: 1
+  mergeOnStart: 0
 --- !u!54 &-3526137933893911948
 Rigidbody:
   m_ObjectHideFlags: 0

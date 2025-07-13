@@ -1,0 +1,83 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d224440329b07543ba63fea5671617e, type: 3}
+  m_Name: "\uC11C\uC608"
+  m_EditorClassIdentifier: 
+  skillQueue:
+  - skillQueue: []
+  - skillQueue:
+    - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
+      currentIndex: 0
+      delay: 1
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 2
+      targetTypeY: 1
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 1
+    - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
+      currentIndex: 0
+      delay: 1
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 1
+      targetTypeY: 2
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 2
+    - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
+      currentIndex: 0
+      delay: 1
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 2
+      targetTypeY: 1
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 1
+    - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
+      currentIndex: 0
+      delay: 1
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 1
+      targetTypeY: 2
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 2
+    - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
+      currentIndex: 0
+      delay: 1
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 2
+      targetTypeY: 1
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 1
+    - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
+      currentIndex: 0
+      delay: 1
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 1
+      targetTypeY: 2
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 2

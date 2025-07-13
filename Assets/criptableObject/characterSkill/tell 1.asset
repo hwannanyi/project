@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
+  m_Name: tell 1
+  m_EditorClassIdentifier: 
+  skillName: tell 1
+  skillIcon: {fileID: 21300000, guid: 43ac82573ec88df49ab10820bd76d9e4, type: 3}
+  SkillEffectIllustration: {fileID: 21300000, guid: af3cc7c54b1a9de41a11d281e8bb4d1c, type: 3}
+  SkillEffectPrefab: {fileID: 6478507458708094152, guid: 996504ae6dec45d428cf8f9a8938b2b4, type: 3}
+  passive: 0
+  skillTypes: 000000000300000002000000
+  tooltip: "\uC21C\uAC04\uC774\uB3D9"
+  actionsNumber: 1
+  skillNumber: 1
+  skillCumulative: 1
+  cost:
+    keys: 00000000
+    values: 01000000
+  startSkillPosition: 2
+  XstartSkillPosition: 0
+  YstartSkillPosition: 0
+  projectile: 0
+  targeting: 0
+  penetration: 0
+  projectileType: 0
+  skillTarget: 00000000
+  projectileSpeed: 5
+  afterdelay: 0
+  beforedelay: 0
+  range: 5
+  aoetype: 0
+  fourRotation: 0
+  effectRotation: 0
+  Xaoe: 3
+  Yaoe: 3
+  specialAoe: []
+  aoecenter: 0
+  cooldown: 0
+  colldownSkill: 0
+  basicValue: 10
+  increase:
+    keys: 01000000
+    values:
+    - 0.1
+  damageHit: 1
+  hitSpeed: 0
+  hitEffects:
+  - target: 0
+    effects:
+      DamageEffect:
+      - skillhitEffect: 3
+        condition: 
+        baseValue: 5
+        increase:
+          keys: 03000000
+          values:
+          - 0.1
+        dot: 0
+      DebuffEffects:
+      - Debuff: 0
+        baseValue: 0
+        increase:
+          keys: 
+          values: []
+        trunDuration: 0
+        timeIncrease:
+          keys: 
+          values: []
+      BuffEffects: []
+      CCEffects: []
+  - target: 2
+    effects:
+      DamageEffect:
+      - skillhitEffect: 1
+        condition: 
+        baseValue: 5
+        increase:
+          keys: 01000000
+          values:
+          - 0.1
+        dot: 0
+      DebuffEffects: []
+      BuffEffects: []
+      CCEffects: []
+  react: 2
+  reactTime: 0.5

@@ -135,7 +135,8 @@ public class AICastSkill : MonoBehaviour
                         rotatoin = gameObject.transform.position + pattern.Rotation;
                         break;
                     case Rotation.Character:
-                        rotatoin = GetClosestCharacterPosition(character, pattern.index, pattern.reverse_order);
+                        rotatoin = GetClosestCharacterPosition(character, pattern.index,
+                            pattern.reverse_order, pattern.Designation);
                         break;
                     case Rotation.Skill:
                         rotatoin = Vector3.zero; // 임의
@@ -150,7 +151,8 @@ public class AICastSkill : MonoBehaviour
                         targetPositionX = (pattern.coordinate).x;
                         break;
                     case TargetTypeX.Character:
-                        targetPositionX = GetClosestCharacterPosition(character, pattern.index, pattern.reverse_order).x;
+                        targetPositionX = GetClosestCharacterPosition(character, pattern.index,
+                            pattern.reverse_order, pattern.Designation).x;
                         break;
                     case TargetTypeX.Skill:
                         targetPositionX = gameObject.transform.position.x; // 임의
@@ -159,16 +161,17 @@ public class AICastSkill : MonoBehaviour
 
 
                 float targetPositionY = 0; // 기본값 초기화
-                switch (pattern.targetTypeX) // Y축 타겟팅 방식에 따라 위치 지정
+                switch (pattern.targetTypeY) // Y축 타겟팅 방식에 따라 위치 지정
                 {
-                    case TargetTypeX.none:
-                        targetPositionY = (pattern.coordinate).y;
+                    case TargetTypeY.none:
+                        targetPositionY = (pattern.coordinate).z;
                         break;
-                    case TargetTypeX.Character:
-                        targetPositionY = GetClosestCharacterPosition(character, pattern.index, pattern.reverse_order).y;
+                    case TargetTypeY.Character:
+                        targetPositionY = GetClosestCharacterPosition(character, pattern.index,
+                            pattern.reverse_order, pattern.Designation).z;
                         break;
-                    case TargetTypeX.Skill:
-                        targetPositionY = gameObject.transform.position.y; // 임의
+                    case TargetTypeY.Skill:
+                        targetPositionY = gameObject.transform.position.z; // 임의
                         break;
                 }
 
@@ -189,7 +192,7 @@ public class AICastSkill : MonoBehaviour
     }
 
 
-    public Vector3 GetClosestCharacterPosition(Stats self, int n, bool reverse)
+    public Vector3 GetClosestCharacterPosition(Stats self, int n, bool reverse, DesignationType type)
     {
         // 자기 자신, 죽은 캐릭터, 같은 팀 제외
         var candidates = new List<Stats>();
@@ -199,11 +202,29 @@ public class AICastSkill : MonoBehaviour
             candidates.Add(character);
         }
 
-        // 거리순 정렬 (reverse가 true면 역순)
-        candidates.Sort((a, b) =>
-            Vector3.Distance(self.charPosition, a.charPosition)
-            .CompareTo(Vector3.Distance(self.charPosition, b.charPosition)));
-
+        switch (type)
+        {
+            case DesignationType.none:
+                return self.charPosition;
+            case DesignationType.hp:
+                // HP 기준 정렬 (reverse가 true면 HP 낮은 순)
+                candidates.Sort((a, b) => a.hp.CompareTo(b.hp));
+                break;
+            case DesignationType.hpRatio:
+                candidates.Sort((a, b) =>
+                    ((float)a.hp / a.maxhp).CompareTo((float)b.hp / b.maxhp));
+                break;
+            case DesignationType.distance:
+                // 거리순 정렬 (reverse가 true면 역순)
+                candidates.Sort((a, b) =>
+                    Vector3.Distance(self.charPosition, a.charPosition)
+                    .CompareTo(Vector3.Distance(self.charPosition, b.charPosition)));
+                break;
+            case DesignationType.characterNumber:
+                candidates.Sort((a, b) => a.characterNumber.CompareTo(b.characterNumber));
+                break;
+        }
+        
         if (reverse)
             candidates.Reverse();
 

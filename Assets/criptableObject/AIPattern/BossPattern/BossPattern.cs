@@ -18,7 +18,7 @@ public enum Rotation
 
 public enum DesignationType
 {
-    none, near, hp, hpRatio, Character
+    none, hp, hpRatio, distance, characterNumber
 }
 
 

@@ -69,10 +69,12 @@ public enum React
     no, maintarget, all
 }
 
+// 크기(x, y)와 위치(x, y)를 저장하는 구조체 정의
 [System.Serializable]
-public class DoubleList_Vector2
+public struct AoeInfo
 {
-    public Vector2[] list; //행에 들어갈 배열들
+    public Vector2 size;      // 크기 (x, y)
+    public Vector2 position;  // 위치 (x, y)
 }
 
 [System.Serializable]
@@ -120,7 +122,7 @@ public class Skill : ScriptableObject
     public bool effectRotation;    // 방향에 따른 스킬의 회전
     public float Xaoe;             // 범위 크기
     public float Yaoe;             // 범위 크기
-    public DoubleList_Vector2[] specialAoe; // 특수 범위 (2차원 좌표 리스트)
+    public AoeInfo[] specialAoe; // 특수 범위 (크기, 위치 배열)
     public AoeCenter aoecenter;    // 광역기의 중심점
 
     [Header("쿨타임")]

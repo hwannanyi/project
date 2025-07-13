@@ -159,6 +159,8 @@ MonoBehaviour:
     isreactSkill: 0
     reactTime: 0
   targetUnit: {fileID: 0}
+  charcterUnit: {fileID: 0}
+  colliderMerger: {fileID: 0}
   rotatingVisual: {fileID: 4978613006717625041}
   hitbox: {fileID: 6478507458708094152, guid: 6a4c9e45a832e684b970444b1b9f7ee9, type: 3}
   hitboxProject: {fileID: 419652966581439005, guid: 6a4c9e45a832e684b970444b1b9f7ee9, type: 3}
@@ -177,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   casterObj: {fileID: 0}
-  SkillHitEffects: {fileID: 0}
+  skillHitEffects: {fileID: 0}
 --- !u!54 &2926054394679664602
 Rigidbody:
   m_ObjectHideFlags: 0

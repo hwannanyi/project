@@ -275,7 +275,7 @@ public class SimulateSkillHit : MonoBehaviour
                 {
                     Vector3 tile = new Vector3(stepCenter.x + x, 0, stepCenter.z + y);
                     result.Add(tile);
-                    Debug.Log(tile);
+                    //Debug.Log(tile);
                 }
             }
         }

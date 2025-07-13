@@ -1,10 +1,13 @@
+using System.Linq;
 using UnityEngine;
 
 public class HitboxTile : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    public SkillData skillData;  // 스킬 데이터 참조
+    //public SkillData skillData;  // 스킬 데이터 참조
+    public Vector2 colliderXY;
+    public Vector2 offsetXY; // 오프셋 값
     private BoxCollider boxCollider; // 콜라이더 캐시
     public Transform rotating;
     private Collider col;
@@ -23,14 +26,13 @@ public class HitboxTile : MonoBehaviour
     }
 
     // 투사체 초기화 메서드
-    public void Initialize(SkillData skill)
+    public void Initialize(float X, float Y, Vector2 offset)
     {
-        skillData = skill;
+        //skillData = skill;
 
         // 콜라이더 크기 및 오프셋 설정
-        ResizeColliderWithOffset();
+        ResizeColliderWithOffset(new Vector2(X, Y), offset);
 
-        
     }
 
     public void EnableCollider()
@@ -43,16 +45,16 @@ public class HitboxTile : MonoBehaviour
         }
     }
 
-    private void ResizeColliderWithOffset()
+    private void ResizeColliderWithOffset(Vector2 XY, Vector2 offset)
     {
-        if (boxCollider == null || skillData == null)
+        if (boxCollider == null || colliderXY == null)
         {
             Debug.LogWarning("BoxCollider2D 또는 SkillData 없음");
             return;
         }
 
         // 크기 조정: 스킬의 Xaoe, Yaoe 반영
-        if (skillData.projectileType.ToString() != "spAoe")
-            boxCollider.size = new Vector2(skillData.Xaoe, skillData.Yaoe);
+            boxCollider.size = XY;
+        transform.position += new Vector3(offset.x, 0f, offset.y);
     }
 }

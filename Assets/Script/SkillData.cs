@@ -41,7 +41,7 @@ public class SkillData
     public float Yaoe;             // 범위 크기
     public AoeCenter aoecenter;
 
-    public DoubleList_Vector2[] specialAoe; // 특수 범위 (2차원 좌표 리스트)
+    public AoeInfo[] specialAoe; // 특수 범위 (크기, 위치 배열)
 
     public int cooldown;        // 기본쿨타임
     public int currentCooldown; //현제 쿨타임
@@ -102,13 +102,11 @@ public class SkillData
         Yaoe = data.Yaoe;
         aoecenter = data.aoecenter;
 
-        specialAoe = new DoubleList_Vector2[data.specialAoe.Length];
+        // SkillData.cs 생성자 내 specialAoe 복사 부분 수정
+        specialAoe = new AoeInfo[data.specialAoe.Length];
         for (int i = 0; i < data.specialAoe.Length; i++)
         {
-            specialAoe[i] = new DoubleList_Vector2
-            {
-                list = (Vector2[])data.specialAoe[i].list.Clone() // 배열 깊은 복사
-            };
+            specialAoe[i] = data.specialAoe[i]; // 구조체이므로 값 복사로 충분
         }
 
         cooldown = data.cooldown;
