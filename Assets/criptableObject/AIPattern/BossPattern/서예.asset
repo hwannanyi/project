@@ -81,3 +81,38 @@ MonoBehaviour:
       Designation: 3
       reverse_order: 0
       index: 2
+  - skillQueue: []
+  - skillQueue:
+    - skill: {fileID: 11400000, guid: 71e7363e054ad42428d0d36ffaee0345, type: 2}
+      currentIndex: 0
+      delay: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 1
+      targetTypeY: 1
+      RotationType: 0
+      Designation: 4
+      reverse_order: 0
+      index: 1
+    - skill: {fileID: 11400000, guid: bd763d08186ec3d4d86ffe6677c5f99d, type: 2}
+      currentIndex: 0
+      delay: 2
+      coordinate: {x: -2, y: 0, z: 0}
+      Rotation: {x: 1, y: 0, z: 0}
+      targetTypeX: 1
+      targetTypeY: 1
+      RotationType: 0
+      Designation: 4
+      reverse_order: 0
+      index: 1
+    - skill: {fileID: 11400000, guid: 641aec7d6d316bb47a97bc3b28c6668c, type: 2}
+      currentIndex: 0
+      delay: 2
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 1
+      targetTypeY: 1
+      RotationType: 0
+      Designation: 4
+      reverse_order: 0
+      index: 1

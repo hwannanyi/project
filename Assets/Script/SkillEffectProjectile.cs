@@ -140,31 +140,36 @@ public class SkillEffectProjectile : MonoBehaviour
 
         GameObject HitboxTile = Instantiate(hitbox, this.transform);
         HitboxTile.transform.localPosition = Vector3.zero;
-
+/*
         // 병합 실행
         ColliderMerger merger = GetComponent<ColliderMerger>();
         if (merger != null)
         {
             merger.MergeChildBoxColliders();
         }
-
+*/
         // 2. 그 인스턴스에서 SkillProjectileHitbox 스크립트를 가져와 초기화
-        if (HitboxTile.GetComponent<HitboxTile>() != null)
+        if (skill.aoetype == AoeType.spAoe)
         {
-            if (skill.aoetype == AoeType.spAoe)
+            if (skillData.specialAoe == null || skillData.specialAoe.Length == 0)
             {
-                for (int i = 1; i < skillData.specialAoe.Length; i++) // Xaoe와 Yaoe는 List로 가정
-                {
-                    HitboxTile hitboxScript = HitboxTile.GetComponent<HitboxTile>();
-                    hitboxScript.Initialize(skillData.specialAoe[i].size.x, skillData.specialAoe[i].size.y,
-                        skillData.specialAoe[i].position);
-                }
+                return;
             }
-            else
+            for (int i = 0; i < skillData.specialAoe.Length; i++)
             {
-                HitboxTile hitboxScript = HitboxTile.GetComponent<HitboxTile>();
-                hitboxScript.Initialize(skill.Xaoe, skill.Yaoe, Vector2.zero);
+                GameObject hitboxObj = Instantiate(hitbox, this.transform);
+                hitboxObj.transform.localPosition = Vector3.zero;
+                HitboxTile hitboxScript = hitboxObj.GetComponent<HitboxTile>();
+                hitboxScript.Initialize(skillData.specialAoe[i].size.x, skillData.specialAoe[i].size.y,
+                    skillData.specialAoe[i].position);
             }
+        }
+        else
+        {
+            GameObject hitboxObj = Instantiate(hitbox, this.transform);
+            hitboxObj.transform.localPosition = Vector3.zero;
+            HitboxTile hitboxScript = hitboxObj.GetComponent<HitboxTile>();
+            hitboxScript.Initialize(skill.Xaoe, skill.Yaoe, Vector2.zero);
         }
         // 충돌 처리 전달
         SkillHitOn hit = GetComponent<SkillHitOn>();
@@ -173,7 +178,7 @@ public class SkillEffectProjectile : MonoBehaviour
             hit.Initialize(skill, casterObject, character); // 또는 실제 캐릭터 GameObject
         }
 
-        colliderMerger.MergeChildBoxColliders();
+        //colliderMerger.MergeChildBoxColliders();
     }
 
     void Update()

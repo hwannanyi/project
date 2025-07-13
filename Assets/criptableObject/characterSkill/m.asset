@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
-  m_Name: o
+  m_Name: m
   m_EditorClassIdentifier: 
-  skillName: o
+  skillName: m
   skillIcon: {fileID: 21300000, guid: e52c3fe37fbe8c349a63e195bb96ef9a, type: 3}
-  SkillEffectIllustration: {fileID: 21300000, guid: 7d37a383b2a7f5240848aafa3fb9105a, type: 3}
+  SkillEffectIllustration: {fileID: 21300000, guid: 8ccb978698866834784a339fba5bfdd3, type: 3}
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: 996504ae6dec45d428cf8f9a8938b2b4, type: 3}
   passive: 0
   skillTypes: 00000000
@@ -38,11 +38,11 @@ MonoBehaviour:
   afterdelay: 0
   beforedelay: 0
   range: 3
-  aoetype: 2
+  aoetype: 0
   fourRotation: 0
   effectRotation: 0
-  Xaoe: 3
-  Yaoe: 3
+  Xaoe: 1
+  Yaoe: 1
   specialAoe:
   - size: {x: 0.98, y: 4.94}
     position: {x: -1, y: 0}

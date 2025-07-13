@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ca315e5f44858a47ada2969af80b536, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mergeOnStart: 1
+  mergeOnStart: 0
 --- !u!114 &-8471460395893588580
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -112,7 +112,7 @@ public class SkillEffectHitscan : MonoBehaviour
 
         isInitialized = true;
 
-        colliderMerger.MergeChildBoxColliders();
+        //colliderMerger.MergeChildBoxColliders();
     }
 
     void Update()
