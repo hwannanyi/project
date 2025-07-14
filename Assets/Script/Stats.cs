@@ -30,11 +30,15 @@ public class Stats
     public Quaternion charRotation;  // 현재 방향
     public bool isdie;            // 죽음
     public Team team;             // 팀
+    public bool summons;          // 소환수인가요?
+    public Stats CharacterSummons; // 소환수 주인
     public List<Skill> useSkill;   // 사용스킬
     public List<SkillData> usingSkill = new();   // 사용스킬
     public Sprite characterillustration;
     public Sprite characterProfileillustration;
     public GameObject characterPrefab;
+
+    
 
     public List<Debuffa> debuffEffects = new(); // 디버프 효과 리스트
     public List<Buffa> buffEffects = new(); // 버프 효과 리스트
@@ -80,6 +84,10 @@ public class Stats
         isdie = die;
 
         team = data.team;
+
+        summons = data.summons;
+        CharacterSummons = null;
+
         useSkill = data.useSkill;
         this.usingSkill = usingSkill;
 
@@ -93,7 +101,7 @@ public class Stats
 
         available = true;
         movable = true;
-
+        
         aIPattern = new AIPattern(data.skillQueue);
     }
 

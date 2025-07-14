@@ -17,6 +17,7 @@ public class Character : ScriptableObject
     public int moveCount;         // 이동가능횟수
     public int trun;              // 보유 턴
     public Team team;             // 팀
+    public bool summons = false;          // 소환수인가요?
     public List<Skill> useSkill = new List<Skill> { null, null, null, null, null };   // 사용스킬
     public Sprite characterillustration;
     public Sprite characterProfileillustration;

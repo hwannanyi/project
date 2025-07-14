@@ -34,13 +34,15 @@ public class MiniprofileUIManager : MonoBehaviour
 
     void Update()
     {
-        if (targetCharacter != null)
-        {
-            UpdateCharacterProfile(targetCharacter);
-            UpdateCharacterProfileSkill(targetCharacter);
-            UpdateMoveCount(targetCharacter.NowMoveCount);
-            UpdateHpMpBar(targetCharacter);
-        }
+        if (ProfileUI == null || !ProfileUI.activeInHierarchy)
+            return;
+        if (targetCharacter == null)
+            return;
+        UpdateCharacterProfile(targetCharacter);
+        UpdateCharacterProfileSkill(targetCharacter);
+        UpdateMoveCount(targetCharacter.NowMoveCount);
+        UpdateHpMpBar(targetCharacter);
+
     }
 
     public void UpdateCharacterProfile(Stats character)

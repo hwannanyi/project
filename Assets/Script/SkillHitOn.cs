@@ -12,7 +12,7 @@ public class SkillHitOn : MonoBehaviour
     public GameObject casterObj;
     private Stats caster;
     private HashSet<GameObject> hitTargets = new HashSet<GameObject>();
-    private bool isInitialized = false;
+    //private bool isInitialized = false;
 
     public SkillHitEffects skillHitEffects;
 
@@ -21,7 +21,7 @@ public class SkillHitOn : MonoBehaviour
         skillData = skill;
         casterObj = casterObject;
         caster = character;
-        isInitialized = true;
+        //isInitialized = true;
 
         HitboxTile[] hitboxes = GetComponentsInChildren<HitboxTile>(true);
         for (int i = 0; i < hitboxes.Length; i++)

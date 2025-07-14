@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Collections;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
@@ -47,6 +49,10 @@ public class CharacterStats : MonoBehaviour
 
             DontDestroyOnLoad(gameObject);
 
+        // Addressable Assets를 사용하여 Character Scriptable Object 로드
+        Addressables.LoadAssetsAsync<Character>("Characters", null).Completed += OnCharactersLoaded;
+
+
         playerCharacters.Add("TonTonJung");
         //playerCharacters.Add("Deus");
         //playerCharacters.Add("JuInGong");
@@ -58,15 +64,15 @@ public class CharacterStats : MonoBehaviour
         
 
         
-        for (int i = 0; i < playerCharacters.Count; i++) // playerCharacters 리스트의 길이만큼 반복
+/*        for (int i = 0; i < playerCharacters.Count; i++) // playerCharacters 리스트의 길이만큼 반복
         {
             CharacterAdd(playerCharacters[i]);
         }
         for (int j = 0; j < EnemieCharacters.Count; j++) // EnemieCharacters 리스트의 길이만큼 반복
         {
             CharacterAdd(EnemieCharacters[j]);
-        }
-        Charactercreation();
+        }*/
+        //Charactercreation();
         
 
         /*characterStats["melun"] = new Dictionary<string, int>
@@ -115,6 +121,29 @@ public class CharacterStats : MonoBehaviour
             WaveUpdate();
         }
     }
+
+    private void OnCharactersLoaded(AsyncOperationHandle<IList<Character>> handle)
+    {
+        if (handle.Status == AsyncOperationStatus.Succeeded)
+        {
+            ALLcharacterList = handle.Result.ToArray();
+
+            for (int i = 0; i < playerCharacters.Count; i++) // playerCharacters 리스트의 길이만큼 반복
+            {
+                CharacterAdd(playerCharacters[i]);
+            }
+            for (int j = 0; j < EnemieCharacters.Count; j++) // EnemieCharacters 리스트의 길이만큼 반복
+            {
+                CharacterAdd(EnemieCharacters[j]);
+            }
+            Charactercreation();
+        }
+        else
+        {
+            Debug.LogError("Addressable Assets에서 Character Scriptable Object를 로드하는 데 실패했습니다.");
+        }
+    }
+
     public void CharacterAdd(string chname)
     {
         

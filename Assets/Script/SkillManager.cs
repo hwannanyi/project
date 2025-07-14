@@ -495,10 +495,10 @@ public class SkillManager : MonoBehaviour
 
         // XZ 평면 기준 4방향
 Vector3[] directions = {
-    new Vector3(0, 0, 1),   // 위(북)
-    new Vector3(0, 0, -1),  // 아래(남)
-    new Vector3(-1, 0, 0),  // 왼쪽(서)
-    new Vector3(1, 0, 0)    // 오른쪽(동)
+    new(0, 0, 1),   // 위(북)
+    new(0, 0, -1),  // 아래(남)
+    new(-1, 0, 0),  // 왼쪽(서)
+    new(1, 0, 0)    // 오른쪽(동)
 };
         Vector3 closestDirection = directions[0];
         // 마우스 기반 방향 계산이 필요한 경우

@@ -130,6 +130,7 @@ MonoBehaviour:
     projectile: 0
     targeting: 0
     penetration: 0
+    tracking: 0
     projectileType: 0
     skillTarget: 
     projectileSpeed: 0
@@ -214,7 +215,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6478507458708094152}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3ca315e5f44858a47ada2969af80b536, type: 3}
   m_Name: 

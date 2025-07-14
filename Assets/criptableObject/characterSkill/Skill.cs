@@ -107,6 +107,7 @@ public class Skill : ScriptableObject
     public bool projectile;       // 투사체 여부 (false면 히트스캔)
     public bool targeting;        // 타겟팅 여부 (false면 논타겟팅)
     public bool penetration;     // 투사체의 관통 여부
+    public bool tracking;       // 경로에 스킬 생성
     public projectileType projectileType;
 
     [Header("스킬의 대상")]
@@ -142,6 +143,7 @@ public class Skill : ScriptableObject
     [Header("대응유무")]
     public React react; //대응가능유무 + 대응가능대상
     public float reactTime;
+
 
 }
 

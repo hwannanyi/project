@@ -40,6 +40,8 @@ public class CharacterSelection : MonoBehaviour
     //  1, 2, 3 키 입력으로 캐릭터 선택
     void Update()
     {
+
+
         asd = selectedCharacterIndex;
         if (CameraZoom.isControlMode) return;
         HandleCharacterSelection();
