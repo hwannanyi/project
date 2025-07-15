@@ -1,6 +1,7 @@
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 using UnityEngine.TextCore.Text;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class SkillEffectProjectile : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class SkillEffectProjectile : MonoBehaviour
 
     public ColliderMerger colliderMerger; // 콜라이더 병합 컴포넌트
 
-    public Transform rotatingVisual;
+    public UnityEngine.Transform rotatingVisual;
 
     public GameObject hitbox;
     public HitboxTile hitboxProject;
@@ -24,7 +25,12 @@ public class SkillEffectProjectile : MonoBehaviour
     public SpriteRenderer spriteRenderer;
 
     public GameObject trackingObject; //tracking이 참이라면 생성해 경로를 남김
-     
+
+    public bool CastLock = false;
+
+    public AICastSkill aICastSkill;
+
+
 
     public void Initialize(SkillData skillData, Vector3 targetPos, GameObject casterObject, Stats character, GameObject target = null)
     {
@@ -33,6 +39,8 @@ public class SkillEffectProjectile : MonoBehaviour
         casterStats = character;
         colliderMerger = GetComponent<ColliderMerger>();
 
+        aICastSkill = casterObject.GetComponent<AICastSkill>();
+        CastLock = aICastSkill.skillCastLock;
 
         // 외형 변경
         if (spriteRenderer != null && skill.SkillEffectIllustration != null)
@@ -107,10 +115,21 @@ public class SkillEffectProjectile : MonoBehaviour
     {
         if (!isInitialized) return;
 
+
+
         Vector3 destination = (skill.targeting && targetUnit != null)
         ? targetUnit.transform.position
         : targetPosition;
 
+
+        // 도착처리
+        if (Vector3.Distance(transform.position, destination) < 0.1f)
+        {
+            transform.position = destination;
+            OnHit();
+        }
+
+        Tracking(skill.tracking);
 
         // direction 지역 변수 선언 제거 → 필드 변수로 사용
         direction = (destination - transform.position).normalized;
@@ -140,16 +159,6 @@ public class SkillEffectProjectile : MonoBehaviour
                 casterStats.charPosition = transform.position;
             }
         }
-
-        
-
-        // 도착처리
-        if (Vector3.Distance(transform.position, destination) < 0.1f)
-        {
-            OnHit();
-        }
-
-        Tracking(skill.tracking);
     }
 
     private void OnHit()
@@ -170,6 +179,12 @@ public class SkillEffectProjectile : MonoBehaviour
                 casterStats.charPosition = GetNearestTile(caster.transform.position);
             }
         }
+
+
+        // AI 스킬 시전 잠금 해제
+        aICastSkill.skillCastLock = !CastLock && aICastSkill.skillCastLock;
+
+
 
         Destroy(gameObject);
         //TurnManager.Instance.ExitReactPhase(); //미사용, 스킬종료로 인해 대응단계가 종료되지 않도록 변경

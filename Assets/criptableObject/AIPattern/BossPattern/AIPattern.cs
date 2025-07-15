@@ -26,6 +26,7 @@ public class AIPattern
                     skill = src.skill,
                     currentIndex = src.currentIndex,
                     delay = src.delay,
+                    isCastingNotCast = src.isCastingNotCast,
                     coordinate = src.coordinate,
                     Rotation = src.Rotation,
                     targetTypeX = src.targetTypeX,

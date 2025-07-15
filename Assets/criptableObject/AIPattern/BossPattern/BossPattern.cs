@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -44,6 +45,8 @@ public struct SkillQueue
     public int currentIndex; // 현재 인덱스
     [Header("이전 스킬 사용후 현제스킬 사용까지의 시간")]
     public float delay; // 딜레이
+    public bool isCastingNotCast; //앞 순서 스킬 실행 종료 뒤에 실행
+
     [Header("시전 위치로부터")] 
     public Vector3 coordinate;
 

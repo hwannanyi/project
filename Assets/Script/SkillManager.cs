@@ -515,7 +515,7 @@ Vector3[] directions = {
                 mouseWorldPos.y = 0f;
             }
         }
-        mouseWorldPos = AI ? AIDirection : mouseWorldPos;
+        mouseWorldPos = AI ? Position : mouseWorldPos;
 
         // ② 방향 계산
         if (skill.targeting && selectedTargetUnit != null)

@@ -11,6 +11,9 @@ public class AICastSkill : MonoBehaviour
     public TurnManager turnManager;
     public SkillManager skillManager;
 
+    public bool SkillCasting = false; // 스킬 시전 중인지 여부'
+    public bool skillCastLock = false; //다음 스킬 시전 잠금
+    //public bool AI = false; //AI
 
     private void Awake()
     {
@@ -27,9 +30,6 @@ public class AICastSkill : MonoBehaviour
     }
     private void OnTurnEnd(bool value)
     {
-        TurnManager turnManager = TurnManager.Instance;
-        SkillManager skillManager = SkillManager.Instance;
-
         var manager = CharacterStats.Instance;
         var character = manager.GetStats(gameObject);
         if (character.aIPattern.skillQueueList == null)
@@ -107,27 +107,25 @@ public class AICastSkill : MonoBehaviour
             for (int i = 0; i < character.aIPattern.skillQueueList[patternCount].Count; i++)
             {
 
-
-/*                while (skillManager.isSkillReadyFinal)
-                {
-                    yield return null; // skillManager.isSkillReadyFinal이 false가 될 때까지 대기
-                }*/
                 Debug.Log("d");
 
                 var pattern = character.aIPattern.skillQueueList[patternCount][i];
                 var targetSkill = new SkillData(pattern.skill, character.name, false);
                 if (character.usingSkill.Any(x => x.skillName == pattern.skill.skillName))
                 {
-                    yield return new WaitForSeconds(pattern.delay);
+
+                    while (skillCastLock && pattern.isCastingNotCast)
+                    {
+                        yield return null; // SkillCasting이 false가 될 때까지 대기
+                    }
+
+
+                yield return new WaitForSeconds(pattern.delay);
                     int index = character.usingSkill.FindIndex(x => x.skillName == pattern.skill.skillName);
                     //CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
                     //CharacterSelection.selectedCharacterIndex = character.characterNumber;
                     skillManager.PrepareSkillCast(index, character.characterNumber);
 
-                /*                                        if (!skillManager.isSkillReady)
-                                                        {
-                                                            yield break;
-                                                        }*/
                 Vector3 rotatoin = Vector3.zero;// 기본값 초기화
                 switch(pattern.RotationType) // 방향 방식에 따라 방향 지정
                 {
@@ -183,7 +181,9 @@ public class AICastSkill : MonoBehaviour
                         rotatoin, targetPosition);
                     skillManager.selectedTargetUnit = null;
                     skillManager.ConfirmSkillCast(character.team);
+                    skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
                     skillManager.SkillCastEnemyAI();
+                    SkillCasting = true; // 스킬 시전 중으로 설정
                     Debug.Log("스킬실행완료");
                 }
             }
