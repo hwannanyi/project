@@ -29,6 +29,7 @@ public class SkillData
     public bool targeting;        // 타겟팅 여부 (false면 논타겟팅)
     public bool penetration;     // 투사체의 관통 여부
     public bool tracking;       // 경로에 스킬 생성
+    public bool RangeAdjustment;// 임의로 거리 조절 가능한
     public projectileType projectileType;
 
     public List<Target> skillTarget; // 적중 가능한 대상 (자신, 아군, 적 등)
@@ -91,6 +92,7 @@ public class SkillData
         targeting = data.targeting;
         penetration = data.penetration;
         tracking = data.tracking;
+        RangeAdjustment = data.RangeAdjustment;
         projectileType = data.projectileType;
 
         skillTarget = new List<Target>(data.skillTarget);

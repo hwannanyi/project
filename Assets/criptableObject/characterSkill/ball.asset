@@ -32,6 +32,8 @@ MonoBehaviour:
   projectile: 1
   targeting: 0
   penetration: 0
+  tracking: 1
+  RangeAdjustment: 1
   projectileType: 0
   skillTarget: 0200000001000000
   projectileSpeed: 5

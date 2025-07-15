@@ -515,6 +515,7 @@ Vector3[] directions = {
                 mouseWorldPos.y = 0f;
             }
         }
+        mouseWorldPos = AI ? AIDirection : mouseWorldPos;
 
         // ② 방향 계산
         if (skill.targeting && selectedTargetUnit != null)
@@ -526,14 +527,14 @@ Vector3[] directions = {
             
 
             //AI 캐릭터의 경우, 방향을 AI가 지정한 방향으로 설정
-            if (AI)
+/*            if (AI)
             {
                 direction = (AIDirection - startPosition).normalized;
             }
             else
-            {
+            {*/
                 direction = (mouseWorldPos - startPosition).normalized;
-            }
+            //}
 
             // 4방향 중 가장 가까운 방향 찾기
             float maxDot = Vector3.Dot(direction, directions[0]);
@@ -546,9 +547,6 @@ Vector3[] directions = {
                     closestDirection = dir;
                 }
             }
-            direction = closestDirection;
-
-
         }
         /*Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(
             new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10f));
@@ -578,7 +576,13 @@ Vector3[] directions = {
         else
         {
             // 비타겟팅 스킬 방향 계산
-            targetPosition = startPosition + closestDirection * skill.range;
+
+            float dx = Mathf.Abs(mouseWorldPos.x - startPosition.x);
+            float dy = Mathf.Abs(mouseWorldPos.z - startPosition.z);
+
+            float mousePlayerRange = dx >= dy ? dx : dy;
+            float range = skill.RangeAdjustment ? mousePlayerRange : skill.range;
+            targetPosition = startPosition + closestDirection * range;
             targetPosition.y = 0f;
         }
 

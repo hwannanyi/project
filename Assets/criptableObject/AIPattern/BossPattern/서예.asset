@@ -17,67 +17,67 @@ MonoBehaviour:
   - skillQueue:
     - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
       currentIndex: 0
-      delay: 1
+      delay: 5
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 1
-      RotationType: 0
+      RotationType: 1
       Designation: 3
       reverse_order: 0
       index: 1
     - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
       currentIndex: 0
-      delay: 1
+      delay: 5
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 2
-      RotationType: 0
+      RotationType: 1
       Designation: 3
       reverse_order: 0
       index: 2
     - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
       currentIndex: 0
-      delay: 1
+      delay: 5
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 1
-      RotationType: 0
+      RotationType: 1
       Designation: 3
       reverse_order: 0
       index: 1
     - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
       currentIndex: 0
-      delay: 1
+      delay: 5
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 2
-      RotationType: 0
+      RotationType: 1
       Designation: 3
       reverse_order: 0
       index: 2
     - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
       currentIndex: 0
-      delay: 1
+      delay: 5
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 1
-      RotationType: 0
+      RotationType: 1
       Designation: 3
       reverse_order: 0
       index: 1
     - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
       currentIndex: 0
-      delay: 1
+      delay: 5
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 2
-      RotationType: 0
+      RotationType: 1
       Designation: 3
       reverse_order: 0
       index: 2

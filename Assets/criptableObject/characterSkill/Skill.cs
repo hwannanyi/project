@@ -108,6 +108,7 @@ public class Skill : ScriptableObject
     public bool targeting;        // 타겟팅 여부 (false면 논타겟팅)
     public bool penetration;     // 투사체의 관통 여부
     public bool tracking;       // 경로에 스킬 생성
+    public bool RangeAdjustment;// 임의로 거리 조절 가능한
     public projectileType projectileType;
 
     [Header("스킬의 대상")]

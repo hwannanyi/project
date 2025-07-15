@@ -141,7 +141,6 @@ public class AICastSkill : MonoBehaviour
                     case Rotation.Skill:
                         rotatoin = Vector3.zero; // 임의
                         break;
-
                 }
 
                 float targetPositionX = 0; // 기본값 초기화

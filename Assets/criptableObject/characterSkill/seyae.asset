@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: seyae
   m_EditorClassIdentifier: 
   skillName: seyae
-  skillIcon: {fileID: 21300000, guid: e52c3fe37fbe8c349a63e195bb96ef9a, type: 3}
-  SkillEffectIllustration: {fileID: 21300000, guid: e52c3fe37fbe8c349a63e195bb96ef9a, type: 3}
-  SkillEffectPrefab: {fileID: 6478507458708094152, guid: 996504ae6dec45d428cf8f9a8938b2b4, type: 3}
+  skillIcon: {fileID: 21300000, guid: 8ccb978698866834784a339fba5bfdd3, type: 3}
+  SkillEffectIllustration: {fileID: 21300000, guid: 8ccb978698866834784a339fba5bfdd3, type: 3}
+  SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
   passive: 0
   skillTypes: 0300000000000000
   tooltip: 
@@ -25,18 +25,20 @@ MonoBehaviour:
   cost:
     keys: 00000000
     values: 00000000
-  startSkillPosition: 2
+  startSkillPosition: 0
   XstartSkillPosition: 0
   YstartSkillPosition: 0
-  projectile: 0
+  projectile: 1
   targeting: 0
   penetration: 0
+  tracking: 1
+  RangeAdjustment: 1
   projectileType: 0
   skillTarget: 02000000
-  projectileSpeed: 10
+  projectileSpeed: 20
   afterdelay: 0
   beforedelay: 0
-  range: 10
+  range: 99
   aoetype: 1
   fourRotation: 0
   effectRotation: 0
@@ -61,9 +63,8 @@ MonoBehaviour:
         condition: 0
         baseValue: 10
         increase:
-          keys: 01000000
-          values:
-          - 1
+          keys: 
+          values: []
         dot: 0
       DebuffEffects: []
       BuffEffects: []
