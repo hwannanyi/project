@@ -19,12 +19,19 @@ public class Character : ScriptableObject
     public Team team;             // 팀
     public bool summons = false;          // 소환수인가요?
     public List<Skill> useSkill = new List<Skill> { null, null, null, null, null };   // 사용스킬
+
+    public List<passiveList> passiveSkill = new List<passiveList> { null, null, null, null, null };   // 패시브 스킬
     public Sprite characterillustration;
     public Sprite characterProfileillustration;
     public GameObject characterPrefab;
 
     public BossPattern skillQueue; // 스킬 큐
 }
+[System.Serializable]
+public class passiveList
+{
+    public ConditionHit conditionHit; // 패시브 조건
+    public Skill passive = null; // 패시브 스킬
+}
 
 
-    

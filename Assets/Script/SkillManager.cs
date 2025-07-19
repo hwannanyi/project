@@ -238,7 +238,7 @@ public class SkillManager : MonoBehaviour
             }
             if (selectedSkill != null && selectedCharacter != null) //스킬 확정 기준
             {
-                CalculateSkillPosition(selectedSkill, selectedCharacter,false,Vector3.zero, Vector3.zero); // 항상 호출해야 함
+                CalculateSkillPosition(selectedSkill, selectedCharacter,false,Vector3.zero, Vector3.zero, selectedTargetUnit); // 항상 호출해야 함
                 if (isSkillReady)
                 {
 
@@ -273,57 +273,6 @@ public class SkillManager : MonoBehaviour
     }
 
    
-
-    /// <summary>
-    /// 현재 선택된 캐릭터 인덱스가 올바르고, 행동 가능하면 이름을 반환함
-    /// </summary>
-    /// <param name="name">선택된 캐릭터의 이름 반환</param>
-    /// <returns>행동 가능하면 true</returns>
-    public bool TryGetSelectedCharacterName(out string name)
-    {
-        name = "";
-        int selectedIndex = CharacterSelection.selectedCharacterIndex;
-
-        if (selectedIndex == -1)
-        {
-            Debug.LogWarning("[SkillManager] 캐릭터가 선택되지 않았습니다.");
-            return false;
-        }
-
-
-        if (turnManager.IsPlayerActive())
-        {
-            if (TurnManager.Instance.playerUseSkillTurn >= TurnManager.Instance.playerSkillTurn)
-                return false;
-
-            if (selectedIndex < 0 || selectedIndex >= CharacterStats.Instance.playerCharacters.Count)
-            {
-                Debug.LogWarning("선택된 플레이어 캐릭터 인덱스가 범위를 벗어났습니다.");
-                return false;
-            }
-
-            TurnManager.Instance.playerUseSkillTurn++;
-            name = CharacterStats.Instance.playerCharacters[selectedIndex];
-            return true;
-        }
-        else
-        {
-            if (TurnManager.Instance.enemyUseSkillTurn >= TurnManager.Instance.enemySkillTurn)
-                return false;
-
-            int enemyIndex = selectedIndex - CharacterStats.Instance.playerCharacters.Count;
-            if (enemyIndex < 0 || enemyIndex >= CharacterStats.Instance.EnemieCharacters.Count)
-            {
-                Debug.LogWarning("선택된 적 캐릭터 인덱스가 범위를 벗어났습니다.");
-                return false;
-            }
-
-            TurnManager.Instance.enemyUseSkillTurn++;
-            name = CharacterStats.Instance.EnemieCharacters[enemyIndex];
-            return true;
-        }
-    }
-
 
     /// <summary>
     /// 선택된 캐릭터가 사용할 스킬을 지정하고 시전 준비 상태로 만든다.
@@ -418,7 +367,7 @@ public class SkillManager : MonoBehaviour
     /// 선택된 스킬과 캐릭터 정보를 기반으로 방향, 시작위치, 중심점, 타겟 위치를 계산합니다.
     /// 이 함수는 ConfirmSkillCast() 전에 호출되어야 합니다.
     /// </summary>
-    public void CalculateSkillPosition(SkillData skill, Stats character,bool AI, Vector3 AIDirection, Vector3 Position)
+    public void CalculateSkillPosition(SkillData skill, Stats character,bool AI, Vector3 AIDirection, Vector3 Position, GameObject selectedTargetUnit)
     {
         //isSkillReady = true;
         Vector3 startPosition = Vector3.zero;

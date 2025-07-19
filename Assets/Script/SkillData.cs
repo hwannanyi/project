@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.Rendering.VolumeComponent;
 
 
 [System.Serializable]
@@ -14,6 +16,13 @@ public class SkillData
     public bool passive;          // 패시브 여부 (false면 액티브)
     public List<skillType> skillTypes;      // 스킬 타입 (공격, 방어, 보조, 이동)
     public string tooltip;        // 스킬 설명
+
+    public Skill AdditionalSkills; // 추가 스킬 (예: 연계기 등)
+    public SkillData AdditionalSkillData;
+
+    public Stats summonCharacter; // 소환수 캐릭터 (예: 소환수, 함정 등)
+
+
     public int actionsNumber;     // 스킬 행동 개수 (기본 1)
     public int skillNumber;       // 스킬의 갯수 (변형 가능)
     public int skillCumulative;   // 최대 충전 횟수 (기본 1)
@@ -135,6 +144,31 @@ public class SkillData
         react = data.react;
         fourRotation = data.fourRotation; 
         reactTime = data.reactTime;
+
+        // 연계 스킬 데이터이 있으면 추가하고 없으면 null을 입력
+        AdditionalSkillData = data.AdditionalSkills != null
+            ? new SkillData(data.AdditionalSkills, characterName, false)
+        : null;
+
+        summonCharacter = data.summonCharacter != null
+    ? new Stats(data.summonCharacter, false, new())
+    : null; // 소환수 캐릭터 (예: 소환수, 함정 등)
+
+        if(summonCharacter != null)
+        {
+            for (int i = 0; i < data.summonCharacter.useSkill.Count; i++)
+            {
+                if (data.summonCharacter.useSkill[i] == null)
+                {
+                    summonCharacter.usingSkill.Add(new SkillData(null, summonCharacter.name, false));
+                }
+                else
+                {
+                    summonCharacter.usingSkill.Add(new SkillData(data.summonCharacter.useSkill[i], summonCharacter.name, false));
+                    //AdditionalSkills
+                }
+            }
+        }
     }
 
     public void StartCooldown()

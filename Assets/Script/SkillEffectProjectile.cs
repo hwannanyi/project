@@ -2,6 +2,9 @@ using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 using UnityEngine.TextCore.Text;
 using static UnityEngine.RuleTile.TilingRuleOutput;
+using UnityEditor.Experimental.GraphView;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 public class SkillEffectProjectile : MonoBehaviour
 {
@@ -30,7 +33,7 @@ public class SkillEffectProjectile : MonoBehaviour
 
     public AICastSkill aICastSkill;
 
-
+    public List<Vector3> trackingPositions = new();
 
     public void Initialize(SkillData skillData, Vector3 targetPos, GameObject casterObject, Stats character, GameObject target = null)
     {
@@ -121,11 +124,9 @@ public class SkillEffectProjectile : MonoBehaviour
         ? targetUnit.transform.position
         : targetPosition;
 
-
         // 도착처리
-        if (Vector3.Distance(transform.position, destination) < 0.1f)
+        if (Vector3.Distance(transform.position, destination) < 0.2f)
         {
-            transform.position = destination;
             OnHit();
         }
 
@@ -166,6 +167,7 @@ public class SkillEffectProjectile : MonoBehaviour
         // 데미지, 이펙트 등
         Debug.Log($"[SkillEffectProjectile] {skill.skillName} 타격 완료");
 
+        transform.position = GetNearestTile(transform.position);
         // 이동기이라면 시전자를 스킬 위치로 이동시킴
         if (skill.skillTypes.Contains(skillType.movement))
         {
@@ -203,9 +205,16 @@ public class SkillEffectProjectile : MonoBehaviour
     public void Tracking(bool tracking)
     { 
         if (!tracking) return;
-        GameObject skillObject = Instantiate(trackingObject, transform.position, Quaternion.identity);
+
+        Vector3 nearestTile = GetNearestTile(transform.position);
+
+        if (trackingPositions.Contains(nearestTile))
+            return;
+        trackingPositions.Add(nearestTile);
+        SkillData additionalSkillData = skill.AdditionalSkillData;
+        GameObject skillObject = Instantiate(additionalSkillData.SkillEffectPrefab, nearestTile, Quaternion.identity);
         if (skillObject.TryGetComponent<SkillEffectHitscan>(out var effect))
-            effect.Initialize(skill, transform.position, caster, casterStats, null);
+            effect.Initialize(additionalSkillData, nearestTile, caster, casterStats, null);
 
     }
 }

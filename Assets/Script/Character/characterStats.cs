@@ -59,7 +59,7 @@ public class CharacterStats : MonoBehaviour
         playerCharacters.Add("ShellLin");
         EnemieCharacters.Add("melun");
         EnemieCharacters.Add("melunDago");
-        EnemieCharacters.Add("MelunMelun");
+        EnemieCharacters.Add("프리즘");
         EnemieCharacters.Add("PuSsiMaster");
         
 
@@ -151,7 +151,7 @@ public class CharacterStats : MonoBehaviour
             {
                 int index = Array.FindIndex(ALLcharacterList, Character => Character.charactername == chname);
                 //캐릭터 생성
-                characterList.Add(new Stats(ALLcharacterList[index], Vector3.zero, Quaternion.identity, false, new()));
+                characterList.Add(new Stats(ALLcharacterList[index],false, new()));
             }
             else
             {
@@ -172,6 +172,7 @@ public class CharacterStats : MonoBehaviour
             else
             {
                 characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name, false));
+                //AdditionalSkills
             }
 
 

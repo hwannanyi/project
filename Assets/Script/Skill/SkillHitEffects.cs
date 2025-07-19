@@ -5,6 +5,7 @@ using UnityEngine.Rendering;
 using static UnityEngine.EventSystems.EventTrigger;
 using System.Collections.Generic;
 using static Stats;
+using System.Xml.Schema;
 
 
 public class SkillHitEffects : MonoBehaviour
@@ -180,6 +181,13 @@ public class SkillHitEffects : MonoBehaviour
 
         if (IsTargetType(targetStats, casterStats, skillData, target, 0))
         {
+/*            //조건부
+            if (!IsEffectConditionNull(skillData, 0))
+            {
+                if (IsEffectCondition(targetStats, casterStats, skillData, 0))
+                    return;
+            }
+*/
             int damageValue = ValueCalculation(HitEffects.DamageEffect, target, casterStats, skillData, 0);
             if (HasSkillHitEffect_Damge_ByTarget(skillData, target, 0, SkillhitEffect.damage))
             {
@@ -328,7 +336,6 @@ public class SkillHitEffects : MonoBehaviour
             return false;
         }
     }
-
 
     //데미지 유형 찾기
     public bool HasSkillHitEffect_Damge_ByTarget(SkillData skillData, Target target, int damageEffectIndex, SkillhitEffect effectType)
@@ -567,4 +574,29 @@ public class SkillHitEffects : MonoBehaviour
         }
         return finalDamage; // 임시로 0 반환
     }
+
+
+
+    /////////////////////////////////////////////////////
+
+/*    public bool IsEffectCondition(Stats targetStats, Stats casterStats, SkillData skillData, int hitEffectEntryIndex)
+    {
+        Target target = skillData.hitEffects[hitEffectEntryIndex].effects.DamageEffect[0].effectCondition.target;
+        AttributeType type = skillData.hitEffects[hitEffectEntryIndex].effects.DamageEffect[0].effectCondition.type;
+        Condition_statement comparison = skillData.hitEffects[hitEffectEntryIndex].effects.DamageEffect[0].effectCondition.comparison;
+        float value = skillData.hitEffects[hitEffectEntryIndex].effects.DamageEffect[0].effectCondition.value;
+
+        var cond = ConditionBuilder
+            .Attribute(target, type, comparison, value)
+            .Build();
+
+        return cond(casterStats, targetStats, Team.team);
+    }
+
+    public bool IsEffectConditionNull(SkillData skillData, int hitEffectEntryIndex)
+    {
+        bool isnull = !skillData.hitEffects[hitEffectEntryIndex].effects.DamageEffect[0].effectCondition.isactive ? true : false;
+
+        return isnull;
+    }*/
 }

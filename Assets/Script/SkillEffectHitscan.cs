@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 
 // 스킬 효과(투사체)를 관리하는 클래스
@@ -148,6 +150,24 @@ public class SkillEffectHitscan : MonoBehaviour
 
     void OnDestroy()
     {
+        
+        //임시코드 캐릭터 생성
+        if (skillData.summonCharacter != null)
+        {
+            Stats summonCharacter = skillData.summonCharacter;
+            var CharacterManager = CharacterStats.Instance;
+
+            CharacterManager.EnemieCharacters.Add(summonCharacter.name);
+            CharacterManager.characterList.Add(summonCharacter);
+
+            GameObject SumCharacterObject = Instantiate(summonCharacter.characterPrefab);
+            SumCharacterObject.transform.position = transform.position;
+            CharacterManager.characters.Add(SumCharacterObject);
+            summonCharacter.characterPrefab = SumCharacterObject;
+            
+            SumCharacterObject.name = summonCharacter.name;
+        }
+
         if (!hasExitedPhase && !skillData.isreactSkill)
         {
             //TurnManager.Instance.ExitReactPhase(); //미사용, 스킬종료로 인해 대응단계가 종료되지 않도록 변경

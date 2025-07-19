@@ -15,78 +15,18 @@ MonoBehaviour:
   skillQueue:
   - skillQueue: []
   - skillQueue:
-    - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
-      currentIndex: 0
-      delay: 1
-      isCastingNotCast: 1
-      coordinate: {x: 0, y: 0, z: 0}
-      Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 2
-      targetTypeY: 1
-      RotationType: 1
-      Designation: 3
-      reverse_order: 0
-      index: 1
-    - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
+    - skill: {fileID: 11400000, guid: 6abd7091a0864df4b8d225ba590ac163, type: 2}
       currentIndex: 0
       delay: 1
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
-      targetTypeY: 2
-      RotationType: 1
-      Designation: 3
-      reverse_order: 0
-      index: 2
-    - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
-      currentIndex: 0
-      delay: 1
-      isCastingNotCast: 1
-      coordinate: {x: 0, y: 0, z: 0}
-      Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 2
       targetTypeY: 1
       RotationType: 1
-      Designation: 3
-      reverse_order: 0
+      Designation: 4
+      reverse_order: 1
       index: 1
-    - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
-      currentIndex: 0
-      delay: 1
-      isCastingNotCast: 1
-      coordinate: {x: 0, y: 0, z: 0}
-      Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 1
-      targetTypeY: 2
-      RotationType: 1
-      Designation: 3
-      reverse_order: 0
-      index: 2
-    - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
-      currentIndex: 0
-      delay: 1
-      isCastingNotCast: 1
-      coordinate: {x: 0, y: 0, z: 0}
-      Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 2
-      targetTypeY: 1
-      RotationType: 1
-      Designation: 3
-      reverse_order: 0
-      index: 1
-    - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
-      currentIndex: 0
-      delay: 1
-      isCastingNotCast: 1
-      coordinate: {x: 0, y: 0, z: 0}
-      Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 1
-      targetTypeY: 2
-      RotationType: 1
-      Designation: 3
-      reverse_order: 0
-      index: 2
   - skillQueue: []
   - skillQueue:
     - skill: {fileID: 11400000, guid: 71e7363e054ad42428d0d36ffaee0345, type: 2}

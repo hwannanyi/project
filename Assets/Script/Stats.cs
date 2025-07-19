@@ -34,6 +34,8 @@ public class Stats
     public Stats CharacterSummons; // 소환수 주인
     public List<Skill> useSkill;   // 사용스킬
     public List<SkillData> usingSkill = new();   // 사용스킬
+    public List<PassiveSkill> passiveSkill = new();   // 패시브 스킬
+
     public Sprite characterillustration;
     public Sprite characterProfileillustration;
     public GameObject characterPrefab;
@@ -49,6 +51,7 @@ public class Stats
 
     public GameObject highlightEffect; // 인스펙터에서 하이라이트 오브젝트 할당
 
+    public Condition_Hit lastHitType; // 마지막 충돌 타입(적중, 방어 등) 저장
 
     public AIPattern aIPattern; // AI 패턴
     public void SetHighlight(bool isOn)
@@ -57,7 +60,14 @@ public class Stats
             highlightEffect.SetActive(isOn);
     }
 
-    public Stats(Character data, Vector3 charPosition, Quaternion charRotation, bool die, List<SkillData> usingSkill)
+    [System.Serializable]
+    public class PassiveSkill
+    {
+        public ConditionHit conditionHit; // 패시브 조건
+        public SkillData passive = null; // 패시브 스킬
+    }
+
+    public Stats(Character data, bool die, List<SkillData> usingSkill)
     {
 
         characterNumber = 0;
@@ -78,8 +88,8 @@ public class Stats
         NowMoveCount = data.moveCount;
         trun = data.trun;
 
-        this.charPosition = charPosition;
-        this.charRotation = charRotation;
+        this.charPosition = Vector3.zero;
+        this.charRotation = Quaternion.identity;
 
         isdie = die;
 
@@ -101,8 +111,32 @@ public class Stats
 
         available = true;
         movable = true;
-        
-        aIPattern = new AIPattern(data.skillQueue);
+
+
+        //패시브 스킬 추가
+        for (int i = 0; i < data.passiveSkill.Count; i++)
+        {
+            var src = data.passiveSkill[i];
+            if (src == null)
+            {
+                // 패시브가 null이면 SkillData도 null로 생성, ConditionHit도 null로 저장
+                passiveSkill.Add(new PassiveSkill
+                {
+                    passive = new SkillData(null, data.charactername, false),
+                    conditionHit = null
+                });
+            }
+            else
+            {
+                // 패시브가 있으면 SkillData로 복사 생성, ConditionHit도 복사
+                passiveSkill.Add(new PassiveSkill
+                {
+                    passive = new SkillData(src.passive, data.charactername, false),
+                    conditionHit = src.conditionHit
+                });
+            }
+        }
+        lastHitType = Condition_Hit.none; // 초기값 설정
     }
 
     public Transform GetCharacterTransform()

@@ -20,6 +20,7 @@ MonoBehaviour:
   skillTypes: 00000000
   tooltip: "5\uCE78 \uC55E\uC73C\uB85C \uCCAB\uBC88\uC9F8 \uB300\uC0C1\uC5D0\uAC8C
     \uB2FF\uC73C\uBA74 \uB370\uBBF8\uC9C0\n\uD788\uD788 \uBC1C\uC0AC"
+  AdditionalSkills: {fileID: 11400000, guid: e1cc30e36368cc94380039d364fcfc7f, type: 2}
   actionsNumber: 1
   skillNumber: 1
   skillCumulative: 1

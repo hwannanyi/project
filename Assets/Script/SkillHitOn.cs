@@ -107,6 +107,7 @@ public class SkillHitOn : MonoBehaviour
             skillHitEffects.TargetOnHit(target, self, skillData, Target.self);
             skillHitEffects.TargetOnHit(target, self, skillData, Target.enemy);
             skillHitEffects.TargetOnHit(target, self, skillData, Target.team);
+            //OnHit(target, skillData);
 
         }
 

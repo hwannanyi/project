@@ -10,7 +10,12 @@ public enum StartSkillPosition
 public enum projectileType
 { straight, throwtype }
 public enum Target
-{ self, team, enemy, all, spTarget}
+{ self, team, enemy, all, spTarget, mySkill}
+
+public enum TargetUnit
+{
+    character, tile, skill, projectile, spTarget
+}
 public enum AoeType
 { single, square, spAoe}
 
@@ -33,27 +38,7 @@ public enum SkillhitEffect
     Shields
 }
 
-public enum Condition_statement
-{
-    none,       //없음
-    more,       //이상
-    over,       //초과
-    below,      //이하
-    under,      //미만
-    equal,      //같다
-    inequality  //같지않다
-}
 
-public enum Condition_effect
-{
-    none,
-    more,
-    over,
-    below,
-    under,
-    equal,
-    inequality
-}
 
 public enum Debuffs
 { none, corrosion }
@@ -89,6 +74,12 @@ public class Skill : ScriptableObject
     public bool passive;          // 패시브 여부 (false면 액티브)
     public List<skillType> skillTypes;      // 스킬 타입 (공격, 방어, 보조, 이동)
     [TextArea] public string tooltip; // 스킬 설명
+
+    [Header("연계되는 추가 스킬")]
+    public Skill AdditionalSkills; // 추가 스킬 (예: 연계기 등)
+
+    [Header("스킬로 생성되는 소환수")]
+    public Character summonCharacter; // 소환수 캐릭터 (예: 소환수, 함정 등)
 
     [Header("스킬의 갯수")]
     public int actionsNumber = 1; // 스킬 행동 개수 (기본 1)
@@ -174,7 +165,7 @@ public class EffectsCondition
 public class DamageEffect
 {
     public SkillhitEffect skillhitEffect; //데미지? 힐? 실드?
-    public string condition;       // 효과 발동 조건 (예: "공격력 50% 이상")
+    //public Condition effectCondition;       // 효과 발동 조건 (예: "공격력 50% 이상")
     public float baseValue;        // 기본 위력
     public UDictionary<IncreaseType, float> increase; //위력 계수
     public int dot;                // 지속 시간 (턴)
@@ -212,4 +203,34 @@ public class CCEffect
     public UDictionary<IncreaseType, float> increase; //위력 계수
     public int trunDuration;       // 기본 지속 시간 (턴사이클 수)
     public UDictionary<IncreaseType, float> timeIncrease; // 지속 시간 계수
+}
+
+[System.Serializable]
+public class Condition
+{
+    [Header("조건 없으면 false")]
+    public bool isactive; // 조건이 활성화 상태인지 여부
+    [Header("유닛의 진형")]
+    public Target target; // 조건을 적용할 대상 (예: self, target, team 등)
+    [Header("비교할 스텟")]
+    public AttributeType type; // 예: 체력비교, 마나비교 등
+    [Header("비교식")]
+    public Condition_statement comparison; // 예: LessThan, GreaterThanOrEqual 등
+    [Header("고정 비교값 지정")]
+    public float value; // 비교할 값 (혹은 ValueSource로 확장 가능)}
+}
+
+[System.Serializable]
+public class ConditionHit
+{
+    [Header("조건 없으면 false")]
+    public bool isactive; // 조건이 활성화 상태인지 여부
+    [Header("유닛의 진형")]
+    public Target target; // 조건을 적용할 대상진형 (예: self, target, team 등)
+    [Header("유닛유형")]
+    public TargetUnit type; // 예: 캐릭, 스킬 등
+    [Header("상황")]
+    public Condition_Hit comparison; // 예: 적중, 방어, 패링 등
+    [Header("고정으로 지정된 특정 대상")]
+    public string value; // 지정된 특정 대상 (스킬의 이름 또는 캐릭의 이름을 적음, 특정 대상이 아니라면 빈칸으로)
 }

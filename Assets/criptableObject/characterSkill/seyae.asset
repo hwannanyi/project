@@ -19,6 +19,8 @@ MonoBehaviour:
   passive: 0
   skillTypes: 0300000000000000
   tooltip: 
+  AdditionalSkills: {fileID: 11400000, guid: e1cc30e36368cc94380039d364fcfc7f, type: 2}
+  summonCharacter: {fileID: 0}
   actionsNumber: 1
   skillNumber: 1
   skillCumulative: 1
@@ -42,8 +44,8 @@ MonoBehaviour:
   aoetype: 1
   fourRotation: 0
   effectRotation: 0
-  Xaoe: 1
-  Yaoe: 1
+  Xaoe: 0.8
+  Yaoe: 0.8
   specialAoe: []
   aoecenter: 0
   cooldown: 0
@@ -56,16 +58,9 @@ MonoBehaviour:
   damageHit: 0
   hitSpeed: 0
   hitEffects:
-  - target: 2
+  - target: 0
     effects:
-      DamageEffect:
-      - skillhitEffect: 1
-        condition: 0
-        baseValue: 10
-        increase:
-          keys: 
-          values: []
-        dot: 0
+      DamageEffect: []
       DebuffEffects: []
       BuffEffects: []
       CCEffects: []

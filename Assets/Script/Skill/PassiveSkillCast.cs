@@ -5,8 +5,7 @@ using UnityEngine.TextCore.Text;
 using System.Xml.Linq;
 using System.Collections;
 using System;
-
-public class AICastSkill : MonoBehaviour
+public class PassiveSkillCast : MonoBehaviour
 {
     public TurnManager turnManager;
     public SkillManager skillManager;
@@ -21,6 +20,47 @@ public class AICastSkill : MonoBehaviour
 
     }
 
+    public Stats selfStats; // 자신의 Stats
+    public Team team;       // 자신의 팀
+
+    // 예시: "Goblin" 캐릭터가 적중했을 때만 효과 발동
+    private ConditionPredicate hitCondition;
+
+    void Start()
+    {
+        // 조건: 적 유닛이 캐릭터이고, 적중(hit)했으며, 이름이 "Goblin"인 경우
+        hitCondition = ConditionBuilder.HitCondition(
+            Target.enemy,
+            TargetUnit.character,
+            Condition_Hit.hit,
+            "Goblin"
+        ).Build();
+    }
+
+    // 유닛 충돌 이벤트에서 호출
+    public void OnHitq(Stats enemy, SkillData skillData)
+    {
+        if (hitCondition(selfStats, enemy, team))
+        {
+            Debug.Log("Goblin에게 적중! 효과 발동");
+            // 여기에 효과 코드 작성
+
+            Vector3 targetPosition = Vector3.zero; // 기본값 초기화
+            targetPosition = new Vector3(0,0,0); // Y축은 0으로 설정
+/*
+            Stats targetObject = GetClosestCharacter(enemy, pattern.index,
+                        pattern.reverse_order, pattern.Designation);*/
+
+            skillManager.CalculateSkillPosition(skillData, enemy, true,
+                    Vector3.zero, targetPosition, null);
+            skillManager.selectedTargetUnit = null;
+            skillManager.ConfirmSkillCast(enemy.team);
+            skillManager.SkillCastEnemyAI();
+            SkillCasting = true; // 스킬 시전 중으로 설정
+            Debug.Log("스킬실행완료");
+        }
+    }
+
     void OnDestroy()
     {
 
@@ -30,11 +70,11 @@ public class AICastSkill : MonoBehaviour
     }
     private void OnTurnEnd(bool value)
     {
-        var manager = CharacterStats.Instance;
+/*        var manager = CharacterStats.Instance;
         var character = manager.GetStats(gameObject);
         if (character.aIPattern.skillQueueList == null)
             return;
-        StartCoroutine(OnTurnEndCoroutine());
+        StartCoroutine(OnTurnEndCoroutine());*/
 
     }
 
@@ -49,49 +89,49 @@ public class AICastSkill : MonoBehaviour
         if (character.aIPattern.skillQueueList == null || character.aIPattern.skillQueueList.Count == 0)
             yield break;
 
-        int patternCount = (turnManager.Turn) % character.aIPattern.skillQueueList.Count == 0 ? 
+        int patternCount = (turnManager.Turn) % character.aIPattern.skillQueueList.Count == 0 ?
             character.aIPattern.skillQueueList.Count - 1 : (turnManager.Turn) % character.aIPattern.skillQueueList.Count - 1;
 
         Debug.Log(patternCount);
-            if (character.aIPattern.skillQueueList == null ||
-            character.aIPattern.skillQueueList.Count <= 1 ||
-            character.aIPattern.skillQueueList[patternCount] == null)
-                yield break;
+        if (character.aIPattern.skillQueueList == null ||
+        character.aIPattern.skillQueueList.Count <= 1 ||
+        character.aIPattern.skillQueueList[patternCount] == null)
+            yield break;
 
 
-            for (int i = 0; i < character.aIPattern.skillQueueList[patternCount].Count; i++)
+        for (int i = 0; i < character.aIPattern.skillQueueList[patternCount].Count; i++)
+        {
+
+            Debug.Log("d");
+
+            var pattern = character.aIPattern.skillQueueList[patternCount][i];
+            var targetSkill = new SkillData(pattern.skill, character.name, false);
+            if (character.usingSkill.Any(x => x.skillName == pattern.skill.skillName))
             {
 
-                Debug.Log("d");
-
-                var pattern = character.aIPattern.skillQueueList[patternCount][i];
-                var targetSkill = new SkillData(pattern.skill, character.name, false);
-                if (character.usingSkill.Any(x => x.skillName == pattern.skill.skillName))
+                while (skillCastLock && pattern.isCastingNotCast)
                 {
-
-                    while (skillCastLock && pattern.isCastingNotCast)
-                    {
-                        yield return null; // SkillCasting이 false가 될 때까지 대기
-                    }
+                    yield return null; // SkillCasting이 false가 될 때까지 대기
+                }
 
 
-                    if (pattern.condition.isactive && !IsEffectCondition(character, character, pattern.condition.target
-                        , pattern.condition.type
-                        , pattern.condition.comparison
-                        , pattern.condition.value))
-                    {
+                if (pattern.condition.isactive && !IsEffectCondition(character, character, pattern.condition.target
+                    , pattern.condition.type
+                    , pattern.condition.comparison
+                    , pattern.condition.value))
+                {
                     continue; // 조건 불만족 시 다음 반복으로 넘어감
                 }
-                
+
 
                 yield return new WaitForSeconds(pattern.delay);
-                    int index = character.usingSkill.FindIndex(x => x.skillName == pattern.skill.skillName);
-                    //CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
-                    //CharacterSelection.selectedCharacterIndex = character.characterNumber;
-                    skillManager.PrepareSkillCast(index, character.characterNumber);
+                int index = character.usingSkill.FindIndex(x => x.skillName == pattern.skill.skillName);
+                //CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
+                //CharacterSelection.selectedCharacterIndex = character.characterNumber;
+                skillManager.PrepareSkillCast(index, character.characterNumber);
 
                 Vector3 rotatoin = Vector3.zero;// 기본값 초기화
-                switch(pattern.RotationType) // 방향 방식에 따라 방향 지정
+                switch (pattern.RotationType) // 방향 방식에 따라 방향 지정
                 {
                     case Rotation.none:
                         rotatoin = gameObject.transform.position + pattern.Rotation;
@@ -137,22 +177,22 @@ public class AICastSkill : MonoBehaviour
                 }
 
                 Vector3 targetPosition = Vector3.zero; // 기본값 초기화
-                targetPosition = new Vector3(targetPositionX+ (pattern.coordinate).x, 0f, targetPositionY+ (pattern.coordinate).y); // Y축은 0으로 설정
+                targetPosition = new Vector3(targetPositionX + (pattern.coordinate).x, 0f, targetPositionY + (pattern.coordinate).y); // Y축은 0으로 설정
 
                 Stats targetObject = GetClosestCharacter(character, pattern.index,
                             pattern.reverse_order, pattern.Designation);
 
                 skillManager.CalculateSkillPosition(character.usingSkill[index], character, true,
                         rotatoin, targetPosition, targetObject.characterPrefab);
-                    skillManager.selectedTargetUnit = null;
-                    skillManager.ConfirmSkillCast(character.team);
-                    skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
-                    skillManager.SkillCastEnemyAI();
-                    SkillCasting = true; // 스킬 시전 중으로 설정
-                    Debug.Log("스킬실행완료");
-                }
+                skillManager.selectedTargetUnit = null;
+                skillManager.ConfirmSkillCast(character.team);
+                skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
+                skillManager.SkillCastEnemyAI();
+                SkillCasting = true; // 스킬 시전 중으로 설정
+                Debug.Log("스킬실행완료");
             }
-        
+        }
+
     }
 
 
@@ -207,7 +247,7 @@ public class AICastSkill : MonoBehaviour
     }
 
 
-    public bool IsEffectCondition(Stats targetStats, Stats casterStats, 
+    public bool IsEffectCondition(Stats targetStats, Stats casterStats,
         Target target, AttributeType type, Condition_statement comparison, float value)
     {
         var cond = ConditionBuilder

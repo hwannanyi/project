@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System;
 //using static UnityEditor.PlayerSettings;
 //using UnityEditor;
 using static UnityEngine.GraphicsBuffer;
@@ -217,9 +218,9 @@ public class SkillRangeVisualizer : MonoBehaviour
 
         for (int i = 0; i < range; i++)
         {
-            pos += new Vector3(dir.x * Xaoe, 0, dir.z * Yaoe);
+            pos += new Vector3(dir.x * Mathf.Ceil(Xaoe), 0, dir.z * Mathf.Ceil(Yaoe));
             // 투사체 크기만큼 사각형 범위 커버
-            foreach (var tile in GetRectAreaTiles(pos, Xaoe, Yaoe))
+            foreach (var tile in GetRectAreaTiles(pos, Mathf.Ceil(Xaoe), Mathf.Ceil(Yaoe)))
                 result.Add(tile);
         }
         return new List<Vector3>(result);

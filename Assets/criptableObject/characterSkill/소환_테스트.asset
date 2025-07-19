@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
-  m_Name: jum
+  m_Name: "\uC18C\uD658_\uD14C\uC2A4\uD2B8"
   m_EditorClassIdentifier: 
-  skillName: ' jum'
-  skillIcon: {fileID: 21300000, guid: 8ccb978698866834784a339fba5bfdd3, type: 3}
-  SkillEffectIllustration: {fileID: 21300000, guid: 8ccb978698866834784a339fba5bfdd3, type: 3}
-  SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
+  skillName: "\uC18C\uD658_\uD14C\uC2A4\uD2B8"
+  skillIcon: {fileID: -1829394237, guid: d2736e599297c954fabb954320e029fc, type: 3}
+  SkillEffectIllustration: {fileID: -1829394237, guid: d2736e599297c954fabb954320e029fc, type: 3}
+  SkillEffectPrefab: {fileID: 6478507458708094152, guid: 996504ae6dec45d428cf8f9a8938b2b4, type: 3}
   passive: 0
   skillTypes: 00000000
-  tooltip: "\uC810"
+  tooltip: "\uC18C\uC624\uD658"
   AdditionalSkills: {fileID: 0}
-  summonCharacter: {fileID: 0}
+  summonCharacter: {fileID: 11400000, guid: 4da1410d0484427488eda3a4034571ec, type: 2}
   actionsNumber: 1
   skillNumber: 1
   skillCumulative: 1
@@ -30,14 +30,14 @@ MonoBehaviour:
   startSkillPosition: 2
   XstartSkillPosition: 0
   YstartSkillPosition: 0
-  projectile: 1
+  projectile: 0
   targeting: 0
   penetration: 0
   tracking: 0
   RangeAdjustment: 0
   projectileType: 0
-  skillTarget: 02000000
-  projectileSpeed: 7
+  skillTarget: 
+  projectileSpeed: 0
   afterdelay: 0
   beforedelay: 0
   range: 5
@@ -47,22 +47,27 @@ MonoBehaviour:
   Xaoe: 1
   Yaoe: 1
   specialAoe: []
-  aoecenter: 1
-  cooldown: 0
-  colldownSkill: 0
-  basicValue: 10
+  aoecenter: 0
+  cooldown: 99
+  colldownSkill: 99
+  basicValue: 0
   increase:
-    keys: 01000000
-    values:
-    - 0.1
-  damageHit: 1
+    keys: 
+    values: []
+  damageHit: 0
   hitSpeed: 0
   hitEffects:
   - target: 2
     effects:
       DamageEffect:
       - skillhitEffect: 1
-        baseValue: 2
+        effectCondition:
+          isactive: 0
+          target: 2
+          type: 0
+          comparison: 2
+          value: 9
+        baseValue: 1
         increase:
           keys: 01000000
           values:
@@ -71,18 +76,5 @@ MonoBehaviour:
       DebuffEffects: []
       BuffEffects: []
       CCEffects: []
-  - target: 2
-    effects:
-      DamageEffect:
-      - skillhitEffect: 1
-        baseValue: 1
-        increase:
-          keys: 01000000
-          values:
-          - 0.2
-        dot: 0
-      DebuffEffects: []
-      BuffEffects: []
-      CCEffects: []
-  react: 2
-  reactTime: 0.5
+  react: 0
+  reactTime: 0

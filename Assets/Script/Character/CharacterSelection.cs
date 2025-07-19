@@ -71,7 +71,7 @@ public class CharacterSelection : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha4)) SelectCharacter2P(3);
         if (Input.GetKeyDown(KeyCode.Alpha5)) SelectCharacter2P(4);// 0
         if (Input.GetKeyDown(KeyCode.Alpha6)) SelectCharacter2P(5);// 1
-        //if (Input.GetKeyDown(KeyCode.Alpha7)) SelectCharacter2P(6);// 2
+        if (Input.GetKeyDown(KeyCode.Alpha7)) SelectCharacter(6);// 2
         //if (Input.GetKeyDown(KeyCode.Alpha8)) SelectCharacter2P(7);// 3
     }
     public void SelectCharacter(int index)
@@ -99,15 +99,13 @@ public class CharacterSelection : MonoBehaviour
             }
         }*/
 
-        if (index < CharacterStats.Instance.playerCharacters.Count)
-        {
             var character = CharacterStats.Instance.characterList[index];
             if (character.isdie)
             {
                 Debug.Log("죽은 캐릭터는 선택할 수 없습니다.");
                 return;
             }
-            if (CharacterStats.Instance.playerCharacters[index] != null && selectedCharacterIndex != index)
+            if ( selectedCharacterIndex != index)
             {
                 // 이전 캐릭터 하이라이트 끄기
                 if (prevSelectedIndex >= 0 && prevSelectedIndex < CharacterStats.Instance.characterList.Count)
@@ -124,10 +122,10 @@ public class CharacterSelection : MonoBehaviour
                 OnCharacterSelected(index);
                 //characterUIManager.ProfileUIOn();
                 characterUIManager.UpdateProfileUIBySelection();
-                Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");
+                //Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");
 
             }
-            else if (CharacterStats.Instance.playerCharacters[index] != null && selectedCharacterIndex == index)
+            else if ( selectedCharacterIndex == index)
             {
                 // 선택 해제 시 하이라이트 끄기
                 CharacterStats.Instance.characterList[selectedCharacterIndex].SetHighlight(false);
@@ -141,7 +139,7 @@ public class CharacterSelection : MonoBehaviour
             {
                 Debug.Log("캐릭 선택실패");
             }
-        }
+        
     }
 
     public void SelectCharacter2P(int index)
