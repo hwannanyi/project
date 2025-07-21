@@ -14,7 +14,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillQueue:
   - skillQueue: []
-  - skillQueue: []
+  - skillQueue:
+    - skill: {fileID: 11400000, guid: 71e7363e054ad42428d0d36ffaee0345, type: 2}
+      currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 0
+      isCastingNotCast: 1
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 1
+      targetTypeY: 2
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 1
   - skillQueue: []
   - skillQueue:
     - skill: {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}

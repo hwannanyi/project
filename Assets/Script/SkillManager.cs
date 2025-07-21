@@ -2,6 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+public enum SkillTiming
+{
+    start, casting, end
+}
 
 public class SkillManager : MonoBehaviour
 {
@@ -473,17 +477,14 @@ Vector3[] directions = {
         }
         else
         {
-            
 
+            direction = (mouseWorldPos - startPosition).normalized;
             //AI 캐릭터의 경우, 방향을 AI가 지정한 방향으로 설정
-/*            if (AI)
+            if (AI && AIDirection != Vector3.zero)
             {
-                direction = (AIDirection - startPosition).normalized;
+                direction = AIDirection.normalized;
             }
-            else
-            {*/
-                direction = (mouseWorldPos - startPosition).normalized;
-            //}
+            
 
             // 4방향 중 가장 가까운 방향 찾기
             float maxDot = Vector3.Dot(direction, directions[0]);

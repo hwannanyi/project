@@ -70,7 +70,10 @@ public class PassiveSkillCast : MonoBehaviour
                 switch (passiveTarget.RotationType) // 방향 방식에 따라 방향 지정
                 {
                     case Rotation.none:
-                        rotatoin = gameObject.transform.position + passiveTarget.Rotation;
+                        rotatoin = Vector3.zero;
+                        break;
+                    case Rotation.self:
+                        rotatoin = passiveTarget.Rotation;
                         break;
                     case Rotation.Character:
                         rotatoin = GetClosestCharacter(target, passiveTarget.index,

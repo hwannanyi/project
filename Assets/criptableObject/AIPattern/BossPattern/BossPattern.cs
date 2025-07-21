@@ -15,7 +15,7 @@ public enum TargetTypeY
 }
 public enum Rotation
 {
-    none, Character, Skill
+    none, self, Character, Skill
 }
 
 public enum DesignationType

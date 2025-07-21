@@ -94,7 +94,10 @@ public class AICastSkill : MonoBehaviour
                 switch(pattern.RotationType) // 방향 방식에 따라 방향 지정
                 {
                     case Rotation.none:
-                        rotatoin = gameObject.transform.position + pattern.Rotation;
+                        rotatoin = Vector3.zero;
+                        break;
+                    case Rotation.self:
+                        rotatoin = pattern.Rotation;
                         break;
                     case Rotation.Character:
                         rotatoin = GetClosestCharacter(character, pattern.index,

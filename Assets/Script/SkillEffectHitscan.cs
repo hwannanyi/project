@@ -29,6 +29,7 @@ public class SkillEffectHitscan : MonoBehaviour
 
     public SpriteRenderer spriteRenderer; // Inspector에서 할당하거나 GetComponent로 가져오기
 
+    public SkillTiming skillTiming;
     private void Awake()
     {
 

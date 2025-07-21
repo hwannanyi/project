@@ -20,6 +20,12 @@ public class SkillData
     public Skill AdditionalSkills; // 추가 스킬 (예: 연계기 등)
     public SkillData AdditionalSkillData;
 
+    [Header("스킬 시작시 시전되는 추가스킬")]
+    public SkillData StartAddSkills; // 스킬이 시작될때
+
+    [Header("스킬 시작시 시전되는 추가스킬")]
+    public SkillData EndAddSkills; // 추가 스킬 스킬이 끝날때
+
     public Stats summonCharacter; // 소환수 캐릭터 (예: 소환수, 함정 등)
 
 
@@ -148,6 +154,12 @@ public class SkillData
         // 연계 스킬 데이터이 있으면 추가하고 없으면 null을 입력
         AdditionalSkillData = data.AdditionalSkills != null
             ? new SkillData(data.AdditionalSkills, characterName, false)
+        : null;
+        StartAddSkills = data.StartAddSkills != null
+            ? new SkillData(data.StartAddSkills, characterName, false)
+        : null;
+        EndAddSkills = data.EndAddSkills != null
+            ? new SkillData(data.EndAddSkills, characterName, false)
         : null;
 
         summonCharacter = data.summonCharacter != null

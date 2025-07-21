@@ -28,7 +28,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
   - {fileID: 11400000, guid: ef061324dfda5d14ab8b7962c9344a8b, type: 2}
   - {fileID: 11400000, guid: 2e7801b8d5bb8cf48a589d64f403ddec, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 71e7363e054ad42428d0d36ffaee0345, type: 2}
+  - {fileID: 11400000, guid: bd763d08186ec3d4d86ffe6677c5f99d, type: 2}
   passiveSkill:
   - conditionHit:
       isactive: 1

@@ -35,8 +35,11 @@ public class SkillEffectProjectile : MonoBehaviour
 
     public List<Vector3> trackingPositions = new();
 
+    public SkillTiming skillTiming;
+
     public void Initialize(SkillData skillData, Vector3 targetPos, GameObject casterObject, Stats character, GameObject target = null)
     {
+        skillTiming = SkillTiming.start;
         skill = skillData;
         caster = casterObject;
         casterStats = character;
@@ -118,7 +121,7 @@ public class SkillEffectProjectile : MonoBehaviour
     {
         if (!isInitialized) return;
 
-
+        if(skillTiming != SkillTiming.casting) return;
 
         Vector3 destination = (skill.targeting && targetUnit != null)
         ? targetUnit.transform.position

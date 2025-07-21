@@ -27,8 +27,8 @@ MonoBehaviour:
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 1
-      targetTypeY: 1
+      targetTypeX: 2
+      targetTypeY: 2
       RotationType: 0
       Designation: 3
       reverse_order: 0
@@ -45,8 +45,8 @@ MonoBehaviour:
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 0
-      targetTypeY: 0
+      targetTypeX: 1
+      targetTypeY: 1
       RotationType: 0
       Designation: 0
       reverse_order: 0

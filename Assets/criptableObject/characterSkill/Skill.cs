@@ -78,6 +78,12 @@ public class Skill : ScriptableObject
     [Header("연계되는 추가 스킬")]
     public Skill AdditionalSkills; // 추가 스킬 (예: 연계기 등)
 
+    [Header("스킬 시작시 시전되는 추가스킬")]
+    public Skill StartAddSkills; // 스킬이 시작될때
+
+    [Header("스킬 시작시 시전되는 추가스킬")]
+    public Skill EndAddSkills; // 추가 스킬 스킬이 끝날때
+
     [Header("스킬로 생성되는 소환수")]
     public Character summonCharacter; // 소환수 캐릭터 (예: 소환수, 함정 등)
 
