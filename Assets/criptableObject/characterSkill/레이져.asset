@@ -27,7 +27,7 @@ MonoBehaviour:
   skillCumulative: 1
   cost:
     keys: 00000000
-    values: 01000000
+    values: 00000000
   startSkillPosition: 0
   XstartSkillPosition: 0
   YstartSkillPosition: 0
@@ -48,7 +48,7 @@ MonoBehaviour:
   Xaoe: 1
   Yaoe: 1
   specialAoe: []
-  aoecenter: 1
+  aoecenter: 0
   cooldown: 0
   colldownSkill: 0
   basicValue: 10

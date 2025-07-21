@@ -41,8 +41,25 @@ MonoBehaviour:
       isCastingNotCast: 0
       coordinate: {x: 1, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 0
-      targetTypeY: 0
+      targetTypeX: 1
+      targetTypeY: 1
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 1
+  - conditionHit:
+      isactive: 1
+      target: 2
+      type: 2
+      comparison: 1
+      value: ball
+    passive: {fileID: 11400000, guid: 2e7801b8d5bb8cf48a589d64f403ddec, type: 2}
+    passiveTarget:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 1}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 1
+      targetTypeY: 1
       RotationType: 0
       Designation: 0
       reverse_order: 0
@@ -58,8 +75,25 @@ MonoBehaviour:
       isCastingNotCast: 0
       coordinate: {x: -1, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 0
-      targetTypeY: 0
+      targetTypeX: 1
+      targetTypeY: 1
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 1
+  - conditionHit:
+      isactive: 1
+      target: 2
+      type: 2
+      comparison: 1
+      value: ball
+    passive: {fileID: 11400000, guid: 2e7801b8d5bb8cf48a589d64f403ddec, type: 2}
+    passiveTarget:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: -1}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 1
+      targetTypeY: 1
       RotationType: 0
       Designation: 0
       reverse_order: 0

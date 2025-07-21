@@ -111,6 +111,9 @@ public class AICastSkill : MonoBehaviour
                     case TargetTypeX.none:
                         targetPositionX = (pattern.coordinate).x;
                         break;
+                    case TargetTypeX.self:
+                        targetPositionX = character.charPosition.x + (pattern.coordinate).x; // 자기 위치
+                        break;
                     case TargetTypeX.Character:
                         targetPositionX = GetClosestCharacter(character, pattern.index,
                             pattern.reverse_order, pattern.Designation).charPosition.x;
@@ -126,6 +129,9 @@ public class AICastSkill : MonoBehaviour
                 {
                     case TargetTypeY.none:
                         targetPositionY = (pattern.coordinate).z;
+                        break;
+                    case TargetTypeY.self:
+                        targetPositionY = character.charPosition.z + (pattern.coordinate).z; // 자기 위치
                         break;
                     case TargetTypeY.Character:
                         targetPositionY = GetClosestCharacter(character, pattern.index,

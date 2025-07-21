@@ -118,7 +118,7 @@ public class Stats
         available = true;
         movable = true;
 
-
+        aIPattern = new AIPattern(data.skillQueue);
         //패시브 스킬 추가
         for (int i = 0; i < data.passiveSkill.Count; i++)
         {

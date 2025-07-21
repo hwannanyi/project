@@ -6,12 +6,12 @@ using UnityEngine;
 
 public enum TargetTypeX
 {
-    none, Character, Skill
+    none, self, Character, Skill
 }
 
 public enum TargetTypeY
 {
-    none, Character, Skill
+    none, self, Character, Skill
 }
 public enum Rotation
 {

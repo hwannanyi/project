@@ -87,6 +87,9 @@ public class PassiveSkillCast : MonoBehaviour
                     case TargetTypeX.none:
                         targetPositionX = (passiveTarget.coordinate).x;
                         break;
+                    case TargetTypeX.self:
+                        targetPositionX = self.charPosition.x + (passiveTarget.coordinate).x; // 자기 위치
+                        break;
                     case TargetTypeX.Character:
                         targetPositionX = GetClosestCharacter(target, passiveTarget.index,
                             passiveTarget.reverse_order, passiveTarget.Designation).charPosition.x;
@@ -102,6 +105,9 @@ public class PassiveSkillCast : MonoBehaviour
                 {
                     case TargetTypeY.none:
                         targetPositionY = (passiveTarget.coordinate).z;
+                        break;
+                    case TargetTypeY.self:
+                        targetPositionY = self.charPosition.z + (passiveTarget.coordinate).z; // 자기 위치
                         break;
                     case TargetTypeY.Character:
                         targetPositionY = GetClosestCharacter(target, passiveTarget.index,
