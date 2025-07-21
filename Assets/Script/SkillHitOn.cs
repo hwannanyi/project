@@ -108,7 +108,10 @@ public class SkillHitOn : MonoBehaviour
             skillHitEffects.TargetOnHit(target, self, skillData, Target.enemy);
             skillHitEffects.TargetOnHit(target, self, skillData, Target.team);
             //OnHit(target, skillData);
+            // SkillHitOn.cs에서 적중 시
+            targetStats.lastHitSkillData = skillData; // 마지막 적중 스킬 데이터 저장
 
+            PassiveSkillCast.Instance.OnHitPassive(targetStats, casterStats , skillData);
         }
 
         if (other.gameObject.tag == "Tile")

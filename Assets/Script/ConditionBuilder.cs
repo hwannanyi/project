@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using UnityEngine.TextCore.Text;
+using static UnityEngine.EventSystems.EventTrigger;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 // 스탯 속성 종류
 public enum AttributeType { hp, mp }
@@ -31,8 +33,7 @@ public enum Condition_Hit
 
 
 // 조건 판별용 델리게이트 (Stats 기준)
-public delegate bool ConditionPredicate(Stats self, Stats target, Team team);
-
+public delegate bool ConditionPredicate(Stats self, Stats enemy, SkillData skillData, Team team);
 // 조건 빌더 패턴 클래스
 
 public enum ValueSourceType { Constant, Self, Target, Team }
@@ -97,7 +98,9 @@ public class ConditionBuilder
     /// <param name="value">비교 값</param>
     public static ConditionBuilder Attribute(Target target, AttributeType attr, Condition_statement comp, float value)
     {
-        return new ConditionBuilder((self, enemy, team) =>
+        var manager = CharacterStats.Instance;
+
+        return new ConditionBuilder((self, enemy, skillData, team) =>
         {
             // 대상 Stats 선택
             Stats stats = target switch
@@ -130,10 +133,11 @@ public class ConditionBuilder
     public static ConditionBuilder HitCondition(
         Target target, TargetUnit type, Condition_Hit comparison, string value)
     {
-        return new ConditionBuilder((self, enemy, team) =>
+        return new ConditionBuilder((self, enemy, skillData, team) =>
         {
+
             // 1. target: 어느 팀원의 유닛인지 판별
-            bool targetMatch = false;
+            bool targetMatch = true;
             switch (target)
             {
                 case Target.self:
@@ -154,28 +158,29 @@ public class ConditionBuilder
             }
             if (!targetMatch) return false;
 
-            // 2. type: 캐릭터, 스킬 등 판별
+            // 2. 타입 구분: 캐릭터(Stats)인지, 스킬(SkillData)인지
+
             bool typeMatch = false;
-            switch (type)
+
+            if (type == TargetUnit.character && enemy != null)
             {
-                case TargetUnit.character:
-                    typeMatch = enemy != null && !(enemy is null) && enemy is Stats;
-                    break;
-                case TargetUnit.skill:
-                    typeMatch = enemy != null && enemy.usingSkill != null && enemy.usingSkill.Count > 0;
-                    break;
-                // 필요시 projectile 등 추가
-                default:
-                    typeMatch = true;
-                    break;
+                typeMatch = true;
             }
+            else if (type == TargetUnit.skill && skillData != null)
+            {
+                typeMatch = true;   
+            }
+/*            else if (type == TargetUnit.all)
+            {
+                typeMatch = true;
+            }*/
             if (!typeMatch) return false;
 
             // 3. comparison: 적중, 방어 등 상황 판별
-            bool comparisonMatch = false;
+            bool comparisonMatch = true;
             switch (comparison)
             {
-                case Condition_Hit.hit:
+/*                case Condition_Hit.hit:
                     comparisonMatch = enemy != null && enemy.lastHitType == Condition_Hit.hit;
                     break;
                 case Condition_Hit.gurd:
@@ -189,7 +194,7 @@ public class ConditionBuilder
                     break;
                 case Condition_Hit.not_gurd:
                     comparisonMatch = enemy != null && enemy.lastHitType == Condition_Hit.not_gurd;
-                    break;
+                    break;*/
                 default:
                     comparisonMatch = true;
                     break;
@@ -200,17 +205,10 @@ public class ConditionBuilder
             if (!string.IsNullOrEmpty(value))
             {
                 bool nameMatch = false;
-                // enemy가 SkillData를 사용하는 경우
-                if (enemy != null && enemy.usingSkill != null)
+                // enemyStats.lastHitSkillData.name == value
+                if (skillData != null && skillData.skillName == value)
                 {
-                    foreach (var skillData in enemy.usingSkill)
-                    {
-                        if (skillData != null && (skillData.skillName == value || skillData.useCharacterName == value))
-                        {
-                            nameMatch = true;
-                            break;
-                        }
-                    }
+                    nameMatch = true;
                 }
                 // enemy의 캐릭터 이름 비교
                 if (!nameMatch && enemy != null && enemy.name == value)
@@ -219,7 +217,7 @@ public class ConditionBuilder
                 }
                 if (!nameMatch) return false;
             }
-
+            
             return true;
         });
     }
@@ -231,8 +229,8 @@ public class ConditionBuilder
     /// </summary>
     public ConditionBuilder And(ConditionBuilder other)
     {
-        return new ConditionBuilder((self, enemy, team) =>
-            _predicate(self, enemy, team) && other._predicate(self, enemy, team));
+        return new ConditionBuilder((self, enemy, skillData, team) =>
+            _predicate(self, enemy, skillData, team) && other._predicate(self, enemy, skillData, team));
     }
 
     /// <summary>
@@ -240,8 +238,8 @@ public class ConditionBuilder
     /// </summary>
     public ConditionBuilder Or(ConditionBuilder other)
     {
-        return new ConditionBuilder((self, enemy, team) =>
-            _predicate(self, enemy, team) || other._predicate(self, enemy, team));
+        return new ConditionBuilder((self, enemy, skillData, team) =>
+            _predicate(self, enemy, skillData, team) || other._predicate(self, enemy, skillData, team));
     }
 
     /// <summary>
@@ -249,8 +247,8 @@ public class ConditionBuilder
     /// </summary>
     public ConditionBuilder Not()
     {
-        return new ConditionBuilder((self, enemy, team) =>
-            !_predicate(self, enemy, team));
+        return new ConditionBuilder((self, enemy, skillData, team) =>
+            !_predicate(self, enemy, skillData, team));
     }
 
     /// <summary>

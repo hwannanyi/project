@@ -11682,6 +11682,7 @@ GameObject:
   - component: {fileID: 62703701}
   - component: {fileID: 62703702}
   - component: {fileID: 62703703}
+  - component: {fileID: 62703704}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -11838,6 +11839,42 @@ MonoBehaviour:
     passive: 0
     skillTypes: 
     tooltip: 
+    AdditionalSkills: {fileID: 0}
+    summonCharacter:
+      characterNumber: 0
+      name: 
+      maxhp: 0
+      hp: 0
+      shields: 0
+      maxmp: 0
+      mp: 0
+      atk: 0
+      def: 0
+      damageReduction: 0
+      damageIncreased: 0
+      speed: 0
+      movespeed: 0
+      moveCount: 0
+      NowMoveCount: 0
+      trun: 0
+      charPosition: {x: 0, y: 0, z: 0}
+      charRotation: {x: 0, y: 0, z: 0, w: 0}
+      isdie: 0
+      team: 0
+      summons: 0
+      useSkill: []
+      usingSkill: []
+      passiveSkill: []
+      characterillustration: {fileID: 0}
+      characterProfileillustration: {fileID: 0}
+      characterPrefab: {fileID: 0}
+      debuffEffects: []
+      buffEffects: []
+      ccEffects: []
+      available: 0
+      movable: 0
+      highlightEffect: {fileID: 0}
+      lastHitType: 0
     actionsNumber: 0
     skillNumber: 0
     skillCumulative: 0
@@ -11853,6 +11890,8 @@ MonoBehaviour:
     projectile: 0
     targeting: 0
     penetration: 0
+    tracking: 0
+    RangeAdjustment: 0
     projectileType: 0
     skillTarget: 
     projectileSpeed: 0
@@ -11906,6 +11945,7 @@ MonoBehaviour:
     summons: 0
     useSkill: []
     usingSkill: []
+    passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
     characterPrefab: {fileID: 0}
@@ -11915,6 +11955,7 @@ MonoBehaviour:
     available: 0
     movable: 0
     highlightEffect: {fileID: 0}
+    lastHitType: 0
   selectedAoeCenterPosition: {x: 0, y: 0, z: 0}
   selectedTargetPosition: {x: 0, y: 0, z: 0}
   isSkillReady: 0
@@ -11989,6 +12030,42 @@ MonoBehaviour:
     passive: 0
     skillTypes: 
     tooltip: 
+    AdditionalSkills: {fileID: 0}
+    summonCharacter:
+      characterNumber: 0
+      name: 
+      maxhp: 0
+      hp: 0
+      shields: 0
+      maxmp: 0
+      mp: 0
+      atk: 0
+      def: 0
+      damageReduction: 0
+      damageIncreased: 0
+      speed: 0
+      movespeed: 0
+      moveCount: 0
+      NowMoveCount: 0
+      trun: 0
+      charPosition: {x: 0, y: 0, z: 0}
+      charRotation: {x: 0, y: 0, z: 0, w: 0}
+      isdie: 0
+      team: 0
+      summons: 0
+      useSkill: []
+      usingSkill: []
+      passiveSkill: []
+      characterillustration: {fileID: 0}
+      characterProfileillustration: {fileID: 0}
+      characterPrefab: {fileID: 0}
+      debuffEffects: []
+      buffEffects: []
+      ccEffects: []
+      available: 0
+      movable: 0
+      highlightEffect: {fileID: 0}
+      lastHitType: 0
     actionsNumber: 0
     skillNumber: 0
     skillCumulative: 0
@@ -12004,6 +12081,8 @@ MonoBehaviour:
     projectile: 0
     targeting: 0
     penetration: 0
+    tracking: 0
+    RangeAdjustment: 0
     projectileType: 0
     skillTarget: 
     projectileSpeed: 0
@@ -12083,6 +12162,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 998e8aa4d41473145881d53ebcde1a4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &62703704
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62703682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c20a04e457ec3049be2eabd2c6ed25e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  turnManager: {fileID: 0}
+  skillManager: {fileID: 0}
+  SkillCasting: 0
+  skillCastLock: 0
+  selfStats:
+    characterNumber: 0
+    name: 
+    maxhp: 0
+    hp: 0
+    shields: 0
+    maxmp: 0
+    mp: 0
+    atk: 0
+    def: 0
+    damageReduction: 0
+    damageIncreased: 0
+    speed: 0
+    movespeed: 0
+    moveCount: 0
+    NowMoveCount: 0
+    trun: 0
+    charPosition: {x: 0, y: 0, z: 0}
+    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    isdie: 0
+    team: 0
+    summons: 0
+    useSkill: []
+    usingSkill: []
+    passiveSkill: []
+    characterillustration: {fileID: 0}
+    characterProfileillustration: {fileID: 0}
+    characterPrefab: {fileID: 0}
+    debuffEffects: []
+    buffEffects: []
+    ccEffects: []
+    available: 0
+    movable: 0
+    highlightEffect: {fileID: 0}
+    lastHitType: 0
+  team: 0
 --- !u!4 &64365014 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5236981650925629645, guid: 78e847a47d13ecc43b14da6abaea6898, type: 3}
@@ -13655,6 +13786,7 @@ MonoBehaviour:
     summons: 0
     useSkill: []
     usingSkill: []
+    passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
     characterPrefab: {fileID: 0}
@@ -13664,6 +13796,7 @@ MonoBehaviour:
     available: 0
     movable: 0
     highlightEffect: {fileID: 0}
+    lastHitType: 0
   characterProfileSkillTextListUI:
   - {fileID: 623181790}
   - {fileID: 970849208}
@@ -19523,6 +19656,7 @@ MonoBehaviour:
     summons: 0
     useSkill: []
     usingSkill: []
+    passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
     characterPrefab: {fileID: 0}
@@ -19532,6 +19666,7 @@ MonoBehaviour:
     available: 0
     movable: 0
     highlightEffect: {fileID: 0}
+    lastHitType: 0
   characterProfileSkillTextListUI:
   - {fileID: 1784564200}
   - {fileID: 1204845106}
@@ -21436,6 +21571,7 @@ MonoBehaviour:
     summons: 0
     useSkill: []
     usingSkill: []
+    passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
     characterPrefab: {fileID: 0}
@@ -21445,6 +21581,7 @@ MonoBehaviour:
     available: 0
     movable: 0
     highlightEffect: {fileID: 0}
+    lastHitType: 0
   characterProfileSkillTextListUI:
   - {fileID: 2033692931}
   - {fileID: 1443510851}
@@ -21988,6 +22125,7 @@ MonoBehaviour:
     summons: 0
     useSkill: []
     usingSkill: []
+    passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
     characterPrefab: {fileID: 0}
@@ -21997,6 +22135,7 @@ MonoBehaviour:
     available: 0
     movable: 0
     highlightEffect: {fileID: 0}
+    lastHitType: 0
   characterProfileSkillTextListUI:
   - {fileID: 836400899}
   - {fileID: 540399210}
@@ -33482,6 +33621,7 @@ MonoBehaviour:
     summons: 0
     useSkill: []
     usingSkill: []
+    passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
     characterPrefab: {fileID: 0}
@@ -33491,6 +33631,7 @@ MonoBehaviour:
     available: 0
     movable: 0
     highlightEffect: {fileID: 0}
+    lastHitType: 0
   characterProfileSkillTextListUI:
   - {fileID: 704243418}
   - {fileID: 431310681}
@@ -34366,6 +34507,7 @@ MonoBehaviour:
     summons: 0
     useSkill: []
     usingSkill: []
+    passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
     characterPrefab: {fileID: 0}
@@ -34375,6 +34517,7 @@ MonoBehaviour:
     available: 0
     movable: 0
     highlightEffect: {fileID: 0}
+    lastHitType: 0
   characterProfileSkillTextListUI:
   - {fileID: 1795082709}
   - {fileID: 1889945620}
@@ -49522,6 +49665,7 @@ MonoBehaviour:
     summons: 0
     useSkill: []
     usingSkill: []
+    passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
     characterPrefab: {fileID: 0}
@@ -49531,6 +49675,7 @@ MonoBehaviour:
     available: 0
     movable: 0
     highlightEffect: {fileID: 0}
+    lastHitType: 0
   characterProfileSkillTextListUI:
   - {fileID: 1829014767}
   - {fileID: 1718888414}
@@ -59049,6 +59194,7 @@ MonoBehaviour:
     summons: 0
     useSkill: []
     usingSkill: []
+    passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
     characterPrefab: {fileID: 0}
@@ -59058,6 +59204,7 @@ MonoBehaviour:
     available: 0
     movable: 0
     highlightEffect: {fileID: 0}
+    lastHitType: 0
   characterProfileSkillTextListUI:
   - {fileID: 1748118807}
   - {fileID: 1032980915}

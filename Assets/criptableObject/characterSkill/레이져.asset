@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
-  m_Name: ball
+  m_Name: "\uB808\uC774\uC838"
   m_EditorClassIdentifier: 
-  skillName: ball
+  skillName: "\uB808\uC774\uC838"
   skillIcon: {fileID: 21300000, guid: f3b6de16d56e71c43892087228a2c304, type: 3}
   SkillEffectIllustration: {fileID: 21300000, guid: 3c3ec127f563e7145a5c394a39286a1e, type: 3}
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
@@ -49,7 +49,7 @@ MonoBehaviour:
   Yaoe: 1
   specialAoe: []
   aoecenter: 1
-  cooldown: 1
+  cooldown: 0
   colldownSkill: 0
   basicValue: 10
   increase:

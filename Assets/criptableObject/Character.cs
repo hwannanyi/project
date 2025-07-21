@@ -20,7 +20,7 @@ public class Character : ScriptableObject
     public bool summons = false;          // 소환수인가요?
     public List<Skill> useSkill = new List<Skill> { null, null, null, null, null };   // 사용스킬
 
-    public List<passiveList> passiveSkill = new List<passiveList> { null, null, null, null, null };   // 패시브 스킬
+    public List<PassiveList> passiveSkill = new List<PassiveList> { null, null, null, null, null };   // 패시브 스킬
     public Sprite characterillustration;
     public Sprite characterProfileillustration;
     public GameObject characterPrefab;
@@ -28,10 +28,39 @@ public class Character : ScriptableObject
     public BossPattern skillQueue; // 스킬 큐
 }
 [System.Serializable]
-public class passiveList
+public class PassiveList
 {
     public ConditionHit conditionHit; // 패시브 조건
     public Skill passive = null; // 패시브 스킬
+    public PassiveTarget passiveTarget; // 패시브 타겟팅 정보
 }
+
+[System.Serializable]
+public class PassiveTarget
+{
+    [Header("이전 스킬 사용후 현제스킬 사용까지의 시간")]
+    public bool isCastingNotCast; //앞 순서 스킬 실행 종료 뒤에 실행
+
+    [Header("시전 위치로부터")]
+    public Vector3 coordinate;
+
+    [Header("스킬 방향")]
+    public Vector3 Rotation;
+
+    [Header("타겟팅 스킬이면 미사용 좌표, 위치, " +
+        "none은 시전자 위치가 시전 위치")]
+    public TargetTypeX targetTypeX; // X축 타겟 타입
+    public TargetTypeY targetTypeY; // Y축 타겟 타입
+
+    [Header("타겟팅 스킬이면 미사용 좌표, 방향")]
+    public Rotation RotationType;
+
+    [Header("캐릭선택 방식, 역순, 몇등")]
+    public DesignationType Designation;
+    public bool reverse_order;
+    public int index;
+}
+
+
 
 

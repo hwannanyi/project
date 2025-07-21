@@ -155,7 +155,6 @@ public class AICastSkill : MonoBehaviour
         
     }
 
-
     public Vector3 GetClosestCharacterPosition(Stats GetClosestCharacter)
     {
         return GetClosestCharacter.charPosition;
@@ -214,6 +213,6 @@ public class AICastSkill : MonoBehaviour
             .Attribute(target, type, comparison, value)
             .Build();
 
-        return cond(casterStats, targetStats, Team.team);
+        return cond(casterStats, targetStats, null, Team.team);
     }
 }

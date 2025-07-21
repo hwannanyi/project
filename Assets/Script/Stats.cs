@@ -51,7 +51,12 @@ public class Stats
 
     public GameObject highlightEffect; // 인스펙터에서 하이라이트 오브젝트 할당
 
+
+    /// <summary>
+    /// /////////////////////
+    /// </summary>
     public Condition_Hit lastHitType; // 마지막 충돌 타입(적중, 방어 등) 저장
+    public SkillData lastHitSkillData; // 마지막 적중 스킬 데이터 저장
 
     public AIPattern aIPattern; // AI 패턴
     public void SetHighlight(bool isOn)
@@ -65,6 +70,7 @@ public class Stats
     {
         public ConditionHit conditionHit; // 패시브 조건
         public SkillData passive = null; // 패시브 스킬
+        public PassiveTarget passiveTarget; // 패시브 타겟팅 정보
     }
 
     public Stats(Character data, bool die, List<SkillData> usingSkill)
@@ -132,11 +138,16 @@ public class Stats
                 passiveSkill.Add(new PassiveSkill
                 {
                     passive = new SkillData(src.passive, data.charactername, false),
-                    conditionHit = src.conditionHit
+                    conditionHit = src.conditionHit,
+                    passiveTarget = src.passiveTarget
                 });
             }
         }
         lastHitType = Condition_Hit.none; // 초기값 설정
+
+        //조건부분
+
+        lastHitSkillData = null;
     }
 
     public Transform GetCharacterTransform()
