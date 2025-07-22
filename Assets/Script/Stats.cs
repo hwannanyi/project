@@ -70,7 +70,7 @@ public class Stats
     {
         public ConditionHit conditionHit; // 패시브 조건
         public SkillData passive = null; // 패시브 스킬
-        public PassiveTarget passiveTarget; // 패시브 타겟팅 정보
+        public SkillAutoCast passiveTarget; // 패시브 타겟팅 정보
     }
 
     public Stats(Character data, bool die, List<SkillData> usingSkill)

@@ -30,7 +30,7 @@ public class CharacterHighlight : MonoBehaviour
         }
 
         // Skillaction 리스트 중 selectedTargetUnit이 characterForm.parentObject와 일치하는지 검사
-        bool isTarget = SkillSave.Instance.TeamSkill
+        bool isTarget = SkillSave.Instance.TeamSkill.Values
             .Any(action => action.skillData != null &&
                            action.skillData.selectedTargetUnit == characterForm.parentObject);
 

@@ -15,7 +15,7 @@ MonoBehaviour:
   skillQueue:
   - skillQueue: []
   - skillQueue:
-    - skill: {fileID: 11400000, guid: 71e7363e054ad42428d0d36ffaee0345, type: 2}
+    - skill: {fileID: 11400000, guid: 06ca9d48085001a4b8ff5140fe687d65, type: 2}
       currentIndex: 0
       condition:
         isactive: 0
@@ -27,7 +27,7 @@ MonoBehaviour:
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 1
+      targetTypeX: 2
       targetTypeY: 2
       RotationType: 0
       Designation: 3

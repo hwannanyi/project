@@ -76,13 +76,13 @@ public class Skill : ScriptableObject
     [TextArea] public string tooltip; // 스킬 설명
 
     [Header("연계되는 추가 스킬")]
-    public Skill AdditionalSkills; // 추가 스킬 (예: 연계기 등)
+    public AutoCastInfo AdditionalSkills; // 추가 스킬 (예: 연계기 등)
 
     [Header("스킬 시작시 시전되는 추가스킬")]
-    public Skill StartAddSkills; // 스킬이 시작될때
+    public AutoCastInfo StartAddSkills; // 스킬이 시작될때
 
     [Header("스킬 시작시 시전되는 추가스킬")]
-    public Skill EndAddSkills; // 추가 스킬 스킬이 끝날때
+    public AutoCastInfo EndAddSkills; // 추가 스킬 스킬이 끝날때
 
     [Header("스킬로 생성되는 소환수")]
     public Character summonCharacter; // 소환수 캐릭터 (예: 소환수, 함정 등)
@@ -239,4 +239,13 @@ public class ConditionHit
     public Condition_Hit comparison; // 예: 적중, 방어, 패링 등
     [Header("고정으로 지정된 특정 대상")]
     public string value; // 지정된 특정 대상 (스킬의 이름 또는 캐릭의 이름을 적음, 특정 대상이 아니라면 빈칸으로)
+}
+
+[System.Serializable]
+public class AutoCastInfo
+{
+    public Condition condition; // 패시브 조건
+    public ConditionHit conditionHit; // 패시브 조건
+    public Skill skill = null; // 패시브 스킬
+    public SkillAutoCast passiveTarget; // 패시브 타겟팅 정보
 }

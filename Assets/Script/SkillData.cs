@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.VolumeComponent;
@@ -18,13 +19,13 @@ public class SkillData
     public string tooltip;        // 스킬 설명
 
     public Skill AdditionalSkills; // 추가 스킬 (예: 연계기 등)
-    public SkillData AdditionalSkillData;
+    public AutoCastInfoData AdditionalSkillData;
 
     [Header("스킬 시작시 시전되는 추가스킬")]
-    public SkillData StartAddSkills; // 스킬이 시작될때
+    public AutoCastInfoData StartAddSkills; // 스킬이 시작될때
 
     [Header("스킬 시작시 시전되는 추가스킬")]
-    public SkillData EndAddSkills; // 추가 스킬 스킬이 끝날때
+    public AutoCastInfoData EndAddSkills; // 추가 스킬 스킬이 끝날때
 
     public Stats summonCharacter; // 소환수 캐릭터 (예: 소환수, 함정 등)
 
@@ -76,6 +77,8 @@ public class SkillData
     public React react; //대응가능유무 + 대응가능대상
     public bool isreactSkill; // 4방향 회전
     public float reactTime;
+
+    public int skillCastCode; // 스킬 실행시 스킬을 찾기위한 임시코드 
     
 
     public SkillData(Skill data, string characterName, bool isreactSkill)
@@ -84,6 +87,9 @@ public class SkillData
         {
             return;
         }
+
+        skillCastCode = 0; // 스킬 실행시 스킬을 찾기위한 임시코드
+
         isreactSkill = this.isreactSkill;
         skillName = data.skillName;
         useCharacterName = characterName; // 직접 문자열을 할당
@@ -152,14 +158,14 @@ public class SkillData
         reactTime = data.reactTime;
 
         // 연계 스킬 데이터이 있으면 추가하고 없으면 null을 입력
-        AdditionalSkillData = data.AdditionalSkills != null
-            ? new SkillData(data.AdditionalSkills, characterName, false)
+        AdditionalSkillData.skill = data.AdditionalSkills != null
+            ? new SkillData(data.AdditionalSkills.skill, characterName, false)
         : null;
-        StartAddSkills = data.StartAddSkills != null
-            ? new SkillData(data.StartAddSkills, characterName, false)
+        StartAddSkills.skill = data.StartAddSkills != null
+            ? new SkillData(data.StartAddSkills.skill, characterName, false)
         : null;
-        EndAddSkills = data.EndAddSkills != null
-            ? new SkillData(data.EndAddSkills, characterName, false)
+        EndAddSkills.skill = data.EndAddSkills != null
+            ? new SkillData(data.EndAddSkills.skill, characterName, false)
         : null;
 
         summonCharacter = data.summonCharacter != null
@@ -196,5 +202,15 @@ public class SkillData
     public bool IsAvailable()
     {
         return colldownTime <= 0;
+    }
+
+
+    [System.Serializable]
+    public class AutoCastInfoData
+    {
+        public Condition condition; // 패시브 조건
+        public ConditionHit conditionHit; // 패시브 조건
+        public SkillData skill = null; // 패시브 스킬
+        public SkillAutoCast passiveTarget; // 패시브 타겟팅 정보
     }
 }

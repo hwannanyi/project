@@ -14,8 +14,8 @@ public class SkillSave : MonoBehaviour
 {
     public static SkillSave Instance;
 
-    public List<ActionWrapper> EnemySkill;
-    public List<ActionWrapper> TeamSkill;
+    public Dictionary<int, ActionWrapper> EnemySkill;
+    public Dictionary<int, ActionWrapper> TeamSkill;
     public List<SelectedSkill> pendingSkillList;
 
     /*public void save()

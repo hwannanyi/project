@@ -8,10 +8,10 @@ using System.Collections.Generic;
 
 public class SkillEffectProjectile : MonoBehaviour
 {
-    private SkillData skill;
-    private Vector3 targetPosition;
-    private GameObject caster;
-    private Stats casterStats;
+    public SkillData skill;
+    public Vector3 targetPosition;
+    public GameObject caster;
+    public Stats casterStats;
 
     private GameObject targetUnit; // 유도 타겟
     public float speed = 5f;
@@ -24,7 +24,7 @@ public class SkillEffectProjectile : MonoBehaviour
 
     public GameObject hitbox;
     public HitboxTile hitboxProject;
-    private Vector3 direction;
+    public Vector3 direction;
     public SpriteRenderer spriteRenderer;
 
     public GameObject trackingObject; //tracking이 참이라면 생성해 경로를 남김
@@ -115,13 +115,15 @@ public class SkillEffectProjectile : MonoBehaviour
         }
 
         //colliderMerger.MergeChildBoxColliders();
+
+        skillTiming = SkillTiming.casting;
     }
 
     void Update()
     {
         if (!isInitialized) return;
 
-        if(skillTiming != SkillTiming.casting) return;
+        //if(skillTiming != SkillTiming.casting) return;
 
         Vector3 destination = (skill.targeting && targetUnit != null)
         ? targetUnit.transform.position
@@ -214,7 +216,7 @@ public class SkillEffectProjectile : MonoBehaviour
         if (trackingPositions.Contains(nearestTile))
             return;
         trackingPositions.Add(nearestTile);
-        SkillData additionalSkillData = skill.AdditionalSkillData;
+        SkillData additionalSkillData = skill.AdditionalSkillData.skill;
         GameObject skillObject = Instantiate(additionalSkillData.SkillEffectPrefab, nearestTile, Quaternion.identity);
         if (skillObject.TryGetComponent<SkillEffectHitscan>(out var effect))
             effect.Initialize(additionalSkillData, nearestTile, caster, casterStats, null);

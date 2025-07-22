@@ -88,7 +88,7 @@ public class AICastSkill : MonoBehaviour
                     int index = character.usingSkill.FindIndex(x => x.skillName == pattern.skill.skillName);
                     //CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
                     //CharacterSelection.selectedCharacterIndex = character.characterNumber;
-                    skillManager.PrepareSkillCast(index, character.characterNumber);
+                    
 
                 Vector3 rotatoin = Vector3.zero;// 기본값 초기화
                 switch(pattern.RotationType) // 방향 방식에 따라 방향 지정
@@ -151,15 +151,55 @@ public class AICastSkill : MonoBehaviour
                 Stats targetObject = GetClosestCharacter(character, pattern.index,
                             pattern.reverse_order, pattern.Designation);
 
-                skillManager.CalculateSkillPosition(character.usingSkill[index], character, true,
-                        rotatoin, targetPosition, targetObject.characterPrefab);
-                    skillManager.selectedTargetUnit = null;
-                    skillManager.ConfirmSkillCast(character.team);
+
+                // 스킬 데이터 가져오기
+                SkillData GetSkill = skillManager.SkillAutoSelected(index, character.characterNumber).skill;
+
+                // 스킬 캐스터 가져오기
+                GameObject GetCaster = skillManager.SkillAutoSelected(index, character.characterNumber).caster;
+
+                // 스킬 캐스터의 Stats 가져오기
+                Stats GetStats = skillManager.SkillAutoSelected(index, character.characterNumber).stats;
+
+                // 스킬 위치 자동 계산
+                Vector3 GetTargetPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
+                        rotatoin, targetPosition, null).targetPosition;
+
+                // 스킬 중앙 자동 계산
+                Vector3 GetAoeCenterPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
+                        rotatoin, targetPosition, null).aoeCenterPosition;
+
+                // 위치 유효성 계산
+                bool effectiveness = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
+                        rotatoin, targetPosition, null).effectiveness;
+
+                int skillCode = 0;
+                skillManager.selectedTargetUnit = null;
+                    skillManager.ConfirmSkill(character.team,
+                        GetSkill,
+                        GetCaster,
+                        GetStats,
+                        GetTargetPos,
+                        GetAoeCenterPos,
+                        null,
+                        effectiveness,
+                        ref skillCode
+                        );
                     skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
-                    skillManager.SkillCastEnemyAI();
+                    skillManager.SkillAutoCast(character.team, skillCode);
                     SkillCasting = true; // 스킬 시전 중으로 설정
                     Debug.Log("스킬실행완료");
-                }
+
+/*                skillManager.CalculateSkillPosition(character.usingSkill[index], character, true,
+        rotatoin, targetPosition, targetObject.characterPrefab);
+                skillManager.selectedTargetUnit = null;
+                skillManager.ConfirmSkillCast(character.team);
+                skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
+                int skillCode = 0;
+                skillManager.SkillCastAI(character.team, skillCode);
+                SkillCasting = true; // 스킬 시전 중으로 설정
+                Debug.Log("스킬실행완료");*/
+            }
             }
         
     }

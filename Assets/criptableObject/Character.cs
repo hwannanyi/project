@@ -32,11 +32,11 @@ public class PassiveList
 {
     public ConditionHit conditionHit; // 패시브 조건
     public Skill passive = null; // 패시브 스킬
-    public PassiveTarget passiveTarget; // 패시브 타겟팅 정보
+    public SkillAutoCast passiveTarget; // 패시브 타겟팅 정보
 }
 
 [System.Serializable]
-public class PassiveTarget
+public class SkillAutoCast
 {
     [Header("이전 스킬 사용후 현제스킬 사용까지의 시간")]
     public bool isCastingNotCast; //앞 순서 스킬 실행 종료 뒤에 실행

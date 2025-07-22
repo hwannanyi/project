@@ -53,7 +53,7 @@ public class PassiveSkillCast : MonoBehaviour
             
             SkillData Skill = self.passiveSkill[skillnumber].passive;//패시브 스킬 불러오기
             ConditionHit condition = self.passiveSkill[skillnumber].conditionHit;//패시브 스킬 불러오기
-            PassiveTarget passiveTarget = self.passiveSkill[skillnumber].passiveTarget;//패시브 스킬 불러오기
+            SkillAutoCast passiveTarget = self.passiveSkill[skillnumber].passiveTarget;//패시브 스킬 불러오기
 
             bool asd = HitCondition(target, self, skillData, condition.target, condition.type,
                 condition.comparison, condition.value);
@@ -129,15 +129,52 @@ public class PassiveSkillCast : MonoBehaviour
                             Stats targetObject = GetClosestCharacter(enemy, pattern.index,
                                         pattern.reverse_order, pattern.Designation);*/
                 int index = self.usingSkill.FindIndex(x => x.skillName == Skill.skillName);
-                //CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
-                //CharacterSelection.selectedCharacterIndex = character.characterNumber;
+                // 스킬 데이터 가져오기
+                SkillData GetSkill = skillManager.SkillAutoSelected(index, self.characterNumber).skill;
+
+                // 스킬 캐스터 가져오기
+                GameObject GetCaster = skillManager.SkillAutoSelected(index, self.characterNumber).caster;
+
+                // 스킬 캐스터의 Stats 가져오기
+                Stats GetStats = skillManager.SkillAutoSelected(index, self.characterNumber).stats;
+
+                // 스킬 위치 자동 계산
+                Vector3 GetTargetPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
+                        rotatoin, targetPosition, null).targetPosition;
+
+                // 스킬 중앙 자동 계산
+                Vector3 GetAoeCenterPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
+                        rotatoin, targetPosition, null).aoeCenterPosition;
+
+                // 위치 유효성 계산
+                bool effectiveness = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
+                        rotatoin, targetPosition, null).effectiveness;
+
+                int skillCode = 0;
+                skillManager.selectedTargetUnit = null;
+                skillManager.ConfirmSkill(GetStats.team,
+                    GetSkill,
+                    GetCaster,
+                    GetStats,
+                    GetTargetPos,
+                    GetAoeCenterPos,
+                    null,
+                    effectiveness,
+                    ref skillCode
+                    );
+                //skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
+                skillManager.SkillAutoCast(GetStats.team, skillCode);
+                SkillCasting = true; // 스킬 시전 중으로 설정
+                Debug.Log("스킬실행완료");
+
+
                 skillManager.PrepareSkillCast(index, self.characterNumber);
 
                 skillManager.CalculateSkillPosition(Skill, self, true,
                         rotatoin, targetPosition, null);
                 skillManager.selectedTargetUnit = null;
                 skillManager.ConfirmSkillCast(self.team);
-                skillManager.SkillCastEnemyAI();
+                skillManager.SkillCastAI(self.team, 0);
                 SkillCasting = true; // 스킬 시전 중으로 설정
                 Debug.Log("스킬실행완료");
             }
@@ -295,7 +332,7 @@ public class PassiveSkillCast : MonoBehaviour
                 skillManager.selectedTargetUnit = null;
                 skillManager.ConfirmSkillCast(character.team);
                 skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
-                skillManager.SkillCastEnemyAI();
+                skillManager.SkillCastAI(character.team, 0);
                 SkillCasting = true; // 스킬 시전 중으로 설정
                 Debug.Log("스킬실행완료");
             }
