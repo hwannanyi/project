@@ -362,6 +362,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnManager: {fileID: 0}
   skillManager: {fileID: 0}
+  SkillCasting: 0
+  skillCastLock: 0
 --- !u!1 &8885726257730448549
 GameObject:
   m_ObjectHideFlags: 0

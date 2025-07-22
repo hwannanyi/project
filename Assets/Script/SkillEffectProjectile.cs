@@ -115,6 +115,17 @@ public class SkillEffectProjectile : MonoBehaviour
         }
 
         //colliderMerger.MergeChildBoxColliders();
+        // 스킬 데이터 전송
+        var castingSkillData = GetComponent<CastingSkillData>();
+        if (castingSkillData != null)
+        {
+            castingSkillData.SetSkillData(
+                skillData,
+                targetPos,
+                casterObject,
+                character,
+                target);
+        }
 
         skillTiming = SkillTiming.casting;
     }

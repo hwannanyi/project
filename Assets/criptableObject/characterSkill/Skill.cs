@@ -247,5 +247,5 @@ public class AutoCastInfo
     public Condition condition; // 패시브 조건
     public ConditionHit conditionHit; // 패시브 조건
     public Skill skill = null; // 패시브 스킬
-    public SkillAutoCast passiveTarget; // 패시브 타겟팅 정보
+    public SkillAutoCast targetrule; // 패시브 타겟팅 정보
 }

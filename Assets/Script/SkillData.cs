@@ -158,15 +158,53 @@ public class SkillData
         reactTime = data.reactTime;
 
         // 연계 스킬 데이터이 있으면 추가하고 없으면 null을 입력
-        AdditionalSkillData.skill = data.AdditionalSkills != null
-            ? new SkillData(data.AdditionalSkills.skill, characterName, false)
-        : null;
-        StartAddSkills.skill = data.StartAddSkills != null
-            ? new SkillData(data.StartAddSkills.skill, characterName, false)
-        : null;
-        EndAddSkills.skill = data.EndAddSkills != null
-            ? new SkillData(data.EndAddSkills.skill, characterName, false)
-        : null;
+        // AdditionalSkills
+        if (data.AdditionalSkills != null)
+        {
+            AdditionalSkillData = new AutoCastInfoData();
+            AdditionalSkillData.condition = data.AdditionalSkills.condition;
+            AdditionalSkillData.conditionHit = data.AdditionalSkills.conditionHit;
+            AdditionalSkillData.targetrule = data.AdditionalSkills.targetrule;
+            AdditionalSkillData.skill = data.AdditionalSkills.skill != null
+                ? new SkillData(data.AdditionalSkills.skill, characterName, false)
+                : null;
+        }
+        else
+        {
+            AdditionalSkillData = null;
+        }
+
+        // StartAddSkills
+        if (data.StartAddSkills != null)
+        {
+            StartAddSkills = new AutoCastInfoData();
+            StartAddSkills.condition = data.StartAddSkills.condition;
+            StartAddSkills.conditionHit = data.StartAddSkills.conditionHit;
+            StartAddSkills.targetrule = data.StartAddSkills.targetrule;
+            StartAddSkills.skill = data.StartAddSkills.skill != null
+                ? new SkillData(data.StartAddSkills.skill, characterName, false)
+                : null;
+        }
+        else
+        {
+            StartAddSkills = null;
+        }
+
+        // EndAddSkills
+        if (data.EndAddSkills != null)
+        {
+            EndAddSkills = new AutoCastInfoData();
+            EndAddSkills.condition = data.EndAddSkills.condition;
+            EndAddSkills.conditionHit = data.EndAddSkills.conditionHit;
+            EndAddSkills.targetrule = data.EndAddSkills.targetrule;
+            EndAddSkills.skill = data.EndAddSkills.skill != null
+                ? new SkillData(data.EndAddSkills.skill, characterName, false)
+                : null;
+        }
+        else
+        {
+            EndAddSkills = null;
+        }
 
         summonCharacter = data.summonCharacter != null
     ? new Stats(data.summonCharacter, false, new())
@@ -211,6 +249,6 @@ public class SkillData
         public Condition condition; // 패시브 조건
         public ConditionHit conditionHit; // 패시브 조건
         public SkillData skill = null; // 패시브 스킬
-        public SkillAutoCast passiveTarget; // 패시브 타겟팅 정보
+        public SkillAutoCast targetrule; // 패시브 타겟팅 정보
     }
 }

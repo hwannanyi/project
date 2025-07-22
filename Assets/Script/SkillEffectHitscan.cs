@@ -35,7 +35,8 @@ public class SkillEffectHitscan : MonoBehaviour
 
     }
 
-    public void Initialize(SkillData skill, Vector3 targetPos, GameObject charcter, Stats character, GameObject target = null)
+    public void Initialize(SkillData skill, Vector3 targetPos, GameObject charcter,
+        Stats character, GameObject target = null)
     {
         skillData = skill;
         range = skill.range;
@@ -112,6 +113,19 @@ public class SkillEffectHitscan : MonoBehaviour
         {
             hit.Initialize(skill, charcter, character); // 또는 실제 캐릭터 GameObject
         }
+
+        // 스킬 데이터 전송
+        var castingSkillData = GetComponent<CastingSkillData>();
+        if (castingSkillData != null)
+        {
+            castingSkillData.SetSkillData(
+                skill,
+                targetPos,
+                charcter,
+                character,
+                target);
+        }
+
 
         isInitialized = true;
 

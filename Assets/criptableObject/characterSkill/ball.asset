@@ -20,7 +20,78 @@ MonoBehaviour:
   skillTypes: 00000000
   tooltip: "5\uCE78 \uC55E\uC73C\uB85C \uCCAB\uBC88\uC9F8 \uB300\uC0C1\uC5D0\uAC8C
     \uB2FF\uC73C\uBA74 \uB370\uBBF8\uC9C0\n\uD788\uD788 \uBC1C\uC0AC"
-  AdditionalSkills: {fileID: 0}
+  AdditionalSkills:
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    conditionHit:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 
+    skill: {fileID: 0}
+    targetrule:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+  StartAddSkills:
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    conditionHit:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 
+    skill: {fileID: 0}
+    targetrule:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+  EndAddSkills:
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    conditionHit:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 
+    skill: {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
+    targetrule:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 3
+      targetTypeY: 3
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
   summonCharacter: {fileID: 0}
   actionsNumber: 1
   skillNumber: 1

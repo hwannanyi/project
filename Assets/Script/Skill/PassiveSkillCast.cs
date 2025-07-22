@@ -8,6 +8,7 @@ using System;
 using static Stats;
 using UnityEngine.Rendering;
 using static UnityEngine.GraphicsBuffer;
+using UnityEditor.Experimental.GraphView;
 public class PassiveSkillCast : MonoBehaviour
 {
     public static PassiveSkillCast Instance;
@@ -62,123 +63,130 @@ public class PassiveSkillCast : MonoBehaviour
                 condition.comparison, condition.value))// 불러올 패시브 스킬이 맞으면 실행
             {
 
-                Debug.Log("Goblin에게 적중! 효과 발동");
-
-
-                // 여기에 효과 코드 작성
-                Vector3 rotatoin = Vector3.zero;// 기본값 초기화
-                switch (passiveTarget.RotationType) // 방향 방식에 따라 방향 지정
-                {
-                    case Rotation.none:
-                        rotatoin = Vector3.zero;
-                        break;
-                    case Rotation.self:
-                        rotatoin = passiveTarget.Rotation;
-                        break;
-                    case Rotation.Character:
-                        rotatoin = GetClosestCharacter(target, passiveTarget.index,
-                            passiveTarget.reverse_order, passiveTarget.Designation).charPosition;
-                        break;
-                    case Rotation.Skill:
-                        rotatoin = Vector3.zero; // 임의
-                        break;
-                }
-
-                float targetPositionX = 0; // 기본값 초기화
-                switch (passiveTarget.targetTypeX) // X축 타겟팅 방식에 따라 위치 지정
-                {
-                    case TargetTypeX.none:
-                        targetPositionX = (passiveTarget.coordinate).x;
-                        break;
-                    case TargetTypeX.self:
-                        targetPositionX = self.charPosition.x + (passiveTarget.coordinate).x; // 자기 위치
-                        break;
-                    case TargetTypeX.Character:
-                        targetPositionX = GetClosestCharacter(target, passiveTarget.index,
-                            passiveTarget.reverse_order, passiveTarget.Designation).charPosition.x;
-                        break;
-                    case TargetTypeX.Skill:
-                        targetPositionX = gameObject.transform.position.x; // 임의
-                        break;
-                }
-
-
-                float targetPositionY = 0; // 기본값 초기화
-                switch (passiveTarget.targetTypeY) // Y축 타겟팅 방식에 따라 위치 지정
-                {
-                    case TargetTypeY.none:
-                        targetPositionY = (passiveTarget.coordinate).z;
-                        break;
-                    case TargetTypeY.self:
-                        targetPositionY = self.charPosition.z + (passiveTarget.coordinate).z; // 자기 위치
-                        break;
-                    case TargetTypeY.Character:
-                        targetPositionY = GetClosestCharacter(target, passiveTarget.index,
-                            passiveTarget.reverse_order, passiveTarget.Designation).charPosition.z;
-                        break;
-                    case TargetTypeY.Skill:
-                        targetPositionY = gameObject.transform.position.z; // 임의
-                        break;
-                }
-
-                Vector3 targetPosition = Vector3.zero; // 기본값 초기화
-                targetPosition = new Vector3(targetPositionX + (passiveTarget.coordinate).x,
-                    0f, targetPositionY + (passiveTarget.coordinate).y); // Y축은 0으로 설정
-
-                /*
-                            Stats targetObject = GetClosestCharacter(enemy, pattern.index,
-                                        pattern.reverse_order, pattern.Designation);*/
-                int index = self.usingSkill.FindIndex(x => x.skillName == Skill.skillName);
-                // 스킬 데이터 가져오기
-                SkillData GetSkill = skillManager.SkillAutoSelected(index, self.characterNumber).skill;
-
-                // 스킬 캐스터 가져오기
-                GameObject GetCaster = skillManager.SkillAutoSelected(index, self.characterNumber).caster;
-
-                // 스킬 캐스터의 Stats 가져오기
-                Stats GetStats = skillManager.SkillAutoSelected(index, self.characterNumber).stats;
-
-                // 스킬 위치 자동 계산
-                Vector3 GetTargetPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
-                        rotatoin, targetPosition, null).targetPosition;
-
-                // 스킬 중앙 자동 계산
-                Vector3 GetAoeCenterPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
-                        rotatoin, targetPosition, null).aoeCenterPosition;
-
-                // 위치 유효성 계산
-                bool effectiveness = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
-                        rotatoin, targetPosition, null).effectiveness;
-
-                int skillCode = 0;
-                skillManager.selectedTargetUnit = null;
-                skillManager.ConfirmSkill(GetStats.team,
-                    GetSkill,
-                    GetCaster,
-                    GetStats,
-                    GetTargetPos,
-                    GetAoeCenterPos,
-                    null,
-                    effectiveness,
-                    ref skillCode
-                    );
-                //skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
-                skillManager.SkillAutoCast(GetStats.team, skillCode);
-                SkillCasting = true; // 스킬 시전 중으로 설정
-                Debug.Log("스킬실행완료");
-
-
-                skillManager.PrepareSkillCast(index, self.characterNumber);
-
-                skillManager.CalculateSkillPosition(Skill, self, true,
-                        rotatoin, targetPosition, null);
-                skillManager.selectedTargetUnit = null;
-                skillManager.ConfirmSkillCast(self.team);
-                skillManager.SkillCastAI(self.team, 0);
-                SkillCasting = true; // 스킬 시전 중으로 설정
-                Debug.Log("스킬실행완료");
+                AutoCast(passiveTarget, self, Skill, null);
             }
         }
+    }
+
+    // 가장 가까운 타일을 찾는 메서드
+    private Vector3 GetNearestTile(Vector3 currentPosition)
+    {
+        // 현재 위치에서 가장 가까운 타일의 좌표를 계산
+        float x = Mathf.Round(currentPosition.x);
+        float y = Mathf.Round(currentPosition.z);
+
+        return new Vector3(x, 0f, y);  // 가장 가까운 타일로 반환
+    }
+
+
+    public void AutoCast(
+        SkillAutoCast targetRule, 
+        Stats caster, 
+        //Stats target, 
+        SkillData skill,
+        GameObject skillObj
+        )
+    {
+        Vector3 rotatoin = Vector3.zero;// 기본값 초기화
+        switch (targetRule.RotationType) // 방향 방식에 따라 방향 지정
+        {
+            case Rotation.none:
+                rotatoin = Vector3.zero;
+                break;
+            case Rotation.self:
+                rotatoin = targetRule.Rotation;
+                break;
+            case Rotation.Character:
+                rotatoin = GetClosestCharacter(caster, targetRule.index,
+                    targetRule.reverse_order, targetRule.Designation).charPosition;
+                break;
+            case Rotation.Skill:
+                rotatoin = GetNearestTile(skillObj.transform.position); // 임의
+                break;
+        }
+
+        float targetPositionX = 0; // 기본값 초기화
+        switch (targetRule.targetTypeX) // X축 타겟팅 방식에 따라 위치 지정
+        {
+            case TargetTypeX.none:
+                targetPositionX = (targetRule.coordinate).x;
+                break;
+            case TargetTypeX.self:
+                targetPositionX = caster.charPosition.x + (targetRule.coordinate).x; // 자기 위치
+                break;
+            case TargetTypeX.Character:
+                targetPositionX = GetClosestCharacter(caster, targetRule.index,
+                    targetRule.reverse_order, targetRule.Designation).charPosition.x;
+                break;
+            case TargetTypeX.Skill:
+                targetPositionX = GetNearestTile(skillObj.transform.position).x; // 임의
+                break;
+        }
+
+
+        float targetPositionY = 0; // 기본값 초기화
+        switch (targetRule.targetTypeY) // Y축 타겟팅 방식에 따라 위치 지정
+        {
+            case TargetTypeY.none:
+                targetPositionY = (targetRule.coordinate).z;
+                break;
+            case TargetTypeY.self:
+                targetPositionY = caster.charPosition.z + (targetRule.coordinate).z; // 자기 위치
+                break;
+            case TargetTypeY.Character:
+                targetPositionY = GetClosestCharacter(caster, targetRule.index,
+                    targetRule.reverse_order, targetRule.Designation).charPosition.z;
+                break;
+            case TargetTypeY.Skill:
+                targetPositionY = GetNearestTile(skillObj.transform.position).z; // 임의
+                break;
+        }
+
+        Vector3 targetPosition = Vector3.zero; // 기본값 초기화
+        targetPosition = new Vector3(targetPositionX + (targetRule.coordinate).x,
+            0f, targetPositionY + (targetRule.coordinate).y); // Y축은 0으로 설정
+
+        /*
+                    Stats targetObject = GetClosestCharacter(enemy, pattern.index,
+                                pattern.reverse_order, pattern.Designation);*/
+        int index = caster.usingSkill.FindIndex(x => x.skillName == skill.skillName);
+        // 스킬 데이터 가져오기
+        SkillData GetSkill = skillManager.SkillAutoSelected(index, caster.characterNumber).skill;
+
+        // 스킬 캐스터 가져오기
+        GameObject GetCaster = skillManager.SkillAutoSelected(index, caster.characterNumber).caster;
+
+        // 스킬 캐스터의 Stats 가져오기
+        Stats GetStats = skillManager.SkillAutoSelected(index, caster.characterNumber).stats;
+
+        // 스킬 위치 자동 계산
+        Vector3 GetTargetPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
+                rotatoin, targetPosition, null).targetPosition;
+
+        // 스킬 중앙 자동 계산
+        Vector3 GetAoeCenterPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
+                rotatoin, targetPosition, null).aoeCenterPosition;
+
+        // 위치 유효성 계산
+        bool effectiveness = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
+                rotatoin, targetPosition, null).effectiveness;
+
+        int skillCode = 0;
+        skillManager.selectedTargetUnit = null;
+        skillManager.ConfirmSkill(GetStats.team,
+            GetSkill,
+            GetCaster,
+            GetStats,
+            GetTargetPos,
+            GetAoeCenterPos,
+            null,
+            effectiveness,
+            ref skillCode
+            );
+        //skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
+        skillManager.SkillAutoCast(GetStats.team, skillCode);
+        SkillCasting = true; // 스킬 시전 중으로 설정
+        Debug.Log("스킬실행완료");
     }
 
     public bool HitCondition(Stats self, Stats target2, SkillData skillData,
@@ -193,7 +201,7 @@ public class PassiveSkillCast : MonoBehaviour
         )
         .Build();
 
-        return cond(self, target2, skillData, team);
+        return cond(self, target2, skillData, Team.team);
     }
 
     public bool IsEffectCondition(Stats targetStats, Stats casterStats, SkillData skillData,
