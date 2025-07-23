@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,7 +34,7 @@ public class Stats
     public bool summons;          // 소환수인가요?
     public Stats CharacterSummons; // 소환수 주인
     public List<Skill> useSkill;   // 사용스킬
-    public List<SkillData> usingSkill = new();   // 사용스킬
+    [NonSerialized] public List<SkillData> usingSkill = new();   // 사용스킬
     public List<PassiveSkill> passiveSkill = new();   // 패시브 스킬
 
     public Sprite characterillustration;

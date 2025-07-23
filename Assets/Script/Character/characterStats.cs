@@ -8,6 +8,7 @@ using System.Collections;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 using UnityEngine.TextCore.Text;
+using static UnityEngine.Rendering.VolumeComponent;
 
 [System.Serializable]
 public class CharacterStats : MonoBehaviour
@@ -146,8 +147,17 @@ public class CharacterStats : MonoBehaviour
 
     public void CharacterAdd(string chname)
     {
-        
-            if (ALLcharacterList.Any(Character => Character.charactername == chname))
+        // 이미 같은 이름의 캐릭터가 있는지 확인
+        string uniqueName = chname;
+        int duplicateCount = 1;
+        while (characterList.Any(c => c.name == uniqueName))
+        {
+            uniqueName = $"{chname}({duplicateCount})";
+            duplicateCount++;
+        }
+
+
+        if (ALLcharacterList.Any(Character => Character.charactername == chname))
             {
                 int index = Array.FindIndex(ALLcharacterList, Character => Character.charactername == chname);
                 //캐릭터 생성
@@ -171,7 +181,30 @@ public class CharacterStats : MonoBehaviour
             }
             else
             {
+                var character = characterList[index1];
                 characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name, false));
+
+                if (!string.IsNullOrEmpty(character.useSkill[i].AdditionalSkills.skillName))
+                {
+                    character.usingSkill[i].AdditionalSkillData.skill =
+                    GetSkillDataByName(character.useSkill[i].AdditionalSkills.skillName, character);
+                    Debug.Log("추가 스킬 이름: " + character.usingSkill[i].AdditionalSkillData.skill.skillName);
+                }
+
+                if(!string.IsNullOrEmpty(character.useSkill[i].StartAddSkills.skillName))
+                {
+                    character.usingSkill[i].StartAddSkills.skill =
+                    GetSkillDataByName(character.useSkill[i].StartAddSkills.skillName, character);
+                    Debug.Log("추가 스킬 이름: " + character.usingSkill[i].StartAddSkills.skill.skillName);
+                }
+
+                if (!string.IsNullOrEmpty(character.useSkill[i].EndAddSkills.skillName))
+                {
+                    character.usingSkill[i].EndAddSkills.skill =
+                    GetSkillDataByName(character.useSkill[i].EndAddSkills.skillName, character);
+                    Debug.Log("스킬" + character.usingSkill[i].skillName);
+                    Debug.Log("추가 스킬 이름: " + character.usingSkill[i].EndAddSkills.skill.skillName);
+                }
                 //AdditionalSkills
             }
 
@@ -189,11 +222,23 @@ public class CharacterStats : MonoBehaviour
 
     }
 
+    public SkillData GetSkillDataByName(string name, Stats character)
+    {
+        if (character == null || character.useSkill == null)
+            return null;
+        
+        // skillName이 name과 일치하는 skill 찾음
+        return new SkillData(
+            (character.useSkill.FirstOrDefault(skill => skill != null && skill.skillName == name)),
+            character.name,
+            false);
+    }
+
     public void Charactercreation()
     {
         //임시
-        Vector3 playerStartPos = new Vector3(4, 0, 0); // 아군 시작 위치 (오른쪽)
-        Vector3 enemyStartPos = new Vector3(-6, 0, 0); // 적군 시작 위치 (왼쪽)
+        Vector3 playerStartPos = new Vector3(1, 0, 0); // 아군 시작 위치 (오른쪽)
+        Vector3 enemyStartPos = new Vector3(-1, 0, 0); // 적군 시작 위치 (왼쪽)
         float yOffset = 1f; // 캐릭터 간 세로 간격
 
         int playerIndex = 0;

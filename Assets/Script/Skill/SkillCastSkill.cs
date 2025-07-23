@@ -16,32 +16,36 @@ public class SkillCastSkill : MonoBehaviour
     void Awake()
     {
         CastSkillData = GetComponent<CastingSkillData>();
-        skillData = CastSkillData.skillData;
-        targetPos = CastSkillData.targetPos;
-        caster = CastSkillData.characterUnit;
-        casterStats = CastSkillData.characterStats;
-        targetUnit = CastSkillData.targetUnit;
     }
 
     void OnDestroy()
     {
-        StartSkill(false, casterStats, skillData);
+/*        skillData = CastSkillData.skillData;
+        targetPos = CastSkillData.targetPos;
+        caster = CastSkillData.characterUnit;
+        casterStats = CastSkillData.characterStats;
+        targetUnit = CastSkillData.targetUnit;*/
+        StartSkill(false, CastSkillData.characterStats, CastSkillData.skillData);
     }
 
     // 유닛 충돌 이벤트에서 호출
     public void StartSkill(bool StartTiming, Stats self, SkillData skillData)
     {
-        Debug.Log("패시브 실행 시도");
+
+        Debug.Log("연계스킬 실행 시도");
         /*        for (int skillnumber = 0; skillnumber < self.passiveSkill.Count; skillnumber++) // 패시브 스킬이 있는지 확인
                 {
         */
         var AddSkills = StartTiming ? skillData.StartAddSkills : skillData.EndAddSkills;
 
         if (AddSkills == null)
-        { return; }
-
+        {
+            Debug.Log("연계스킬이 없음");
+            return; }
+        
 
         SkillData Skill = AddSkills.skill != null ? AddSkills.skill : null;
+        
         Condition condition = AddSkills.condition != null ? AddSkills.condition : null;
         ConditionHit conditionHit = AddSkills.conditionHit != null ? AddSkills.conditionHit : null;
         SkillAutoCast targetrule = AddSkills.targetrule != null ? AddSkills.targetrule : null;
@@ -54,8 +58,11 @@ public class SkillCastSkill : MonoBehaviour
                     {
         */
 
-        if(Skill==null)
+        if (Skill == null)
+        {
+            Debug.Log("연계스킬를 못찾음");
             return;
+        }
 
         PassiveSkillCast.Instance.AutoCast(targetrule, self, Skill, gameObject);
             //}

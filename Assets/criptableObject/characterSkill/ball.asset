@@ -33,7 +33,7 @@ MonoBehaviour:
       type: 0
       comparison: 0
       value: 
-    skill: {fileID: 0}
+    skillName: 
     targetrule:
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
@@ -57,7 +57,7 @@ MonoBehaviour:
       type: 0
       comparison: 0
       value: 
-    skill: {fileID: 0}
+    skillName: 
     targetrule:
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
@@ -81,7 +81,7 @@ MonoBehaviour:
       type: 0
       comparison: 0
       value: 
-    skill: {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
+    skillName: barsa
     targetrule:
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}

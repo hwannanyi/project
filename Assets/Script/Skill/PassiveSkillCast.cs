@@ -48,11 +48,19 @@ public class PassiveSkillCast : MonoBehaviour
     // 유닛 충돌 이벤트에서 호출
     public void OnHitPassive(Stats self, Stats target, SkillData skillData)
     {
+        if (self.passiveSkill == null)
+        {
+            return; // 패시브 스킬이 없으면 종료
+        }
         Debug.Log("패시브 실행 시도");
         for(int skillnumber = 0; skillnumber < self.passiveSkill.Count; skillnumber++ ) // 패시브 스킬이 있는지 확인
         {
             
             SkillData Skill = self.passiveSkill[skillnumber].passive;//패시브 스킬 불러오기
+            if(Skill == null)
+            {
+                return; // 패시브 스킬이 없으면 종료
+            }
             ConditionHit condition = self.passiveSkill[skillnumber].conditionHit;//패시브 스킬 불러오기
             SkillAutoCast passiveTarget = self.passiveSkill[skillnumber].passiveTarget;//패시브 스킬 불러오기
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -246,6 +247,16 @@ public class AutoCastInfo
 {
     public Condition condition; // 패시브 조건
     public ConditionHit conditionHit; // 패시브 조건
-    public Skill skill = null; // 패시브 스킬
+    public string skillName = null; // 패시브 스킬
+    public SkillAutoCast targetrule; // 패시브 타겟팅 정보
+}
+
+[System.Serializable]
+public class AutoCastInfoData
+{
+    public Condition condition; // 패시브 조건
+    public ConditionHit conditionHit; // 패시브 조건
+    public string skillName = null; //스킬 이름
+    [NonSerialized] public SkillData skill = null; //스킬
     public SkillAutoCast targetrule; // 패시브 타겟팅 정보
 }

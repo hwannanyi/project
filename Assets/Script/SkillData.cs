@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.VolumeComponent;
 
@@ -19,6 +22,8 @@ public class SkillData
     public string tooltip;        // 스킬 설명
 
     public Skill AdditionalSkills; // 추가 스킬 (예: 연계기 등)
+
+
     public AutoCastInfoData AdditionalSkillData;
 
     [Header("스킬 시작시 시전되는 추가스킬")]
@@ -27,7 +32,7 @@ public class SkillData
     [Header("스킬 시작시 시전되는 추가스킬")]
     public AutoCastInfoData EndAddSkills; // 추가 스킬 스킬이 끝날때
 
-    public Stats summonCharacter; // 소환수 캐릭터 (예: 소환수, 함정 등)
+    [NonSerialized] public Stats summonCharacter; // 소환수 캐릭터 (예: 소환수, 함정 등)
 
 
     public int actionsNumber;     // 스킬 행동 개수 (기본 1)
@@ -81,12 +86,15 @@ public class SkillData
     public int skillCastCode; // 스킬 실행시 스킬을 찾기위한 임시코드 
     
 
-    public SkillData(Skill data, string characterName, bool isreactSkill)
+    public SkillData(Skill data, string characterName, bool isreactSkill, int depth = 0)
     {
         if (data == null)
         {
             return;
         }
+
+        if (depth > 3) // 최대 5단계까지만 허용
+            return;
 
         skillCastCode = 0; // 스킬 실행시 스킬을 찾기위한 임시코드
 
@@ -159,15 +167,13 @@ public class SkillData
 
         // 연계 스킬 데이터이 있으면 추가하고 없으면 null을 입력
         // AdditionalSkills
-        if (data.AdditionalSkills != null)
+        if (!string.IsNullOrEmpty(data.AdditionalSkills.skillName))
         {
             AdditionalSkillData = new AutoCastInfoData();
             AdditionalSkillData.condition = data.AdditionalSkills.condition;
             AdditionalSkillData.conditionHit = data.AdditionalSkills.conditionHit;
             AdditionalSkillData.targetrule = data.AdditionalSkills.targetrule;
-            AdditionalSkillData.skill = data.AdditionalSkills.skill != null
-                ? new SkillData(data.AdditionalSkills.skill, characterName, false)
-                : null;
+            AdditionalSkillData.skillName = data.AdditionalSkills.skillName != null ? data.AdditionalSkills.skillName : null;
         }
         else
         {
@@ -175,15 +181,13 @@ public class SkillData
         }
 
         // StartAddSkills
-        if (data.StartAddSkills != null)
+        if (!string.IsNullOrEmpty(data.StartAddSkills.skillName))
         {
             StartAddSkills = new AutoCastInfoData();
             StartAddSkills.condition = data.StartAddSkills.condition;
             StartAddSkills.conditionHit = data.StartAddSkills.conditionHit;
             StartAddSkills.targetrule = data.StartAddSkills.targetrule;
-            StartAddSkills.skill = data.StartAddSkills.skill != null
-                ? new SkillData(data.StartAddSkills.skill, characterName, false)
-                : null;
+            StartAddSkills.skillName = data.StartAddSkills.skillName != null ? data.StartAddSkills.skillName : null;
         }
         else
         {
@@ -191,15 +195,13 @@ public class SkillData
         }
 
         // EndAddSkills
-        if (data.EndAddSkills != null)
+        if (!string.IsNullOrEmpty(data.EndAddSkills.skillName))
         {
             EndAddSkills = new AutoCastInfoData();
             EndAddSkills.condition = data.EndAddSkills.condition;
             EndAddSkills.conditionHit = data.EndAddSkills.conditionHit;
             EndAddSkills.targetrule = data.EndAddSkills.targetrule;
-            EndAddSkills.skill = data.EndAddSkills.skill != null
-                ? new SkillData(data.EndAddSkills.skill, characterName, false)
-                : null;
+            EndAddSkills.skillName = data.EndAddSkills.skillName != null ? data.EndAddSkills.skillName : null;
         }
         else
         {
@@ -216,11 +218,30 @@ public class SkillData
             {
                 if (data.summonCharacter.useSkill[i] == null)
                 {
-                    summonCharacter.usingSkill.Add(new SkillData(null, summonCharacter.name, false));
+                    summonCharacter.usingSkill.Add(new SkillData(null, summonCharacter.name, false, depth + 1));
                 }
                 else
                 {
-                    summonCharacter.usingSkill.Add(new SkillData(data.summonCharacter.useSkill[i], summonCharacter.name, false));
+                    summonCharacter.usingSkill.Add(new SkillData(data.summonCharacter.useSkill[i], summonCharacter.name, false, depth + 1));
+
+
+                    if (!string.IsNullOrEmpty(summonCharacter.useSkill[i].AdditionalSkills.skillName))
+                    {
+                        summonCharacter.usingSkill[i].AdditionalSkillData.skill =
+                        GetSkillDataByName(summonCharacter.useSkill[i].AdditionalSkills.skillName, summonCharacter);
+                    }
+
+                    if (!string.IsNullOrEmpty(summonCharacter.useSkill[i].StartAddSkills.skillName))
+                    {
+                        summonCharacter.usingSkill[i].StartAddSkills.skill =
+                        GetSkillDataByName(summonCharacter.useSkill[i].StartAddSkills.skillName, summonCharacter);
+                    }
+
+                    if (!string.IsNullOrEmpty(summonCharacter.useSkill[i].EndAddSkills.skillName))
+                    {
+                        summonCharacter.usingSkill[i].EndAddSkills.skill =
+                        GetSkillDataByName(summonCharacter.useSkill[i].EndAddSkills.skillName, summonCharacter);
+                    }
                     //AdditionalSkills
                 }
             }
@@ -242,13 +263,16 @@ public class SkillData
         return colldownTime <= 0;
     }
 
-
-    [System.Serializable]
-    public class AutoCastInfoData
+    public SkillData GetSkillDataByName(string name, Stats character)
     {
-        public Condition condition; // 패시브 조건
-        public ConditionHit conditionHit; // 패시브 조건
-        public SkillData skill = null; // 패시브 스킬
-        public SkillAutoCast targetrule; // 패시브 타겟팅 정보
+        if (character == null || character.useSkill == null)
+            return null;
+
+        // skillName이 name과 일치하는 skill 찾음
+        return new SkillData(
+            (character.useSkill.FirstOrDefault(skill => skill != null && skill.skillName == name)),
+            character.name,
+            false);
     }
+
 }

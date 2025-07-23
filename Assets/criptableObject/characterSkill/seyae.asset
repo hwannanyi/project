@@ -19,7 +19,78 @@ MonoBehaviour:
   passive: 0
   skillTypes: 0300000000000000
   tooltip: 
-  AdditionalSkills: {fileID: 11400000, guid: e1cc30e36368cc94380039d364fcfc7f, type: 2}
+  AdditionalSkills:
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    conditionHit:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 
+    skillName: "\uC11C\uC608(\uC810)"
+    targetrule:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+  StartAddSkills:
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    conditionHit:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 
+    skillName: 
+    targetrule:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+  EndAddSkills:
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    conditionHit:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 
+    skillName: 
+    targetrule:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
   summonCharacter: {fileID: 0}
   actionsNumber: 1
   skillNumber: 1

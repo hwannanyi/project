@@ -27,6 +27,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 9c11d0421fab6ec45beb13019a7bef03, type: 2}
   - {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 11400000, guid: e1cc30e36368cc94380039d364fcfc7f, type: 2}
   passiveSkill:
   - conditionHit:
       isactive: 1
@@ -35,6 +38,16 @@ MonoBehaviour:
       comparison: 1
       value: ball
     passive: {fileID: 11400000, guid: ef061324dfda5d14ab8b7962c9344a8b, type: 2}
+    passiveTarget:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
   - conditionHit:
       isactive: 0
       target: 0
@@ -42,6 +55,16 @@ MonoBehaviour:
       comparison: 0
       value: 
     passive: {fileID: 0}
+    passiveTarget:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
   - conditionHit:
       isactive: 0
       target: 0
@@ -49,6 +72,16 @@ MonoBehaviour:
       comparison: 0
       value: 
     passive: {fileID: 0}
+    passiveTarget:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
   - conditionHit:
       isactive: 0
       target: 0
@@ -56,6 +89,16 @@ MonoBehaviour:
       comparison: 0
       value: 
     passive: {fileID: 0}
+    passiveTarget:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
   - conditionHit:
       isactive: 0
       target: 0
@@ -63,6 +106,16 @@ MonoBehaviour:
       comparison: 0
       value: 
     passive: {fileID: 0}
+    passiveTarget:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
   characterillustration: {fileID: -146545473, guid: cfdd6bc0cf2fde74489ab8a1aad0a64a, type: 3}
   characterProfileillustration: {fileID: -146545473, guid: cfdd6bc0cf2fde74489ab8a1aad0a64a, type: 3}
   characterPrefab: {fileID: 4344314745404087944, guid: b350271128cd3ca489c78af4523dd393, type: 3}
