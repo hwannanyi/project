@@ -27,6 +27,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Characters
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ad255c3d5692ad740ba1991630e37739
+    m_Address: Assets/criptableObject/stage
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Stage
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8e8b30ce2cd88c449ac1d80ad9f08c14, type: 2}
   m_SchemaSet:

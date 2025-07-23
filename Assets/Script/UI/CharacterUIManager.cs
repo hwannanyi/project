@@ -35,7 +35,6 @@ public class CharacterUIManager : MonoBehaviour
 
     [Header("미니프로필")]
     public List<MiniprofileUIManager> miniprofileUIManagers;
-    public List<MiniprofileUIManager> miniprofileUIManagers2P;
 
     public void UpdateCharacterProfile(Stats character)
     {
@@ -152,24 +151,6 @@ public class CharacterUIManager : MonoBehaviour
             {
                 miniprofileUIManagers[i].targetCharacter = null; // 남는 미니프로필은 비활성화
                 miniprofileUIManagers[i].ProfileUIOff();
-            }
-        }
-    }
-
-   public void AssignMiniprofileTargets2P()
-    {
-        for (int i = 0; i < miniprofileUIManagers2P.Count; i++)
-        {
-            List<Stats> characterStatsList = CharacterStats.Instance.characterList;
-
-            if (i <= CharacterStats.Instance.EnemieCharacters.Count)
-            {
-                miniprofileUIManagers2P[i].targetCharacter = characterStatsList[i + CharacterStats.Instance.playerCharacters.Count];
-            }
-            else
-            {
-                miniprofileUIManagers2P[i].targetCharacter = null; // 남는 미니프로필은 비활성화
-                miniprofileUIManagers2P[i].ProfileUIOff();
             }
         }
     }

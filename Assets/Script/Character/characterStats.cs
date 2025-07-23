@@ -54,63 +54,16 @@ public class CharacterStats : MonoBehaviour
         Addressables.LoadAssetsAsync<Character>("Characters", null).Completed += OnCharactersLoaded;
 
 
-        playerCharacters.Add("TonTonJung");
+        LoadStageCharacters();
+       /* playerCharacters.Add("TonTonJung");
         //playerCharacters.Add("Deus");
         //playerCharacters.Add("JuInGong");
         playerCharacters.Add("ShellLin");
         EnemieCharacters.Add("melun");
         EnemieCharacters.Add("melunDago");
         EnemieCharacters.Add("프리즘");
-        EnemieCharacters.Add("PuSsiMaster");
-        
+        EnemieCharacters.Add("PuSsiMaster");*/
 
-        
-/*        for (int i = 0; i < playerCharacters.Count; i++) // playerCharacters 리스트의 길이만큼 반복
-        {
-            CharacterAdd(playerCharacters[i]);
-        }
-        for (int j = 0; j < EnemieCharacters.Count; j++) // EnemieCharacters 리스트의 길이만큼 반복
-        {
-            CharacterAdd(EnemieCharacters[j]);
-        }*/
-        //Charactercreation();
-        
-
-        /*characterStats["melun"] = new Dictionary<string, int>
-        {
-            { "MaxHealth", 100 },
-            { "mana", 30 },
-            { "attack", 15 },
-            { "defense", 10 },
-            { "speed", 9 }
-        };
-
-        characterStats["melunDago"] = new Dictionary<string, int>
-        {
-            { "MaxHealth", 150 },
-            { "mana", 50 },
-            { "attack", 20 },
-            { "defense", 10 },
-            { "speed", 7 }
-        };
-
-        characterStats["MelunMelun"] = new Dictionary<string, int>
-        {
-            { "MaxHealth", 110 },
-            { "mana", 40 },
-            { "attack", 12 },
-            { "defense", 10 },
-            { "speed", 8 }
-        };
-
-        characterSkill["MelunMelun"] = new Dictionary<string, int>
-        {
-            { "MaxHealth", 110 },
-            { "mana", 40 },
-            { "attack", 12 },
-            { "defense", 10 },
-            { "speed", 8 }
-        };*/
     }
 
     public void Update()
@@ -122,6 +75,43 @@ public class CharacterStats : MonoBehaviour
             WaveUpdate();
         }
     }
+
+    /// <summary>
+    /// 캐릭터 로드
+    /// </summary>
+    public void LoadStageCharacters()
+    {
+        // StageManager에서 현재 스테이지 데이터 가져오기
+        var stageManager = StageManager.Instance;
+        if (stageManager == null || stageManager.CurrentStage == null)
+        {
+            Debug.LogWarning("StageManager 또는 CurrentStage가 없습니다.");
+            return;
+        }
+
+        // 플레이어 캐릭터 리스트 초기화 및 추가
+        playerCharacters.Clear();
+        if (stageManager.character != null)
+        {
+            for(int i = 1; i <= stageManager.CurrentStage.participants; i++)
+            {
+                if (!string.IsNullOrEmpty(stageManager.character[i - 1]))
+                    playerCharacters.Add(stageManager.character[i - 1]);
+            }
+        }
+
+        // 적 캐릭터 리스트 초기화 및 추가
+        EnemieCharacters.Clear();
+        if (stageManager.CurrentStage.enemyDatalist != null)
+        {
+            foreach (var enemy in stageManager.CurrentStage.enemyDatalist)
+            {
+                if (!string.IsNullOrEmpty(enemy.enemyName))
+                    EnemieCharacters.Add(enemy.enemyName);
+            }
+        }
+    }
+
 
     private void OnCharactersLoaded(AsyncOperationHandle<IList<Character>> handle)
     {
@@ -160,9 +150,11 @@ public class CharacterStats : MonoBehaviour
         if (ALLcharacterList.Any(Character => Character.charactername == chname))
             {
                 int index = Array.FindIndex(ALLcharacterList, Character => Character.charactername == chname);
-                //캐릭터 생성
-                characterList.Add(new Stats(ALLcharacterList[index],false, new()));
-            }
+            //캐릭터 생성
+            var newStats = new Stats(ALLcharacterList[index], false, new());
+            newStats.name = uniqueName; // 이름 덮어쓰기
+            characterList.Add(newStats);
+        }
             else
             {
                 Debug.Log("에러 캐릭터를 찾을수 없음");
@@ -170,7 +162,7 @@ public class CharacterStats : MonoBehaviour
             }
         // 캐릭터 리스트에 있는 스킬 리스트를 순회하며 각 캐릭터의 스킬을 저장
 
-        int index1 = characterList.FindIndex(Character => Character.name == chname);
+        int index1 = characterList.FindIndex(Character => Character.name == uniqueName);
         
         for (int i = 0; i < characterList[index1].useSkill.Count; i++)
         {
@@ -236,34 +228,30 @@ public class CharacterStats : MonoBehaviour
 
     public void Charactercreation()
     {
-        //임시
-        Vector3 playerStartPos = new Vector3(1, 0, 0); // 아군 시작 위치 (오른쪽)
-        Vector3 enemyStartPos = new Vector3(-1, 0, 0); // 적군 시작 위치 (왼쪽)
-        float yOffset = 1f; // 캐릭터 간 세로 간격
 
-        int playerIndex = 0;
-        int enemyIndex = 0;
 
         //암사
         for (int i = 0; i < characterList.Count; i++)
         {
             GameObject CharacterObject = Instantiate(characterList[i].characterPrefab);
-
+            var stageManager = StageManager.Instance;
             CharacterObject.name = characterList[i].name;
             characters.Add(CharacterObject);
 
             // 팀에 따라 위치 지정
             if (characterList[i].team == Team.team)
             {
-                CharacterObject.transform.position = playerStartPos + new Vector3(0, 0, playerIndex * yOffset);
-                //characterList[i].charPosition = CharacterObject.transform.position; // 캐릭터 위치 저장
-                playerIndex++;
+                Vector2 postion = stageManager.CurrentStage.startPositions[i];
+                Vector3 startpostion = new Vector3(postion.x, 0, postion.y);
+                CharacterObject.transform.position = startpostion;
+
             }
             else if (characterList[i].team == Team.enemy)
             {
-                CharacterObject.transform.position = enemyStartPos + new Vector3(0, 0, enemyIndex * yOffset);
-                //characterList[i].charPosition = CharacterObject.transform.position; // 캐릭터 위치 저장
-                enemyIndex++;
+                Vector2 postion = stageManager.CurrentStage.enemyDatalist[i - playerCharacters.Count].position;
+                Vector3 startpostion = new Vector3(postion.x, 0, postion.y);
+                CharacterObject.transform.position = startpostion;
+
             }
             else
             {
@@ -287,42 +275,6 @@ public class CharacterStats : MonoBehaviour
             }
         }
         ProfileuiManager.AssignMiniprofileTargets();
-        ProfileuiManager.AssignMiniprofileTargets2P();
-
-        /* for (int i = 0; i < characterList.Count; i++)
-         {
-             GameObject CharacterObject = Instantiate(characterList[i].characterPrefab);
-
-             CharacterObject.name = characterList[i].name; // 캐릭터 이름 설정
-             characters.Add(CharacterObject);
-             CharacterObject.transform.position = transform.position;
-
-             // 프리팹 원본 대신 씬 인스턴스를 Stats에 저장
-             characterList[i].characterPrefab = CharacterObject; // <-- 추가됨
-
-
-             // 하이라이트 오브젝트 연결 (자식 오브젝트 이름이 "HighlightEffect"라고 가정)
-             Transform highlight = CharacterObject.transform.Find("HighlightEffect");
-             if (highlight != null)
-                 characterList[i].highlightEffect = highlight.gameObject;
-             else
-                 characterList[i].highlightEffect = null; // 없으면 null
-
-             // 캐릭터 리스트에 인스턴스 등록
-             CharacterStats.Instance.RegisterCharacter(CharacterObject, characterList[i]);
-             *//*if (!characters.Contains(CharacterObject))
-             {
-                 characterMap.Add(CharacterObject, characterList[i]); // <-- 수정 또는 추가됨
-             }*//*
-
-             // 수정: CharacterStats의 characters 리스트에 인스턴스 등록
-             if (!CharacterStats.Instance.characters.Contains(CharacterObject))
-             {
-                 CharacterStats.Instance.characters.Add(CharacterObject); // <-- 추가됨
-             }
-         }
-         ProfileuiManager.AssignMiniprofileTargets();
-         ProfileuiManager.AssignMiniprofileTargets2P();*/
     }
 
     public Stats GetStats(GameObject obj)
