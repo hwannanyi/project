@@ -11670,6 +11670,7 @@ MonoBehaviour:
         Designation: 0
         reverse_order: 0
         index: 0
+        target: 0
     StartAddSkills:
       condition:
         isactive: 0
@@ -11694,6 +11695,7 @@ MonoBehaviour:
         Designation: 0
         reverse_order: 0
         index: 0
+        target: 0
     EndAddSkills:
       condition:
         isactive: 0
@@ -11718,6 +11720,7 @@ MonoBehaviour:
         Designation: 0
         reverse_order: 0
         index: 0
+        target: 0
     actionsNumber: 0
     skillNumber: 0
     skillCumulative: 0
@@ -11834,6 +11837,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       StartAddSkills:
         condition:
           isactive: 0
@@ -11858,6 +11862,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       EndAddSkills:
         condition:
           isactive: 0
@@ -11882,6 +11887,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
@@ -12024,6 +12030,7 @@ MonoBehaviour:
         Designation: 0
         reverse_order: 0
         index: 0
+        target: 0
     StartAddSkills:
       condition:
         isactive: 0
@@ -12048,6 +12055,7 @@ MonoBehaviour:
         Designation: 0
         reverse_order: 0
         index: 0
+        target: 0
     EndAddSkills:
       condition:
         isactive: 0
@@ -12072,6 +12080,7 @@ MonoBehaviour:
         Designation: 0
         reverse_order: 0
         index: 0
+        target: 0
     actionsNumber: 0
     skillNumber: 0
     skillCumulative: 0
@@ -12254,6 +12263,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       StartAddSkills:
         condition:
           isactive: 0
@@ -12278,6 +12288,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       EndAddSkills:
         condition:
           isactive: 0
@@ -12302,6 +12313,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
@@ -13463,6 +13475,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       StartAddSkills:
         condition:
           isactive: 0
@@ -13487,6 +13500,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       EndAddSkills:
         condition:
           isactive: 0
@@ -13511,6 +13525,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
@@ -17895,7 +17910,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 5.7916665
+  orthographic size: 5.7083335
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -20135,6 +20150,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       StartAddSkills:
         condition:
           isactive: 0
@@ -20159,6 +20175,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       EndAddSkills:
         condition:
           isactive: 0
@@ -20183,6 +20200,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
@@ -28348,6 +28366,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       StartAddSkills:
         condition:
           isactive: 0
@@ -28372,6 +28391,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       EndAddSkills:
         condition:
           isactive: 0
@@ -28396,6 +28416,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
@@ -29144,6 +29165,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       StartAddSkills:
         condition:
           isactive: 0
@@ -29168,6 +29190,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       EndAddSkills:
         condition:
           isactive: 0
@@ -29192,6 +29215,7 @@ MonoBehaviour:
           Designation: 0
           reverse_order: 0
           index: 0
+          target: 0
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
@@ -30191,7 +30215,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1242475097
 MonoBehaviour:
   m_ObjectHideFlags: 0
