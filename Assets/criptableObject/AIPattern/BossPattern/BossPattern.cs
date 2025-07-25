@@ -23,6 +23,10 @@ public enum DesignationType
     none, hp, hpRatio, distance, characterNumber
 }
 
+public enum TargetTeam
+{
+    enemy, team, all
+}
 
 
 [CreateAssetMenu(fileName = "BossPattern", menuName = "Scriptable Objects/BossPattern")]
@@ -79,7 +83,7 @@ public struct SkillQueue
     public int index;
 
     [Header("Å¸°Ù")]
-    public Target target;
+    public TargetTeam target;
 
 
 }
@@ -114,5 +118,5 @@ public struct SkillCondition
     public int index;
 
     [Header("Å¸°Ù")]
-    public Target target;
+    public TargetTeam target;
 }

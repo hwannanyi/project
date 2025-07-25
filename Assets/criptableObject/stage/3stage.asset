@@ -23,5 +23,7 @@ MonoBehaviour:
   enemyDatalist:
   - enemyName: Light
     position: {x: 1, y: 0}
+  - enemyName: melun
+    position: {x: 1, y: 2}
   clear: 0
   feil: 0

@@ -95,6 +95,13 @@ public class PassiveSkillCast : MonoBehaviour
         GameObject skillObj
         )
     {
+        Stats target = GetClosestCharacter(caster, targetRule.index, 
+            targetRule.reverse_order, targetRule.Designation, targetRule.target);
+        if (target == null)
+        {
+            return; // 타겟이 없으면 다음 반복으로 넘어감
+        }
+
         Vector3 rotatoin = Vector3.zero;// 기본값 초기화
         switch (targetRule.RotationType) // 방향 방식에 따라 방향 지정
         {
@@ -106,7 +113,7 @@ public class PassiveSkillCast : MonoBehaviour
                 break;
             case Rotation.Character:
                 rotatoin = GetClosestCharacter(caster, targetRule.index,
-                    targetRule.reverse_order, targetRule.Designation).charPosition;
+                    targetRule.reverse_order, targetRule.Designation, targetRule.target).charPosition;
                 break;
             case Rotation.Skill:
                 rotatoin = GetNearestTile(skillObj.transform.position); // 임의
@@ -124,7 +131,7 @@ public class PassiveSkillCast : MonoBehaviour
                 break;
             case TargetTypeX.Character:
                 targetPositionX = GetClosestCharacter(caster, targetRule.index,
-                    targetRule.reverse_order, targetRule.Designation).charPosition.x;
+                    targetRule.reverse_order, targetRule.Designation, targetRule.target).charPosition.x;
                 break;
             case TargetTypeX.Skill:
                 targetPositionX = GetNearestTile(skillObj.transform.position).x; // 임의
@@ -143,7 +150,7 @@ public class PassiveSkillCast : MonoBehaviour
                 break;
             case TargetTypeY.Character:
                 targetPositionY = GetClosestCharacter(caster, targetRule.index,
-                    targetRule.reverse_order, targetRule.Designation).charPosition.z;
+                    targetRule.reverse_order, targetRule.Designation, targetRule.target).charPosition.z;
                 break;
             case TargetTypeY.Skill:
                 targetPositionY = GetNearestTile(skillObj.transform.position).z; // 임의
@@ -239,7 +246,7 @@ public class PassiveSkillCast : MonoBehaviour
 
     }
 
-    private IEnumerator OnTurnEndCoroutine()
+/*    private IEnumerator OnTurnEndCoroutine()
     {
         TurnManager turnManager = TurnManager.Instance;
         SkillManager skillManager = SkillManager.Instance;
@@ -275,14 +282,14 @@ public class PassiveSkillCast : MonoBehaviour
                     yield return null; // SkillCasting이 false가 될 때까지 대기
                 }
 
-/*
+*//*
                 if (pattern.condition.isactive && !IsEffectCondition(character, character, pattern.condition.target
                     , pattern.condition.type
                     , pattern.condition.comparison
                     , pattern.condition.value))
                 {
                     continue; // 조건 불만족 시 다음 반복으로 넘어감
-                }*/
+                }*//*
 
 
                 yield return new WaitForSeconds(pattern.delay);
@@ -299,7 +306,7 @@ public class PassiveSkillCast : MonoBehaviour
                         break;
                     case Rotation.Character:
                         rotatoin = GetClosestCharacter(character, pattern.index,
-                            pattern.reverse_order, pattern.Designation).charPosition;
+                            pattern.reverse_order, pattern.Designation, targetRule.target.charPosition;
                         break;
                     case Rotation.Skill:
                         rotatoin = Vector3.zero; // 임의
@@ -314,7 +321,7 @@ public class PassiveSkillCast : MonoBehaviour
                         break;
                     case TargetTypeX.Character:
                         targetPositionX = GetClosestCharacter(character, pattern.index,
-                            pattern.reverse_order, pattern.Designation).charPosition.x;
+                            pattern.reverse_order, pattern.Designation, targetRule.target).charPosition.x;
                         break;
                     case TargetTypeX.Skill:
                         targetPositionX = gameObject.transform.position.x; // 임의
@@ -354,7 +361,7 @@ public class PassiveSkillCast : MonoBehaviour
             }
         }
 
-    }
+    }*/
 
 
     public Vector3 GetClosestCharacterPosition(Stats GetClosestCharacter)
@@ -362,13 +369,27 @@ public class PassiveSkillCast : MonoBehaviour
         return GetClosestCharacter.charPosition;
     }
 
-    public Stats GetClosestCharacter(Stats self, int n, bool reverse, DesignationType type)
+    public Stats GetClosestCharacter(Stats self, int n, bool reverse, DesignationType type, TargetTeam targetTeam)
     {
         // 자기 자신, 죽은 캐릭터, 같은 팀 제외
         var candidates = new List<Stats>();
         foreach (var character in CharacterStats.Instance.characterList)
         {
-            if (character == self || character.isdie || character.team == self.team) continue;
+            if (character == self || character.isdie)
+                continue;
+
+            switch (targetTeam)
+            {
+                case TargetTeam.enemy:
+                    if (character.team == self.team) continue;
+                    break;
+                case TargetTeam.team:
+                    if (character.team != self.team) continue;
+                    break;
+                case TargetTeam.all:
+                    // 모두 포함 (자기 자신은 이미 제외)
+                    break;
+            }
             candidates.Add(character);
         }
 
@@ -404,7 +425,7 @@ public class PassiveSkillCast : MonoBehaviour
         else if (candidates.Count > 0)
             return reverse ? candidates[candidates.Count - 1] : candidates[0];
         else
-            return self;
+            return null;
     }
 
 

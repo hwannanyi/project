@@ -5,6 +5,7 @@ using UnityEngine.TextCore.Text;
 using System.Xml.Linq;
 using System.Collections;
 using System;
+using static UnityEngine.GraphicsBuffer;
 
 public class AICastSkill : MonoBehaviour
 {
@@ -35,7 +36,7 @@ public class AICastSkill : MonoBehaviour
         if (character.aIPattern.skillQueueList == null)
             return;
         StartCoroutine(OnTurnEndCoroutine());
-
+        //character.isPatternEnd = true; // 패턴 종료 상태로 설정
     }
 
     private IEnumerator OnTurnEndCoroutine()
@@ -57,42 +58,57 @@ public class AICastSkill : MonoBehaviour
             character.aIPattern.skillQueueList.Count - 1 : (turnManager.Turn) % character.aIPattern.skillQueueList.Count - 1;
 
         Debug.Log(patternCount);
-            if (character.aIPattern.skillQueueList == null ||
-            character.aIPattern.skillQueueList.Count <= 1 ||
-            character.aIPattern.skillQueueList[patternCount] == null)
-                yield break;
+        if (character.aIPattern.skillQueueList == null ||
+        character.aIPattern.skillQueueList.Count <= 1 ||
+        character.aIPattern.skillQueueList[patternCount] == null)
+        {
+            character.isPatternEnd = true; // 패턴 종료 상태로 설정
+            yield break;
+        }
 
 
-            for (int i = 0; i < character.aIPattern.skillQueueList[patternCount].Count; i++)
+        for (int i = 0; i < character.aIPattern.skillQueueList[patternCount].Count; i++)
             {
+            Debug.LogWarning($"[AICastSkill] 타겟을 찾을 수 없음. 패턴 index: {i}, pattern info: {patternCount}");
 
-                Debug.Log("d");
-
-                var pattern = character.aIPattern.skillQueueList[patternCount][i];
+            var pattern = character.aIPattern.skillQueueList[patternCount][i];
                 var targetSkill = new SkillData(pattern.skill, character.name, false);
                 if (character.usingSkill.Any(x => x.skillName == pattern.skill.skillName))
                 {
-
                     while (skillCastLock && pattern.isCastingNotCast)
                     {
                         yield return null; // SkillCasting이 false가 될 때까지 대기
-                    }
+                    Debug.Log($"while 내부: skillCastLock={skillCastLock}, isCastingNotCast={pattern.isCastingNotCast}");
+                }
 
 
-                    if (pattern.condition.isactive && !IsEffectCondition(character, character, pattern.condition.target
+
+
+                if (pattern.condition.isactive && !IsEffectCondition(character, character, pattern.condition.target
                         , pattern.condition.type
                         , pattern.condition.comparison
                         , pattern.condition.value))
-                    {
-                    continue; // 조건 불만족 시 다음 반복으로 넘어감
+                {
+                continue; // 조건 불만족 시 다음 반복으로 넘어감
                 }
-                
+
+
+
+                Stats target = GetClosestCharacter(character, pattern.index, pattern.reverse_order, pattern.Designation, pattern.target);
+                if (target == null)
+                {
+                    continue; // 타겟이 없으면 다음 반복으로 넘어감
+                }
+
+
+
 
                 yield return new WaitForSeconds(pattern.delay);
                     int index = character.usingSkill.FindIndex(x => x.skillName == pattern.skill.skillName);
-                    //CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
-                    //CharacterSelection.selectedCharacterIndex = character.characterNumber;
-                    
+
+                //CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
+                //CharacterSelection.selectedCharacterIndex = character.characterNumber;
+
 
                 Vector3 rotatoin = Vector3.zero;// 기본값 초기화
                 switch(pattern.RotationType) // 방향 방식에 따라 방향 지정
@@ -105,7 +121,7 @@ public class AICastSkill : MonoBehaviour
                         break;
                     case Rotation.Character:
                         rotatoin = GetClosestCharacter(character, pattern.index,
-                            pattern.reverse_order, pattern.Designation).charPosition;
+                            pattern.reverse_order, pattern.Designation, pattern.target).charPosition;
                         break;
                     case Rotation.Skill:
                         rotatoin = Vector3.zero; // 임의
@@ -123,7 +139,7 @@ public class AICastSkill : MonoBehaviour
                         break;
                     case TargetTypeX.Character:
                         targetPositionX = GetClosestCharacter(character, pattern.index,
-                            pattern.reverse_order, pattern.Designation).charPosition.x;
+                            pattern.reverse_order, pattern.Designation, pattern.target).charPosition.x;
                         break;
                     case TargetTypeX.Skill:
                         targetPositionX = gameObject.transform.position.x; // 임의
@@ -142,7 +158,7 @@ public class AICastSkill : MonoBehaviour
                         break;
                     case TargetTypeY.Character:
                         targetPositionY = GetClosestCharacter(character, pattern.index,
-                            pattern.reverse_order, pattern.Designation).charPosition.z;
+                            pattern.reverse_order, pattern.Designation, pattern.target).charPosition.z;
                         break;
                     case TargetTypeY.Skill:
                         targetPositionY = gameObject.transform.position.z; // 임의
@@ -153,7 +169,7 @@ public class AICastSkill : MonoBehaviour
                 targetPosition = new Vector3(targetPositionX+ (pattern.coordinate).x, 0f, targetPositionY+ (pattern.coordinate).y); // Y축은 0으로 설정
 
                 Stats targetObject = GetClosestCharacter(character, pattern.index,
-                            pattern.reverse_order, pattern.Designation);
+                            pattern.reverse_order, pattern.Designation, pattern.target);
 
 
                 // 스킬 데이터 가져오기
@@ -205,8 +221,10 @@ public class AICastSkill : MonoBehaviour
                 Debug.Log("스킬실행완료");*/
             }
             character.isPatternEnd = true; // 패턴 종료 상태로 설정
-            }
-        
+            Debug.Log("패턴종료");
+
+        }
+
     }
 
     public Vector3 GetClosestCharacterPosition(Stats GetClosestCharacter)
@@ -214,15 +232,33 @@ public class AICastSkill : MonoBehaviour
         return GetClosestCharacter.charPosition;
     }
 
-    public Stats GetClosestCharacter(Stats self, int n, bool reverse, DesignationType type)
+    public Stats GetClosestCharacter(Stats self, int n, bool reverse, DesignationType type, TargetTeam targetTeam)
     {
         // 자기 자신, 죽은 캐릭터, 같은 팀 제외
         var candidates = new List<Stats>();
         foreach (var character in CharacterStats.Instance.characterList)
         {
-            if (character == self || character.isdie || character.team == self.team) continue;
+            if (character == self || character.isdie)
+                continue;
+
+            switch (targetTeam)
+            {
+                case TargetTeam.enemy:
+                    if (character.team == self.team) continue;
+                    break;
+                case TargetTeam.team:
+                    if (character.team != self.team) continue;
+                    break;
+                case TargetTeam.all:
+                    // 모두 포함 (자기 자신은 이미 제외)
+                    break;
+            }
             candidates.Add(character);
         }
+
+        // 후보 캐릭터가 없으면 자기 자신 반환
+        if (candidates.Count == 0)
+            return null;
 
         switch (type)
         {
@@ -256,7 +292,7 @@ public class AICastSkill : MonoBehaviour
         else if (candidates.Count > 0)
             return reverse ? candidates[candidates.Count - 1] : candidates[0];
         else
-            return self;
+            return null;
     }
 
 

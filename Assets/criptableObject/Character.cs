@@ -61,7 +61,7 @@ public class SkillAutoCast
     public int index;
 
     [Header("Å¸°Ù")]
-    public Target target = Target.enemy;
+    public TargetTeam target;
 }
 
 

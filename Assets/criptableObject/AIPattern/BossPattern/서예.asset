@@ -15,22 +15,92 @@ MonoBehaviour:
   skillQueue:
   - skillQueue: []
   - skillQueue:
-    - skill: {fileID: 11400000, guid: 6abd7091a0864df4b8d225ba590ac163, type: 2}
+    - skill: {fileID: 0}
       currentIndex: 0
-      delay: 1
-      isCastingNotCast: 1
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 0
+      isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 1
-      targetTypeY: 1
-      RotationType: 1
-      Designation: 4
-      reverse_order: 1
-      index: 1
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+      target: 0
+    - skill: {fileID: 0}
+      currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 0
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+      target: 0
+    - skill: {fileID: 0}
+      currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 0
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+      target: 0
+    - skill: {fileID: 0}
+      currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 0
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+      target: 0
   - skillQueue: []
   - skillQueue:
     - skill: {fileID: 11400000, guid: 71e7363e054ad42428d0d36ffaee0345, type: 2}
       currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
       delay: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
@@ -41,8 +111,15 @@ MonoBehaviour:
       Designation: 4
       reverse_order: 0
       index: 1
+      target: 0
     - skill: {fileID: 11400000, guid: bd763d08186ec3d4d86ffe6677c5f99d, type: 2}
       currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
       delay: 1
       isCastingNotCast: 0
       coordinate: {x: -2, y: 0, z: 0}
@@ -53,8 +130,15 @@ MonoBehaviour:
       Designation: 4
       reverse_order: 0
       index: 1
+      target: 0
     - skill: {fileID: 11400000, guid: 641aec7d6d316bb47a97bc3b28c6668c, type: 2}
       currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
       delay: 2
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
@@ -65,3 +149,5 @@ MonoBehaviour:
       Designation: 4
       reverse_order: 0
       index: 1
+      target: 0
+  skillCondition: []
