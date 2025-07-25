@@ -68,11 +68,6 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    public void Update()
-    {
-
-    }
-
     //  EventManager 연동 유지 (턴 종료 이벤트로 외부에서 턴 넘기기 가능)
     private void OnEnable()
     {
@@ -143,21 +138,6 @@ public class TurnManager : MonoBehaviour
         Reacttrun = isPlayerTurn ? ReactTurnPhase.PlayerTurn : ReactTurnPhase.EnemyTurn;
     }
 
-    //  대응단계 종료 → 이전 턴 복원
-    /*public void ExitReactPhase()
-    {
-        CharacterSelection.selectedCharacterIndex = -1;
-
-        if (currentPhase == TurnPhase.ReactPhase_PlayerResponding)
-            currentPhase = TurnPhase.EnemyTurn;
-        else if (currentPhase == TurnPhase.ReactPhase_EnemyResponding)
-            currentPhase = TurnPhase.PlayerTurn;
-        else
-            Debug.LogWarning("유효하지 못한 턴");
-        //currentPhase = previousPhase;
-        Debug.Log($"[TurnManager] 대응단계 종료: 턴 복귀 = {currentPhase}");
-    }*/
-
     public void ExitReactPhase()
     {
         //CharacterSelection.prevSelectedIndex = CharacterSelection.selectedCharacterIndex;
@@ -189,21 +169,17 @@ public class TurnManager : MonoBehaviour
                     skill.ReduceCooldown(1);
                 }
             }
-        }
-        foreach (var character in CharacterStats.Instance.characterList)
-        {
-            if (character.NowMoveCount < 8)
-            {
-                character.NowMoveCount += 1;
-            }
-        }
-        foreach (var character in CharacterStats.Instance.characterList)
-        {
             if (character.mp < 10)
             {
                 character.mp += 1;
             }
+            if (character.NowMoveCount < 8)
+            {
+                character.NowMoveCount += 1;
+            }
+            character.isPatternEnd = false; // AI 패턴 초기화
         }
+
         Debug.Log($"[TurnManager] 턴 전환됨");
     }
 

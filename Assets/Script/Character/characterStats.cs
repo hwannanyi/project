@@ -41,36 +41,36 @@ public class CharacterStats : MonoBehaviour
         uiManager.UpdateWaveCount(wave);
 
         if (Instance == null)
-                Instance = this;
-            else
-            {
-                Destroy(gameObject);
-                return;
-            }
+            Instance = this;
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-            DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);
 
         // Addressable Assets를 사용하여 Character Scriptable Object 로드
         Addressables.LoadAssetsAsync<Character>("Characters", null).Completed += OnCharactersLoaded;
 
 
         LoadStageCharacters();
-       /* playerCharacters.Add("TonTonJung");
-        //playerCharacters.Add("Deus");
-        //playerCharacters.Add("JuInGong");
-        playerCharacters.Add("ShellLin");
-        EnemieCharacters.Add("melun");
-        EnemieCharacters.Add("melunDago");
-        EnemieCharacters.Add("프리즘");
-        EnemieCharacters.Add("PuSsiMaster");*/
+        /* playerCharacters.Add("TonTonJung");
+         //playerCharacters.Add("Deus");
+         //playerCharacters.Add("JuInGong");
+         playerCharacters.Add("ShellLin");
+         EnemieCharacters.Add("melun");
+         EnemieCharacters.Add("melunDago");
+         EnemieCharacters.Add("프리즘");
+         EnemieCharacters.Add("PuSsiMaster");*/
 
     }
 
     public void Update()
     {
-        if (characterList != null ) {
+        if (characterList != null) {
             UEmenyCount(); }
-        if(Input.GetKeyDown(KeyCode.K))
+        if (Input.GetKeyDown(KeyCode.K))
         {
             WaveUpdate();
         }
@@ -93,7 +93,7 @@ public class CharacterStats : MonoBehaviour
         playerCharacters.Clear();
         if (stageManager.character != null)
         {
-            for(int i = 1; i <= stageManager.CurrentStage.participants; i++)
+            for (int i = 1; i <= stageManager.CurrentStage.participants; i++)
             {
                 if (!string.IsNullOrEmpty(stageManager.character[i - 1]))
                     playerCharacters.Add(stageManager.character[i - 1]);
@@ -148,22 +148,22 @@ public class CharacterStats : MonoBehaviour
 
 
         if (ALLcharacterList.Any(Character => Character.charactername == chname))
-            {
-                int index = Array.FindIndex(ALLcharacterList, Character => Character.charactername == chname);
+        {
+            int index = Array.FindIndex(ALLcharacterList, Character => Character.charactername == chname);
             //캐릭터 생성
             var newStats = new Stats(ALLcharacterList[index], false, new());
             newStats.name = uniqueName; // 이름 덮어쓰기
             characterList.Add(newStats);
         }
-            else
-            {
-                Debug.Log("에러 캐릭터를 찾을수 없음");
+        else
+        {
+            Debug.Log("에러 캐릭터를 찾을수 없음");
             return;
-            }
+        }
         // 캐릭터 리스트에 있는 스킬 리스트를 순회하며 각 캐릭터의 스킬을 저장
 
         int index1 = characterList.FindIndex(Character => Character.name == uniqueName);
-        
+
         for (int i = 0; i < characterList[index1].useSkill.Count; i++)
         {
             // 캐릭터 이름과 스킬을 SkillData로 만들어 리스트에 추가
@@ -183,7 +183,7 @@ public class CharacterStats : MonoBehaviour
                     Debug.Log("추가 스킬 이름: " + character.usingSkill[i].AdditionalSkillData.skill.skillName);
                 }
 
-                if(!string.IsNullOrEmpty(character.useSkill[i].StartAddSkills.skillName))
+                if (!string.IsNullOrEmpty(character.useSkill[i].StartAddSkills.skillName))
                 {
                     character.usingSkill[i].StartAddSkills.skill =
                     GetSkillDataByName(character.useSkill[i].StartAddSkills.skillName, character);
@@ -199,26 +199,14 @@ public class CharacterStats : MonoBehaviour
                 }
                 //AdditionalSkills
             }
-
-
-/*
-            if (characterList[index1].skillQueue == null)
-            {
-                characterList[index1].usingSkill.Add(new SkillData(null, characterList[index1].name, false));
-            }
-            else
-            {
-                characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name, false));
-            }*/
         }
-
     }
 
     public SkillData GetSkillDataByName(string name, Stats character)
     {
         if (character == null || character.useSkill == null)
             return null;
-        
+
         // skillName이 name과 일치하는 skill 찾음
         return new SkillData(
             (character.useSkill.FirstOrDefault(skill => skill != null && skill.skillName == name)),
@@ -228,8 +216,6 @@ public class CharacterStats : MonoBehaviour
 
     public void Charactercreation()
     {
-
-
         //암사
         for (int i = 0; i < characterList.Count; i++)
         {
@@ -277,6 +263,105 @@ public class CharacterStats : MonoBehaviour
         ProfileuiManager.AssignMiniprofileTargets();
     }
 
+    public void Charactercreat(Stats character,Vector3 startpostion)
+    {
+
+            GameObject CharacterObject = Instantiate(character.characterPrefab);
+            var stageManager = StageManager.Instance;
+            CharacterObject.name = character.name;
+            characters.Add(CharacterObject);
+
+
+            CharacterObject.transform.position = startpostion;
+
+            character.characterPrefab = CharacterObject;
+
+            Transform highlight = CharacterObject.transform.Find("HighlightEffect");
+            if (highlight != null)
+            character.highlightEffect = highlight.gameObject;
+            else
+            character.highlightEffect = null;
+
+            CharacterStats.Instance.RegisterCharacter(CharacterObject, character);
+
+            if (!CharacterStats.Instance.characters.Contains(CharacterObject))
+            {
+                CharacterStats.Instance.characters.Add(CharacterObject);
+            }
+        
+        ProfileuiManager.AssignMiniprofileTargets();
+    }
+
+    public Stats CharacterAddStats(string chname)
+    {
+        // 이미 같은 이름의 캐릭터가 있는지 확인
+        Stats newStats = null;
+        string uniqueName = chname;
+        int duplicateCount = 1;
+        while (characterList.Any(c => c.name == uniqueName))
+        {
+            uniqueName = $"{chname}({duplicateCount})";
+            duplicateCount++;
+        }
+
+
+        if (ALLcharacterList.Any(Character => Character.charactername == chname))
+        {
+            int index = Array.FindIndex(ALLcharacterList, Character => Character.charactername == chname);
+            //캐릭터 생성
+            newStats = new Stats(ALLcharacterList[index], false, new());
+            newStats.name = uniqueName; // 이름 덮어쓰기
+            characterList.Add(newStats);
+        }
+        else
+        {
+            Debug.Log("에러 캐릭터를 찾을수 없음");
+            return null;
+        }
+        // 캐릭터 리스트에 있는 스킬 리스트를 순회하며 각 캐릭터의 스킬을 저장
+
+        int index1 = characterList.FindIndex(Character => Character.name == uniqueName);
+
+        for (int i = 0; i < characterList[index1].useSkill.Count; i++)
+        {
+            // 캐릭터 이름과 스킬을 SkillData로 만들어 리스트에 추가
+            if (characterList[index1].useSkill[i] == null)
+            {
+                characterList[index1].usingSkill.Add(new SkillData(null, characterList[index1].name, false));
+            }
+            else
+            {
+                var character = characterList[index1];
+                characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name, false));
+
+                if (!string.IsNullOrEmpty(character.useSkill[i].AdditionalSkills.skillName))
+                {
+                    character.usingSkill[i].AdditionalSkillData.skill =
+                    GetSkillDataByName(character.useSkill[i].AdditionalSkills.skillName, character);
+                    Debug.Log("추가 스킬 이름: " + character.usingSkill[i].AdditionalSkillData.skill.skillName);
+                }
+
+                if (!string.IsNullOrEmpty(character.useSkill[i].StartAddSkills.skillName))
+                {
+                    character.usingSkill[i].StartAddSkills.skill =
+                    GetSkillDataByName(character.useSkill[i].StartAddSkills.skillName, character);
+                    Debug.Log("추가 스킬 이름: " + character.usingSkill[i].StartAddSkills.skill.skillName);
+                }
+
+                if (!string.IsNullOrEmpty(character.useSkill[i].EndAddSkills.skillName))
+                {
+                    character.usingSkill[i].EndAddSkills.skill =
+                    GetSkillDataByName(character.useSkill[i].EndAddSkills.skillName, character);
+                    Debug.Log("스킬" + character.usingSkill[i].skillName);
+                    Debug.Log("추가 스킬 이름: " + character.usingSkill[i].EndAddSkills.skill.skillName);
+                }
+                //AdditionalSkills
+            }
+        }
+
+        return newStats;
+    }
+
     public Stats GetStats(GameObject obj)
     {
         foreach (var stats in characterList)
@@ -300,6 +385,19 @@ public class CharacterStats : MonoBehaviour
         uiManager.UpdateWaveCount(wave);
     }
 
+    public bool IsClear(VictoryRule rule)
+    {
+        bool isClear = false;
+        switch (rule)
+        {
+            case VictoryRule.killAll:
+                isClear = characterList.Count(stats => stats.team == Team.enemy && stats.isdie == false) == 0;
+                break;
+            case VictoryRule.story:
+                isClear = true;
+                break;
 
-
+        }
+        return isClear;
+    }
 }

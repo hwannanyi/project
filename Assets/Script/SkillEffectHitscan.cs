@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.TextCore.Text;
 
 
@@ -15,6 +16,7 @@ public class SkillEffectHitscan : MonoBehaviour
     private Vector3 targetPosition;
     public GameObject targetUnit;
     public GameObject charcterUnit;
+    public Stats casterStats; // 캐릭터 스탯 정보
 
     public ColliderMerger colliderMerger; // 콜라이더 병합 컴포넌트
 
@@ -43,6 +45,7 @@ public class SkillEffectHitscan : MonoBehaviour
         rotatingVisual.rotation = Quaternion.Euler(90f, 0, 0f);
         hasExitedPhase = false;
         charcterUnit = charcter;
+        casterStats = character;
         colliderMerger = GetComponent<ColliderMerger>();
 
         // 외형 변경
@@ -171,16 +174,27 @@ public class SkillEffectHitscan : MonoBehaviour
         {
             Stats summonCharacter = skillData.summonCharacter;
             var CharacterManager = CharacterStats.Instance;
+            if(casterStats.team == Team.team)
+            {
+                CharacterManager.playerCharacters.Add(summonCharacter.name);
+            }
+            else if (casterStats.team == Team.enemy)
+            {
+                CharacterManager.EnemieCharacters.Add(summonCharacter.name);
+            }
+            Stats createdStats = CharacterManager.CharacterAddStats(skillData.summonCharacter.name);
+            CharacterManager.Charactercreat(createdStats, transform.position);
 
-            CharacterManager.EnemieCharacters.Add(summonCharacter.name);
-            CharacterManager.characterList.Add(summonCharacter);
-
-            GameObject SumCharacterObject = Instantiate(summonCharacter.characterPrefab);
-            SumCharacterObject.transform.position = transform.position;
-            CharacterManager.characters.Add(SumCharacterObject);
-            summonCharacter.characterPrefab = SumCharacterObject;
             
-            SumCharacterObject.name = summonCharacter.name;
+/*                        CharacterManager.EnemieCharacters.Add(summonCharacter.name);
+                        CharacterManager.characterList.Add(summonCharacter);
+
+                        GameObject SumCharacterObject = Instantiate(summonCharacter.characterPrefab);
+                        SumCharacterObject.transform.position = transform.position;
+                        CharacterManager.characters.Add(SumCharacterObject);
+                        summonCharacter.characterPrefab = SumCharacterObject;
+
+                        SumCharacterObject.name = summonCharacter.name;*/
         }
 
         if (!hasExitedPhase && !skillData.isreactSkill)

@@ -53,6 +53,8 @@ public class Stats
     public GameObject highlightEffect; // 인스펙터에서 하이라이트 오브젝트 할당
 
 
+    public bool isPatternEnd;
+
     /// <summary>
     /// /////////////////////
     /// </summary>
@@ -76,6 +78,7 @@ public class Stats
 
     public Stats(Character data, bool die, List<SkillData> usingSkill)
     {
+        isPatternEnd = false;
 
         characterNumber = 0;
         name = data.charactername;
@@ -149,6 +152,8 @@ public class Stats
         //조건부분
 
         lastHitSkillData = null;
+
+
     }
 
     public Transform GetCharacterTransform()

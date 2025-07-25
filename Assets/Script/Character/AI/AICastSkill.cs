@@ -45,9 +45,13 @@ public class AICastSkill : MonoBehaviour
 
         var manager = CharacterStats.Instance;
         var character = manager.GetStats(gameObject);
+        character.isPatternEnd = false;
 
         if (character.aIPattern.skillQueueList == null || character.aIPattern.skillQueueList.Count == 0)
+        {
+            character.isPatternEnd = true; // 패턴 종료 상태로 설정
             yield break;
+        }
 
         int patternCount = (turnManager.Turn) % character.aIPattern.skillQueueList.Count == 0 ? 
             character.aIPattern.skillQueueList.Count - 1 : (turnManager.Turn) % character.aIPattern.skillQueueList.Count - 1;
@@ -200,6 +204,7 @@ public class AICastSkill : MonoBehaviour
                 SkillCasting = true; // 스킬 시전 중으로 설정
                 Debug.Log("스킬실행완료");*/
             }
+            character.isPatternEnd = true; // 패턴 종료 상태로 설정
             }
         
     }

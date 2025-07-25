@@ -15,6 +15,7 @@ public class StartScene : MonoBehaviour
     {
         black_Curtain.SetActive(true); // 시작 시 커튼 활성화
         black_Curtain_image.color = new Color(0, 0, 0, black_Curtain_value); // 완전히 어둡게 설정
+
         StartCoroutine(FadeOutCurtainRoutine()); // 커튼 점점 투명하게
     }
 

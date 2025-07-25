@@ -1,6 +1,15 @@
 using UnityEngine;
 using System.Collections.Generic;
 
+
+public enum VictoryRule
+{
+    killAll, // 모든 적 처치
+    Survive, // 일정 시간 생존
+    ReachObjective, // 목표 지점 도달
+    story // 스토리 진행
+}
+
 [CreateAssetMenu(fileName = "Stage", menuName = "Scriptable Objects/Stage")]
 public class Stage : ScriptableObject
 {
@@ -22,7 +31,11 @@ public class Stage : ScriptableObject
     [Header("스테이지 적 설정")]
     public List<EnemyData> enemyDatalist; // 적 데이터 리스트
 
+    [Header("승리조건")]
+    public VictoryRule clear; 
 
+    [Header("패배조건")]
+    public VictoryRule feil; 
 }
 [System.Serializable]
 public class EnemyData

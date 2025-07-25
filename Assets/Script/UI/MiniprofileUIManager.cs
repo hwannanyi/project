@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using UnityEngine.TextCore.Text;
 
 public class MiniprofileUIManager : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class MiniprofileUIManager : MonoBehaviour
     {
         if (ProfileUI == null || !ProfileUI.activeInHierarchy)
             return;
-        if (targetCharacter == null)
+        if (string.IsNullOrEmpty(targetCharacter.name))
             return;
         UpdateCharacterProfile(targetCharacter);
         UpdateCharacterProfileSkill(targetCharacter);
@@ -47,7 +48,7 @@ public class MiniprofileUIManager : MonoBehaviour
 
     public void UpdateCharacterProfile(Stats character)
     {
-        if (character != null && character.characterProfileillustration != null)
+        if (!string.IsNullOrEmpty(character.name) && character.characterProfileillustration != null)
         {
             characterProfileUI.sprite = character.characterProfileillustration;
             characterProfileUI.enabled = true;
@@ -64,7 +65,7 @@ public class MiniprofileUIManager : MonoBehaviour
 
     public void UpdateCharacterProfileSkill(Stats character)
     {
-        if (character == null) return; // 캐릭터가 null이면 아무것도 하지 않음
+        if (string.IsNullOrEmpty(character.name)) return; // 캐릭터가 null이면 아무것도 하지 않음
 
         // 스킬 슬롯 개수만큼 반복
         for (int i = 0; i < characterProfileSkillListUI.Count; i++)

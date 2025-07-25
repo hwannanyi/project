@@ -110,8 +110,9 @@ public class SkillHitOn : MonoBehaviour
             //OnHit(target, skillData);
             // SkillHitOn.cs에서 적중 시
             targetStats.lastHitSkillData = skillData; // 마지막 적중 스킬 데이터 저장
-
+            CheckDeathOnly(target);
             PassiveSkillCast.Instance.OnHitPassive(targetStats, casterStats , skillData);
+
         }
 
         if (other.gameObject.tag == "Tile")

@@ -23,7 +23,7 @@ public class Characterdeath : MonoBehaviour
     {
         // 사망 처리 (예: 오브젝트 비활성화, 애니메이션 등)
         characterMovement.ClearHighlights();
-        gameObject.SetActive(false);
+        Destroy(gameObject);
         Debug.Log($"{gameObject.name} 사망!");
     }
 }

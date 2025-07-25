@@ -1,14 +1,17 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.SceneManagement;
 
 public class StageManager : MonoBehaviour
 {
     public static StageManager Instance;
     public Stage[] ALLStageList; // 전체 스테이지 리스트
     public Stage CurrentStage; // 현재 선택된 스테이지
+    int StageNumber = -1; // 현재 스테이지 번호
     public List<string> character;
     void Awake()
     {
@@ -22,6 +25,7 @@ public class StageManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
         Addressables.LoadAssetsAsync<Stage>("Stage", null).Completed += OnStageLoaded;
+
     }
 
     private void OnStageLoaded(AsyncOperationHandle<IList<Stage>> handle)
@@ -41,6 +45,7 @@ public class StageManager : MonoBehaviour
     {
         if (ALLStageList == null)
         {
+            Debug.LogWarning($"스테이지를 찾을 수 없습니다.");
             return;
         }
 
@@ -49,6 +54,7 @@ public class StageManager : MonoBehaviour
         if (foundStage != null)
         {
             CurrentStage = foundStage;
+            StageNumber = Array.IndexOf(ALLStageList, foundStage);
         }
         else
         {

@@ -1,0 +1,155 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d224440329b07543ba63fea5671617e, type: 3}
+  m_Name: "q\uBE5B"
+  m_EditorClassIdentifier: 
+  skillQueue:
+  - skillQueue: []
+  - skillQueue:
+    - skill: {fileID: 11400000, guid: 2e7801b8d5bb8cf48a589d64f403ddec, type: 2}
+      currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 1
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 2
+      targetTypeY: 2
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 1
+      target: 0
+    - skill: {fileID: 11400000, guid: 2e7801b8d5bb8cf48a589d64f403ddec, type: 2}
+      currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 1
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 2
+      targetTypeY: 2
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 1
+      target: 0
+    - skill: {fileID: 11400000, guid: 2e7801b8d5bb8cf48a589d64f403ddec, type: 2}
+      currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 1
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 2
+      targetTypeY: 2
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 1
+      target: 0
+  - skillQueue: []
+  - skillQueue:
+    - skill: {fileID: 11400000, guid: 2e7801b8d5bb8cf48a589d64f403ddec, type: 2}
+      currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 1
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 2
+      targetTypeY: 2
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 1
+      target: 0
+    - skill: {fileID: 11400000, guid: 2e7801b8d5bb8cf48a589d64f403ddec, type: 2}
+      currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 1
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 2
+      targetTypeY: 2
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 1
+      target: 0
+    - skill: {fileID: 11400000, guid: 2e7801b8d5bb8cf48a589d64f403ddec, type: 2}
+      currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 1
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 2
+      targetTypeY: 2
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 1
+      target: 0
+  - skillQueue: []
+  - skillQueue:
+    - skill: {fileID: 11400000, guid: 6abd7091a0864df4b8d225ba590ac163, type: 2}
+      currentIndex: 0
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 0
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 2
+      targetTypeY: 2
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 1
+      target: 0
+  skillCondition: []

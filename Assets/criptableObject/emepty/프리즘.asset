@@ -22,14 +22,13 @@ MonoBehaviour:
   moveCount: 8
   trun: 3
   team: 1
-  summons: 0
+  summons: 1
   useSkill:
-  - {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
-  - {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
-  - {fileID: 11400000, guid: ef061324dfda5d14ab8b7962c9344a8b, type: 2}
   - {fileID: 11400000, guid: 2e7801b8d5bb8cf48a589d64f403ddec, type: 2}
-  - {fileID: 11400000, guid: 71e7363e054ad42428d0d36ffaee0345, type: 2}
-  - {fileID: 11400000, guid: bd763d08186ec3d4d86ffe6677c5f99d, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   passiveSkill:
   - conditionHit:
       isactive: 1
@@ -102,4 +101,4 @@ MonoBehaviour:
   characterillustration: {fileID: 21300000, guid: 4e02d8d650a2b60429df1902bf562cfb, type: 3}
   characterProfileillustration: {fileID: 21300000, guid: 48b0b642eb9ea4f478f87f0c4db58470, type: 3}
   characterPrefab: {fileID: 4344314745404087944, guid: b350271128cd3ca489c78af4523dd393, type: 3}
-  skillQueue: {fileID: 11400000, guid: 6c9ba20d23030ad4fb79c425e4288bc4, type: 2}
+  skillQueue: {fileID: 0}

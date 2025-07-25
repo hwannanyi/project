@@ -20,7 +20,7 @@ public class Character : ScriptableObject
     public bool summons = false;          // 소환수인가요?
     public List<Skill> useSkill = new List<Skill> { null, null, null, null, null };   // 사용스킬
 
-    public List<PassiveList> passiveSkill = new List<PassiveList> { null, null, null, null, null };   // 패시브 스킬
+    public List<PassiveList> passiveSkill;   // 패시브 스킬
     public Sprite characterillustration;
     public Sprite characterProfileillustration;
     public GameObject characterPrefab;
@@ -59,6 +59,9 @@ public class SkillAutoCast
     public DesignationType Designation;
     public bool reverse_order;
     public int index;
+
+    [Header("타겟")]
+    public Target target = Target.enemy;
 }
 
 

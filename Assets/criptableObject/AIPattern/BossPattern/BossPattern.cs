@@ -77,6 +77,11 @@ public struct SkillQueue
     public DesignationType Designation;
     public bool reverse_order;
     public int index;
+
+    [Header("Å¸°Ù")]
+    public Target target;
+
+
 }
 
 [System.Serializable]
@@ -107,4 +112,7 @@ public struct SkillCondition
     public DesignationType Designation;
     public bool reverse_order;
     public int index;
+
+    [Header("Å¸°Ù")]
+    public Target target;
 }

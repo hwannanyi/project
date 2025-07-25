@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using static UnityEngine.GraphicsBuffer;
 
 [System.Serializable]
 public class AIPattern
@@ -37,6 +38,7 @@ public class AIPattern
                     Designation = src.Designation,
                     reverse_order = src.reverse_order,
                     index = src.index,
+                    target = src.target
                 });
             }
             skillQueueList.Add(skillList);
@@ -69,6 +71,7 @@ public class AIPattern
                     Designation = src.Designation,
                     reverse_order = src.reverse_order,
                     index = src.index,
+                    target = src.target
                 });
             }
             skillConditionList.Add(skillList);
