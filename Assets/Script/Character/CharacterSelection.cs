@@ -25,22 +25,24 @@ public class CharacterSelection : MonoBehaviour
         skillManager = GetComponent<SkillManager>();
         turnManager = GetComponent<TurnManager>();
         // 싱글턴 패턴 적용 (중복 방지)
-        if (Instance == null)
-        {
+
             Instance = this;
-            DontDestroyOnLoad(gameObject); // 씬이 변경되어도 삭제되지 않음
-        }
-        else
-        {
-            Destroy(gameObject); // 이미 인스턴스가 존재하면 새로운 객체 삭제
-            return;
-        }
+
     }
 
     //  1, 2, 3 키 입력으로 캐릭터 선택
     void Update()
     {
-
+        try
+        {
+            if (StoryManager.instance.isStoryActive)
+                return; // 모든 입력 무시
+        }
+        catch
+        {
+            
+            return; // StoryManager를 못불려와도 모든입력무시
+        }
 
         asd = selectedCharacterIndex;
         if (CameraZoom.isControlMode) return;

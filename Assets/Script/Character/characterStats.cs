@@ -40,15 +40,8 @@ public class CharacterStats : MonoBehaviour
         wave = 1;
         uiManager.UpdateWaveCount(wave);
 
-        if (Instance == null)
             Instance = this;
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
 
-        DontDestroyOnLoad(gameObject);
 
         // Addressable Assets를 사용하여 Character Scriptable Object 로드
         Addressables.LoadAssetsAsync<Character>("Characters", null).Completed += OnCharactersLoaded;

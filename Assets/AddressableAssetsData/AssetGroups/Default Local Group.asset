@@ -33,6 +33,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Stage
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f3e8b24c847af054b97f842962a32557
+    m_Address: Assets/Sprite/Character
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - CharacterSprites
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 8e8b30ce2cd88c449ac1d80ad9f08c14, type: 2}
   m_SchemaSet:

@@ -130,13 +130,9 @@ public class SkillManager : MonoBehaviour
         isSkillReady = false;
         isSkillReadyFinal = false;
         // 싱글턴 패턴 적용 (중복 방지)
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+
 
 
         _skillAction = new Dictionary<int, ActionWrapper>();
@@ -147,6 +143,16 @@ public class SkillManager : MonoBehaviour
     void Update()
     {
         if (CameraZoom.isControlMode) return;
+
+        try 
+        { 
+            if (StoryManager.instance.isStoryActive)
+            return; // 모든 입력 무시
+        }
+        catch
+        {
+            return; // StoryManager를 못불려와도 모든입력무시
+        }
         if (Input.GetKeyDown(KeyCode.Q))
         {
             PrepareSkillCast(0, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 0)

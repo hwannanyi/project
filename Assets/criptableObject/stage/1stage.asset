@@ -15,6 +15,7 @@ MonoBehaviour:
   stageName: 1
   stageDescription: "\uCCAB\uBC88\uC9F8 \uC2A4\uD14C\uC774\uC9C0 \uC785\uB2C8\uB2E4"
   stageImage: {fileID: 21300000, guid: 1a6bc54d6e9489b44a4b2a1fd9711151, type: 3}
+  ID: 1
   stagenumber: 1
   participants: 2
   startPositions:
@@ -27,3 +28,5 @@ MonoBehaviour:
     position: {x: 1, y: -1}
   - enemyName: "\uD504\uB9AC\uC998"
     position: {x: 1, y: -2}
+  clear: 0
+  feil: 0

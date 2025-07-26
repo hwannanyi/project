@@ -29,7 +29,6 @@ public class PassiveSkillCast : MonoBehaviour
             if (Instance == null)
             {
                 Instance = this;
-                DontDestroyOnLoad(gameObject); // 씬이 변경되어도 삭제되지 않음
             }
             else
             {

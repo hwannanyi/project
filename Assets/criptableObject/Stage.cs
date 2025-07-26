@@ -18,6 +18,9 @@ public class Stage : ScriptableObject
     [TextArea] public string stageDescription; // 스테이지 설명
     public Sprite stageImage; // 스테이지 이미지
 
+    [Header("스토리")]
+    public string ID;
+
     [Header("스테이지 번호")]
     public int stagenumber; // 스테이지 번호
 

@@ -46,13 +46,8 @@ public class SkillRangeVisualizer : MonoBehaviour
     {
         skillManager = GetComponent<SkillManager>();
         skillSave = GetComponent<SkillSave>();
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+
 
         for (int i = 0; i < rangePoolSize; i++)
         {

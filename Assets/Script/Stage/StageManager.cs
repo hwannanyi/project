@@ -15,13 +15,7 @@ public class StageManager : MonoBehaviour
     public List<string> character;
     void Awake()
     {
-        if (Instance == null)
             Instance = this;
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
 
         DontDestroyOnLoad(gameObject);
         Addressables.LoadAssetsAsync<Stage>("Stage", null).Completed += OnStageLoaded;

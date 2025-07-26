@@ -44,6 +44,7 @@ MonoBehaviour:
       Designation: 0
       reverse_order: 0
       index: 0
+      target: 0
   StartAddSkills:
     condition:
       isactive: 0
@@ -68,6 +69,7 @@ MonoBehaviour:
       Designation: 0
       reverse_order: 0
       index: 0
+      target: 0
   EndAddSkills:
     condition:
       isactive: 0
@@ -81,7 +83,7 @@ MonoBehaviour:
       type: 0
       comparison: 0
       value: 
-    skillName: barsa
+    skillName: "ball(\uD6C4\uC18D\uD53C\uD574)"
     targetrule:
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
@@ -92,6 +94,7 @@ MonoBehaviour:
       Designation: 0
       reverse_order: 0
       index: 0
+      target: 0
   summonCharacter: {fileID: 0}
   actionsNumber: 1
   skillNumber: 1

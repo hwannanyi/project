@@ -21,7 +21,8 @@ public class ExcelReader : MonoBehaviour
     public class Talk
     {
         public string talkID;
-        public string left_side; // ㅇㅇㅇ원
+        public string characters;
+        public string left_side;
         public string right_side;
         public string talk_character;
         public string talk;
@@ -33,11 +34,11 @@ public class ExcelReader : MonoBehaviour
 
     private void Start()
     {
-        ReadCSV();
+        ReadCSVstory();
     }
 
     // 파일을 읽어 오는 메서드
-    private void ReadCSV()
+    private void ReadCSVstory()
     {
         // 파일 이름.확장자
         string path = "storyTalk.csv";
@@ -86,13 +87,16 @@ public class ExcelReader : MonoBehaviour
             // 즉, menu 객체 name변수에는 splitData[0]에 담긴 "샌드위치"가 들어갑니다.
 
             menu.talkID = splitData[0];
-            menu.left_side = splitData[1];
-            menu.right_side = splitData[2];
-            menu.talk_character = splitData[3];
-            menu.talk = splitData[4];
-            menu.id = splitData[5];
-            menu.character_animated = splitData[6];
-            menu.production = splitData[7];
+
+                    menu.characters = splitData[1];
+  
+            menu.left_side = splitData[2];
+            menu.right_side = splitData[3];
+            menu.talk_character = splitData[4];
+            menu.talk = splitData[5];
+            menu.id = splitData[6];
+            menu.character_animated = splitData[7];
+            menu.production = splitData[8];
 
             // menu 객체에 다 담았다면 dictionary에 key와 value값으로 저장
             // 이렇게 해두면 dicMenu.Add("샌드위치");로 menu.name, menu.price .. 접근 가능
@@ -102,4 +106,5 @@ public class ExcelReader : MonoBehaviour
         }
         Debug.Log(storyTalk[0].talk_character);
     }
+
 }

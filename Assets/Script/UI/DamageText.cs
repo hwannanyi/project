@@ -8,14 +8,7 @@ public class DamageText : MonoBehaviour
 
     void Awake()
     {
-        // 싱글턴 패턴 적용 (중복 방지)
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     public void ShowDamage(Vector3 worldPosition, int amount, bool isHeal = false)

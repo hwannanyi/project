@@ -63,8 +63,15 @@ public class SkillCastSkill : MonoBehaviour
             Debug.Log("연계스킬를 못찾음");
             return;
         }
-
-        PassiveSkillCast.Instance.AutoCast(targetrule, self, Skill, gameObject);
+        try
+        {
+            PassiveSkillCast.Instance.AutoCast(targetrule, self, Skill, gameObject);
+        }
+        catch
+        {
+            Debug.LogError("연계스킬 실행 실패: " + Skill.skillName);
+        }
+        
             //}
         //}
     }

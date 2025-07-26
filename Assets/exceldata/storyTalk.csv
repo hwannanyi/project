@@ -1,2 +1,7 @@
-talkID,left_side,right_side,talk_character,talk,id,character_animated ,production
-1,test,,test,듀...,1,,
+talkID,characters,left_side,right_side,talk_character,talk,id,character_animated ,production
+1,testerMan\(testerMan),testerMan,testerMan,testerMan,뜌땨...,1,,
+1,,testerMan,testerMan,testerMan,뜌땨땨...,1,,
+1,,testerMan,testerMan,testerMan,뜌우땨이...,1,,stop
+1,,testerMan,testerMan,testerMan,우따야,1,,
+1,,testerMan,testerMan,testerMan,우따야?,1,,
+에러,testerMan,testerMan,testerMan,testerMan,꺅 에러가 떴다아,1,,

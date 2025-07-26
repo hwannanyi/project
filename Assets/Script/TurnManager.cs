@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Linq;
+using UnityEngine.SceneManagement;
 
 /*public enum TurnPhase
 {
@@ -57,15 +59,9 @@ public class TurnManager : MonoBehaviour
 
     Turn = 1;
     UITrunCount(Turn);//  턴 UI 업데이트
-        if (Instance == null)
-        {
+
             Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
+
     }
 
     //  EventManager 연동 유지 (턴 종료 이벤트로 외부에서 턴 넘기기 가능)
@@ -153,6 +149,8 @@ public class TurnManager : MonoBehaviour
     //  턴 전환 (일반 턴 순환: 플레이어 <-> 적)
     public void NextTurn()
     {
+
+
         isPlayerTurn = !isPlayerTurn; // 플레이어 턴 여부 토글
         EnterReactPhase();
         CharacterSelection.selectedCharacterIndex = -1;
@@ -181,6 +179,21 @@ public class TurnManager : MonoBehaviour
         }
 
         Debug.Log($"[TurnManager] 턴 전환됨");
+        // Team.enemy인 캐릭터만 enemies 리스트에 저장
+        var enemies = characterStats.characterList
+            .Where(c => c.team == Team.enemy)
+            .ToList();
+        // 모든 적이 죽었는지 확인 (예시: enemies 리스트 사용)
+        bool allEnemiesDead = enemies.All(e => e.isdie);
+
+        // 스토리 종료 상태 확인
+        if (allEnemiesDead && StoryManager.instance != null && StoryManager.instance.isStoryEnd)
+        {
+            Debug.Log("스테이지 클리어!");
+            SceneManager.LoadScene("Stage_Selection"); // 게임 씬으로 전환
+            return;
+            // 필요하다면 UI에 메시지 표시 등 추가 작업
+        }
     }
 
     //  EventManager 이벤트용
