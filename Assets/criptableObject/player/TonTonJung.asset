@@ -30,6 +30,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 11400000, guid: 592933e3c6303084ca1027c7df2065fb, type: 2}
+  - {fileID: 11400000, guid: 7c0386b6a6c8feb4ea9f69f833121d62, type: 2}
   passiveSkill: []
   characterillustration: {fileID: 21300000, guid: efdbf385d8c261b4cb75ed2d689a6cda, type: 3}
   characterProfileillustration: {fileID: 21300000, guid: 5c86266b553d3e4468a6b5b78fe3269a, type: 3}

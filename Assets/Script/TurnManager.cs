@@ -79,6 +79,10 @@ public class TurnManager : MonoBehaviour
 
     }
 
+    public void Start()
+    {
+        
+    }
     //  EventManager 연동 유지 (턴 종료 이벤트로 외부에서 턴 넘기기 가능)
     private void OnEnable()
     {

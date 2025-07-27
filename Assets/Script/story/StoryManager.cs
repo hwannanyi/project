@@ -8,8 +8,8 @@ using static ExcelReader;
 using UnityEngine.Events;
 using System.Collections;
 
-public class StoryManager : MonoBehaviour 
-{ 
+public class StoryManager : MonoBehaviour
+{
     public static StoryManager instance; // 싱글톤 인스턴스
     public UnityEvent<string> OnStoryStart = new UnityEvent<string>();
     public UnityEvent<SkillManager> OnStoryStop = new UnityEvent<SkillManager>();
@@ -82,20 +82,8 @@ public class StoryManager : MonoBehaviour
             SkillManager skillManager = SkillManager.Instance;
             OnStoryStop.Invoke(skillManager); // SkillManager 인스턴스를 전달
         }
-        if (isStoryActive &&Input.GetKeyDown(KeyCode.Return)) // 마우스 왼쪽 버튼 클릭
-        {
-            if (talklist.Count >= 0 && currentTalkIndex < talklist.Count - 1)
-            {
-                currentTalkIndex++;
-                ShowCurrentTalk();
-            }
-            else
-            {
-                StoryEnd();
-            }
-        }
-        
-        if (!isStoryActive && popUpisStoryActive && Input.GetKeyDown(KeyCode.Return)) // 마우스 왼쪽 버튼 클릭
+
+        if (!isStoryActive && popUpisStoryActive && Input.GetKeyDown(KeyCode.Return)) 
         {
             if (PopUptalklist.Count >= 0 && currentPopUpTalkIndex < PopUptalklist.Count - 1)
             {
@@ -108,13 +96,19 @@ public class StoryManager : MonoBehaviour
                 PopUpStoryEnd();
             }
         }
-        
-        else
+
+        if (isStoryActive && Input.GetKeyDown(KeyCode.Return))
         {
-            popUpStoryUI.SetActive(true);
+            if (talklist.Count >= 0 && currentTalkIndex < talklist.Count - 1)
+            {
+                currentTalkIndex++;
+                ShowCurrentTalk();
+            }
+            else
+            {
+                StoryEnd();
+            }
         }
-
-
     }
 
     public void StoryStart(string storyID)
@@ -123,7 +117,15 @@ public class StoryManager : MonoBehaviour
         StoryUI.SetActive(true); // 스토리 UI 활성화
         GameUI.SetActive(false); // 게임 UI 비활성화
 
+
         LoadStory(storyID); // 예시로 스토리 ID 1을 시작
+    }
+
+    public void StoryReStart(string storyID)
+    {
+        isStoryActive = true;
+        StoryUI.SetActive(true); // 스토리 UI 활성화
+        GameUI.SetActive(false); // 게임 UI 비활성화
     }
 
     public void Stor1yStart(SkillManager storyID)
@@ -136,10 +138,6 @@ public class StoryManager : MonoBehaviour
         isStoryActive = false;
         StoryUI.SetActive(false); // 스토리 UI 활성화
         GameUI.SetActive(true); // 게임 UI 비활성화
-        if (popUpisStoryActive)
-        {
-            popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
-        }
     }
 
     public void StoryEnd()
@@ -153,11 +151,6 @@ public class StoryManager : MonoBehaviour
         characterSprites = new List<Sprite>(); // 캐릭터 이미지 리스트 초기화
         characterUIPool.Clear(); // 오브젝트 풀 초기화
         characterUIPool = new Dictionary<string, GameObject>(); // 오브젝트 풀 딕셔너리 초기화
-        if (popUpisStoryActive)
-        {
-            popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
-        }
-
 
     }
 
@@ -184,13 +177,13 @@ public class StoryManager : MonoBehaviour
             characterName.text = talklist[currentTalkIndex].talk_character;
             talktext.text = talklist[currentTalkIndex].talk;
             HowCharacterUI(talklist[currentTalkIndex].talk_character);
-            if(talklist[currentTalkIndex].production == "stop")
+            if (talklist[currentTalkIndex].production == "stop")
             {
                 currentTalkIndex++;
                 StoryStop();
             }
         }
-        
+
     }
     public void LoadStory(string storyID)
     {
@@ -228,7 +221,7 @@ public class StoryManager : MonoBehaviour
             }
         }
         LoadCharacterSprites();
-        
+
     }
 
 
@@ -320,16 +313,18 @@ public class StoryManager : MonoBehaviour
     {
         popUpisStoryActive = true; // 팝업 스토리 UI 활성화 상태 설정
         LoadPopUpStory(storyID); // 팝업 스토리 로드
-        if (!isStoryActive)
-        {
-            popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
-        }
+        popUpStoryUI.SetActive(true);
     }
     public void PopUpStoryStop()
     {
-        popUpisStoryActive = false; // 팝업 스토리 UI 활성화 상태 설정
-
         popUpStoryUI.SetActive(false); // 팝업 스토리 UI 비활성화
+        popUpisStoryActive = false; // 팝업 스토리 UI 활성화 상태 설정
+    }
+
+    public void PopUpStoryReStart()
+    {
+        popUpStoryUI.SetActive(true); // 팝업 스토리 UI 비활성화
+        popUpisStoryActive = true; // 팝업 스토리 UI 활성화 상태 설정
     }
 
     public void PopUpStoryEnd()
