@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 /*public enum TurnPhase
 {
@@ -23,6 +24,12 @@ public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
 
+    public UnityEvent<string> OnStoryStart = new UnityEvent<string>();
+    public UnityEvent<string> OnStoryStop = new UnityEvent<string>();
+    public UnityEvent<string> PopUpOnStoryStart = new UnityEvent<string>();
+    public UnityEvent<string> PopUpOnStoryStop = new UnityEvent<string>();
+
+    public StageManager stageManager;
     public TurnUIManager uiManager;
     public CharacterUIManager characterUIManager; // 캐릭터 프로필 UI 매니저
 
@@ -56,8 +63,16 @@ public class TurnManager : MonoBehaviour
     {
         characterSelection = GetComponent<CharacterSelection>();
         characterStats = GetComponent<CharacterStats>();
+        try
+        {
+            stageManager = StageManager.Instance;
+        }
+        catch
+        {
+            Debug.LogError("StageManager instance not found");
+        }
 
-    Turn = 1;
+        Turn = 1;
     UITrunCount(Turn);//  턴 UI 업데이트
 
             Instance = this;
@@ -150,7 +165,7 @@ public class TurnManager : MonoBehaviour
     public void NextTurn()
     {
 
-
+        
         isPlayerTurn = !isPlayerTurn; // 플레이어 턴 여부 토글
         EnterReactPhase();
         CharacterSelection.selectedCharacterIndex = -1;
@@ -194,6 +209,7 @@ public class TurnManager : MonoBehaviour
             return;
             // 필요하다면 UI에 메시지 표시 등 추가 작업
         }
+        Tutorial();
     }
 
     //  EventManager 이벤트용
@@ -214,5 +230,19 @@ public class TurnManager : MonoBehaviour
     {
         uiManager.UpdateTrunCount(turnCount);
         uiManager.UpdateReactTurn(isPlayerTurn);
+    }
+
+    ////////////////////////////////
+    
+    public void Tutorial()
+    {
+        if (stageManager.CurrentStage.stagenumber == 0)
+        {
+            if (Turn == 1 || Turn == 3 || Turn == 5 || Turn == 7)
+            {
+                // 스토리 시작 이벤트 발생
+                PopUpOnStoryStart.Invoke("1");
+            }
+        }
     }
 }

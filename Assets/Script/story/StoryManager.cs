@@ -37,12 +37,21 @@ public class StoryManager : MonoBehaviour
 
     [Header("팝업대화창")]
     public GameObject popUpStoryUI; // 스토리 UI 오브젝트
-    public GameObject popUpGameUI; // 스토리 UI 오브젝트
+    public List<PopUpTalkData> PopUptalklist = new();
+    public TextMeshProUGUI popUptalktext; // 대화 텍스트 UI
+    public RectTransform popUptalkRect; //
+    public int currentPopUpTalkIndex = 0; // 현재 대사 인덱스
+    public bool popUpisStoryActive = false; // 팝업 스토리 UI 활성화 여부
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
         excelReader = GetComponent<ExcelReader>();
         instance = this;
+    }
+
+    void Start()
+    {
         try
         {
             // 스토리 시작 이벤트 발생
@@ -73,7 +82,7 @@ public class StoryManager : MonoBehaviour
             SkillManager skillManager = SkillManager.Instance;
             OnStoryStop.Invoke(skillManager); // SkillManager 인스턴스를 전달
         }
-        if (isStoryActive &&Input.GetMouseButtonDown(0)) // 마우스 왼쪽 버튼 클릭
+        if (isStoryActive &&Input.GetKeyDown(KeyCode.Return)) // 마우스 왼쪽 버튼 클릭
         {
             if (talklist.Count >= 0 && currentTalkIndex < talklist.Count - 1)
             {
@@ -85,6 +94,27 @@ public class StoryManager : MonoBehaviour
                 StoryEnd();
             }
         }
+        
+        if (!isStoryActive && popUpisStoryActive && Input.GetKeyDown(KeyCode.Return)) // 마우스 왼쪽 버튼 클릭
+        {
+            if (PopUptalklist.Count >= 0 && currentPopUpTalkIndex < PopUptalklist.Count - 1)
+            {
+                currentPopUpTalkIndex++;
+                ShowCurrentPopUpTalk();
+                LayoutRebuilder.ForceRebuildLayoutImmediate(popUptalkRect);
+            }
+            else
+            {
+                PopUpStoryEnd();
+            }
+        }
+        
+        else
+        {
+            popUpStoryUI.SetActive(true);
+        }
+
+
     }
 
     public void StoryStart(string storyID)
@@ -92,6 +122,7 @@ public class StoryManager : MonoBehaviour
         isStoryActive = true;
         StoryUI.SetActive(true); // 스토리 UI 활성화
         GameUI.SetActive(false); // 게임 UI 비활성화
+
         LoadStory(storyID); // 예시로 스토리 ID 1을 시작
     }
 
@@ -105,6 +136,10 @@ public class StoryManager : MonoBehaviour
         isStoryActive = false;
         StoryUI.SetActive(false); // 스토리 UI 활성화
         GameUI.SetActive(true); // 게임 UI 비활성화
+        if (popUpisStoryActive)
+        {
+            popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
+        }
     }
 
     public void StoryEnd()
@@ -118,6 +153,12 @@ public class StoryManager : MonoBehaviour
         characterSprites = new List<Sprite>(); // 캐릭터 이미지 리스트 초기화
         characterUIPool.Clear(); // 오브젝트 풀 초기화
         characterUIPool = new Dictionary<string, GameObject>(); // 오브젝트 풀 딕셔너리 초기화
+        if (popUpisStoryActive)
+        {
+            popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
+        }
+
+
     }
 
     [System.Serializable]
@@ -149,6 +190,7 @@ public class StoryManager : MonoBehaviour
                 StoryStop();
             }
         }
+        
     }
     public void LoadStory(string storyID)
     {
@@ -261,4 +303,80 @@ public class StoryManager : MonoBehaviour
     }
 
 
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    //팝업창 대화
+
+    [System.Serializable]
+    public class PopUpTalkData
+    {
+        public string talkID;
+        public string character;
+        public string talk;
+        public string tran;
+        public string production;
+    }
+
+    public void PopUpStoryStart(string storyID)
+    {
+        popUpisStoryActive = true; // 팝업 스토리 UI 활성화 상태 설정
+        LoadPopUpStory(storyID); // 팝업 스토리 로드
+        if (!isStoryActive)
+        {
+            popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
+        }
+    }
+    public void PopUpStoryStop()
+    {
+        popUpisStoryActive = false; // 팝업 스토리 UI 활성화 상태 설정
+
+        popUpStoryUI.SetActive(false); // 팝업 스토리 UI 비활성화
+    }
+
+    public void PopUpStoryEnd()
+    {
+        popUpisStoryActive = false; // 팝업 스토리 UI 활성화 상태 설정
+
+        popUpStoryUI.SetActive(false); // 팝업 스토리 UI 비활성화
+        PopUptalklist = new();
+        currentPopUpTalkIndex = 0; // 팝업 대사 인덱스 초기화
+
+    }
+    public void LoadPopUpStory(string storyID)
+    {
+        PopUptalklist.Clear(); // 기존 리스트 초기화
+
+        // 스토리 데이터를 가져와서 storyID가 같은 것만 리스트에 저장
+        foreach (var talk in excelReader.popupstoryTalk)
+        {
+            if (talk.talkID == storyID)
+            {
+                // 새 TalkData 객체 생성
+                PopUpTalkData newTalk = new PopUpTalkData();
+                newTalk.talkID = talk.talkID;
+                newTalk.character = talk.character;
+                newTalk.talk = talk.talk;
+                newTalk.tran = talk.tran;
+                newTalk.production = talk.production;
+
+
+                // 일치하는 Talk 객체를 리스트에 추가
+                PopUptalklist.Add(newTalk);
+            }
+        }
+        ShowCurrentPopUpTalk(); // 첫 번째 팝업 대사 표시
+    }
+
+    // 현재 대사를 UI에 표시하는 함수
+    private void ShowCurrentPopUpTalk()
+    {
+        if (PopUptalklist.Count > 0 && currentPopUpTalkIndex < PopUptalklist.Count)
+        {
+            popUptalktext.text = PopUptalklist[currentPopUpTalkIndex].talk;
+            if (PopUptalklist[currentPopUpTalkIndex].production == "stop")
+            {
+                currentPopUpTalkIndex++;
+                PopUpStoryStop();
+            }
+        }
+    }
 }

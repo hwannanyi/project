@@ -26,9 +26,9 @@ MonoBehaviour:
   useSkill:
   - {fileID: 11400000, guid: ef061324dfda5d14ab8b7962c9344a8b, type: 2}
   - {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
-  - {fileID: 11400000, guid: 3685eee51b65a6647b47f28540780771, type: 2}
-  - {fileID: 11400000, guid: 3faea8acad35ac9449d03f5e22db5dc7, type: 2}
-  - {fileID: 11400000, guid: c9b8b31d638b40d4da50d4111063d677, type: 2}
+  - {fileID: 11400000, guid: e707074c77219c249ac26d78f0db649c, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 11400000, guid: 592933e3c6303084ca1027c7df2065fb, type: 2}
   passiveSkill: []
   characterillustration: {fileID: 21300000, guid: efdbf385d8c261b4cb75ed2d689a6cda, type: 3}

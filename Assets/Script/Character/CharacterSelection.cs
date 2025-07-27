@@ -69,22 +69,18 @@ public class CharacterSelection : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha2)) SelectCharacter(1);
         //if (Input.GetKeyDown(KeyCode.Alpha3)) SelectCharacter(2);
         //if (Input.GetKeyDown(KeyCode.Alpha4)) SelectCharacter(3);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectCharacter2P(2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) SelectCharacter2P(3);
-        if (Input.GetKeyDown(KeyCode.Alpha5)) SelectCharacter2P(4);// 0
+        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectCharacter(2);
+        if (Input.GetKeyDown(KeyCode.Alpha4)) SelectCharacter(3);
+/*        if (Input.GetKeyDown(KeyCode.Alpha5)) SelectCharacter2P(4);// 0
         if (Input.GetKeyDown(KeyCode.Alpha6)) SelectCharacter2P(5);// 1
-        if (Input.GetKeyDown(KeyCode.Alpha7)) SelectCharacter(6);// 2
+        if (Input.GetKeyDown(KeyCode.Alpha7)) SelectCharacter(6);// 2*/
         //if (Input.GetKeyDown(KeyCode.Alpha8)) SelectCharacter2P(7);// 3
     }
     public void SelectCharacter(int index)
     {
         
-        SkillManager.Instance.Skillcancel();
-        if (!turnManager.isPlayerTurn && !turnManager.IsInReactPhase())
-        {
-            selectedCharacterIndex = -1;
-            return;
-        }
+        
+        
 /*        // 대응단계에서만 유효한 대상 제한
         if (TurnManager.Instance.IsInReactPhase())
         {
@@ -102,6 +98,11 @@ public class CharacterSelection : MonoBehaviour
         }*/
 
             var character = CharacterStats.Instance.characterList[index];
+        SkillManager.Instance.Skillcancel();
+            if (character.team != Team.team)
+            {
+            return;
+            }
             if (character.isdie)
             {
                 Debug.Log("죽은 캐릭터는 선택할 수 없습니다.");

@@ -33,12 +33,14 @@ public class CharacterMovement : MonoBehaviour
         targetPosition = transform.position;  // 시작 위치 설정
         startPosition = transform.position;   // 초기 위치 설정
         CharacterSelection.selectedCharacterIndex = -1;
+        
     }
     void Awake()
     {
         isShowMoveHighlights = false; // 초기값 설정
         StartCoroutine(TrySetCharacterData());
     }
+
 
 
     private IEnumerator TrySetCharacterData()
@@ -54,7 +56,7 @@ public class CharacterMovement : MonoBehaviour
         moveRange = CharacterStats.Instance.characterList[index].movespeed;
         CharacterStats.Instance.characterList[index].NowMoveCount = CharacterStats.Instance.characterList[index].moveCount;
 
-
+        CharacterStats.Instance.characterList[characterNumber].charPosition = transform.position;
     }
 
     void Update()
@@ -174,8 +176,7 @@ public class CharacterMovement : MonoBehaviour
             if (!isMoving && !isBlocked)
             {
 
-                bool teamTurn = (character.team == Team.team && TurnManager.Instance.isPlayerTurn) || 
-                    (character.team == Team.enemy && !TurnManager.Instance.isPlayerTurn);
+                bool teamTurn = (character.team == Team.team && TurnManager.Instance.isPlayerTurn);
                 if (nowmoveCount <= 0 && teamTurn)//이동횟수가 있어야 이동가능
                      return;
 
@@ -200,6 +201,9 @@ public class CharacterMovement : MonoBehaviour
                         startPosition = transform.position;
                         moveCoroutine = StartCoroutine(MoveToTarget());
                     }
+                    int count = CharacterStats.Instance.characterList[characterNumber].NowMoveCount;
+                    count = teamTurn ? count - 1 : count; // 팀 턴일 때만 이동 횟수 차감
+                    CharacterStats.Instance.characterList[characterNumber].NowMoveCount = count;
                 }
             }
         }
@@ -347,7 +351,6 @@ public class CharacterMovement : MonoBehaviour
     private void PositionUpdate()
     {
         ClearHighlights();
-        CharacterStats.Instance.characterList[characterNumber].NowMoveCount--;
         CharacterStats.Instance.characterList[characterNumber].charPosition = transform.position;
     }
 

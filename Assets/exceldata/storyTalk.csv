@@ -1,7 +1,7 @@
 talkID,characters,left_side,right_side,talk_character,talk,id,character_animated ,production
-1,testerMan\(testerMan),testerMan,testerMan,testerMan,뜌땨...,1,,
-1,,testerMan,testerMan,testerMan,뜌땨땨...,1,,
-1,,testerMan,testerMan,testerMan,뜌우땨이...,1,,stop
-1,,testerMan,testerMan,testerMan,우따야,1,,
-1,,testerMan,testerMan,testerMan,우따야?,1,,
+1,testerMan\(testerMan),testerMan,testerMan,testerMan,안녕?,1,,
+1,,testerMan,testerMan,testerMan,내가 이곳의 전투 방식을 알려줄게,1,,
+2,,testerMan,testerMan,testerMan,뜌우땨이...,1,,
+2,,testerMan,testerMan,testerMan,우따야,1,,
+2,,testerMan,testerMan,testerMan,우따야?,1,,
 에러,testerMan,testerMan,testerMan,testerMan,꺅 에러가 떴다아,1,,
