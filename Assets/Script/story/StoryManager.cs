@@ -38,6 +38,7 @@ public class StoryManager : MonoBehaviour
     [Header("팝업대화창")]
     public GameObject popUpStoryUI; // 스토리 UI 오브젝트
     public List<PopUpTalkData> PopUptalklist = new();
+    public List<PopUpTalkData> PopUptalkRead = new();
     public TextMeshProUGUI popUptalktext; // 대화 텍스트 UI
     public RectTransform popUptalkRect; //
     public int currentPopUpTalkIndex = 0; // 현재 대사 인덱스
@@ -85,7 +86,7 @@ public class StoryManager : MonoBehaviour
 
         if (!isStoryActive && popUpisStoryActive && Input.GetKeyDown(KeyCode.Return)) 
         {
-            if (PopUptalklist.Count >= 0 && currentPopUpTalkIndex < PopUptalklist.Count - 1)
+            if (PopUptalkRead.Count >= 0 && currentPopUpTalkIndex < PopUptalkRead.Count - 1)
             {
                 currentPopUpTalkIndex++;
                 ShowCurrentPopUpTalk();
@@ -107,6 +108,8 @@ public class StoryManager : MonoBehaviour
             else
             {
                 StoryEnd();
+                if (popUpisStoryActive)
+                    popUpStoryUI.SetActive(true);
             }
         }
     }
@@ -131,6 +134,7 @@ public class StoryManager : MonoBehaviour
     public void Stor1yStart(SkillManager storyID)
     {
         Debug.Log(storyID.waitingForResponse);
+        popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
     }
 
     public void StoryStop()
@@ -174,6 +178,8 @@ public class StoryManager : MonoBehaviour
     {
         if (talklist.Count > 0 && currentTalkIndex < talklist.Count)
         {
+            popUpStoryUI.SetActive(false);
+
             characterName.text = talklist[currentTalkIndex].talk_character;
             talktext.text = talklist[currentTalkIndex].talk;
             HowCharacterUI(talklist[currentTalkIndex].talk_character);
@@ -307,23 +313,26 @@ public class StoryManager : MonoBehaviour
         public string talk;
         public string tran;
         public string production;
+        public string id;
     }
 
     public void PopUpStoryStart(string storyID)
     {
         popUpisStoryActive = true; // 팝업 스토리 UI 활성화 상태 설정
         LoadPopUpStory(storyID); // 팝업 스토리 로드
-        popUpStoryUI.SetActive(true);
     }
     public void PopUpStoryStop()
     {
         popUpStoryUI.SetActive(false); // 팝업 스토리 UI 비활성화
         popUpisStoryActive = false; // 팝업 스토리 UI 활성화 상태 설정
+        currentPopUpTalkIndex = 0; // 팝업 대사 인덱스 초기화
     }
 
-    public void PopUpStoryReStart()
+    public void PopUpStoryReStart(string ID)
     {
-        popUpStoryUI.SetActive(true); // 팝업 스토리 UI 비활성화
+        if (!isStoryActive)
+            popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
+        ReadPopUpStory(ID); // 팝업 대사 읽기
         popUpisStoryActive = true; // 팝업 스토리 UI 활성화 상태 설정
     }
 
@@ -352,26 +361,37 @@ public class StoryManager : MonoBehaviour
                 newTalk.talk = talk.talk;
                 newTalk.tran = talk.tran;
                 newTalk.production = talk.production;
-
+                newTalk.id = talk.id;
 
                 // 일치하는 Talk 객체를 리스트에 추가
                 PopUptalklist.Add(newTalk);
             }
         }
-        ShowCurrentPopUpTalk(); // 첫 번째 팝업 대사 표시
+    }
+    public void ReadPopUpStory(string ID)
+    {
+        PopUptalkRead.Clear(); // 기존 내용 초기화
+
+        foreach (var talk in PopUptalklist)
+        {
+            if (talk.id == ID)
+            {
+                PopUptalkRead.Add(talk);
+            }
+        }
+        ShowCurrentPopUpTalk();
     }
 
     // 현재 대사를 UI에 표시하는 함수
     private void ShowCurrentPopUpTalk()
     {
-        if (PopUptalklist.Count > 0 && currentPopUpTalkIndex < PopUptalklist.Count)
+        if (PopUptalkRead.Count > 0 && currentPopUpTalkIndex < PopUptalkRead.Count)
         {
-            popUptalktext.text = PopUptalklist[currentPopUpTalkIndex].talk;
-            if (PopUptalklist[currentPopUpTalkIndex].production == "stop")
-            {
-                currentPopUpTalkIndex++;
-                PopUpStoryStop();
-            }
+            popUptalktext.text = PopUptalkRead[currentPopUpTalkIndex].talk;
+        }
+        else
+        {
+            PopUpStoryStop();
         }
     }
 }

@@ -17,10 +17,18 @@ MonoBehaviour:
   stageImage: {fileID: 21300000, guid: 1a6bc54d6e9489b44a4b2a1fd9711151, type: 3}
   ID: 1
   storyTiming:
-    Target: 
-    storyTimingType: 0
-    value: 0
-    ID: 
+  - Target: stage
+    storyTimingType: 2
+    value: 1
+    ID: 1
+  - Target: stage
+    storyTimingType: 2
+    value: 2
+    ID: 2
+  - Target: stage
+    storyTimingType: 2
+    value: 3
+    ID: 3
   stagenumber: 0
   participants: 1
   startPositions:

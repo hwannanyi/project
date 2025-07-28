@@ -41,7 +41,7 @@ public class ExcelReader : MonoBehaviour
         public string talk;
         public string tran;
         public string production;
-
+        public string id;
     }
 
     private void Awake()
@@ -170,7 +170,7 @@ public class ExcelReader : MonoBehaviour
             menu.talk = splitData[2];
             menu.tran = splitData[3];
             menu.production = splitData[4];
-
+            menu.id = splitData[5];
 
             // menu 객체에 다 담았다면 dictionary에 key와 value값으로 저장
             // 이렇게 해두면 dicMenu.Add("샌드위치");로 menu.name, menu.price .. 접근 가능

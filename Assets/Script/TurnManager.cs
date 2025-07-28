@@ -24,9 +24,10 @@ public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
 
-    public UnityEvent<string> OnStoryStart = new UnityEvent<string>();
-    public UnityEvent<string> OnStoryStop = new UnityEvent<string>();
+/*    public UnityEvent<string> OnStoryStart = new UnityEvent<string>();
+    public UnityEvent<string> OnStoryStop = new UnityEvent<string>();*/
     public UnityEvent<string> PopUpOnStoryStart = new UnityEvent<string>();
+    public UnityEvent<string> PopUpOnStoryReStart = new UnityEvent<string>();
     public UnityEvent<string> PopUpOnStoryStop = new UnityEvent<string>();
 
     public StageManager stageManager;
@@ -81,7 +82,7 @@ public class TurnManager : MonoBehaviour
 
     public void Start()
     {
-        
+        Tutorial();
     }
     //  EventManager 연동 유지 (턴 종료 이벤트로 외부에서 턴 넘기기 가능)
     private void OnEnable()
@@ -242,11 +243,13 @@ public class TurnManager : MonoBehaviour
     {
         if (stageManager.CurrentStage.stagenumber == 0)
         {
-            if (Turn == 1 || Turn == 3 || Turn == 5 || Turn == 7)
+            if (Turn == 1)
             {
                 // 스토리 시작 이벤트 발생
-                PopUpOnStoryStart.Invoke("1");
+                PopUpOnStoryStart.Invoke("");
             }
+            else if (Turn == 3 || Turn == 5 || Turn == 7) { PopUpOnStoryReStart.Invoke(""); }
         }
     }
 }
+

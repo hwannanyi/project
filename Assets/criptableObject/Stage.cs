@@ -30,7 +30,7 @@ public class Stage : ScriptableObject
     [Header("스토리")]
     public string ID;
     [Tooltip("조건과 대상")]
-    public StoryTiming storyTiming; // 스토리 등장타이밍
+    public List<StoryTiming> storyTiming; // 스토리 등장타이밍
 
     [Header("스테이지 번호")]
     public int stagenumber; // 스테이지 번호
@@ -63,6 +63,7 @@ public class StoryTiming
 {
     public string Target; // 적 이름
     public StoryTimingType storyTimingType; // 스토리 등장타이밍 타입
-    public int value; // 해당 조건의 값 (예: 체력 비율, 처치 수, 턴 수 등)
-    public string ID; // 스토리 텍스트
+    public float value; // 해당 조건의 값 (예: 체력 비율, 처치 수, 턴 수 등)
+    public bool isPopUp; // 팝업스토리창 여부
+    public string ID; // 불러올 스토리 ID
 }
