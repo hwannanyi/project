@@ -59,11 +59,13 @@ public class TurnManager : MonoBehaviour
 
     public CharacterSelection characterSelection;
     public CharacterStats characterStats;
+    public StageDataManager stageDataManager;
 
     private void Awake()
     {
         characterSelection = GetComponent<CharacterSelection>();
         characterStats = GetComponent<CharacterStats>();
+        stageDataManager = GetComponent<StageDataManager>();
         try
         {
             stageManager = StageManager.Instance;
@@ -83,6 +85,7 @@ public class TurnManager : MonoBehaviour
     public void Start()
     {
         Tutorial();
+        stageDataManager.CheckTurn();//스토리활성화
     }
     //  EventManager 연동 유지 (턴 종료 이벤트로 외부에서 턴 넘기기 가능)
     private void OnEnable()
@@ -214,7 +217,7 @@ public class TurnManager : MonoBehaviour
             return;
             // 필요하다면 UI에 메시지 표시 등 추가 작업
         }
-        Tutorial();
+        stageDataManager.CheckTurn();//스토리활성화
     }
 
     //  EventManager 이벤트용
@@ -248,7 +251,7 @@ public class TurnManager : MonoBehaviour
                 // 스토리 시작 이벤트 발생
                 PopUpOnStoryStart.Invoke("");
             }
-            else if (Turn == 3 || Turn == 5 || Turn == 7) { PopUpOnStoryReStart.Invoke(""); }
+            //else if (Turn == 3 || Turn == 5 || Turn == 7) { PopUpOnStoryReStart.Invoke(""); }
         }
     }
 }

@@ -19,7 +19,7 @@ public class SkillManager : MonoBehaviour
     public ReactTimeUI reactTimeUIManager; // 대응시간 UI 매니저
     public SkillRangeVisualizer skillRangeVisualizer; // 스킬 범위 시각화 매니저
     public TurnManager turnManager; // 턴 매니저
-
+    public StoryManager storyManager; // 스토리 매니저 인스턴스
     public CharacterSelection characterSelection; // 캐릭터 선택 스크립트
 
 
@@ -113,7 +113,7 @@ public class SkillManager : MonoBehaviour
         skillRangeVisualizer = GetComponent<SkillRangeVisualizer>();
         characterSelection = GetComponent<CharacterSelection>();
         turnManager = GetComponent<TurnManager>();
-
+        storyManager = GetComponent<StoryManager>(); // 스토리 매니저 인스턴스
         validReactTargets = new List<GameObject>();
 
         // 상태 변수 초기화
@@ -146,7 +146,7 @@ public class SkillManager : MonoBehaviour
 
         try 
         { 
-            if (StoryManager.instance.isStoryActive)
+            if (storyManager.isStoryActive)
             return; // 모든 입력 무시
         }
         catch

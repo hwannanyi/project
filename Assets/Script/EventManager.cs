@@ -3,12 +3,16 @@ using UnityEngine;
 public class EventManager : MonoBehaviour
 // TurnManager 보다 먼저 실행되어야함
 {
+
+    // 턴을 넘기는 매니저
     public static EventManager Instance;
+    public StoryManager storyManager; // 스토리 매니저 인스턴스
 
     private void Awake()
     {
 
             Instance = this;
+        storyManager = GetComponent<StoryManager>();
 
     }
 

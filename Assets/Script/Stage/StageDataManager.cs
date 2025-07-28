@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using UnityEngine.Rendering.Universal;
 
 public class StageDataManager : MonoBehaviour
 {
@@ -34,42 +35,29 @@ public class StageDataManager : MonoBehaviour
         turnManager = GetComponent<TurnManager>();
         characterStats = GetComponent<CharacterStats>();
         storyManager = GetComponent<StoryManager>();
-        storyConditionHandler = CheckStoryTiming;
+
+        PopUpOnStoryReStart.AddListener(storyManager.PopUpStoryReStart);// 팝업 스토리 재시작 이벤트
+        OnStoryReStop.AddListener(storyManager.StoryReStart);// 일반 스토리 재시작 이벤트
+
     }
 
-
-    public void CheckStoryTiming(List<StoryTiming> timing)
+    public void CheckHP()
     {
-        if (timing == null)
-        {
-            Debug.LogError("StoryTiming is null");
-            return;
-        }
-/*        switch (timing.storyTimingType)
-        {
-            case StoryTimingType.hp:
-                CheckHP(timing);
-                break;
-            case StoryTimingType.kill:
-                CheckKill(timing);
-                break;
-            case StoryTimingType.turn:
-                CheckTurn(timing);
-                break;
-            default:
-                Debug.LogWarning("에러끼얏호우");
-                break;
-        }*/
-    }
+        var timingList = CurrentStage.storyTiming;
+        // 아직 읽지 않은 스토리 중 value(비율)가 가장 높은 것 우선
+        var timing = timingList
+            .Where(t => !storyManager.readpopupStoryID.Contains(t.ID))
+            .OrderByDescending(t => t.value)
+            .FirstOrDefault();
 
-    public void CheckHP(List<StoryTiming> timing)
-    {
+        if (timing == null) return;
 
-        // (stats.hp / (float)stats.maxhp) : 0~1 사이의 비율
+        // 타겟 캐릭터의 체력 비율이 timing.value 이하인지 확인 (0~1 기준)
         bool check = characterStats.characterList
             .Any(stats => stats.name == timing.Target
                           && !stats.isdie
                           && (stats.hp / (float)stats.maxhp) <= timing.value);
+
         if (check)
         {
             if (timing.isPopUp)
@@ -85,7 +73,7 @@ public class StageDataManager : MonoBehaviour
     }
     public void CheckKill(List<StoryTiming> timingList)
     {
-        // 현재 적이 살아있는 수
+/*        // 현재 적이 살아있는 수
         int kill = characterStats.characterList.Count(stats => stats.team == Team.enemy && stats.isdie == false);
 
         // 조건을 만족하는 StoryTiming 객체 추출
@@ -99,29 +87,35 @@ public class StageDataManager : MonoBehaviour
                 PopUpOnStoryReStart.Invoke(timingId);
             else
                 OnStoryReStop.Invoke(timingId);
-        }
+        }*/
     }
 
-    public void CheckTurn(List<StoryTiming> timingList)
+    public void CheckTurn()
     {
+        var timingList = CurrentStage.storyTiming;
         float turn = (float)turnManager.Turn;
 
         // 조건을 만족하는 StoryTiming를 추출
         var timing = timingList
         .FirstOrDefault(t => turn >= t.value && !storyManager.readpopupStoryID.Contains(t.ID));
+        if (timing == null) return;
         bool check = !string.IsNullOrEmpty(timing.ID);
-        if (check) 
-        {
-            if (timing.isPopUp)
-            {
-                PopUpOnStoryReStart.Invoke(timing.ID);
-            }
-            else
-            {
-                OnStoryReStop.Invoke(timing.ID);
-            }
-
-        }
+        
+        string ID = check ? timing.ID : null;
+        if (timing.isPopUp)
+            Startpopstory(ID);
+        else
+            Startstory(ID);
     }
 
+
+    public void Startpopstory(string ID)
+    {
+        PopUpOnStoryReStart.Invoke(ID);
+    }
+
+    public void Startstory(string ID)
+    {
+        OnStoryReStop.Invoke(ID);
+    }
 }

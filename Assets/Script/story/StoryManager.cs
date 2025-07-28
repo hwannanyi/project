@@ -84,8 +84,7 @@ public class StoryManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            SkillManager skillManager = SkillManager.Instance;
-            OnStoryStop.Invoke(skillManager); // SkillManager 인스턴스를 전달
+            PopUpStoryReStart("1");
         }
 
         if (!isStoryActive && popUpisStoryActive && Input.GetKeyDown(KeyCode.Return)) 
@@ -116,6 +115,7 @@ public class StoryManager : MonoBehaviour
                     popUpStoryUI.SetActive(true);
             }
         }
+        
     }
 
     public void StoryStart(string storyID)
@@ -331,14 +331,19 @@ public class StoryManager : MonoBehaviour
         popUpStoryUI.SetActive(false); // 팝업 스토리 UI 비활성화
         popUpisStoryActive = false; // 팝업 스토리 UI 활성화 상태 설정
         currentPopUpTalkIndex = 0; // 팝업 대사 인덱스 초기화
+        Time.timeScale = 1f; // 시간 스케일을 1로 설정하여 게임 속도 정상화
     }
 
     public void PopUpStoryReStart(string ID)
     {
-        if (!isStoryActive)
-            popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
         ReadPopUpStory(ID); // 팝업 대사 읽기
         popUpisStoryActive = true; // 팝업 스토리 UI 활성화 상태 설정
+        if (!isStoryActive)
+        {
+            popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
+            LayoutRebuilder.ForceRebuildLayoutImmediate(popUptalkRect);
+        }
+        Time.timeScale = 0f; // 시간 스케일을 0로 설정하여 게임 정지
     }
 
     public void PopUpStoryEnd()
@@ -349,7 +354,7 @@ public class StoryManager : MonoBehaviour
         PopUptalklist = new(); // 팝업 대화 리스트 초기화
         readpopupStoryID = new(); // 읽은 팝업 스토리 ID 리스트 초기화
         currentPopUpTalkIndex = 0; // 팝업 대사 인덱스 초기화
-
+        Time.timeScale = 1f; // 시간 스케일을 1로 설정하여 게임 속도 정상화
     }
     public void LoadPopUpStory(string storyID)
     {

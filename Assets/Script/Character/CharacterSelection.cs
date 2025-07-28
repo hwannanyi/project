@@ -16,6 +16,7 @@ public class CharacterSelection : MonoBehaviour
     public CharacterUIManager characterUIManager;
     public SkillManager skillManager;
     public TurnManager turnManager;
+    public StoryManager storyManager; // 스토리 매니저 인스턴스
 
     public GameObject selectedCharacter;
     public CharacterStats characterStats;
@@ -24,6 +25,7 @@ public class CharacterSelection : MonoBehaviour
         characterStats = GetComponent<CharacterStats>();
         skillManager = GetComponent<SkillManager>();
         turnManager = GetComponent<TurnManager>();
+        storyManager = GetComponent<StoryManager>();
         // 싱글턴 패턴 적용 (중복 방지)
 
             Instance = this;
@@ -35,7 +37,7 @@ public class CharacterSelection : MonoBehaviour
     {
         try
         {
-            if (StoryManager.instance.isStoryActive)
+            if (storyManager.isStoryActive)
                 return; // 모든 입력 무시
         }
         catch
