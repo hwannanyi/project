@@ -43,6 +43,10 @@ public class StoryManager : MonoBehaviour
     public RectTransform popUptalkRect; //
     public int currentPopUpTalkIndex = 0; // 현재 대사 인덱스
     public bool popUpisStoryActive = false; // 팝업 스토리 UI 활성화 여부
+     
+    [Header("이미 본거야")]
+    public List<string> readStoryID = new(); // 읽은 스토리 ID 리스트
+    public List<string> readpopupStoryID = new(); // 읽은 스토리 ID 리스트
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
@@ -94,7 +98,7 @@ public class StoryManager : MonoBehaviour
             }
             else
             {
-                PopUpStoryEnd();
+                PopUpStoryStop();
             }
         }
 
@@ -323,6 +327,7 @@ public class StoryManager : MonoBehaviour
     }
     public void PopUpStoryStop()
     {
+        readpopupStoryID.Add(PopUptalkRead[0].id); // 팝업 대사 ID를 읽은 스토리 ID 리스트에 추가
         popUpStoryUI.SetActive(false); // 팝업 스토리 UI 비활성화
         popUpisStoryActive = false; // 팝업 스토리 UI 활성화 상태 설정
         currentPopUpTalkIndex = 0; // 팝업 대사 인덱스 초기화
@@ -341,7 +346,8 @@ public class StoryManager : MonoBehaviour
         popUpisStoryActive = false; // 팝업 스토리 UI 활성화 상태 설정
 
         popUpStoryUI.SetActive(false); // 팝업 스토리 UI 비활성화
-        PopUptalklist = new();
+        PopUptalklist = new(); // 팝업 대화 리스트 초기화
+        readpopupStoryID = new(); // 읽은 팝업 스토리 ID 리스트 초기화
         currentPopUpTalkIndex = 0; // 팝업 대사 인덱스 초기화
 
     }

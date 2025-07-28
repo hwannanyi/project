@@ -32,6 +32,30 @@ public class StageDataManager : MonoBehaviour
     }
 
 
+    public void CheckStoryTiming(StoryTiming timing)
+    {
+        if (timing == null)
+        {
+            Debug.LogError("StoryTiming is null");
+            return;
+        }
+        switch (timing.storyTimingType)
+        {
+            case StoryTimingType.hp:
+                CheckHP(timing);
+                break;
+            case StoryTimingType.kill:
+                CheckKill(timing);
+                break;
+            case StoryTimingType.turn:
+                CheckTurn(timing);
+                break;
+            default:
+                Debug.LogWarning("¿¡·¯³¢¾æÈ£¿ì");
+                break;
+        }
+    }
+
     public void CheckHP(StoryTiming timing)
     {
 
