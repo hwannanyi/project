@@ -11491,6 +11491,8 @@ GameObject:
   - component: {fileID: 62703705}
   - component: {fileID: 62703706}
   - component: {fileID: 62703707}
+  - component: {fileID: 62703709}
+  - component: {fileID: 62703708}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -11595,7 +11597,7 @@ MonoBehaviour:
   PopUpOnStoryStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1372665925}
+      - m_Target: {fileID: 62703709}
         m_TargetAssemblyTypeName: StoryManager, Assembly-CSharp
         m_MethodName: PopUpStoryStart
         m_Mode: 5
@@ -11610,7 +11612,7 @@ MonoBehaviour:
   PopUpOnStoryReStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1372665925}
+      - m_Target: {fileID: 62703709}
         m_TargetAssemblyTypeName: StoryManager, Assembly-CSharp
         m_MethodName: PopUpStoryReStart
         m_Mode: 5
@@ -12426,27 +12428,89 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageManager: {fileID: 0}
   CurrentStage: {fileID: 0}
-  PopUpOnStoryStart:
+  PopUpOnStoryReStart:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1372665925}
-        m_TargetAssemblyTypeName: StoryManager, Assembly-CSharp
-        m_MethodName: StoryStart
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 1
-          m_BoolArgument: 0
-        m_CallState: 2
-  PopUpOnStoryStop:
+      m_Calls: []
+  OnStoryReStop:
     m_PersistentCalls:
       m_Calls: []
   PopUpOnStoryEnd:
     m_PersistentCalls:
       m_Calls: []
+  turnManager: {fileID: 0}
+  characterStats: {fileID: 0}
+--- !u!114 &62703708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62703682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cd54bda2f3f7394dbabfd32e64f65ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  csvFileName: storyTalk
+  csvpopUpStoryFileName: popUpStory
+  storyTalk: []
+  popupstoryTalk: []
+--- !u!114 &62703709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62703682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c0d913b67cebc7429f8f0115ce538ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnStoryStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnStoryStop:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 62703709}
+        m_TargetAssemblyTypeName: StoryManager, Assembly-CSharp
+        m_MethodName: Stor1yStart
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 62703696}
+          m_ObjectArgumentAssemblyTypeName: SkillManager, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnStoryEnd:
+    m_PersistentCalls:
+      m_Calls: []
+  background: {fileID: 21300000, guid: 8f4f60127189df34a9703ef53961323a, type: 3}
+  backgroundImage: {fileID: 1231953308}
+  StoryUI: {fileID: 1242475096}
+  charUI: {fileID: 751057932}
+  GameUI: {fileID: 1706118087}
+  isStoryActive: 0
+  isStoryEnd: 0
+  excelReader: {fileID: 0}
+  characterUI: {fileID: 1072843848692120756, guid: c090ec595364d5241986ba04523cf44d, type: 3}
+  characterName: {fileID: 1414142504}
+  talktext: {fileID: 1244312225}
+  currentTalkIndex: 0
+  talklist: []
+  characterSprites: []
+  popUpStoryUI: {fileID: 1160122067}
+  PopUptalklist: []
+  PopUptalkRead: []
+  popUptalktext: {fileID: 373541448}
+  popUptalkRect: {fileID: 361908667}
+  currentPopUpTalkIndex: 0
+  popUpisStoryActive: 0
+  readStoryID: []
+  readpopupStoryID: []
 --- !u!4 &72771762 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5236981650925629645, guid: 78e847a47d13ecc43b14da6abaea6898, type: 3}
@@ -17910,7 +17974,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 5.7083335
+  orthographic size: 4.3333335
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -32411,7 +32475,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1372665923
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32497,6 +32561,8 @@ MonoBehaviour:
   popUptalkRect: {fileID: 361908667}
   currentPopUpTalkIndex: 0
   popUpisStoryActive: 0
+  readStoryID: []
+  readpopupStoryID: []
 --- !u!1 &1376101904
 GameObject:
   m_ObjectHideFlags: 0
