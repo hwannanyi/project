@@ -6,6 +6,14 @@ public class AITurn : MonoBehaviour
 {
     public float turntime = 3.0f; // AI 턴 지속 시간
     public float turnTimer = 0f; // 타이머 초기화
+    public StoryManager storyManager; // 스토리 매니저 인스턴스
+    public bool AIturnEnd = false; // AI 턴 종료 여부
+
+    public void Awake()
+    {
+
+        storyManager = GetComponent<StoryManager>();
+    }
 
     public void Update()
     {
@@ -18,14 +26,17 @@ public class AITurn : MonoBehaviour
 
         if (CharacterStats.Instance.characterList
             .Where(stats => stats.team == Team.enemy)
-            .All(stats => stats.isPatternEnd))
+            .All(stats => stats.isPatternEnd) &&
+            !(storyManager.isStoryActive || storyManager.popUpisStoryActive))
         {
+            
             turnTimer += Time.deltaTime; // 타이머 업데이트
-
+            AIturnEnd = false; // AI 턴 종료 상태 초기화
             if (turnTimer >= turntime)
             {
                 EventManager.Instance.FinishTurn(true); // AI 턴 종료
                 turnTimer = 0f;
+                AIturnEnd = true; // AI 턴 종료 상태 업데이트
             }
         }
         else

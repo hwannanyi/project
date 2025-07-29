@@ -164,7 +164,7 @@ public class TurnManager : MonoBehaviour
     {
         //CharacterSelection.prevSelectedIndex = CharacterSelection.selectedCharacterIndex;
         //characterStats.characterList[CharacterSelection.selectedCharacterIndex].SetHighlight(false);
-        CharacterSelection.selectedCharacterIndex = -1;
+        //CharacterSelection.selectedCharacterIndex = -1;
         characterUIManager.UpdateProfileUIBySelection();
 
         Reacttrun = ReactTurnPhase.None;
@@ -172,13 +172,14 @@ public class TurnManager : MonoBehaviour
         Debug.Log($"[TurnManager] 대응단계 종료: 턴 복귀");
     }
 
+
     //  턴 전환 (일반 턴 순환: 플레이어 <-> 적)
     public void NextTurn()
     {
 
         isPlayerTurn = !isPlayerTurn; // 플레이어 턴 여부 토글
         EnterReactPhase();
-        CharacterSelection.selectedCharacterIndex = -1;
+        //CharacterSelection.selectedCharacterIndex = -1;
         characterUIManager.UpdateProfileUIBySelection();
         Turn++;
         UITrunCount(Turn);//  턴 UI 업데이트

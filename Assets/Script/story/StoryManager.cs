@@ -13,6 +13,8 @@ public class StoryManager : MonoBehaviour
     public static StoryManager instance; // 싱글톤 인스턴스
 
     public SkillManager skillManager; // 스킬 매니저 참조 필드
+    public AITurn aITurn; // AI 턴 매니저 참조 필드
+    public TurnManager turnManager; // 턴 매니저 참조 필드
 
     public UnityEvent<string> OnStoryStart = new UnityEvent<string>();
     public UnityEvent<SkillManager> OnStoryStop = new UnityEvent<SkillManager>();
@@ -65,6 +67,7 @@ public class StoryManager : MonoBehaviour
     void Awake()
     {
         excelReader = GetComponent<ExcelReader>();
+        skillManager = GetComponent<SkillManager>();
         InitLockActions();
         instance = this;
     }
@@ -539,7 +542,7 @@ public class StoryManager : MonoBehaviour
     public void TimeLock()
     {
         timeLock = true; // 시간 정지 활성화
-        //Time.timeScale = 0f; // 게임 시간 정지
+        Time.timeScale = 0f; // 게임 시간 정지
     }
 
 
@@ -587,12 +590,12 @@ public class StoryManager : MonoBehaviour
 
     public bool ISskillCast()
     {
-        return skillManager.isSkillReadyFinal || Input.GetKeyDown(KeyCode.M);
+        return Input.GetKeyDown(KeyCode.M);
     }
 
     public bool ISturn()
     {
-        return Input.GetKeyDown(KeyCode.P);
+        return Input.GetKeyDown(KeyCode.P) || (!turnManager.isPlayerTurn && aITurn.AIturnEnd);
     }
 
     public bool ISmove()

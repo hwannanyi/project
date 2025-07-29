@@ -31,8 +31,8 @@ public class SkillManager : MonoBehaviour
     public Vector3 selectedAoeCenterPosition = Vector3.zero;
     public Vector3 selectedTargetPosition = Vector3.zero;
 
-    [HideInInspector] public bool isSkillReady = false;
-    [HideInInspector] public bool isSkillReadyFinal = false;
+    public bool isSkillReady = false;
+    public bool isSkillReadyFinal = false;
 
     //private bool isWaitingForReaction = false;    // 대응단계로 인해 중단되었는지 여부
 
@@ -178,6 +178,10 @@ public class SkillManager : MonoBehaviour
             PrepareSkillCast(4, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 4)
         }
 
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Skillcancel();
+        }
 
 
         // 대응단계 강제 종료 테스트용 (게임 흐름에 따라 UI 버튼 등으로 대체 가능)
@@ -265,7 +269,7 @@ public class SkillManager : MonoBehaviour
                     // 3. 시전 확정
                     SkillRangeVisualizer.Instance.HideSkillRange();
                     ConfirmSkillCast(selectedCharacter.team); // 위치 계산 성공했을 때만 확정
-                    if (TurnManager.Instance.IsInReactPhase())
+                    if (!turnManager.isPlayerTurn)
                     {
                         SkillCastTeam(skillCode);
                         //ExecuteReactionThenSkill(0);
