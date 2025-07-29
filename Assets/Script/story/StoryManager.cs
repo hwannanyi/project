@@ -45,7 +45,7 @@ public class StoryManager : MonoBehaviour
     public List<PopUpTalkData> PopUptalklist = new();
     public List<PopUpTalkData> PopUptalkRead = new();
     public TextMeshProUGUI popUptalktext; // 대화 텍스트 UI
-    public RectTransform popUptalkRect; //
+    public RectTransform popUptalkRect; // 팝업 대화창 RectTransform
     public int currentPopUpTalkIndex = 0; // 현재 대사 인덱스
     public bool popUpisStoryActive = false; // 팝업 스토리 UI 활성화 여부
      
@@ -406,7 +406,15 @@ public class StoryManager : MonoBehaviour
     {
         if (PopUptalkRead.Count > 0 && currentPopUpTalkIndex < PopUptalkRead.Count)
         {
-            popUptalktext.text = PopUptalkRead[currentPopUpTalkIndex].talk;
+            string talk = PopUptalkRead[currentPopUpTalkIndex].talk;
+            if (!string.IsNullOrEmpty(talk) && talk.Contains("/"))
+            {
+                popUptalktext.text = string.Join("\n", talk.Split('/'));
+            }
+            else
+            {
+                popUptalktext.text = talk;
+            }
         }
         else
         {
@@ -429,6 +437,7 @@ public class StoryManager : MonoBehaviour
                     currentPopUpTalkIndex++;
                     ShowCurrentPopUpTalk();
                     LayoutRebuilder.ForceRebuildLayoutImmediate(popUptalkRect);
+                    popUptalkRect.anchoredPosition = UItrans();
                     PopUpStoryProductionLock(PopUptalkRead[currentPopUpTalkIndex].production);
 
                 }
@@ -442,6 +451,47 @@ public class StoryManager : MonoBehaviour
         catch
         {
         }
+    }
+
+    /////////////////////////////////////////////////////////
+    //등장위치
+    /// <summary>
+    /// 팝업 대화창의 좌표를 화면 크기에 비례하여 반환합니다.
+    /// tran 문자열이 "x y" 형식(-1~1 범위)일 때,
+    /// x: -1(왼쪽), 0(중앙), 1(오른쪽)
+    /// y: -1(아래), 0(중앙), 1(위)
+    /// 잘못된 tran 값이면 (0,0) 반환
+    /// </summary>
+    public Vector2 UItrans()
+    {
+        // tran에서 좌표값 파싱
+        string tran = PopUptalkRead[currentPopUpTalkIndex].tran;
+        float x = 0f, y = 0f;
+        if (!string.IsNullOrEmpty(tran))
+        {
+            var parts = tran.Split(' ');
+            // tran이 "숫자 숫자" 형식일 때만 파싱
+            if (parts.Length == 2 && float.TryParse(parts[0], out float tx) && float.TryParse(parts[1], out float ty))
+            {
+                // -1~1 범위로 제한
+                x = Mathf.Clamp(tx, -1f, 1f);
+                y = Mathf.Clamp(ty, -1f, 1f);
+            }
+        }
+
+        // 부모 RectTransform(캔버스) 기준으로 실제 좌표 계산
+        RectTransform canvasRect = popUptalkRect.parent as RectTransform;
+        if (canvasRect != null)
+        {
+            float halfWidth = canvasRect.rect.width / 2f;
+            float halfHeight = canvasRect.rect.height / 2f;
+            // x, y를 화면 크기에 비례한 픽셀 좌표로 변환
+            float px = x * halfWidth;
+            float py = y * halfHeight;
+            return new Vector2(px, py);
+        }
+        // 잘못된 tran 값 또는 부모가 없으면 (0,0) 반환
+        return Vector2.zero;
     }
 
 
