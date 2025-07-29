@@ -11568,6 +11568,7 @@ MonoBehaviour:
   characterUIManager: {fileID: 781908732}
   skillManager: {fileID: 0}
   turnManager: {fileID: 0}
+  storyManager: {fileID: 0}
   selectedCharacter: {fileID: 0}
   characterStats: {fileID: 0}
 --- !u!114 &62703693
@@ -11630,6 +11631,7 @@ MonoBehaviour:
   stageManager: {fileID: 0}
   uiManager: {fileID: 781908733}
   characterUIManager: {fileID: 781908732}
+  storyManager: {fileID: 0}
   isPlayerTurn: 1
   Reacttrun: 0
   Turn: 0
@@ -11656,6 +11658,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ad9f2c2e065afb49a3a385c7abe0077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  storyManager: {fileID: 0}
 --- !u!114 &62703696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11674,6 +11677,7 @@ MonoBehaviour:
   reactTimeUIManager: {fileID: 781908735}
   skillRangeVisualizer: {fileID: 0}
   turnManager: {fileID: 0}
+  storyManager: {fileID: 0}
   characterSelection: {fileID: 0}
   selectedSkill:
     useCharacterName: 
@@ -12430,36 +12434,6 @@ MonoBehaviour:
   stageManager: {fileID: 0}
   storyManager: {fileID: 0}
   CurrentStage: {fileID: 0}
-  PopUpOnStoryReStart:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 62703709}
-        m_TargetAssemblyTypeName: StoryManager, Assembly-CSharp
-        m_MethodName: PopUpStoryReStart
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnStoryReStop:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 62703709}
-        m_TargetAssemblyTypeName: StoryManager, Assembly-CSharp
-        m_MethodName: StoryReStart
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   PopUpOnStoryEnd:
     m_PersistentCalls:
       m_Calls: []
@@ -12493,6 +12467,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0d913b67cebc7429f8f0115ce538ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillManager: {fileID: 0}
   OnStoryStart:
     m_PersistentCalls:
       m_Calls: []
@@ -12537,6 +12512,11 @@ MonoBehaviour:
   popUpisStoryActive: 0
   readStoryID: []
   readpopupStoryID: []
+  chPickLock: 0
+  moveLock: 0
+  turnLock: 0
+  skillLock: 0
+  timeLock: 0
 --- !u!4 &72771762 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5236981650925629645, guid: 78e847a47d13ecc43b14da6abaea6898, type: 3}
@@ -18000,7 +17980,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 4.3333335
+  orthographic size: 5.7083335
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -32545,6 +32525,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c0d913b67cebc7429f8f0115ce538ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skillManager: {fileID: 0}
   OnStoryStart:
     m_PersistentCalls:
       m_Calls: []
@@ -32589,6 +32570,11 @@ MonoBehaviour:
   popUpisStoryActive: 0
   readStoryID: []
   readpopupStoryID: []
+  chPickLock: 0
+  moveLock: 0
+  turnLock: 0
+  skillLock: 0
+  timeLock: 0
 --- !u!1 &1376101904
 GameObject:
   m_ObjectHideFlags: 0

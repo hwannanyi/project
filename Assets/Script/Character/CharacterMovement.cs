@@ -61,9 +61,17 @@ public class CharacterMovement : MonoBehaviour
 
     void Update()
     {
-        //UI클릭시 클릭 무시
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
+        try
+        {
+            if (StoryManager.instance.isStoryActive)
+            {
+                return; // 모든 입력 무시
+            }
+        }
+        catch
+        {
+            return; // StoryManager를 못불려와도 모든입력무시
+        }
         var stats = CharacterStats.Instance;
         var character = stats.GetStats(gameObject);
 
@@ -112,7 +120,7 @@ public class CharacterMovement : MonoBehaviour
                 ShowMoveHighlights();
             }*/
 
-            // --- [추가] 마우스 방향에 따라 x축 반전 ---
+/*            // --- [추가] 마우스 방향에 따라 x축 반전 ---
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // y = 0 기준 평면
             float enter;
@@ -122,7 +130,7 @@ public class CharacterMovement : MonoBehaviour
                 mousePosition = ray.GetPoint(enter);
                 mousePosition.y = 0f;
             }
-            //
+            //*/
 
             if (SkillManager.Instance.waitingForResponse == true)
             {
@@ -182,14 +190,24 @@ public class CharacterMovement : MonoBehaviour
 
                 Vector3 chosenDir = Vector3.zero;
 
-                if (Input.GetKey(KeyCode.UpArrow))
-                    chosenDir = Vector3.forward;
-                else if (Input.GetKey(KeyCode.DownArrow))
-                    chosenDir = Vector3.back;
-                else if (Input.GetKey(KeyCode.LeftArrow))
-                    chosenDir = Vector3.left;
-                else if (Input.GetKey(KeyCode.RightArrow))
-                    chosenDir = Vector3.right;
+                try
+                {
+                    if (!StoryManager.instance.moveLock)
+                    {
+                        if (Input.GetKey(KeyCode.UpArrow))
+                            chosenDir = Vector3.forward;
+                        else if (Input.GetKey(KeyCode.DownArrow))
+                            chosenDir = Vector3.back;
+                        else if (Input.GetKey(KeyCode.LeftArrow))
+                            chosenDir = Vector3.left;
+                        else if (Input.GetKey(KeyCode.RightArrow))
+                            chosenDir = Vector3.right;
+                    }
+                }
+                catch
+                {
+                    chosenDir = Vector3.zero; // StoryManager를 못불려와도 모든입력무시
+                }
 
                 if (chosenDir != Vector3.zero)
                 {

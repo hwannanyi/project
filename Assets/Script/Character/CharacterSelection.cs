@@ -37,7 +37,7 @@ public class CharacterSelection : MonoBehaviour
     {
         try
         {
-            if (storyManager.isStoryActive)
+            if (storyManager.isStoryActive || StoryManager.instance.chPickLock)
                 return; // 모든 입력 무시
         }
         catch

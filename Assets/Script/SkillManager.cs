@@ -146,7 +146,7 @@ public class SkillManager : MonoBehaviour
 
         try 
         { 
-            if (storyManager.isStoryActive)
+            if (storyManager.isStoryActive || storyManager.skillLock)
             return; // 모든 입력 무시
         }
         catch
@@ -821,8 +821,7 @@ public class SkillManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 선택된 스킬의 실행을 확정하고 대응 조건을 판단하여 대응단계로 진입하거나 즉시 시전한다.
-    /// 대응단계 중이면 대응자 스킬을 pendingReactSkill로 저장한다.
+    /// 선택된 스킬의 실행을 확정
     /// </summary>
     public void ConfirmSkillCast(Team team)
     {

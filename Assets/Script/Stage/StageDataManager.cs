@@ -6,8 +6,7 @@ using UnityEngine.Rendering.Universal;
 
 public class StageDataManager : MonoBehaviour
 {
-    public StageManager stageManager;
-
+    public StageManager stageManager; // 스테이지 매니저 인스턴스
     public StoryManager storyManager; // 스토리 매니저 인스턴스
 
     public Stage CurrentStage; // 현재 선택된 스테이지
@@ -16,8 +15,8 @@ public class StageDataManager : MonoBehaviour
     // 델리게이트 변수 선언
     public StoryCondition storyConditionHandler;
 
-    public UnityEvent<string> PopUpOnStoryReStart = new UnityEvent<string>();
-    public UnityEvent<string> OnStoryReStop = new UnityEvent<string>();
+    private UnityEvent<string> PopUpOnStoryReStart = new UnityEvent<string>();
+    private UnityEvent<string> OnStoryReStop = new UnityEvent<string>();
     public UnityEvent PopUpOnStoryEnd = new UnityEvent();
 
     public TurnManager turnManager;
@@ -103,7 +102,10 @@ public class StageDataManager : MonoBehaviour
         
         string ID = check ? timing.ID : null;
         if (timing.isPopUp)
+        { //스토리바, 팝업창 구분
+            Debug.Log($"[StageDataManager] CheckTurn: {ID} : {timing.ID}");
             Startpopstory(ID);
+        }
         else
             Startstory(ID);
     }

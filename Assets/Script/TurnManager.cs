@@ -33,6 +33,8 @@ public class TurnManager : MonoBehaviour
     public StageManager stageManager;
     public TurnUIManager uiManager;
     public CharacterUIManager characterUIManager; // 캐릭터 프로필 UI 매니저
+    public StoryManager storyManager; // 스토리 매니저 인스턴스
+
 
     public bool isPlayerTurn = true; // 플레이어 턴 여부
 
@@ -66,6 +68,7 @@ public class TurnManager : MonoBehaviour
         characterSelection = GetComponent<CharacterSelection>();
         characterStats = GetComponent<CharacterStats>();
         stageDataManager = GetComponent<StageDataManager>();
+        storyManager = GetComponent<StoryManager>();
         try
         {
             stageManager = StageManager.Instance;
@@ -173,7 +176,6 @@ public class TurnManager : MonoBehaviour
     public void NextTurn()
     {
 
-        
         isPlayerTurn = !isPlayerTurn; // 플레이어 턴 여부 토글
         EnterReactPhase();
         CharacterSelection.selectedCharacterIndex = -1;
