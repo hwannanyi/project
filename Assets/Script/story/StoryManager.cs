@@ -398,6 +398,7 @@ public class StoryManager : MonoBehaviour
             }
         }
         ShowCurrentPopUpTalk();
+        popUptalkRect.anchoredPosition = UItrans();
         PopUpStoryProductionLock(PopUptalkRead[currentPopUpTalkIndex].production);
     }
 

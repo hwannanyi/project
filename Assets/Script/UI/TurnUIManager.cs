@@ -25,6 +25,9 @@ public class TurnUIManager : MonoBehaviour
     public Sprite enemyReactGuard;
     public Sprite NotReactGuard;
 
+    public GameObject Skill_Cancel_Button;
+    public GameObject Skill_Start_Button;
+    public GameObject Skill_TurnEnd_Button;
 
     public void UpdateTrunCount(int turnCount)
     {
@@ -38,6 +41,22 @@ public class TurnUIManager : MonoBehaviour
     public void UpdateWaveCount(int wave)
     {
         waveCount.text = wave.ToString();
+    }
+
+    public void UpdateButtonActive(bool playerturn)
+    {
+        if (playerturn)
+        {
+            Skill_Cancel_Button.SetActive(true);
+            Skill_Start_Button.SetActive(true);
+            Skill_TurnEnd_Button.SetActive(true);
+        }
+        else
+        {
+            Skill_Cancel_Button.SetActive(false);
+            Skill_Start_Button.SetActive(false);
+            Skill_TurnEnd_Button.SetActive(false);
+        }
     }
 
     public void UpdateReactTurn(bool playerturn)
@@ -56,6 +75,7 @@ public class TurnUIManager : MonoBehaviour
             playerReact.sprite = playerReactGuard;
             enemyReact.sprite = NotReactGuard;
         }
+        UpdateButtonActive(playerturn);
     }
 
 }

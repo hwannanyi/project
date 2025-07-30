@@ -191,6 +191,10 @@ public class SkillHitEffects : MonoBehaviour
             int damageValue = ValueCalculation(HitEffects.DamageEffect, target, casterStats, skillData, 0);
             if (HasSkillHitEffect_Damge_ByTarget(skillData, target, 0, SkillhitEffect.damage))
             {
+                if(targetStats.gurd > 0)
+                {
+                    return; // 가드가 있는 경우 데미지 무시
+                }
                 int finalDamage = DamageFormula(damageValue, targetStats, casterStats, skillData);
                 int targetShlields = targetStats.shields; // 현재 대상의 보호막 값
                 if (targetShlields > 0)
@@ -211,7 +215,7 @@ public class SkillHitEffects : MonoBehaviour
                     targetStats.hp -= DamageFormula(damageValue, targetStats, casterStats, skillData)
 
 ;
-                    DamageText.Instance.ShowDamage(targetObj.transform.position + Vector3.up * 1.5f, damageValue, true);
+                    DamageText.Instance.ShowDamage(targetObj.transform.position + Vector3.up * 1.5f, damageValue, false);
                     Debug.Log($"[Hit] {targetStats.name}이(가) {casterStats.name}에게 {damageValue} 피해를 입음. 남은 HP: {targetStats.hp}");
                 }
                 

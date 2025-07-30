@@ -163,7 +163,7 @@ public class SkillEffectHitscan : MonoBehaviour
             }
         }
 
-        Destroy(gameObject, 3); // 아주 짧게 남기기
+        Destroy(gameObject, skillData.hitscantime); // 아주 짧게 남기기
     }
 
     void OnDestroy()

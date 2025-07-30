@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 
@@ -54,6 +55,7 @@ public class Stats
 
 
     public bool isPatternEnd;
+    public float gurd;
 
     /// <summary>
     /// /////////////////////
@@ -121,6 +123,7 @@ public class Stats
 
         available = true;
         movable = true;
+        gurd = 0f; // 방어시간 초기화
 
         aIPattern = new AIPattern(data.skillQueue);
         //패시브 스킬 추가

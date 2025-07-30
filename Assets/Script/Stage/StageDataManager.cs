@@ -70,23 +70,55 @@ public class StageDataManager : MonoBehaviour
 
         }
     }
+    /*    public void CheckKill(List<StoryTiming> timingList)
+        {
+            // 현재 적이 살아있는 수
+            int kill = characterStats.characterList.Count(stats => stats.team == Team.enemy && stats.isdie == false);
+
+            // 조건을 만족하는 StoryTiming 객체 추출
+            var timing = timingList
+                .FirstOrDefault(t => kill >= t.value && !storyManager.readpopupStoryID.Contains(t.ID));
+
+            if (!string.IsNullOrEmpty(timingId))
+            {
+                var timing = timingList.First(t => t.ID == timingId);
+                if (timing.isPopUp)
+                    PopUpOnStoryReStart.Invoke(timingId);
+                else
+                    OnStoryReStop.Invoke(timingId);
+            }
+        }*/
+
     public void CheckKill(List<StoryTiming> timingList)
     {
-/*        // 현재 적이 살아있는 수
-        int kill = characterStats.characterList.Count(stats => stats.team == Team.enemy && stats.isdie == false);
+        // 현재 적이 살아있는 수
+        int aliveEnemyCount = characterStats.characterList.Count(stats => stats.team == Team.enemy && stats.isdie == false);
 
-        // 조건을 만족하는 StoryTiming 객체 추출
-        var timing = timingList
-            .FirstOrDefault(t => kill >= t.value && !storyManager.readpopupStoryID.Contains(t.ID));
-
-        if (!string.IsNullOrEmpty(timingId))
+        // 살아있는 적이 없으면 조건을 만족하는 첫 StoryTiming 실행
+        if (aliveEnemyCount == 0)
         {
-            var timing = timingList.First(t => t.ID == timingId);
-            if (timing.isPopUp)
-                PopUpOnStoryReStart.Invoke(timingId);
+            var timing = timingList.FirstOrDefault(t => !storyManager.readpopupStoryID.Contains(t.ID));
+            if (timing != null && !string.IsNullOrEmpty(timing.ID))
+            {
+                if (timing.isPopUp)
+                    PopUpOnStoryReStart.Invoke(timing.ID);
+                else
+                    OnStoryReStop.Invoke(timing.ID);
+            }
+            return;
+        }
+
+        // 살아있는 적이 있을 때 기존 조건대로 실행
+        var killTiming = timingList
+            .FirstOrDefault(t => aliveEnemyCount >= t.value && !storyManager.readpopupStoryID.Contains(t.ID));
+
+        if (killTiming != null && !string.IsNullOrEmpty(killTiming.ID))
+        {
+            if (killTiming.isPopUp)
+                PopUpOnStoryReStart.Invoke(killTiming.ID);
             else
-                OnStoryReStop.Invoke(timingId);
-        }*/
+                OnStoryReStop.Invoke(killTiming.ID);
+        }
     }
 
     public void CheckTurn()

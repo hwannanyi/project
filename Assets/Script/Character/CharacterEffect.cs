@@ -41,6 +41,11 @@ public class CharacterEffect : MonoBehaviour
         var stats = CharacterStats.Instance;
         character = stats.GetStats(gameObject);
 
+        if(character.gurd > 0)
+        {
+            character.gurd -= Time.deltaTime;
+        }
+
         Buff_solid(character);
         DeBuff_corrosion(character);
         CC_stun(character);

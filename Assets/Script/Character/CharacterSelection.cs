@@ -32,6 +32,7 @@ public class CharacterSelection : MonoBehaviour
 
     }
 
+
     //  1, 2, 3 키 입력으로 캐릭터 선택
     void Update()
     {
@@ -53,7 +54,7 @@ public class CharacterSelection : MonoBehaviour
        
         if (selectedCharacterIndex >= CharacterStats.Instance.playerCharacters.Count)
         {
-            OnCharacterSelectedMoveCount2P(selectedCharacterIndex);
+            //OnCharacterSelectedMoveCount2P(selectedCharacterIndex);
             return;
         }
         OnCharacterSelectedMoveCount(selectedCharacterIndex); 
@@ -65,6 +66,11 @@ public class CharacterSelection : MonoBehaviour
         
     }
 
+
+    public Stats PickcharNumber(int index)
+    {
+        return characterStats.characterList[index];
+    }
     void HandleCharacterSelection()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1)) SelectCharacter(0);
@@ -147,7 +153,7 @@ public class CharacterSelection : MonoBehaviour
         
     }
 
-    public void SelectCharacter2P(int index)
+/*    public void SelectCharacter2P(int index)
     {
         if (turnManager.IsPlayerActive())
         {
@@ -156,7 +162,7 @@ public class CharacterSelection : MonoBehaviour
         }
 
         int index1 = index - CharacterStats.Instance.playerCharacters.Count;
-/*        // 대응단계에서만 유효한 대상 제한
+*//*        // 대응단계에서만 유효한 대상 제한
         if (TurnManager.Instance.IsInReactPhase())
         {
             GameObject candidate = CharacterStats.Instance.characters[index];
@@ -170,7 +176,7 @@ public class CharacterSelection : MonoBehaviour
             {
                 Debug.Log("이 캐릭터는 메인 타겟입니다.");
             }
-        }*/
+        }*//*
         if (index1 < CharacterStats.Instance.EnemieCharacters.Count)
         {
             var character = CharacterStats.Instance.characterList[index];
@@ -213,7 +219,7 @@ public class CharacterSelection : MonoBehaviour
                 Debug.Log("캐릭 선택실패");
             }
         }
-    }
+    }*/
 
     public void SelectCharacterCen()
     {
@@ -245,7 +251,7 @@ public class CharacterSelection : MonoBehaviour
 
 
 
-    public void OnCharacterSelected2P(int index)
+/*    public void OnCharacterSelected2P(int index)
     {
         int index1 = index;// - CharacterStats.Instance.playerCharacters.Count;
         if (index1 < 0 || index1 >= CharacterStats.Instance.characterList.Count)
@@ -268,5 +274,5 @@ public class CharacterSelection : MonoBehaviour
         }
         var character = CharacterStats.Instance.characterList[index1];
         characterUIManager.UpdateMoveCount(character.NowMoveCount);
-    }
+    }*/
 }

@@ -1105,8 +1105,9 @@ public class SkillManager : MonoBehaviour
 
         // 쿨타임 시작
         skill.StartCooldown();
+        character.gurd = skill.gurd.time;
         //프로필 업데이트
-        ProfileuiManager.ProfileUpdate(character);
+        ProfileuiManager.ProfileUpdate(characterSelection.PickcharNumber(CharacterSelection.selectedCharacterIndex));
         //선택된 스킬범위 삭제
         SkillRangeVisualizer.Instance.StopNonTargetProjectileRange();
         SkillRangeVisualizer.Instance.StopSkillRangePreview();

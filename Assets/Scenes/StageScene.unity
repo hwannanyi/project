@@ -12406,6 +12406,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turntime: 3
   turnTimer: 0
+  storyManager: {fileID: 0}
+  AIturnEnd: 0
 --- !u!114 &62703706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12468,6 +12470,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillManager: {fileID: 0}
+  aITurn: {fileID: 0}
+  turnManager: {fileID: 0}
   OnStoryStart:
     m_PersistentCalls:
       m_Calls: []
@@ -14522,7 +14526,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 223539591}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -17980,7 +17984,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 5.7083335
+  orthographic size: 5.7916665
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -18525,7 +18529,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 92.0356, y: 46.46}
+  m_SizeDelta: {x: 93.0988, y: 52.5754}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &361908668
 MonoBehaviour:
@@ -18592,10 +18596,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Left: 10
+    m_Right: 10
+    m_Top: 5
+    m_Bottom: 5
   m_ChildAlignment: 8
   m_Spacing: 0
   m_ChildForceExpandWidth: 0
@@ -18688,8 +18692,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 78.030594, y: -13.225}
-  m_SizeDelta: {x: 28.01, y: 26.45}
+  m_AnchoredPosition: {x: 51.9188, y: -20.04}
+  m_SizeDelta: {x: 62.36, y: 30.08}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &373541446
 MonoBehaviour:
@@ -18751,7 +18755,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '                                  '
+  m_text: text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
   m_sharedMaterial: {fileID: 7790065524298641722, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
@@ -18778,8 +18782,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 30
+  m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -18816,7 +18820,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 15.2724, y: 11.480312, z: 12.733459, w: 14.962824}
+  m_margin: {x: -0.2092742, y: 0.07890128, z: 0.085479766, w: -0.1696577}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -23765,7 +23769,7 @@ GameObject:
   - component: {fileID: 754582856}
   - component: {fileID: 754582855}
   m_Layer: 0
-  m_Name: Skill_Start_Button (1)
+  m_Name: Skill_TurnEnd_Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23788,8 +23792,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -47.100098, y: 33.440002}
-  m_SizeDelta: {x: 68.086426, y: 43.51648}
+  m_AnchoredPosition: {x: -66.94031, y: 33.440002}
+  m_SizeDelta: {x: 107.7668, y: 43.5165}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &754582855
 MonoBehaviour:
@@ -24666,6 +24670,9 @@ MonoBehaviour:
   playerReactGuard: {fileID: -1631918397, guid: 0f5854b920323934c8c25a4b2979001d, type: 3}
   enemyReactGuard: {fileID: 817463358, guid: 0f5854b920323934c8c25a4b2979001d, type: 3}
   NotReactGuard: {fileID: -18812736, guid: 0f5854b920323934c8c25a4b2979001d, type: 3}
+  Skill_Cancel_Button: {fileID: 894776179}
+  Skill_Start_Button: {fileID: 1746849164}
+  Skill_TurnEnd_Button: {fileID: 754582853}
 --- !u!114 &781908734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26023,8 +26030,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -243.87, y: 32.473}
-  m_SizeDelta: {x: 67.763916, y: 41.5824}
+  m_AnchoredPosition: {x: -250.99121, y: 32.472992}
+  m_SizeDelta: {x: 82.0064, y: 41.5824}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &894776181
 MonoBehaviour:
@@ -26777,12 +26784,12 @@ GameObject:
   - component: {fileID: 957610341}
   - component: {fileID: 957610340}
   m_Layer: 0
-  m_Name: Skill_eye_Button
+  m_Name: Skill__Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &957610339
 RectTransform:
   m_ObjectHideFlags: 0
@@ -30666,8 +30673,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 46.0178, y: -36.455}
-  m_SizeDelta: {x: 92.0356, y: 20.01}
+  m_AnchoredPosition: {x: 46.5494, y: -41.3277}
+  m_SizeDelta: {x: 73.0988, y: 12.4954}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1232715708
 MonoBehaviour:
@@ -30716,14 +30723,14 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -32526,6 +32533,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillManager: {fileID: 0}
+  aITurn: {fileID: 0}
+  turnManager: {fileID: 0}
   OnStoryStart:
     m_PersistentCalls:
       m_Calls: []
@@ -35045,7 +35054,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC2DC\uC791!"
+  m_text: "\uC2DC\uC804(M)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
   m_sharedMaterial: {fileID: 7790065524298641722, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
@@ -41866,7 +41875,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD134 \uC885\uB8CC"
+  m_text: "\uD134 \uC885\uB8CC(P)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
   m_sharedMaterial: {fileID: 7790065524298641722, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
@@ -42091,8 +42100,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 244.9, y: 33.44}
-  m_SizeDelta: {x: 68.086395, y: 43.5165}
+  m_AnchoredPosition: {x: 254.34837, y: 33.440002}
+  m_SizeDelta: {x: 86.9832, y: 43.5165}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1746849166
 MonoBehaviour:
@@ -50139,7 +50148,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uCDE8\uC18C"
+  m_text: "\uCDE8\uC18C(Z)"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
   m_sharedMaterial: {fileID: 7790065524298641722, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}

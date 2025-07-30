@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
@@ -55,6 +56,9 @@ public class SkillData
 
     public List<Target> skillTarget; // 적중 가능한 대상 (자신, 아군, 적 등)
     public float projectileSpeed; // 투사체 속도 (히트스캔이면 0)  //////////(연출용)
+    public float hitscantime;
+
+
     public float afterdelay; // 선딜 //////////(연출용)
     public float beforedelay; // 후딜 //////////(연출용)
     public float range;           // 사거리
@@ -84,7 +88,7 @@ public class SkillData
     public float reactTime;
 
     public int skillCastCode; // 스킬 실행시 스킬을 찾기위한 임시코드 
-    
+    public Gurd gurd; //가드 정보
 
     public SkillData(Skill data, string characterName, bool isreactSkill, int depth = 0)
     {
@@ -128,6 +132,8 @@ public class SkillData
         XstartSkillPosition = data.XstartSkillPosition;
         YstartSkillPosition = data.YstartSkillPosition;
         projectileSpeed = data.projectileSpeed;
+        hitscantime = data.hitscantime; // 히트스캔 시간
+
         afterdelay = data.afterdelay;
         beforedelay = data.beforedelay;
         range = data.range;
@@ -135,6 +141,7 @@ public class SkillData
         Xaoe = data.Xaoe;
         Yaoe = data.Yaoe;
         aoecenter = data.aoecenter;
+        gurd = data.gurd; // 가드 정보
 
         // SkillData.cs 생성자 내 specialAoe 복사 부분 수정
         specialAoe = new AoeInfo[data.specialAoe.Length];

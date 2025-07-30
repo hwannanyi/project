@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
 using System.Linq;
+using System.Collections;
+
 using UnityEngine.SceneManagement;
 using UnityEngine.Events;
 
@@ -216,13 +218,26 @@ public class TurnManager : MonoBehaviour
         if (allEnemiesDead && StoryManager.instance != null && StoryManager.instance.isStoryEnd)
         {
             Debug.Log("스테이지 클리어!");
-            SceneManager.LoadScene("Stage_Selection"); // 게임 씬으로 전환
+            StartCoroutine(CheckStageClearRoutine()); // 게임 씬으로 전환
             return;
             // 필요하다면 UI에 메시지 표시 등 추가 작업
         }
         stageDataManager.CheckTurn();//스토리활성화
     }
+    private IEnumerator CheckStageClearRoutine()
+    {
+        // popUpisStoryActive와 isStoryActive가 모두 true면 대기
+        while (StoryManager.instance != null &&
+               StoryManager.instance.popUpisStoryActive &&
+               StoryManager.instance.isStoryActive)
+        {
+            yield return null; // 한 프레임 대기
+        }
 
+            Debug.Log("스테이지 클리어!");
+            SceneManager.LoadScene("Stage_Selection"); // 게임 씬으로 전환
+            yield break;
+    }
     //  EventManager 이벤트용
     public void NextTurnEnd(bool value)
     {

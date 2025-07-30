@@ -7,11 +7,12 @@ public class EventManager : MonoBehaviour
     // 턴을 넘기는 매니저
     public static EventManager Instance;
 
-    public StoryManager storyManager; // 스토리 매니저 인스턴스
+    public StoryManager storyManager; // 스토리 매니저 컴포넌트
+    public TurnManager turnManager; // 턴 매니저 컴포넌트
     private void Awake()
     {
         storyManager = GetComponent<StoryManager>();
-
+        turnManager = GetComponent<TurnManager>();
             Instance = this;
 
     }
@@ -24,6 +25,7 @@ public class EventManager : MonoBehaviour
 
     public void FinishTurn(bool value)
     {
+        
         try
         {
             if (storyManager.isStoryActive || storyManager.turnLock)
@@ -41,8 +43,7 @@ public class EventManager : MonoBehaviour
     public void Update()
     {
 
-
-        if (Input.GetKeyDown(KeyCode.P)) 
+        if (Input.GetKeyDown(KeyCode.P) && turnManager.isPlayerTurn) 
         {
             FinishTurn(true);
         }

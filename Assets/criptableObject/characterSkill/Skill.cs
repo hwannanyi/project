@@ -112,6 +112,7 @@ public class Skill : ScriptableObject
     [Header("스킬의 대상")]
     public List<Target> skillTarget; // 적중 가능한 대상 (자신, 아군, 적 등)
     public float projectileSpeed; // 투사체 속도 (히트스캔이면 0)  //////////(연출용)
+    public float hitscantime = 1;
     public float afterdelay; // 선딜 //////////(연출용)
     public float beforedelay; // 후딜 //////////(연출용)
 
@@ -143,7 +144,8 @@ public class Skill : ScriptableObject
     public React react; //대응가능유무 + 대응가능대상
     public float reactTime;
 
-
+    [Header("가드 정보")]
+    public Gurd gurd; //가드 정보
 }
 
 
@@ -210,6 +212,12 @@ public class CCEffect
     public UDictionary<IncreaseType, float> increase; //위력 계수
     public int trunDuration;       // 기본 지속 시간 (턴사이클 수)
     public UDictionary<IncreaseType, float> timeIncrease; // 지속 시간 계수
+}
+
+[System.Serializable]
+public class Gurd
+{
+    public float time;
 }
 
 [System.Serializable]
