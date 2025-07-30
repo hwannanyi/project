@@ -177,7 +177,28 @@ public class SkillManager : MonoBehaviour
         {
             PrepareSkillCast(4, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 4)
         }
+/*
+        if (!turnManager.isPlayerTurn)
+        {
+            if (selectedSkill != null && selectedCharacter != null) //스킬 확정 기준
+            {
+                CalculateSkillPosition(selectedSkill, selectedCharacter, false, Vector3.zero, Vector3.zero, selectedTargetUnit); // 항상 호출해야 함
+                if (isSkillReady)
+                {
 
+                    if (selectedSkill.targeting && selectedTargetUnit == null)
+                        return;
+
+                    // 3. 시전 확정
+                    SkillRangeVisualizer.Instance.HideSkillRange();
+                    ConfirmSkillCast(selectedCharacter.team); // 위치 계산 성공했을 때만 확정
+                    SkillCastTeam(skillCode);
+                    //ExecuteReactionThenSkill(0);
+                    ResetResponseState();
+                }
+            }
+        }
+*/
         if (Input.GetKeyDown(KeyCode.Z))
         {
             Skillcancel();
