@@ -1,20 +1,31 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using System;
+using Unity.VisualScripting;
+
 
 public class CharacterHighlight : MonoBehaviour
 {
+    // 이 스크립트는 캐릭터의 하이라이트를 관리합니다.
     public CharacterForm characterForm;
     public SpriteOutline outline;
     public int outlineSize;
 
-    void Start()
+    public GameObject grandParentObj;
+    private Action Mark;
+    public GameObject EffectMarkPf;
+
+    public Dictionary<string, SpriteRenderer> spriteRenderer = new();
+    public Sprite sprite;
+
+
+    private Dictionary<string, GameObject> EffectMark;
+    void Awake()
     {
-        // 부모오브젝트 가져오기
         characterForm = GetComponent<CharacterForm>();
         outline = GetComponent<SpriteOutline>();
-
     }
-
     public void Update()
     {
         if (outline == null || characterForm == null)
@@ -35,5 +46,42 @@ public class CharacterHighlight : MonoBehaviour
                            action.skillData.selectedTargetUnit == characterForm.parentObject);
 
         outline.outlineSize = isTarget ? 2 : 0;
+
+        var manager = CharacterStats.Instance;
+        var character = manager.GetStats(grandParentObj);
+
+
+    }
+
+    public void SetHighlight(Stats character, string markName)
+    {
+            Mark = IsGurd(character) ?
+            () =>
+            {
+                bool exists = EffectMark.ContainsKey(markName);
+                Action createMark = () =>
+                {
+                    EffectMark.Add(markName, Instantiate(EffectMarkPf, transform));
+                    SpriteRenderer effectMarkSp = EffectMark[markName].GetComponent<SpriteRenderer>();
+                    effectMarkSp.sprite = sprite;
+                };
+                // exists가 false일 때만 createMark 실행
+                (exists ? (Action)(() => { }) : createMark)();
+            }
+                : () =>
+                {
+                    bool exists = EffectMark.ContainsKey(markName);
+                    Action destroyeMark = () =>
+                    {
+                        Destroy(EffectMark[markName]);
+                        EffectMark.Remove(markName);
+                    };
+                    (exists ? destroyeMark : (Action)(() => { }))();
+                };
+    }
+
+    public bool IsGurd(Stats ch)
+    {
+        return ch.gurd > 0;
     }
 }

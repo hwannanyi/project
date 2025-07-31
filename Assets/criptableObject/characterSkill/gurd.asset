@@ -15,7 +15,7 @@ MonoBehaviour:
   skillName: gurd
   skillIcon: {fileID: -1631918397, guid: 0f5854b920323934c8c25a4b2979001d, type: 3}
   SkillEffectIllustration: {fileID: -1631918397, guid: 0f5854b920323934c8c25a4b2979001d, type: 3}
-  SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
+  SkillEffectPrefab: {fileID: 6478507458708094152, guid: 996504ae6dec45d428cf8f9a8938b2b4, type: 3}
   passive: 0
   skillTypes: 01000000
   tooltip: "\uAC00\uB450"
@@ -62,12 +62,12 @@ MonoBehaviour:
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 0
-      targetTypeY: 0
+      targetTypeX: 2
+      targetTypeY: 2
       RotationType: 0
-      Designation: 0
+      Designation: 3
       reverse_order: 0
-      index: 0
+      index: 1
       target: 0
   EndAddSkills:
     condition:
@@ -87,12 +87,12 @@ MonoBehaviour:
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 0
-      targetTypeY: 0
+      targetTypeX: 2
+      targetTypeY: 2
       RotationType: 0
-      Designation: 0
+      Designation: 3
       reverse_order: 0
-      index: 0
+      index: 1
       target: 0
   summonCharacter: {fileID: 0}
   actionsNumber: 1
@@ -112,15 +112,15 @@ MonoBehaviour:
   projectileType: 0
   skillTarget: 00000000
   projectileSpeed: 5
-  hitscantime: 0
+  hitscantime: 1
   afterdelay: 0
   beforedelay: 0
   range: 1
   aoetype: 0
   fourRotation: 0
   effectRotation: 0
-  Xaoe: 1.5
-  Yaoe: 1.5
+  Xaoe: 1
+  Yaoe: 1
   specialAoe: []
   aoecenter: 0
   cooldown: 1

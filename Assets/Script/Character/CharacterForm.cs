@@ -74,6 +74,12 @@ public class CharacterForm : MonoBehaviour
             {
                 int index = CharacterStats.Instance.characters.IndexOf(parentObject);
                 spriteRenderer.sprite = CharacterStats.Instance.characterList[index].characterillustration;
+
+                // 스프라이트의 세로 길이의 절반만큼 오브젝트를 부모 기준(로컬 좌표)으로 위로 이동
+                float halfHeight = spriteRenderer.sprite.bounds.size.y / 2f;
+                Vector3 localPos = transform.localPosition;
+                localPos.y += halfHeight;
+                transform.localPosition = localPos;
             }
         }
     }

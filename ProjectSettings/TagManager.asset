@@ -50,6 +50,9 @@ TagManager:
   - name: New Layer 1
     uniqueID: 4202118769
     locked: 0
+  - name: effect
+    uniqueID: 1996469589
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1

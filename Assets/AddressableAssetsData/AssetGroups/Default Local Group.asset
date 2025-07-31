@@ -33,6 +33,12 @@ MonoBehaviour:
     m_SerializedLabels:
     - Stage
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e80599853b95d93418ba3c5e596ade6b
+    m_Address: "Assets/Sprite/SkillEffect/\uD0C0\uAC9F\uD45C\uC2DC.png"
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - EffectMark
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: f3e8b24c847af054b97f842962a32557
     m_Address: Assets/Sprite/Character
     m_ReadOnly: 0

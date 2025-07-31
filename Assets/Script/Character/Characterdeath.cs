@@ -15,6 +15,7 @@ public class Characterdeath : MonoBehaviour
         if (!stats.isdie && stats.hp <= 0)
         {
             stats.isdie = true;
+            stats.isPatternEnd = true; // 패턴 종료 상태 업데이트
             Die();
         }
     }
