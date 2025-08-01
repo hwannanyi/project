@@ -101,7 +101,7 @@ public class CameraZoom : MonoBehaviour
     public void CameraMoveMode()
     {
         isControlMode = !isControlMode;
-        Cursor.lockState = isControlMode ? CursorLockMode.Locked : CursorLockMode.None;
-        Cursor.visible = !isControlMode;
+        UnityEngine.Cursor.lockState = isControlMode ? CursorLockMode.Locked : CursorLockMode.None;
+        UnityEngine.Cursor.visible = !isControlMode;
     }
 }

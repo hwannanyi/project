@@ -34,7 +34,7 @@ MonoBehaviour:
       reverse_order: 0
       index: 1
       target: 0
-    - skill: {fileID: 11400000, guid: ef061324dfda5d14ab8b7962c9344a8b, type: 2}
+    - skill: {fileID: 11400000, guid: 8da697a8ec9af084d8ec2e4186dcccb9, type: 2}
       currentIndex: 0
       condition:
         isactive: 0
@@ -74,7 +74,7 @@ MonoBehaviour:
       reverse_order: 0
       index: 1
       target: 0
-    - skill: {fileID: 11400000, guid: ef061324dfda5d14ab8b7962c9344a8b, type: 2}
+    - skill: {fileID: 11400000, guid: 8da697a8ec9af084d8ec2e4186dcccb9, type: 2}
       currentIndex: 0
       condition:
         isactive: 0
@@ -112,7 +112,7 @@ MonoBehaviour:
       reverse_order: 0
       index: 1
       target: 0
-    - skill: {fileID: 11400000, guid: ef061324dfda5d14ab8b7962c9344a8b, type: 2}
+    - skill: {fileID: 11400000, guid: 8da697a8ec9af084d8ec2e4186dcccb9, type: 2}
       currentIndex: 0
       condition:
         isactive: 0

@@ -35,11 +35,6 @@ public class CharacterForm : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Characterform();
-        }
         if(CharacterSelection.selectedCharacterIndex == -1)
         {
             SetHighlight(false);

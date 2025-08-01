@@ -13,23 +13,29 @@ public class CharacterHighlight : MonoBehaviour
     public int outlineSize;
 
     public GameObject grandParentObj;
-    private Action Mark;
     public GameObject EffectMarkPf;
+    public Stats character;
 
-    public Dictionary<string, SpriteRenderer> spriteRenderer = new();
-    public Sprite sprite;
+    public UDictionary<string, GameObject> EffectMark = new();
+    private Dictionary<string, Func<bool>> Effect = new();
 
-
-    private Dictionary<string, GameObject> EffectMark;
+    public UDictionary<string, Sprite> sprite = new();
     void Awake()
     {
         characterForm = GetComponent<CharacterForm>();
         outline = GetComponent<SpriteOutline>();
+
+    }
+
+    private void Start()
+    {
+        var manager = CharacterStats.Instance;
+        character = manager.GetStats(grandParentObj);
+        StartMakeList();
     }
     public void Update()
     {
-        if (outline == null || characterForm == null)
-            return;
+        SetHighlightByKey("gurd"); //방어상태?
 
         // SkillSave.Instance와 Skillaction 리스트가 null이거나 비어있는지 체크
         if (SkillSave.Instance == null ||
@@ -46,42 +52,57 @@ public class CharacterHighlight : MonoBehaviour
                            action.skillData.selectedTargetUnit == characterForm.parentObject);
 
         outline.outlineSize = isTarget ? 2 : 0;
-
-        var manager = CharacterStats.Instance;
-        var character = manager.GetStats(grandParentObj);
-
-
     }
 
-    public void SetHighlight(Stats character, string markName)
+    public void SetHighlight(KeyValuePair<string, Func<bool>> effect)
     {
-            Mark = IsGurd(character) ?
-            () =>
+        string markName = effect.Key;
+        bool exists = EffectMark.ContainsKey(markName);
+        if (effect.Value())
+        {
+            Action createMark = () =>
             {
-                bool exists = EffectMark.ContainsKey(markName);
-                Action createMark = () =>
-                {
-                    EffectMark.Add(markName, Instantiate(EffectMarkPf, transform));
-                    SpriteRenderer effectMarkSp = EffectMark[markName].GetComponent<SpriteRenderer>();
-                    effectMarkSp.sprite = sprite;
-                };
-                // exists가 false일 때만 createMark 실행
-                (exists ? (Action)(() => { }) : createMark)();
-            }
-                : () =>
-                {
-                    bool exists = EffectMark.ContainsKey(markName);
-                    Action destroyeMark = () =>
-                    {
-                        Destroy(EffectMark[markName]);
-                        EffectMark.Remove(markName);
-                    };
-                    (exists ? destroyeMark : (Action)(() => { }))();
-                };
+                Debug.Log($"Create Mark: {markName}");
+                EffectMark.Add(markName, Instantiate(EffectMarkPf, transform));
+                SpriteRenderer effectMarkSp = EffectMark[markName].GetComponent<SpriteRenderer>();
+                effectMarkSp.sprite = sprite[markName];
+            };
+            // exists가 false일 때만 createMark 실행
+            (exists ? (Action)(() => { }) : createMark)();
+        }
+        else
+        {
+            Action destroyeMark = () =>
+            {
+                Debug.Log($"Delet Mark: {markName}");
+                Destroy(EffectMark[markName]);
+                EffectMark.Remove(markName);
+            };
+            (exists ? destroyeMark : (Action)(() => { }))();
+        }
+                
     }
 
-    public bool IsGurd(Stats ch)
+    // 키값만 입력하면 자동으로 KeyValuePair를 만들어 SetHighlight에 전달하는 함수
+    public void SetHighlightByKey(string key)
     {
-        return ch.gurd > 0;
+        if (Effect.TryGetValue(key, out Func<bool> value))
+        {
+            SetHighlight(new(key, value)); // C# 9.0 이상에서 타입 생략 가능
+        }
+    }
+
+    public void StartMakeList()// 이름, 참거짓 리스트(게임 실행도중 변경 없음_
+    {
+        Effect = new Dictionary<string, Func<bool>>
+        {
+            { "gurd", IsGurd },
+            // 추가 명령어 및 함수 매핑
+        };
+    }
+
+    public bool IsGurd()
+    {
+        return character.gurd > 0;
     }
 }
