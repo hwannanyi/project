@@ -1,4 +1,6 @@
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class Characterdeath : MonoBehaviour
 {
@@ -16,12 +18,17 @@ public class Characterdeath : MonoBehaviour
         {
             stats.isdie = true;
             stats.isPatternEnd = true; // 패턴 종료 상태 업데이트
+            if (stats.team == Team.enemy)
+            {
+                StageDataManager.Instance.CheckKill(); // 스토리 체크
+            }
             Die();
         }
     }
 
     private void Die()
     {
+
         // 사망 처리 (예: 오브젝트 비활성화, 애니메이션 등)
         characterMovement.ClearHighlights();
         Destroy(gameObject);

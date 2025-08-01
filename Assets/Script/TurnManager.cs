@@ -178,14 +178,15 @@ public class TurnManager : MonoBehaviour
     //  턴 전환 (일반 턴 순환: 플레이어 <-> 적)
     public void NextTurn()
     {
-
         isPlayerTurn = !isPlayerTurn; // 플레이어 턴 여부 토글
         EnterReactPhase();
         //CharacterSelection.selectedCharacterIndex = -1;
         characterUIManager.UpdateProfileUIBySelection();
         Turn++;
         UITrunCount(Turn);//  턴 UI 업데이트
-                          // 모든 캐릭터의 스킬 쿨타임 감소
+        characterUIManager.ProfileUpdate(characterSelection.PickcharNumber(CharacterSelection.selectedCharacterIndex),
+            isPlayerTurn);
+        // 모든 캐릭터의 스킬 쿨타임 감소
         foreach (var character in CharacterStats.Instance.characterList)
         {
             foreach (var skill in character.usingSkill)

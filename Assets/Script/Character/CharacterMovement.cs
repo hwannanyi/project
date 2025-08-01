@@ -78,29 +78,9 @@ public class CharacterMovement : MonoBehaviour
 
         int indexnumber = CharacterSelection.selectedCharacterIndex;
         if(indexnumber < 0 || indexnumber >= CharacterStats.Instance.characters.Count || SkillManager.Instance.selectedSkill != null 
-            || (SkillManager.Instance.isSkillReadyFinal && !TurnManager.Instance.IsInReactPhase()))
+            || SkillManager.Instance.isSkillReadyFinal)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // y = 0 기준 평면
-            float enter;
-            Vector3 mousePosition = transform.position;
-            if (groundPlane.Raycast(ray, out enter))
-            {
-                mousePosition = ray.GetPoint(enter);
-                mousePosition.y = 0f;
-            }
-            if (SkillManager.Instance.isSkillReady && characterNumber == indexnumber)
-            {
-                if (mousePosition.x > transform.position.x)
-                {
-                    spriteRenderer.flipX = false;
-                }
-                else if (mousePosition.x < transform.position.x)
-                {
-                    spriteRenderer.flipX = true;
-                }
-            }
-            ClearHighlights(); // 선택 해제 시 하이라이트 제거
+
             return; // 유효하지 않은 인덱스인 경우 아무 작업도 하지 않음
         }
         int nowmoveCount = CharacterStats.Instance.characterList[indexnumber].NowMoveCount;
@@ -109,7 +89,6 @@ public class CharacterMovement : MonoBehaviour
             //이동불가 상태라면 이동금지
             if (character.movable == false)
             {
-                ClearHighlights();
                 return;
             }
 

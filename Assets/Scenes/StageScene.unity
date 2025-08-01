@@ -11659,6 +11659,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   storyManager: {fileID: 0}
+  turnManager: {fileID: 0}
 --- !u!114 &62703696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11784,6 +11785,7 @@ MonoBehaviour:
     projectileType: 0
     skillTarget: 
     projectileSpeed: 0
+    hitscantime: 0
     afterdelay: 0
     beforedelay: 0
     range: 0
@@ -11810,6 +11812,8 @@ MonoBehaviour:
     isreactSkill: 0
     reactTime: 0
     skillCastCode: 0
+    gurd:
+      time: 0
   selectedCaster: {fileID: 0}
   selectedCharacter:
     characterNumber: 0
@@ -11845,6 +11849,7 @@ MonoBehaviour:
     movable: 0
     highlightEffect: {fileID: 0}
     isPatternEnd: 0
+    gurd: 0
     lastHitType: 0
     lastHitSkillData:
       useCharacterName: 
@@ -11951,6 +11956,7 @@ MonoBehaviour:
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
+      hitscantime: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -11977,6 +11983,8 @@ MonoBehaviour:
       isreactSkill: 0
       reactTime: 0
       skillCastCode: 0
+      gurd:
+        time: 0
   selectedAoeCenterPosition: {x: 0, y: 0, z: 0}
   selectedTargetPosition: {x: 0, y: 0, z: 0}
   isSkillReady: 0
@@ -11990,6 +11998,8 @@ MonoBehaviour:
   validReactTargets: []
   validMainTarget: {fileID: 0}
   skillCode: 0
+  cursor: {fileID: 1749610548}
+  cursorOn: 0
 --- !u!114 &62703698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12132,6 +12142,7 @@ MonoBehaviour:
     projectileType: 0
     skillTarget: 
     projectileSpeed: 0
+    hitscantime: 0
     afterdelay: 0
     beforedelay: 0
     range: 0
@@ -12158,6 +12169,8 @@ MonoBehaviour:
     isreactSkill: 0
     reactTime: 0
     skillCastCode: 0
+    gurd:
+      time: 0
   debugStart: {x: 0, y: 0, z: 0}
   debugTarget: {x: 0, y: 0, z: 0}
   debugAOECenter: {x: 0, y: 0, z: 0}
@@ -12259,6 +12272,7 @@ MonoBehaviour:
     movable: 0
     highlightEffect: {fileID: 0}
     isPatternEnd: 0
+    gurd: 0
     lastHitType: 0
     lastHitSkillData:
       useCharacterName: 
@@ -12365,6 +12379,7 @@ MonoBehaviour:
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
+      hitscantime: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -12391,6 +12406,8 @@ MonoBehaviour:
       isreactSkill: 0
       reactTime: 0
       skillCastCode: 0
+      gurd:
+        time: 0
   team: 0
 --- !u!114 &62703705
 MonoBehaviour:
@@ -13586,6 +13603,7 @@ MonoBehaviour:
     movable: 0
     highlightEffect: {fileID: 0}
     isPatternEnd: 0
+    gurd: 0
     lastHitType: 0
     lastHitSkillData:
       useCharacterName: 
@@ -13692,6 +13710,7 @@ MonoBehaviour:
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
+      hitscantime: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -13718,6 +13737,8 @@ MonoBehaviour:
       isreactSkill: 0
       reactTime: 0
       skillCastCode: 0
+      gurd:
+        time: 0
   characterProfileSkillTextListUI:
   - {fileID: 623181790}
   - {fileID: 970849208}
@@ -17984,7 +18005,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 5.7916665
+  orthographic size: 5.8958335
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -20487,6 +20508,7 @@ MonoBehaviour:
     movable: 0
     highlightEffect: {fileID: 0}
     isPatternEnd: 0
+    gurd: 0
     lastHitType: 0
     lastHitSkillData:
       useCharacterName: 
@@ -20593,6 +20615,7 @@ MonoBehaviour:
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
+      hitscantime: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -20619,6 +20642,8 @@ MonoBehaviour:
       isreactSkill: 0
       reactTime: 0
       skillCastCode: 0
+      gurd:
+        time: 0
   characterProfileSkillTextListUI:
   - {fileID: 2033692931}
   - {fileID: 1443510851}
@@ -28750,6 +28775,7 @@ MonoBehaviour:
     movable: 0
     highlightEffect: {fileID: 0}
     isPatternEnd: 0
+    gurd: 0
     lastHitType: 0
     lastHitSkillData:
       useCharacterName: 
@@ -28856,6 +28882,7 @@ MonoBehaviour:
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
+      hitscantime: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -28882,6 +28909,8 @@ MonoBehaviour:
       isreactSkill: 0
       reactTime: 0
       skillCastCode: 0
+      gurd:
+        time: 0
   characterProfileSkillTextListUI:
   - {fileID: 704243418}
   - {fileID: 431310681}
@@ -29652,6 +29681,7 @@ MonoBehaviour:
     movable: 0
     highlightEffect: {fileID: 0}
     isPatternEnd: 0
+    gurd: 0
     lastHitType: 0
     lastHitSkillData:
       useCharacterName: 
@@ -29758,6 +29788,7 @@ MonoBehaviour:
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
+      hitscantime: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -29784,6 +29815,8 @@ MonoBehaviour:
       isreactSkill: 0
       reactTime: 0
       skillCastCode: 0
+      gurd:
+        time: 0
   characterProfileSkillTextListUI:
   - {fileID: 1795082709}
   - {fileID: 1889945620}
@@ -42276,6 +42309,108 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1749498522}
   m_CullTransparentMesh: 1
+--- !u!1 &1749610548
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1749610551}
+  - component: {fileID: 1749610550}
+  - component: {fileID: 1749610549}
+  m_Layer: 0
+  m_Name: Cursor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1749610549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749610548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61801940ca6c22842af4b1b2f8cd5dc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 10
+  isMoving: 0
+--- !u!212 &1749610550
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749610548}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: -820261883
+  m_SortingLayer: 3
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -1829394237, guid: d2736e599297c954fabb954320e029fc, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.7294118}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &1749610551
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1749610548}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!1 &1751093677
 GameObject:
   m_ObjectHideFlags: 0
@@ -51586,6 +51721,7 @@ SceneRoots:
   - {fileID: 447703875580667677}
   - {fileID: 1930392187}
   - {fileID: 1672660647}
+  - {fileID: 1749610551}
   - {fileID: 62703685}
   - {fileID: 1744483638}
   - {fileID: 8035534787802049732}

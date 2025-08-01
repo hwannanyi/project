@@ -49,7 +49,7 @@ public class CharacterUIManager : MonoBehaviour
         }
     }
 
-    public void UpdateCharacterProfileSkill(Stats character)
+    public void UpdateCharacterProfileSkill(Stats character, bool playerturn)
     {
         if(character == null) return; // 캐릭터가 null이면 아무것도 하지 않음
 
@@ -60,13 +60,14 @@ public class CharacterUIManager : MonoBehaviour
         // 스킬 슬롯 개수만큼 반복
         for (int i = 0; i < characterProfileSkillListUI.Count; i++)
         {
+            int index = playerturn ? i : i + 5; // 플레이어 턴이면 i, 그렇지 않으면 i + 5
             var skillImage = characterProfileSkillListUI[i];
             var skillText = characterProfileSkillTextListUI[i];
 
             // 해당 슬롯에 스킬이 존재하는 경우
-            if (character.usingSkill.Count > i && character.usingSkill[i].skillName != null)
+            if (character.usingSkill.Count > index && character.usingSkill[index].skillName != null)
             {
-                var skill = character.usingSkill[i];
+                var skill = character.usingSkill[index];
                 skillImage.sprite = skill.skillIcon; // 스킬 아이콘 표시
                 skillImage.color = skill.colldownTime > 0 ? cooldownColor : normalColor; // 쿨타임 색상 처리
 
@@ -108,10 +109,10 @@ public class CharacterUIManager : MonoBehaviour
         }
     }
 
-    public void ProfileUpdate(Stats character)
+    public void ProfileUpdate(Stats character, bool playerturn)
     {
         UpdateCharacterProfile(character);
-        UpdateCharacterProfileSkill(character);
+        UpdateCharacterProfileSkill(character, playerturn);
         UpdateMoveCount(character.NowMoveCount);
     }
 

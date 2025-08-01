@@ -18,7 +18,7 @@ public class Character : ScriptableObject
     public int trun;              // 보유 턴
     public Team team;             // 팀
     public bool summons = false;          // 소환수인가요?
-    public List<Skill> useSkill = new List<Skill> { null, null, null, null, null };   // 사용스킬
+    public List<Skill> useSkill = new List<Skill> { null, null, null, null, null, null, null, null, null, null };   // 사용스킬
 
     public List<PassiveList> passiveSkill;   // 패시브 스킬
     public Sprite characterillustration;

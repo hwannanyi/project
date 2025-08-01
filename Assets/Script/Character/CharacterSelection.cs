@@ -235,7 +235,7 @@ public class CharacterSelection : MonoBehaviour
         var character = CharacterStats.Instance.characterList[index];
         
         characterUIManager.UpdateCharacterProfile(character);
-        characterUIManager.UpdateCharacterProfileSkill(character);
+        characterUIManager.UpdateCharacterProfileSkill(character, turnManager.isPlayerTurn);
     }
 
     public void OnCharacterSelectedMoveCount(int index)

@@ -154,6 +154,7 @@ public class StoryManager : MonoBehaviour
 
     public void StoryEnd()
     {
+        UnPause(); // 모든 잠금 해제
         isStoryActive = false; // 스토리 UI 비활성화
         isStoryEnd = true; // 스토리 종료 상태 설정
         StoryUI.SetActive(false); // 스토리 UI 비활성화
@@ -641,7 +642,7 @@ public class StoryManager : MonoBehaviour
 
     public bool ISskillCast()
     {
-        return Input.GetKeyDown(KeyCode.M);
+        return Input.GetKeyDown(KeyCode.Return);
     }
 
     public bool ISturn()

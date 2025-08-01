@@ -15,9 +15,9 @@ talkID,character,talk,tran,production,ID,next
 1,,수비턴은 자동으로 끝나/공격턴이 돌아왔어,0 0,pause,2,
 1,,이번에는 너가 공격을 해보자,0 0,pause,2,
 1,,공격스킬을 써보자 Q키를 눌러봐,0 -0.25,moveLock\chPickLock\turnLock,2,skillPick
-1,,"마우스로 공격스킬의 방향, 위치, 타겟을 정할수 있어",0 -0.25,pause,2,
-1,,마우스를 클릭하면 공격스킬이 결정이 될거야,0 -0.25,moveLock\chPickLock\turnLock,2,
-1,,잠깐! 만약 스킬범위에 적이 없다면/취소 버튼 또는 Z키를 눌려서 선택한 스킬을 취소한뒤/다시 스킬을 정하고 M키를 눌려서 쓸수 있어,0 -0.25,chReset\turnLock,2,skillCast
+1,,에임을 화살표키로 이동시켜/ 눌려서 공격스킬의 방향 위치 타겟을 정할수 있어,0 -0.25,pause,2,
+1,,이때 엔터키를 눌렸을때 유효한 방향 위치 타겟이라면/스킬을 사용할 수 있어,0 -0.25,moveLock\chPickLock\turnLock\skillLock,2,
+1,,잠깐! 만약 스킬범위에 적이 없다면/Z키를 눌려서 선택한 스킬을 취소한뒤/다시 스킬을 정하면 돼!,0 -0.25,chReset\turnLock,2,skillCast
 1,,혹시 다른 스킬 쓴건 아니지?,0 -0.25,moveLock\turnLock\skillLock,2,
 1,,스킬은 효과적이지만 스킬을 쓰기 위해서는 마나가 필요하고/스킬마다 제각각인 재사용 대기 시간이 있어,0 -0.25,pause,2,
 1,,마나가 부족하거나 재사용 대기중이라면 스킬을 사용 할 수 없어,0 -0.25,pause\chReset,2,

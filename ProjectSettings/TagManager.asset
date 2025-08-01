@@ -53,6 +53,9 @@ TagManager:
   - name: effect
     uniqueID: 1996469589
     locked: 0
+  - name: cursor
+    uniqueID: 3474705413
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1

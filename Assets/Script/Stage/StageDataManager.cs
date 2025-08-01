@@ -6,6 +6,7 @@ using UnityEngine.Rendering.Universal;
 
 public class StageDataManager : MonoBehaviour
 {
+    public static StageDataManager Instance; // 싱글턴 인스턴스
     public StageManager stageManager; // 스테이지 매니저 인스턴스
     public StoryManager storyManager; // 스토리 매니저 인스턴스
 
@@ -24,6 +25,7 @@ public class StageDataManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        Instance = this; // 싱글턴 인스턴스 할당
         try
         {
             stageManager = StageManager.Instance;
@@ -89,15 +91,21 @@ public class StageDataManager : MonoBehaviour
             }
         }*/
 
-    public void CheckKill(List<StoryTiming> timingList)
+    public void CheckKill()
     {
         // 현재 적이 살아있는 수
+        var timingList = CurrentStage.storyTiming;
         int aliveEnemyCount = characterStats.characterList.Count(stats => stats.team == Team.enemy && stats.isdie == false);
 
         // 살아있는 적이 없으면 조건을 만족하는 첫 StoryTiming 실행
         if (aliveEnemyCount == 0)
         {
-            var timing = timingList.FirstOrDefault(t => !storyManager.readpopupStoryID.Contains(t.ID));
+
+            // 조건을 만족하는 StoryTiming를 추출
+            var timing = timingList
+                .Where(t => t.storyTimingType == StoryTimingType.kill) // kill 타입만 필터링
+                .FirstOrDefault(t => !storyManager.readpopupStoryID.Contains(t.ID));
+
             if (timing != null && !string.IsNullOrEmpty(timing.ID))
             {
                 if (timing.isPopUp)
@@ -108,7 +116,7 @@ public class StageDataManager : MonoBehaviour
             return;
         }
 
-        // 살아있는 적이 있을 때 기존 조건대로 실행
+/*        // 살아있는 적이 있을 때 기존 조건대로 실행
         var killTiming = timingList
             .FirstOrDefault(t => aliveEnemyCount >= t.value && !storyManager.readpopupStoryID.Contains(t.ID));
 
@@ -118,7 +126,7 @@ public class StageDataManager : MonoBehaviour
                 PopUpOnStoryReStart.Invoke(killTiming.ID);
             else
                 OnStoryReStop.Invoke(killTiming.ID);
-        }
+        }*/
     }
 
     public void CheckTurn()
@@ -128,7 +136,8 @@ public class StageDataManager : MonoBehaviour
 
         // 조건을 만족하는 StoryTiming를 추출
         var timing = timingList
-        .FirstOrDefault(t => turn >= t.value && !storyManager.readpopupStoryID.Contains(t.ID));
+            .Where(t => t.storyTimingType == StoryTimingType.turn) // turn 타입만 필터링
+            .FirstOrDefault(t => turn >= t.value && !storyManager.readpopupStoryID.Contains(t.ID));
         if (timing == null) return;
         bool check = !string.IsNullOrEmpty(timing.ID);
         
