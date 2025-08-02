@@ -26,11 +26,10 @@ public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
 
-/*    public UnityEvent<string> OnStoryStart = new UnityEvent<string>();
-    public UnityEvent<string> OnStoryStop = new UnityEvent<string>();*/
-    public UnityEvent<string> PopUpOnStoryStart = new UnityEvent<string>();
-    public UnityEvent<string> PopUpOnStoryReStart = new UnityEvent<string>();
-    public UnityEvent<string> PopUpOnStoryStop = new UnityEvent<string>();
+    /*    public UnityEvent<string> OnStoryStart = new UnityEvent<string>();
+        public UnityEvent<string> OnStoryStop = new UnityEvent<string>();*/
+
+
 
     public StageManager stageManager;
     public TurnUIManager uiManager;
@@ -204,7 +203,7 @@ public class TurnManager : MonoBehaviour
             {
                 character.NowMoveCount += 1;
             }
-            character.isPatternEnd = false; // AI 패턴 초기화
+            character.isPatternEnd = character.isdie; // AI 패턴 초기화
         }
 
         Debug.Log($"[TurnManager] 턴 전환됨");
@@ -241,8 +240,8 @@ public class TurnManager : MonoBehaviour
             if (Turn == 1)
             {
                 // 스토리 시작 이벤트 발생
-                PopUpOnStoryStart.Invoke("");
-            }
+                //PopUpOnStoryStart.Invoke("");
+            } 
             //else if (Turn == 3 || Turn == 5 || Turn == 7) { PopUpOnStoryReStart.Invoke(""); }
         }
     }

@@ -16,9 +16,6 @@ public class StageDataManager : MonoBehaviour
     // 델리게이트 변수 선언
     public StoryCondition storyConditionHandler;
 
-    private UnityEvent<string> PopUpOnStoryReStart = new UnityEvent<string>();
-    private UnityEvent<string> OnStoryReStop = new UnityEvent<string>();
-    public UnityEvent PopUpOnStoryEnd = new UnityEvent();
 
     public TurnManager turnManager;
     public CharacterStats characterStats;
@@ -37,8 +34,6 @@ public class StageDataManager : MonoBehaviour
         characterStats = GetComponent<CharacterStats>();
         storyManager = GetComponent<StoryManager>();
 
-        PopUpOnStoryReStart.AddListener(storyManager.PopUpStoryReStart);// 팝업 스토리 재시작 이벤트
-        OnStoryReStop.AddListener(storyManager.StoryReStart);// 일반 스토리 재시작 이벤트
 
     }
 
@@ -61,14 +56,16 @@ public class StageDataManager : MonoBehaviour
 
         if (check)
         {
-            if (timing.isPopUp)
+/*            if (timing.talkType == TalkType.speech_bubble)
+                storyManager.PopUpStoryReStart(timing.ID);
+            else if (timing.talkType == TalkType.bare)
+                storyManager.StoryReStart(CurrentStage.ID);
+            else if (timing.talkType == TalkType.all)
             {
-                PopUpOnStoryReStart.Invoke(timing.ID);
+                storyManager.PopUpStoryReStart(timing.ID);
+                storyManager.StoryReStart(CurrentStage.ID);
             }
-            else
-            {
-                OnStoryReStop.Invoke(timing.ID);
-            }
+*/
 
         }
     }
@@ -104,15 +101,25 @@ public class StageDataManager : MonoBehaviour
 
             // 조건을 만족하는 StoryTiming를 추출
             var timing = timingList
-                .Where(t => t.storyTimingType == StoryTimingType.kill) // kill 타입만 필터링
+                .Where(t => t.storyTimingType == StoryTimingType.kill && t.isPopUp) // kill 타입만 필터링
                 .FirstOrDefault(t => !storyManager.readpopupStoryID.Contains(t.ID));
 
-            if (timing != null && !string.IsNullOrEmpty(timing.ID))
+            // 조건을 만족하는 StoryTiming를 추출
+            var bartiming = timingList
+                .Where(t => t.storyTimingType == StoryTimingType.turn && !t.isPopUp); // turn 타입과 bare 타입만 필터링
+
+
+
+            if (timing == null && bartiming == null) return;
+            if (timing != null)
             {
-                if (timing.isPopUp)
-                    PopUpOnStoryReStart.Invoke(timing.ID);
-                else
-                    OnStoryReStop.Invoke(timing.ID);
+                // 말풍선 스토리 실행
+                storyManager.PopUpStoryReStart(timing.ID);
+            }
+            if (bartiming != null)
+            {
+                // 바 형태 스토리 실행
+                storyManager.StoryReStart(CurrentStage.ID);
             }
             return;
         }
@@ -133,34 +140,33 @@ public class StageDataManager : MonoBehaviour
     public void CheckTurn()
     {
         var timingList = CurrentStage.storyTiming;
+        var timingList1 = CurrentStage.storyTiming;
         if (timingList.Count == 0) return;
         float turn = (float)turnManager.Turn;
 
         // 조건을 만족하는 StoryTiming를 추출
         var timing = timingList
-            .Where(t => t.storyTimingType == StoryTimingType.turn) // turn 타입만 필터링
+            .Where(t => t.storyTimingType == StoryTimingType.turn && t.isPopUp) // turn 타입과 speech_bubble 타입만 필터링
             .FirstOrDefault(t => turn >= t.value && !storyManager.readpopupStoryID.Contains(t.ID));
-        if (timing == null) return;
-        bool check = !string.IsNullOrEmpty(timing.ID);
-        
-        string ID = check ? timing.ID : null;
-        if (timing.isPopUp)
-        { //스토리바, 팝업창 구분
-            Debug.Log($"[StageDataManager] CheckTurn: {ID} : {timing.ID}");
-            Startpopstory(ID);
+
+        // 조건을 만족하는 StoryTiming를 추출
+        var bartiming = timingList1
+            .Where(talk => talk.storyTimingType == StoryTimingType.turn && !talk.isPopUp) 
+            .FirstOrDefault(talk => Mathf.Approximately(turn, talk.value));
+
+        Debug.Log(bartiming);
+
+        try
+        {
+            // 말풍선 스토리 실행
+            storyManager.PopUpStoryReStart(timing.ID);
         }
-        else
-            Startstory(ID);
+        catch
+        {
+        }
+
+            storyManager.StoryReStart(CurrentStage.ID);
     }
 
 
-    public void Startpopstory(string ID)
-    {
-        PopUpOnStoryReStart.Invoke(ID);
-    }
-
-    public void Startstory(string ID)
-    {
-        OnStoryReStop.Invoke(ID);
-    }
 }

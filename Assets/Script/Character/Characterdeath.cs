@@ -11,6 +11,10 @@ public class Characterdeath : MonoBehaviour
         characterMovement = GetComponent<CharacterMovement>();
     }
 
+    public void Start()
+    {
+
+    }
     // 체력이 0 이하일 때 호출
     public void CheckDeath(Stats stats)
     {
@@ -26,9 +30,16 @@ public class Characterdeath : MonoBehaviour
         }
     }
 
+/*    public void OnDestroy()
+    {
+        var manager = CharacterStats.Instance;
+        var stats = manager.GetStats(gameObject);
+        stats.isdie = true;
+        stats.isPatternEnd = true; // 패턴 종료 상태 업데이트
+    }*/
+
     private void Die()
     {
-
         // 사망 처리 (예: 오브젝트 비활성화, 애니메이션 등)
         characterMovement.ClearHighlights();
         Destroy(gameObject);

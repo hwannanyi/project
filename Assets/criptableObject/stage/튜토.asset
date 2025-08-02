@@ -20,6 +20,11 @@ MonoBehaviour:
   - Target: stage
     storyTimingType: 2
     value: 1
+    isPopUp: 0
+    ID: 1
+  - Target: stage
+    storyTimingType: 2
+    value: 1
     isPopUp: 1
     ID: 1
   - Target: stage

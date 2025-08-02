@@ -14,6 +14,7 @@ public class StoryManager : MonoBehaviour
     public static StoryManager instance; // 싱글톤 인스턴스
 
     public SkillManager skillManager; // 스킬 매니저 참조 필드
+    public StageDataManager stageDataManager; // 스테이지 데이터 매니저 참조 필드
     public AITurn aITurn; // AI 턴 매니저 참조 필드
     public TurnManager turnManager; // 턴 매니저 참조 필드
 
@@ -72,33 +73,24 @@ public class StoryManager : MonoBehaviour
     {
         excelReader = GetComponent<ExcelReader>();
         skillManager = GetComponent<SkillManager>();
+        stageDataManager = GetComponent<StageDataManager>();
         InitLockActions();
         instance = this;
     }
 
     void Start()
     {
-        try
-        {
-            // 스토리 시작 이벤트 발생
-            StartCoroutine(WaitForExcelDataAndStartStory());
-        }
-        catch
-        {
-            StoryStart("에러"); // 스토리 시작 실패 시 에러 스토리 시작
-        }
+        (isStoryEnd,ispopUpStoryEnd) = stageDataManager.CurrentStage.storyTiming.Count == 0 ? (true, true) : (false, false); 
     }
 
-    private IEnumerator WaitForExcelDataAndStartStory()
+/*    private IEnumerator WaitForExcelDataAndStartStory()
     {
-        var stageManager = StageManager.Instance.CurrentStage;
         // 데이터가 로드될 때까지 대기
         while (excelReader == null || excelReader.storyTalk == null || excelReader.storyTalk.Count == 0)
         {
             yield return null; // 한 프레임 대기
         }
-        StoryStart(stageManager.ID);
-    }
+    }*/
 
     // Update is called once per frame
     void Update()
@@ -138,15 +130,17 @@ public class StoryManager : MonoBehaviour
 
     public void StoryReStart(string storyID)
     {
-        isStoryActive = true;
-        StoryUI.SetActive(true); // 스토리 UI 활성화
-        GameUI.SetActive(false); // 게임 UI 비활성화
-    }
-
-    public void Stor1yStart(SkillManager storyID)
-    {
-        Debug.Log(storyID.waitingForResponse);
-        popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
+        if (talklist.Count == 0)
+        {
+            StoryStart(stageDataManager.CurrentStage.ID);
+            StoryReStart(storyID); // 스토리 ID가 없으면 현재 스테이지의 ID로 시작
+        }
+        else 
+        {
+            isStoryActive = true;
+            StoryUI.SetActive(true); // 스토리 UI 활성화
+            GameUI.SetActive(false); // 게임 UI 비활성화
+        }
     }
 
     public void StoryStop()
@@ -347,14 +341,24 @@ public class StoryManager : MonoBehaviour
 
     public void PopUpStoryReStart(string ID)
     {
-        Debug.Log("실행스토리" + ID); // 디버그 로그 출력
-        ReadPopUpStory(ID); // 팝업 대사 읽기
-        popUpisStoryActive = true; // 팝업 스토리 UI 활성화 상태 설정
-        if (!isStoryActive)
+
+        if (PopUptalklist.Count == 0)
         {
-            popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
-            LayoutRebuilder.ForceRebuildLayoutImmediate(popUptalkRect);
+            PopUpStoryStart(stageDataManager.CurrentStage.ID);
+            PopUpStoryReStart(ID); // 팝업 스토리 ID가 없으면 현재 스테이지의 ID로 시작
         }
+        else
+        {
+            Debug.Log("실행스토리" + ID); // 디버그 로그 출력
+            ReadPopUpStory(ID); // 팝업 대사 읽기
+            popUpisStoryActive = true; // 팝업 스토리 UI 활성화 상태 설정
+            if (!isStoryActive)
+            {
+                popUpStoryUI.SetActive(true); // 팝업 스토리 UI 활성화
+                LayoutRebuilder.ForceRebuildLayoutImmediate(popUptalkRect);
+            }
+        }
+    
     }
 
     public void PopUpStoryEnd()
