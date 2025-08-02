@@ -12424,6 +12424,7 @@ MonoBehaviour:
   turntime: 3
   turnTimer: 0
   storyManager: {fileID: 0}
+  characterStats: {fileID: 0}
   AIturnEnd: 0
 --- !u!114 &62703706
 MonoBehaviour:
@@ -12531,6 +12532,8 @@ MonoBehaviour:
   popUptalkRect: {fileID: 361908667}
   currentPopUpTalkIndex: 0
   popUpisStoryActive: 0
+  ispopUpStoryEnd: 0
+  popUptalkNexttext: {fileID: 1232715708}
   readStoryID: []
   readpopupStoryID: []
   chPickLock: 0
@@ -32610,6 +32613,8 @@ MonoBehaviour:
   popUptalkRect: {fileID: 361908667}
   currentPopUpTalkIndex: 0
   popUpisStoryActive: 0
+  ispopUpStoryEnd: 0
+  popUptalkNexttext: {fileID: 0}
   readStoryID: []
   readpopupStoryID: []
   chPickLock: 0
@@ -42341,6 +42346,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 10
   isMoving: 0
+  moveDelay: 0.1
 --- !u!212 &1749610550
 SpriteRenderer:
   m_ObjectHideFlags: 0

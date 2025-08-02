@@ -7,6 +7,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
+//using static UnityEditor.ShaderData;
 
 public class StoryManager : MonoBehaviour
 {
@@ -48,7 +49,10 @@ public class StoryManager : MonoBehaviour
     public RectTransform popUptalkRect; // 팝업 대화창 RectTransform
     public int currentPopUpTalkIndex = 0; // 현재 대사 인덱스
     public bool popUpisStoryActive = false; // 팝업 스토리 UI 활성화 여부
-     
+    public bool ispopUpStoryEnd = false; // 스토리 종료 여부     
+
+    public TextMeshProUGUI popUptalkNexttext; // 대화 텍스트 UI
+
     [Header("이미 본거야")]
     public List<string> readStoryID = new(); // 읽은 스토리 ID 리스트
     public List<string> readpopupStoryID = new(); // 읽은 스토리 ID 리스트
@@ -329,6 +333,7 @@ public class StoryManager : MonoBehaviour
     public void PopUpStoryStart(string storyID)
     {
         popUpisStoryActive = true; // 팝업 스토리 UI 활성화 상태 설정
+        ispopUpStoryEnd = false; // 팝업 스토리 종료 상태 초기화
         LoadPopUpStory(storyID); // 팝업 스토리 로드
     }
     public void PopUpStoryStop()
@@ -355,7 +360,7 @@ public class StoryManager : MonoBehaviour
     public void PopUpStoryEnd()
     {
         popUpisStoryActive = false; // 팝업 스토리 UI 활성화 상태 설정
-
+        ispopUpStoryEnd = true; // 팝업 스토리 종료 상태 설정
         popUpStoryUI.SetActive(false); // 팝업 스토리 UI 비활성화
         PopUptalklist = new(); // 팝업 대화 리스트 초기화
         readpopupStoryID = new(); // 읽은 팝업 스토리 ID 리스트 초기화
@@ -412,6 +417,7 @@ public class StoryManager : MonoBehaviour
             if (!string.IsNullOrEmpty(talk) && talk.Contains("/"))
             {
                 popUptalktext.text = string.Join("\n", talk.Split('/'));
+                popUptalkNexttext.text = Nexttext(PopUptalkRead[currentPopUpTalkIndex].next);
             }
             else
             {
@@ -423,7 +429,16 @@ public class StoryManager : MonoBehaviour
             PopUpStoryStop();
         }
     }
-
+    public string Nexttext(string next)
+    {
+        string isNext = "Enter>>>";
+        isNext = next == "chPick" ? "Character Select" : isNext; // 캐릭터 선택이 필요한 경우
+        isNext = next == "skillPick" ? "Skill Select" : isNext; // 스킬 선택이 필요한 경우
+        isNext = next == "skillCast" ? "Skill Cast" : isNext; // 스킬 시전이 필요한 경우
+        isNext = next == "turn" ? "Pass the turn" : isNext; // 턴 넘기기가 필요한 경우
+        isNext = next == "move" ? "Character Move" : isNext; // 이동이 필요한 경우
+        return isNext+">>>";
+    }
     public void NextPopUpStory()
     {
         try
@@ -445,8 +460,11 @@ public class StoryManager : MonoBehaviour
                 }
                 else
                 {
-                    PopUpStoryStop();
+                    Action end = (PopUptalkRead[PopUptalkRead.Count - 1] == PopUptalklist[PopUptalklist.Count - 1]) ? 
+                        PopUpStoryEnd : PopUpStoryStop; // 마지막 대사면 팝업 스토리 종료, 아니면 팝업 스토리 중지
+                    end.Invoke();
                 }
+
 
             }
         }

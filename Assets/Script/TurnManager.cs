@@ -208,37 +208,10 @@ public class TurnManager : MonoBehaviour
         }
 
         Debug.Log($"[TurnManager] 턴 전환됨");
-        // Team.enemy인 캐릭터만 enemies 리스트에 저장
-        var enemies = characterStats.characterList
-            .Where(c => c.team == Team.enemy)
-            .ToList();
-        // 모든 적이 죽었는지 확인 (예시: enemies 리스트 사용)
-        bool allEnemiesDead = enemies.All(e => e.isdie);
 
-        // 스토리 종료 상태 확인
-        if (allEnemiesDead && StoryManager.instance != null && StoryManager.instance.isStoryEnd)
-        {
-            Debug.Log("스테이지 클리어!");
-            StartCoroutine(CheckStageClearRoutine()); // 게임 씬으로 전환
-            return;
-            // 필요하다면 UI에 메시지 표시 등 추가 작업
-        }
         stageDataManager.CheckTurn();//스토리활성화
     }
-    private IEnumerator CheckStageClearRoutine()
-    {
-        // popUpisStoryActive와 isStoryActive가 모두 true면 대기
-        while (StoryManager.instance != null &&
-               StoryManager.instance.popUpisStoryActive &&
-               StoryManager.instance.isStoryActive)
-        {
-            yield return null; // 한 프레임 대기
-        }
 
-            Debug.Log("스테이지 클리어!");
-            SceneManager.LoadScene("Stage_Selection"); // 게임 씬으로 전환
-            yield break;
-    }
     //  EventManager 이벤트용
     public void NextTurnEnd(bool value)
     {
