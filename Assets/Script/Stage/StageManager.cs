@@ -11,7 +11,7 @@ public class StageManager : MonoBehaviour
     public static StageManager Instance;
     public Stage[] ALLStageList; // 전체 스테이지 리스트
     public Stage CurrentStage; // 현재 선택된 스테이지
-    int StageNumber = -1; // 현재 스테이지 번호
+    public int StageNumber = -1; // 현재 스테이지 번호
     public List<string> character;
     void Awake()
     {

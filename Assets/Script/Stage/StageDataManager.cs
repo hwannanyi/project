@@ -95,6 +95,7 @@ public class StageDataManager : MonoBehaviour
     {
         // 현재 적이 살아있는 수
         var timingList = CurrentStage.storyTiming;
+        if (timingList.Count == 0) return;
         int aliveEnemyCount = characterStats.characterList.Count(stats => stats.team == Team.enemy && stats.isdie == false);
 
         // 살아있는 적이 없으면 조건을 만족하는 첫 StoryTiming 실행
@@ -132,6 +133,7 @@ public class StageDataManager : MonoBehaviour
     public void CheckTurn()
     {
         var timingList = CurrentStage.storyTiming;
+        if (timingList.Count == 0) return;
         float turn = (float)turnManager.Turn;
 
         // 조건을 만족하는 StoryTiming를 추출
