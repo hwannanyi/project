@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
-  m_Name: w 1
+  m_Name: "\uBB34\uB77C\uC0AC\uD0A4"
   m_EditorClassIdentifier: 
-  skillName: w1
+  skillName: "\uBB34\uB77C\uC0AC\uD0A4"
   skillIcon: {fileID: 21300000, guid: 3cd21e6340737894b92c9313bd485b1b, type: 3}
   SkillEffectIllustration: {fileID: 21300000, guid: 8dc5461ea90073942bb580f1b3f7b389, type: 3}
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
@@ -20,6 +20,82 @@ MonoBehaviour:
   skillTypes: 00000000
   tooltip: "5\uCE78 \uC55E\uC73C\uB85C \uCCAB\uBC88\uC9F8 \uB300\uC0C1\uC5D0\uAC8C
     \uB2FF\uC73C\uBA74 \uB370\uBBF8\uC9C0\n\uD788\uD788 \uBC1C\uC0AC"
+  AdditionalSkills:
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    conditionHit:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 
+    skillName: 
+    targetrule:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+      target: 0
+  StartAddSkills:
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    conditionHit:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 
+    skillName: 
+    targetrule:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+      target: 0
+  EndAddSkills:
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    conditionHit:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 
+    skillName: 
+    targetrule:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+      target: 0
+  summonCharacter: {fileID: 0}
   actionsNumber: 1
   skillNumber: 1
   skillCumulative: 1
@@ -32,9 +108,12 @@ MonoBehaviour:
   projectile: 1
   targeting: 0
   penetration: 0
+  tracking: 0
+  RangeAdjustment: 0
   projectileType: 0
   skillTarget: 02000000
   projectileSpeed: 5
+  hitscantime: 1
   afterdelay: 0
   beforedelay: 0
   range: 7
@@ -63,7 +142,6 @@ MonoBehaviour:
     effects:
       DamageEffect:
       - skillhitEffect: 1
-        condition: 
         baseValue: 0
         increase:
           keys: 01000000
@@ -75,3 +153,5 @@ MonoBehaviour:
       CCEffects: []
   react: 0
   reactTime: 3
+  gurd:
+    time: 0
