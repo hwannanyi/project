@@ -1145,9 +1145,9 @@ public class SkillManager : MonoBehaviour
             ProfileuiManager.ProfileUpdate(characterSelection.PickcharNumber(CharacterSelection.selectedCharacterIndex),
                 turnManager.isPlayerTurn);
         }
-        catch
+        catch (System.Exception e)
         {
-
+            Debug.LogError($"[SkillManager] 프로필 업데이트 실패: {e.Message}");
         }
         //선택된 스킬범위 삭제
         SkillRangeVisualizer.Instance.StopNonTargetProjectileRange();

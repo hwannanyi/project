@@ -240,6 +240,7 @@ public class CharacterMovement : MonoBehaviour
             // SmoothDamp를 사용해 자연스럽게 감속하며 이동
             // moveSpeed는 최대 속도, smoothTime은 감속 시간
             transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime, moveSpeed);
+            SkillManager.Instance.isMoving = true; // 이동중 신호
             yield return null; // 다음 프레임까지 대기
         }
 
