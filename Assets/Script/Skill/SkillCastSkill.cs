@@ -19,14 +19,14 @@ public class SkillCastSkill : MonoBehaviour
 
     void OnDestroy()
     {
-/*        skillData = CastSkillData.skillData;
-        targetPos = CastSkillData.targetPos;
-        caster = CastSkillData.characterUnit;
-        casterStats = CastSkillData.characterStats;
-        targetUnit = CastSkillData.targetUnit;*/
         StartSkill(false, CastSkillData.characterStats, CastSkillData.skillData);
     }
 
+/*    void OnEnable()
+    {
+        StartSkill(true, CastSkillData.characterStats, CastSkillData.skillData);
+    }
+*/
     // 유닛 충돌 이벤트에서 호출
     public void StartSkill(bool StartTiming, Stats self, SkillData skillData)
     {
@@ -57,7 +57,12 @@ public class SkillCastSkill : MonoBehaviour
                         conditionHit.comparison, conditionHit.value))// 불러올 패시브 스킬이 맞으면 실행
                     {
         */
-
+/*        int index = self.usingSkill.FindIndex(x => x.skillName == Skill.skillName);
+        if (index == -1)
+        {
+            SkillManager.Instance.isCastingSkill = StartTiming && SkillManager.Instance.isCastingSkill; // 스킬 캐스트 스킬 초기화
+            return;
+        }*/
         if (Skill == null)
         {
             Debug.Log("연계스킬를 못찾음");
@@ -70,6 +75,7 @@ public class SkillCastSkill : MonoBehaviour
         catch
         {
             Debug.Log("연계스킬이 없음: " + Skill.skillName);
+            SkillManager.Instance.isCastingSkill = StartTiming && SkillManager.Instance.isCastingSkill; // 스킬 캐스트 스킬 초기화
         }
         
             //}
