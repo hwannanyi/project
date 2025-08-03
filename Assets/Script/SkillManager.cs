@@ -101,6 +101,7 @@ public class SkillManager : MonoBehaviour
     }
 
     public bool isCastingSkill = false; // 스킬 시전 중인지 여부
+    public bool isMoving = false; // 아무 아군 캐릭이 이동 중인지 여부
     public float ReactTime = 0.0f; // 대응단계 시간 (초 단위)
 
     public List<GameObject> validReactTargets = new(); // 대응 가능 캐릭터 목록
@@ -113,6 +114,9 @@ public class SkillManager : MonoBehaviour
     [Header("포인터")]
     public GameObject cursor; // 포인터 오브젝트
     public bool cursorOn = false; // 포인터 활성화 여부
+
+    private bool skillSelectLocked = false; // 스킬 선택 잠금 여부
+    private float skillSelectLockTime = 0.5f;// 스킬 선택 잠금 시간 (초 단위)
     void Awake()
     {
         skillRangeVisualizer = GetComponent<SkillRangeVisualizer>();
@@ -128,7 +132,6 @@ public class SkillManager : MonoBehaviour
         isSkillReadyFinal = false;
         hasReacted = false;
         waitingForResponse = false;
-        hasMovedInReact = false;
         isCastingSkill = false;
 
         SelectedSkillClear();
@@ -147,8 +150,8 @@ public class SkillManager : MonoBehaviour
 
     void Update()
     {
-        if (CameraZoom.isControlMode) return;
-
+        //if (CameraZoom.isControlMode) return;
+        if (skillSelectLocked || isCastingSkill) return; // 스킬선택잠금 또는 스킬시전중, 이동중 입력 무시
         try 
         { 
             if (storyManager.isStoryActive || storyManager.skillLock)
@@ -162,30 +165,35 @@ public class SkillManager : MonoBehaviour
         {
             PrepareSkillCast(0, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 0)
             if(!turnManager.isPlayerTurn) React_Instant_Cast(); // 대응단계에서 즉시 시전
+            else StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
             PrepareSkillCast(1, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 1)
             if (!turnManager.isPlayerTurn) React_Instant_Cast(); // 대응단계에서 즉시 시전
+            else StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
             PrepareSkillCast(2, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 2)
             if (!turnManager.isPlayerTurn) React_Instant_Cast(); // 대응단계에서 즉시 시전
+            else StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
             PrepareSkillCast(3, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 3)
             if (!turnManager.isPlayerTurn) React_Instant_Cast(); // 대응단계에서 즉시 시전
+            else StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
         }
 
         if (Input.GetKeyDown(KeyCode.T))
         {
             PrepareSkillCast(4, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 4)
             if (!turnManager.isPlayerTurn) React_Instant_Cast(); // 대응단계에서 즉시 시전
+            else StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
         }
 
         if (Input.GetKeyDown(KeyCode.Z))
@@ -263,7 +271,7 @@ public class SkillManager : MonoBehaviour
                     SkillRangeVisualizer.Instance.HideSkillRange();
                     ConfirmSkillCast(selectedCharacter.team); // 위치 계산 성공했을 때만 확정
 
-                    SkillCastTeam(skillCode); // 스킬실행
+                    SkillCastPlayer(skillCode); // 스킬실행
                     ResetResponseState(); // 대응단계 초기화
                 }
 
@@ -282,7 +290,15 @@ public class SkillManager : MonoBehaviour
         }*/
 
     }
-    
+
+    // 스킬 선택 잠금
+    private System.Collections.IEnumerator SkillSelectLockCoroutine()
+    {
+        skillSelectLocked = true;
+        yield return new WaitForSeconds(skillSelectLockTime);
+        skillSelectLocked = false;
+    }
+
     public void React_Instant_Cast()
     {
         if (selectedSkill != null && selectedCharacter != null) //스킬 확정 기준
@@ -301,7 +317,7 @@ public class SkillManager : MonoBehaviour
                     return;
                 // 시전 확정
                 ConfirmSkillCast(selectedCharacter.team); // 위치 계산 성공했을 때만 확정
-                SkillCastTeam(skillCode);
+                SkillCastPlayer(skillCode);
                 ResetResponseState();
             }
 
@@ -313,15 +329,17 @@ public class SkillManager : MonoBehaviour
     /// <param name="skillIndex">선택할 스킬의 인덱스 (예: 0 = Q, 1 = W)</param>
     public void PrepareSkillCast(int Index, int CharacterNumber)
     {
-        Skillcancel();
-        int skillIndex = turnManager.isPlayerTurn ? Index : Index+5;
         if (CharacterNumber == -1)
         {
             Debug.LogWarning("캐릭터가 선택되지 않았습니다.");
             return;
         }
-        
         var character = CharacterStats.Instance.characterList[CharacterNumber];
+        if(character.characterPrefab.GetComponent<CharacterMovement>().isMoving == true)
+            return; // 캐릭터가 이동 중이면 스킬 선택 불가
+        Skillcancel();
+        int skillIndex = turnManager.isPlayerTurn ? Index : Index+5;
+
         if (character.usingSkill[skillIndex].skillName == null)
         {
             Debug.LogWarning($"선택된 캐릭터의 스킬이 비어있습니다. 인덱스: {skillIndex}");
@@ -1122,12 +1140,22 @@ public class SkillManager : MonoBehaviour
         skill.StartCooldown();
         character.gurd = skill.gurd.time;
         //프로필 업데이트
-        ProfileuiManager.ProfileUpdate(characterSelection.PickcharNumber(CharacterSelection.selectedCharacterIndex),
-            turnManager.isPlayerTurn);
+        try
+        {
+            ProfileuiManager.ProfileUpdate(characterSelection.PickcharNumber(CharacterSelection.selectedCharacterIndex),
+                turnManager.isPlayerTurn);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"[SkillManager] 프로필 업데이트 실패: {e.Message}");
+        }
         //선택된 스킬범위 삭제
         SkillRangeVisualizer.Instance.StopNonTargetProjectileRange();
         SkillRangeVisualizer.Instance.StopSkillRangePreview();
         Debug.Log($"[SkillManager] 스킬 실행 완료: {skill.skillName}");
+
+
+
         skillRangeVisualizer.StartSkillTargetRangePreview(null);
 
 
@@ -1348,7 +1376,7 @@ public class SkillManager : MonoBehaviour
     /// <summary>
     /// Skillaction 리스트를 순서대로 실행
     /// </summary>
-    public void SkillCastTeam(int skillCode)
+    public void SkillCastPlayer(int skillCode)
     {
         // Skillaction이 null이거나 비어있으면 실행하지 않음
         if (TeamSkill == null || TeamSkill.Count == 0 || TeamSkill[skillCode].skillData == null)
@@ -1362,6 +1390,9 @@ public class SkillManager : MonoBehaviour
         var skillData = selectedAction.skillData;
 
         cursor.SetActive(false);// 커서 비활성화
+
+        // 스킬 시전 중 상태로 변경
+        isCastingSkill = true; 
 
         //스킬 실행
         isSkillReadyFinal = false;
@@ -1452,15 +1483,9 @@ public class SkillManager : MonoBehaviour
         return selectedSkill != null && isSkillReady;
     }
 
-    public bool HasMovedInReactPhase()
-    {
-        return hasMovedInReact;
-    }
-
     public void MarkReactMove()
     {
         hasMovedInReact = true;
-        hasReacted = true; // 스킬 사용과 동일하게 "반응 1회 완료"로 간주
         Debug.Log("[SkillManager] 대응단계에서 이동 선택 완료");
     }
 

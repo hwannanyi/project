@@ -87,7 +87,9 @@ public class CharacterMovement : MonoBehaviour
         if (characterNumber == indexnumber)
         {
             //이동불가 상태라면 이동금지
-            if (character.movable == false)
+            //스킬 시전중 이동 금지
+            if (character.movable == false ||
+                SkillManager.Instance.isCastingSkill)
             {
                 return;
             }
@@ -198,9 +200,7 @@ public class CharacterMovement : MonoBehaviour
                         startPosition = transform.position;
                         moveCoroutine = StartCoroutine(MoveToTarget());
                     }
-                    int count = CharacterStats.Instance.characterList[characterNumber].NowMoveCount;
-                    count = teamTurn ? count - 1 : count; // 팀 턴일 때만 이동 횟수 차감
-                    CharacterStats.Instance.characterList[characterNumber].NowMoveCount = count;
+
                 }
             }
         }
@@ -240,19 +240,29 @@ public class CharacterMovement : MonoBehaviour
             // SmoothDamp를 사용해 자연스럽게 감속하며 이동
             // moveSpeed는 최대 속도, smoothTime은 감속 시간
             transform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime, moveSpeed);
+            SkillManager.Instance.isMoving = true; // 이동중 신호
             yield return null; // 다음 프레임까지 대기
         }
 
         transform.position = targetPosition; // 정확한 목표 위치로 위치 보정
         isMoving = false; // 이동 완료 후 이동 가능 상태로 변경
-        PositionUpdate(); // 위치 갱신 및 이동 횟수 차감 등 처리
+        
+
+        var stats = CharacterStats.Instance;
+        var character = stats.GetStats(gameObject);
+        bool teamTurn = (character.team == Team.team && TurnManager.Instance.isPlayerTurn);
+        int count = CharacterStats.Instance.characterList[characterNumber].NowMoveCount;
+        count = teamTurn ? count - 1 : count; // 팀 턴일 때만 이동 횟수 차감
+        CharacterStats.Instance.characterList[characterNumber].NowMoveCount = count;
+
+        PositionUpdate(); // 위치 갱신 처리
     }
 
     // 타일에 부딪혔을 때 호출되는 메서드
     private void OnTriggerEnter(Collider other)
     {
         // 충돌한 오브젝트가 타일인 경우
-        if (other.CompareTag("Tile"))
+        if (other.CompareTag("Tile") || other.CompareTag("MapBorder"))
         {
             isBlocked = true;  // 이동을 막음
             isMoving = false;  // 이동 중 상태 해제
@@ -299,7 +309,7 @@ public class CharacterMovement : MonoBehaviour
     // 충돌이 끝났을 때 이동을 재개하도록 설정
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Tile"))
+        if (other.CompareTag("Tile") || other.CompareTag("MapBorder"))
         {
             isBlocked = false;  // 이동 차단 해제
         }
@@ -351,6 +361,9 @@ public class CharacterMovement : MonoBehaviour
         CharacterStats.Instance.characterList[characterNumber].charPosition = transform.position;
     }
 
+    public void OnDestroy()
+    {
+    }
 
     public void ShowMoveHighlights()
     {

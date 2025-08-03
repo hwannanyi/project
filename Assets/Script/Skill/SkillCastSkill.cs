@@ -40,6 +40,7 @@ public class SkillCastSkill : MonoBehaviour
         if (AddSkills == null)
         {
             Debug.Log("연계스킬이 없음");
+            SkillManager.Instance.isCastingSkill = StartTiming && SkillManager.Instance.isCastingSkill; // 스킬 캐스트 스킬 초기화
             return; }
         
 
@@ -68,7 +69,7 @@ public class SkillCastSkill : MonoBehaviour
         }
         catch
         {
-            Debug.LogError("연계스킬 실행 실패: " + Skill.skillName);
+            Debug.Log("연계스킬이 없음: " + Skill.skillName);
         }
         
             //}

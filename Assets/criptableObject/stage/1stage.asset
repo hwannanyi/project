@@ -23,11 +23,9 @@ MonoBehaviour:
   - {x: -1, y: 1}
   - {x: -1, y: -1}
   enemyDatalist:
-  - enemyName: melun
-    position: {x: 1, y: 1}
-  - enemyName: "\uD504\uB9AC\uC998"
-    position: {x: 1, y: -1}
-  - enemyName: "\uD504\uB9AC\uC998"
-    position: {x: 1, y: -2}
+  - enemyName: bot(1)
+    position: {x: 5, y: 0}
+  - enemyName: bot(2)
+    position: {x: 0, y: 3}
   clear: 0
   feil: 0

@@ -9,14 +9,15 @@ using UnityEngine.SceneManagement;
 public class StageManager : MonoBehaviour
 {
     public static StageManager Instance;
-    public Stage[] ALLStageList; // 전체 스테이지 리스트
+    public Stage[] ALLStageList = Array.Empty<Stage>(); // 전체 스테이지 리스트
     public Stage CurrentStage; // 현재 선택된 스테이지
     public int StageNumber = -1; // 현재 스테이지 번호
     public List<string> character;
     void Awake()
     {
             Instance = this;
-
+        ALLStageList = Array.Empty<Stage>(); // 빈 배열로 초기화
+        CurrentStage = null; // 명시적으로 null로 초기화
         DontDestroyOnLoad(gameObject);
         Addressables.LoadAssetsAsync<Stage>("Stage", null).Completed += OnStageLoaded;
 

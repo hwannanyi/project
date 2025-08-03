@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30c4cb1fd5df3cb42abbdafcca2e6a47, type: 3}
-  m_Name: bot(1)
+  m_Name: bot(2)
   m_EditorClassIdentifier: 
-  charactername: bot(1)
+  charactername: bot(2)
   maxhp: 10
   maxmp: 99
   atk: 10
@@ -38,4 +38,4 @@ MonoBehaviour:
   characterillustration: {fileID: 21300000, guid: 48b0b642eb9ea4f478f87f0c4db58470, type: 3}
   characterProfileillustration: {fileID: 21300000, guid: 48b0b642eb9ea4f478f87f0c4db58470, type: 3}
   characterPrefab: {fileID: 4344314745404087944, guid: b350271128cd3ca489c78af4523dd393, type: 3}
-  skillQueue: {fileID: 11400000, guid: e5b132f4867a0c047b4f105727b57701, type: 2}
+  skillQueue: {fileID: 11400000, guid: dc008be4c0b210e429d758c7d12c5d01, type: 2}

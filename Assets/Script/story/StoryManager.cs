@@ -669,7 +669,7 @@ public class StoryManager : MonoBehaviour
 
     public bool ISturn()
     {
-        return Input.GetKeyDown(KeyCode.P) || (!turnManager.isPlayerTurn && aITurn.AIturnEnd);
+        return Input.GetKeyDown(KeyCode.Space) || (!turnManager.isPlayerTurn && aITurn.AIturnEnd);
     }
 
     public bool ISmove()

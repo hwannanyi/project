@@ -74,8 +74,8 @@ public class SkillEffectProjectile : MonoBehaviour
             rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f);
         }
 
-        GameObject HitboxTile = Instantiate(hitbox, this.transform);
-        HitboxTile.transform.localPosition = Vector3.zero;
+/*        GameObject HitboxTile = Instantiate(hitbox, this.transform);
+        HitboxTile.transform.localPosition = Vector3.zero;*/
 /*
         // 병합 실행
         ColliderMerger merger = GetComponent<ColliderMerger>();
@@ -178,7 +178,15 @@ public class SkillEffectProjectile : MonoBehaviour
         }
     }
 
-    private void OnHit()
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("MapBorder"))
+        {
+            OnHit();
+        }
+    }
+
+    public void OnHit()
     {
         // 데미지, 이펙트 등
         Debug.Log($"[SkillEffectProjectile] {skill.skillName} 타격 완료");

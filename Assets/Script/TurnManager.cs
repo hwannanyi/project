@@ -33,6 +33,7 @@ public class TurnManager : MonoBehaviour
 
     public StageManager stageManager;
     public TurnUIManager uiManager;
+    public SkillManager skillmanager; // 스킬 매니저 인스턴스
     public CharacterUIManager characterUIManager; // 캐릭터 프로필 UI 매니저
     public StoryManager storyManager; // 스토리 매니저 인스턴스
 
@@ -66,6 +67,7 @@ public class TurnManager : MonoBehaviour
 
     private void Awake()
     {
+        skillmanager = GetComponent<SkillManager>();
         characterSelection = GetComponent<CharacterSelection>();
         characterStats = GetComponent<CharacterStats>();
         stageDataManager = GetComponent<StageDataManager>();
@@ -177,14 +179,22 @@ public class TurnManager : MonoBehaviour
     //  턴 전환 (일반 턴 순환: 플레이어 <-> 적)
     public void NextTurn()
     {
+        skillmanager.Skillcancel(); // 스킬 쿨타임 초기화
         isPlayerTurn = !isPlayerTurn; // 플레이어 턴 여부 토글
         EnterReactPhase();
         //CharacterSelection.selectedCharacterIndex = -1;
         characterUIManager.UpdateProfileUIBySelection();
         Turn++;
         UITrunCount(Turn);//  턴 UI 업데이트
-        characterUIManager.ProfileUpdate(characterSelection.PickcharNumber(CharacterSelection.selectedCharacterIndex),
-            isPlayerTurn);
+        try
+        {
+            characterUIManager.ProfileUpdate(characterSelection.PickcharNumber(CharacterSelection.selectedCharacterIndex),
+                isPlayerTurn);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[TurnManager] 캐릭터 프로필 업데이트 실패: {e.Message}");
+        }
         // 모든 캐릭터의 스킬 쿨타임 감소
         foreach (var character in CharacterStats.Instance.characterList)
         {
