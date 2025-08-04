@@ -188,6 +188,7 @@ public class TurnManager : MonoBehaviour
         UITrunCount(Turn);//  턴 UI 업데이트
         try
         {
+            if(CharacterSelection.selectedCharacterIndex != -1)
             characterUIManager.ProfileUpdate(characterSelection.PickcharNumber(CharacterSelection.selectedCharacterIndex),
                 isPlayerTurn);
         }

@@ -39,6 +39,7 @@ public class StoryManager : MonoBehaviour
     public TextMeshProUGUI talktext; // 대화 텍스트 UI
     public int currentTalkIndex = 0; // 현재 대사 인덱스
     public List<TalkData> talklist = new();
+    public List<TalkData> talkRead = new();
     public List<Sprite> characterSprites = new(); // 캐릭터 이미지 리스트
     private Dictionary<string, GameObject> characterUIPool = new(); // 오브젝트 풀 리스트
 
@@ -97,23 +98,26 @@ public class StoryManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.L))
         {
-            PopUpStoryReStart("1");
+            Debug.Log("씨발");
         }
 
         NextPopUpStory();
         if (isStoryActive && Input.GetKeyDown(KeyCode.Return))
         {
-            if (talklist.Count >= 0 && currentTalkIndex < talklist.Count - 1)
+            if (talkRead.Count >= 0 && currentTalkIndex < talkRead.Count - 1)
             {
                 currentTalkIndex++;
                 ShowCurrentTalk();
             }
             else
             {
-                StoryEnd();
+                Action end = (talkRead[^1] == talklist[^1]) ?
+                StoryEnd : StoryStop; // 마지막 대사면 팝업 스토리 종료, 아니면 팝업 스토리 중지
+                end.Invoke();
                 if (popUpisStoryActive)
                     popUpStoryUI.SetActive(true);
             }
+
         }
         
     }
@@ -124,20 +128,23 @@ public class StoryManager : MonoBehaviour
         StoryUI.SetActive(true); // 스토리 UI 활성화
         GameUI.SetActive(false); // 게임 UI 비활성화
 
+        // 읽은 스토리 ID 리스트 초기화
+        readStoryID = new(); 
 
         LoadStory(storyID); // 예시로 스토리 ID 1을 시작
     }
 
-    public void StoryReStart(string storyID)
+    public void StoryReStart(string ID)
     {
         if (talklist.Count == 0)
         {
             StoryStart(stageDataManager.CurrentStage.ID);
-            StoryReStart(storyID); // 스토리 ID가 없으면 현재 스테이지의 ID로 시작
+            StoryReStart(ID); // 스토리 ID가 없으면 현재 스테이지의 ID로 시작
         }
         else 
         {
             isStoryActive = true;
+            ReadStory(ID); // 스토리 ID로 대사 읽기
             StoryUI.SetActive(true); // 스토리 UI 활성화
             GameUI.SetActive(false); // 게임 UI 비활성화
         }
@@ -145,20 +152,25 @@ public class StoryManager : MonoBehaviour
 
     public void StoryStop()
     {
+        readStoryID.Add(talkRead[0].id); // 대사 ID를 읽은 스토리 ID 리스트에 추가
         isStoryActive = false;
+        currentTalkIndex = 0; // 대사 인덱스 초기화
+        talkRead = new(); // 대사 리스트 초기화
         StoryUI.SetActive(false); // 스토리 UI 활성화
         GameUI.SetActive(true); // 게임 UI 비활성화
     }
 
     public void StoryEnd()
     {
+        readStoryID.Add(talkRead[0].id); // 대사 ID를 읽은 스토리 ID 리스트에 추가
         UnPause(); // 모든 잠금 해제
         isStoryActive = false; // 스토리 UI 비활성화
         isStoryEnd = true; // 스토리 종료 상태 설정
         StoryUI.SetActive(false); // 스토리 UI 비활성화
         GameUI.SetActive(true); // 게임 UI 비활성화
         currentTalkIndex = 0; // 대사 인덱스 초기화
-        talklist = new List<TalkData>(); // 대사 리스트 초기화
+        talklist = new(); // 대사 리스트 초기화
+        talkRead = new(); // 대사 리스트 초기화
         characterSprites = new List<Sprite>(); // 캐릭터 이미지 리스트 초기화
         characterUIPool.Clear(); // 오브젝트 풀 초기화
         characterUIPool = new Dictionary<string, GameObject>(); // 오브젝트 풀 딕셔너리 초기화
@@ -183,18 +195,18 @@ public class StoryManager : MonoBehaviour
     // 현재 대사를 UI에 표시하는 함수
     private void ShowCurrentTalk()
     {
-        if (talklist.Count > 0 && currentTalkIndex < talklist.Count)
+        if (talkRead.Count > 0 && currentTalkIndex < talkRead.Count)
         {
             popUpStoryUI.SetActive(false);
 
-            characterName.text = talklist[currentTalkIndex].talk_character;
-            talktext.text = talklist[currentTalkIndex].talk;
-            HowCharacterUI(talklist[currentTalkIndex].talk_character);
-            if (talklist[currentTalkIndex].production == "stop")
+            characterName.text = talkRead[currentTalkIndex].talk_character;
+            talktext.text = talkRead[currentTalkIndex].talk;
+            HowCharacterUI(talkRead[currentTalkIndex].talk_character);
+/*            if (talklist[currentTalkIndex].production == "stop")
             {
                 currentTalkIndex++;
                 StoryStop();
-            }
+            }*/
         }
 
     }
@@ -237,6 +249,22 @@ public class StoryManager : MonoBehaviour
 
     }
 
+
+
+    //스토리 일부를 읽는 함수
+    public void ReadStory(string ID)
+    {
+        talkRead.Clear(); // 기존 내용 초기화
+
+        foreach (var talk in talklist)
+        {
+            if (talk.id == ID)
+            {
+                talkRead.Add(talk);
+            }
+        }
+        ShowCurrentTalk();
+    }
 
     public void LoadCharacterSprites()
     {
@@ -328,6 +356,7 @@ public class StoryManager : MonoBehaviour
     {
         popUpisStoryActive = true; // 팝업 스토리 UI 활성화 상태 설정
         ispopUpStoryEnd = false; // 팝업 스토리 종료 상태 초기화
+        readpopupStoryID = new(); // 읽은 팝업 스토리 ID 리스트 초기화
         LoadPopUpStory(storyID); // 팝업 스토리 로드
     }
     public void PopUpStoryStop()
@@ -363,11 +392,11 @@ public class StoryManager : MonoBehaviour
 
     public void PopUpStoryEnd()
     {
+        readpopupStoryID.Add(PopUptalkRead[0].id); // 팝업 대사 ID를 읽은 스토리 ID 리스트에 추가
         popUpisStoryActive = false; // 팝업 스토리 UI 활성화 상태 설정
         ispopUpStoryEnd = true; // 팝업 스토리 종료 상태 설정
         popUpStoryUI.SetActive(false); // 팝업 스토리 UI 비활성화
         PopUptalklist = new(); // 팝업 대화 리스트 초기화
-        readpopupStoryID = new(); // 읽은 팝업 스토리 ID 리스트 초기화
         currentPopUpTalkIndex = 0; // 팝업 대사 인덱스 초기화
     }
     public void LoadPopUpStory(string storyID)

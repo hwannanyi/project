@@ -118,6 +118,8 @@ public class MiniprofileUIManager : MonoBehaviour
 
     public void ProfileUIOff()
     {
+        if(ProfileUI == null)
+            return;
         ProfileUI.SetActive(false);
     }
     public void ProfileUIOn()

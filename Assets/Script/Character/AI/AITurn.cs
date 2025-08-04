@@ -9,8 +9,9 @@ public class AITurn : MonoBehaviour
 {
     public float turntime = 3.0f; // AI 턴 지속 시간
     public float turnTimer = 0f; // 타이머 초기화
-    public StoryManager storyManager; // 스토리 매니저 인스턴스
-    public CharacterStats characterStats; // 캐릭터 스탯 매니저 인스턴스
+    public StoryManager storyManager; // 스토리 매니저
+    public CharacterStats characterStats; // 캐릭터 스탯 매니저
+    public TurnManager turnManager; // 턴 매니저 
     public bool AIturnEnd = false; // AI 턴 종료 여부
 
     public void Awake()
@@ -18,6 +19,7 @@ public class AITurn : MonoBehaviour
 
         storyManager = GetComponent<StoryManager>();
         characterStats = GetComponent<CharacterStats>();
+        turnManager = GetComponent<TurnManager>();
     }
 
     public void Update()
@@ -30,7 +32,7 @@ public class AITurn : MonoBehaviour
         bool allEnemiesDead = enemies.All(e => e.isdie);
 
         // 스토리 종료 상태 확인
-        if (allEnemiesDead && storyManager.ispopUpStoryEnd && storyManager.isStoryEnd)
+        if (allEnemiesDead && storyManager.ispopUpStoryEnd && storyManager.isStoryEnd && characterStats.characterCreat)
         {
             Debug.Log("스테이지 클리어!");
             StartCoroutine(CheckStageClearRoutine()); // 게임 씬으로 전환

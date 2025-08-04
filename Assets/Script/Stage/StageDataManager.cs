@@ -92,6 +92,7 @@ public class StageDataManager : MonoBehaviour
     {
         // 현재 적이 살아있는 수
         var timingList = CurrentStage.storyTiming;
+        var timingList1 = CurrentStage.storyTiming;
         if (timingList.Count == 0) return;
         int aliveEnemyCount = characterStats.characterList.Count(stats => stats.team == Team.enemy && stats.isdie == false);
 
@@ -105,8 +106,9 @@ public class StageDataManager : MonoBehaviour
                 .FirstOrDefault(t => !storyManager.readpopupStoryID.Contains(t.ID));
 
             // 조건을 만족하는 StoryTiming를 추출
-            var bartiming = timingList
-                .Where(t => t.storyTimingType == StoryTimingType.turn && !t.isPopUp); // turn 타입과 bare 타입만 필터링
+            var bartiming = timingList1
+                .Where(talk => talk.storyTimingType == StoryTimingType.turn && !talk.isPopUp)
+                .FirstOrDefault(talk => !storyManager.readStoryID.Contains(talk.ID));
 
 
 
@@ -152,20 +154,31 @@ public class StageDataManager : MonoBehaviour
         // 조건을 만족하는 StoryTiming를 추출
         var bartiming = timingList1
             .Where(talk => talk.storyTimingType == StoryTimingType.turn && !talk.isPopUp) 
-            .FirstOrDefault(talk => Mathf.Approximately(turn, talk.value));
-
-        Debug.Log(bartiming);
+            .FirstOrDefault(talk => turn >= talk.value && !storyManager.readStoryID.Contains(talk.ID));
 
         try
         {
-            // 말풍선 스토리 실행
-            storyManager.PopUpStoryReStart(timing.ID);
+            if (timing.isPopUp)
+            {
+                // 말풍선 스토리 실행
+                storyManager.PopUpStoryReStart(timing.ID);
+            }
         }
         catch
         {
         }
-
-            storyManager.StoryReStart(CurrentStage.ID);
+        try
+        {
+            if (!bartiming.isPopUp)
+            {
+                // 말풍선 스토리 실행
+                storyManager.StoryReStart(bartiming.ID);
+            }
+        }
+        catch
+        {
+        }
+        
     }
 
 
