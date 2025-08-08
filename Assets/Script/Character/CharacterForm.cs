@@ -9,6 +9,7 @@ public class CharacterForm : MonoBehaviour
     public bool isTeamForm;
     public GameObject parentObject;
     public GameObject highlightEffect; // 인스펙터에서 할당
+    public CharacterHighlight characterHighlight; // 인스펙터에서 할당
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -40,6 +41,8 @@ public class CharacterForm : MonoBehaviour
             SetHighlight(false);
         }
     }
+
+
 
     public void Characterform()
     {
@@ -85,6 +88,7 @@ public class CharacterForm : MonoBehaviour
             return;
         if (highlightEffect != null)
         highlightEffect.SetActive(isOn);
+
     }
 
 

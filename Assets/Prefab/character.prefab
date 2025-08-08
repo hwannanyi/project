@@ -109,6 +109,7 @@ MonoBehaviour:
   isTeamForm: 0
   parentObject: {fileID: 4344314745404087944}
   highlightEffect: {fileID: 0}
+  characterHighlight: {fileID: 0}
 --- !u!114 &3675397492612416123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -310,11 +311,19 @@ MonoBehaviour:
       skillCastCode: 0
       gurd:
         time: 0
+  EffectMark:
+    keys: []
+    values: []
   sprite:
     keys:
     - gurd
     values:
     - {fileID: -398341292, guid: d2736e599297c954fabb954320e029fc, type: 3}
+  moveAllow:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &4344314745404087944
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,6 +460,7 @@ MonoBehaviour:
   isTeamForm: 1
   parentObject: {fileID: 4344314745404087944}
   highlightEffect: {fileID: 7146173340283780072, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
+  characterHighlight: {fileID: 0}
 --- !u!65 &-2257571768671622552
 BoxCollider:
   m_ObjectHideFlags: 0

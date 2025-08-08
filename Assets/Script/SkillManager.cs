@@ -150,8 +150,16 @@ public class SkillManager : MonoBehaviour
 
     void Update()
     {
+        
+        
         //if (CameraZoom.isControlMode) return;
-        if (skillSelectLocked || isCastingSkill) return; // 스킬선택잠금 또는 스킬시전중, 이동중 입력 무시
+        if (skillSelectLocked || isCastingSkill)
+        {
+            // 스킬선택잠금 또는 스킬시전중, 이동중 입력 무시
+            return;
+        }
+
+               
         try 
         { 
             if (storyManager.isStoryActive || storyManager.skillLock)
@@ -198,6 +206,7 @@ public class SkillManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            characterSelection.MoveArrow.SetActive(true);
             Skillcancel();
         }
 
@@ -329,6 +338,8 @@ public class SkillManager : MonoBehaviour
     /// <param name="skillIndex">선택할 스킬의 인덱스 (예: 0 = Q, 1 = W)</param>
     public void PrepareSkillCast(int Index, int CharacterNumber)
     {
+        int skillIndex = turnManager.isPlayerTurn ? Index : Index + 5;
+
         if (CharacterNumber == -1)
         {
             Debug.LogWarning("캐릭터가 선택되지 않았습니다.");
@@ -338,7 +349,7 @@ public class SkillManager : MonoBehaviour
         if(character.characterPrefab.GetComponent<CharacterMovement>().isMoving == true)
             return; // 캐릭터가 이동 중이면 스킬 선택 불가
         Skillcancel();
-        int skillIndex = turnManager.isPlayerTurn ? Index : Index+5;
+
 
         if (character.usingSkill[skillIndex].skillName == null)
         {
@@ -382,7 +393,7 @@ public class SkillManager : MonoBehaviour
         }
 
         isSkillReady = true;
-
+        ProfileuiManager.SkillSelectionhigh(Index); // 스킬 선택 UI 하이라이트
         // 만약 플레이어 턴이면 커서를 활성화하고, 아니면 아무것도 하지 않는다.
         (turnManager.isPlayerTurn
             ? (Action)(() => 
@@ -1502,6 +1513,7 @@ public class SkillManager : MonoBehaviour
     public void Skillcancel()
     {
         SelectedSkillClear();
+        ProfileuiManager.SkillSelectionhigh(-1);
         selectedTargetUnit = null; // 클릭시 타겟 초기화
         isSkillReady = false;
         isSkillReadyFinal = false;

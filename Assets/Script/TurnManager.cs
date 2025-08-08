@@ -90,7 +90,6 @@ public class TurnManager : MonoBehaviour
 
     public void Start()
     {
-        Tutorial();
         stageDataManager.CheckTurn();//스토리활성화
     }
     //  EventManager 연동 유지 (턴 종료 이벤트로 외부에서 턴 넘기기 가능)
@@ -240,21 +239,6 @@ public class TurnManager : MonoBehaviour
     {
         uiManager.UpdateTrunCount(turnCount);
         uiManager.UpdateReactTurn(isPlayerTurn);
-    }
-
-    ////////////////////////////////
-    
-    public void Tutorial()
-    {
-        if (stageManager.CurrentStage.stagenumber == 0)
-        {
-            if (Turn == 1)
-            {
-                // 스토리 시작 이벤트 발생
-                //PopUpOnStoryStart.Invoke("");
-            } 
-            //else if (Turn == 3 || Turn == 5 || Turn == 7) { PopUpOnStoryReStart.Invoke(""); }
-        }
     }
 }
 

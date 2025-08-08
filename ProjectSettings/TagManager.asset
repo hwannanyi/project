@@ -8,6 +8,7 @@ TagManager:
   - skill
   - Character
   - MapBorder
+  - MoveArrow
   layers:
   - Default
   - TransparentFX
@@ -56,6 +57,9 @@ TagManager:
     locked: 0
   - name: cursor
     uniqueID: 3474705413
+    locked: 0
+  - name: allow
+    uniqueID: 951502025
     locked: 0
   m_RenderingLayers:
   - Default

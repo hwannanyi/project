@@ -20,6 +20,9 @@ public class CharacterHighlight : MonoBehaviour
     private Dictionary<string, Func<bool>> Effect = new();
 
     public UDictionary<string, Sprite> sprite = new();
+
+    public MoveAllow[] moveAllow = new MoveAllow[] { null, null, null, null };
+
     void Awake()
     {
         characterForm = GetComponent<CharacterForm>();
