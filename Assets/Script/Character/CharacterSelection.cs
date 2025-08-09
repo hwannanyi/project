@@ -60,7 +60,7 @@ public class CharacterSelection : MonoBehaviour
             //OnCharacterSelectedMoveCount2P(selectedCharacterIndex);
             return;
         }
-        OnCharacterSelectedMoveCount(selectedCharacterIndex); 
+        //OnCharacterSelectedMoveCount(selectedCharacterIndex); 
 /*        if (selectedCharacterIndex == -1 && prevSelectedIndex != -1)
         {
             CharacterStats.Instance.characterList[prevSelectedIndex].SetHighlight(true);
@@ -265,7 +265,7 @@ public class CharacterSelection : MonoBehaviour
         characterUIManager.UpdateCharacterProfileSkill(character, turnManager.isPlayerTurn);
     }
 
-    public void OnCharacterSelectedMoveCount(int index)
+/*    public void OnCharacterSelectedMoveCount(int index)
     {
         if (index < 0 || index >= CharacterStats.Instance.characterList.Count)
         {
@@ -275,7 +275,7 @@ public class CharacterSelection : MonoBehaviour
         var character = CharacterStats.Instance.characterList[index];
         characterUIManager.UpdateMoveCount(character.NowMoveCount);
     }
-
+*/
 
 
 /*    public void OnCharacterSelected2P(int index)

@@ -83,7 +83,9 @@ public class CharacterMovement : MonoBehaviour
 
             return; // 유효하지 않은 인덱스인 경우 아무 작업도 하지 않음
         }
-        int nowmoveCount = CharacterStats.Instance.characterList[indexnumber].NowMoveCount;
+        
+        //int nowmoveCount = CharacterStats.Instance.characterList[indexnumber].NowMoveCount;
+
         if (characterNumber == indexnumber)
         {
             //이동불가 상태라면 이동금지
@@ -166,8 +168,8 @@ public class CharacterMovement : MonoBehaviour
             {
 
                 bool teamTurn = (character.team == Team.team && TurnManager.Instance.isPlayerTurn);
-                if (nowmoveCount <= 0 && teamTurn)//이동횟수가 있어야 이동가능
-                     return;
+//                if (nowmoveCount <= 0 && teamTurn)//이동횟수가 있어야 이동가능
+//                     return;
 
                 Vector3 chosenDir = Vector3.zero;
 
@@ -250,9 +252,9 @@ public class CharacterMovement : MonoBehaviour
         var stats = CharacterStats.Instance;
         var character = stats.GetStats(gameObject);
         bool teamTurn = (character.team == Team.team && TurnManager.Instance.isPlayerTurn);
-        int count = CharacterStats.Instance.characterList[characterNumber].NowMoveCount;
+/*        int count = CharacterStats.Instance.characterList[characterNumber].NowMoveCount;
         count = teamTurn ? count - 1 : count; // 팀 턴일 때만 이동 횟수 차감
-        CharacterStats.Instance.characterList[characterNumber].NowMoveCount = count;
+        CharacterStats.Instance.characterList[characterNumber].NowMoveCount = count;*/
 
         PositionUpdate(); // 위치 갱신 처리
     }

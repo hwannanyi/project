@@ -27,11 +27,11 @@ public class CharacterUIManager : MonoBehaviour
     public GameObject skillhight;
     private RectTransform skillHightRect;
     private List<RectTransform> skillSlotRects;
-
+/*
     [Header("이동")]
     public Sprite MoveCount1;
     public Sprite MoveCount2;
-    public List<Image> MoveCount;
+    public List<Image> MoveCount;*/
 
 
     [Header("이동")]
@@ -121,7 +121,7 @@ public class CharacterUIManager : MonoBehaviour
             skillHightRect.anchoredPosition = skillSlotRects[skillIndex].anchoredPosition;
     }
 
-    public void UpdateMoveCount(int moveCount)
+/*    public void UpdateMoveCount(int moveCount)
     {
         // 모든 MoveCount 이미지 비활성화
         foreach (var countImage in MoveCount)
@@ -138,12 +138,12 @@ public class CharacterUIManager : MonoBehaviour
             }
         }
     }
-
+*/
     public void ProfileUpdate(Stats character, bool playerturn)
     {
         UpdateCharacterProfile(character);
         UpdateCharacterProfileSkill(character, playerturn);
-        UpdateMoveCount(character.NowMoveCount);
+        //UpdateMoveCount(character.NowMoveCount);
     }
 
     public void ProfileUIOff()

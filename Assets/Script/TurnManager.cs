@@ -205,14 +205,13 @@ public class TurnManager : MonoBehaviour
                     skill.ReduceCooldown(1);
                 }
             }
-            if (character.mp < 10)
-            {
-                character.mp += 1;
-            }
-            if (character.NowMoveCount < 8)
-            {
-                character.NowMoveCount += 1;
-            }
+
+                character.mp = character.mp < 10 ? character.mp + 1 : character.mp;
+
+            /*            if (character.NowMoveCount < 8)
+                        {
+                            character.NowMoveCount += 1;
+                        }*/
             character.isPatternEnd = character.isdie; // AI 패턴 초기화
         }
 

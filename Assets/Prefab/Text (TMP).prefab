@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 4294967295
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 7790065524298641722, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
+  - {fileID: 7790065524298641722, guid: 9f318e1a78b1e9842b3545d363ffbc26, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -106,8 +106,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 1
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
-  m_sharedMaterial: {fileID: 7790065524298641722, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9f318e1a78b1e9842b3545d363ffbc26, type: 2}
+  m_sharedMaterial: {fileID: 7790065524298641722, guid: 9f318e1a78b1e9842b3545d363ffbc26, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -190,6 +190,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45181f2cc32f71c4294b159de92bfe12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spriteRenderer: {fileID: 0}
+  norotate: 0
   mode: 2
 --- !u!114 &6523809340913284086
 MonoBehaviour:
@@ -203,3 +205,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b83cca1a519c049ba8a7e7e146b9a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveDistance: 1
+  moveSpeed: 1
+  destroyDelay: 1.2
