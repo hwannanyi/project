@@ -78,6 +78,13 @@ public class Stats
         public SkillAutoCast passiveTarget; // 패시브 타겟팅 정보
     }
 
+
+    public bool isparrying; //패링중
+    public float parryingTime; //패링 지속시간
+    public bool hold; // 홀드중
+    public List<float> holdGauge =new();
+    public List<int> keyMashing = new();
+
     public Stats(Character data, bool die, List<SkillData> usingSkill)
     {
         isPatternEnd = false;
@@ -123,7 +130,15 @@ public class Stats
 
         available = true;
         movable = true;
+
+        //방어관련
         gurd = 0f; // 방어시간 초기화
+        parryingTime = 0.2f;
+        isparrying = false;
+        hold = false;
+        holdGauge = new();
+        keyMashing = new();
+
 
         aIPattern = new AIPattern(data.skillQueue);
         //패시브 스킬 추가
@@ -157,6 +172,64 @@ public class Stats
         lastHitSkillData = null;
 
 
+    }
+
+    // 패링 코루틴
+    public IEnumerator ParryingCoroutine()
+    {
+        isparrying = true;//패링상태 활성화
+        float time = parryingTime;//시간 시작
+        while (time > 0f)
+        {
+            time -= Time.deltaTime;
+            yield return null;
+        }
+        isparrying = false; // 시간 종료와 함께 패링 끝
+    }
+
+    //홀드하고 있는 중인가?
+    public bool IsHold(int num)
+    {
+        if (characterNumber != num) return false;
+        // characterNumber가 0~9일 때 각각 1,2,3,4 키를 사용
+        switch (characterNumber)
+        {
+            case 0:
+                return Input.GetKey(KeyCode.Alpha1);
+            case 1:
+                return Input.GetKey(KeyCode.Alpha2);
+            case 2:
+                return Input.GetKey(KeyCode.Alpha3);
+            case 3:
+                return Input.GetKey(KeyCode.Alpha4);
+            default:
+                // 기본값: LeftShift
+                return Input.GetKey(KeyCode.LeftShift);
+        }
+    }
+    
+    // 홀드시 모든 홀드 게이지가 줄어듬
+    public void Hold(int num)
+    {
+        if (IsHold(num))
+        {
+            for (int i = 0; i < holdGauge.Count; i++)
+            {
+                holdGauge[i] -= Time.deltaTime;
+            }
+        }
+    }
+
+    // 홀드시 모든 홀드 게이지가 줄어듬
+    public void Mashing(int num)
+    {
+        if (characterNumber == num)
+        {
+            for (int i = 0; i < keyMashing.Count; i++)
+            {
+                keyMashing[i] -= 1;
+            }
+        }
     }
 
     public Transform GetCharacterTransform()

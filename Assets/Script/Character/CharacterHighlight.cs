@@ -14,7 +14,7 @@ public class CharacterHighlight : MonoBehaviour
 
     public GameObject grandParentObj;
     public GameObject EffectMarkPf;
-    public Stats character;
+    public CharStats character;
 
     public UDictionary<string, GameObject> EffectMark = new();
     private Dictionary<string, Func<bool>> Effect = new();
@@ -22,6 +22,8 @@ public class CharacterHighlight : MonoBehaviour
     public UDictionary<string, Sprite> sprite = new();
 
     public MoveAllow[] moveAllow = new MoveAllow[] { null, null, null, null };
+
+   
 
     void Awake()
     {
@@ -32,8 +34,6 @@ public class CharacterHighlight : MonoBehaviour
 
     private void Start()
     {
-        var manager = CharacterStats.Instance;
-        character = manager.GetStats(grandParentObj);
         StartMakeList();
     }
     public void Update()
@@ -106,6 +106,6 @@ public class CharacterHighlight : MonoBehaviour
 
     public bool IsGurd()
     {
-        return character.gurd > 0;
+        return character.Character.gurd > 0;
     }
 }

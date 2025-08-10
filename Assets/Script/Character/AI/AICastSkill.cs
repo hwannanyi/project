@@ -79,13 +79,16 @@ public class AICastSkill : MonoBehaviour
             if (pattern.skill == null) continue;
 
             var targetSkill = new SkillData(pattern.skill, character.name, false);
-            if (character.usingSkill.Any(x => x.skillName == pattern.skill.skillName))
+
+            // 사용 중인 스킬에 해당 스킬이 없으면 다음 패턴으로 넘어감
+            if (!character.usingSkill.Any(x => x.skillName == pattern.skill.skillName)) continue; 
+
+
+            while (skillCastLock && pattern.isCastingNotCast)
             {
-                    while (skillCastLock && pattern.isCastingNotCast)
-                    {
                         yield return null; // SkillCasting이 false가 될 때까지 대기
                     Debug.Log($"while 내부: skillCastLock={skillCastLock}, isCastingNotCast={pattern.isCastingNotCast}");
-                }
+            }
 
                 if (pattern.condition.isactive && !IsEffectCondition(character, character, pattern.condition.target
                         , pattern.condition.type
@@ -117,8 +120,7 @@ public class AICastSkill : MonoBehaviour
                         rotatoin = pattern.Rotation;
                         break;
                     case Rotation.Character:
-                        rotatoin = GetClosestCharacter(character, pattern.index,
-                            pattern.reverse_order, pattern.Designation, pattern.target).charPosition;
+                        rotatoin = target.charPosition;
                         break;
                     case Rotation.Skill:
                         rotatoin = Vector3.zero; // 임의
@@ -135,8 +137,7 @@ public class AICastSkill : MonoBehaviour
                         targetPositionX = character.charPosition.x + (pattern.coordinate).x; // 자기 위치
                         break;
                     case TargetTypeX.Character:
-                        targetPositionX = GetClosestCharacter(character, pattern.index,
-                            pattern.reverse_order, pattern.Designation, pattern.target).charPosition.x;
+                        targetPositionX = target.charPosition.x;
                         break;
                     case TargetTypeX.Skill:
                         targetPositionX = gameObject.transform.position.x; // 임의
@@ -154,8 +155,7 @@ public class AICastSkill : MonoBehaviour
                         targetPositionY = character.charPosition.z + (pattern.coordinate).z; // 자기 위치
                         break;
                     case TargetTypeY.Character:
-                        targetPositionY = GetClosestCharacter(character, pattern.index,
-                            pattern.reverse_order, pattern.Designation, pattern.target).charPosition.z;
+                        targetPositionY = target.charPosition.z;
                         break;
                     case TargetTypeY.Skill:
                         targetPositionY = gameObject.transform.position.z; // 임의
@@ -165,12 +165,9 @@ public class AICastSkill : MonoBehaviour
                 Vector3 targetPosition = Vector3.zero; // 기본값 초기화
                 targetPosition = new Vector3(targetPositionX+ (pattern.coordinate).x, 0f, targetPositionY+ (pattern.coordinate).y); // Y축은 0으로 설정
 
-                Stats targetObject = GetClosestCharacter(character, pattern.index,
-                            pattern.reverse_order, pattern.Designation, pattern.target);
 
-
-                // 스킬 데이터 가져오기
-                SkillData GetSkill = skillManager.SkillAutoSelected(index, character.characterNumber).skill;
+            // 스킬 데이터 가져오기
+            SkillData GetSkill = skillManager.SkillAutoSelected(index, character.characterNumber).skill;
 
                 // 스킬 캐스터 가져오기
                 GameObject GetCaster = skillManager.SkillAutoSelected(index, character.characterNumber).caster;
@@ -178,36 +175,41 @@ public class AICastSkill : MonoBehaviour
                 // 스킬 캐스터의 Stats 가져오기
                 Stats GetStats = skillManager.SkillAutoSelected(index, character.characterNumber).stats;
 
-                // 스킬 위치 자동 계산
-                Vector3 GetTargetPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
-                        rotatoin, targetPosition, null).targetPosition;
+
+            // 타겟 오브젝트 가져오기
+            GameObject GetTarget = target.characterPrefab;
+
+            // 스킬 위치 자동 계산
+            Vector3 GetTargetPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
+                        rotatoin, targetPosition, GetTarget).targetPosition;
 
                 // 스킬 중앙 자동 계산
                 Vector3 GetAoeCenterPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
-                        rotatoin, targetPosition, null).aoeCenterPosition;
+                        rotatoin, targetPosition, GetTarget).aoeCenterPosition;
 
-                // 위치 유효성 계산
-                bool effectiveness = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
-                        rotatoin, targetPosition, null).effectiveness;
+
+
+            // 위치 유효성 계산
+            bool effectiveness = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
+                        rotatoin, targetPosition, GetTarget).effectiveness;
 
                 int skillCode = 0;
 
 
-                skillManager.selectedTargetUnit = null;
                 skillManager.ConfirmSkill(character.team,
                     GetSkill,
                     GetCaster,
                     GetStats,
                     GetTargetPos,
                     GetAoeCenterPos,
-                    null,
+                    GetTarget,
                     effectiveness,
                     ref skillCode
                     );
                 skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
                 skillManager.SkillAutoCast(character.team, skillCode);
                 SkillCasting = true; // 스킬 시전 중으로 설정
-            }
+            
         }
         character.isPatternEnd = true; // 패턴 종료 상태로 설정
     }

@@ -11561,6 +11561,8 @@ MonoBehaviour:
   wave: 1
   validMainTarget: {fileID: 0}
   characterCreat: 0
+  HpBar: {fileID: 8739371295977204301, guid: 2a4556deadc894e4488b73e7e3ccf9e7, type: 3}
+  canvas: {fileID: 1782829064}
 --- !u!114 &62703691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12358,7 +12360,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damageTextPrefab: {fileID: 7920386169667392899, guid: d33b517059e6e24489df25b5777e16cb, type: 3}
-  canvasTransform: {fileID: 0}
 --- !u!114 &62703703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19076,7 +19077,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 2.4479167
+  orthographic size: 4.34375
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -52784,7 +52785,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!223 &1782829064
 Canvas:
   m_ObjectHideFlags: 0
@@ -52794,8 +52795,8 @@ Canvas:
   m_GameObject: {fileID: 1782829061}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 2
+  m_Camera: {fileID: 330585545}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -52806,7 +52807,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 123
   m_TargetDisplay: 0
 --- !u!224 &1782829065
 RectTransform:
@@ -52817,16 +52818,16 @@ RectTransform:
   m_GameObject: {fileID: 1782829061}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 370.5, y: 208.5}
+  m_SizeDelta: {x: 741, y: 417}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1786303141
 GameObject:
   m_ObjectHideFlags: 0

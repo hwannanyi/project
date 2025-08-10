@@ -10,15 +10,17 @@ public class CharacterForm : MonoBehaviour
     public GameObject parentObject;
     public GameObject highlightEffect; // 인스펙터에서 할당
     public CharacterHighlight characterHighlight; // 인스펙터에서 할당
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-
+        
+        
     }
 
     private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         StartCoroutine(TrySetCharacterData());
     }
 

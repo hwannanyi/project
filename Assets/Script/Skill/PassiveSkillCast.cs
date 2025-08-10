@@ -110,8 +110,7 @@ public class PassiveSkillCast : MonoBehaviour
                 rotatoin = targetRule.Rotation;
                 break;
             case Rotation.Character:
-                rotatoin = GetClosestCharacter(caster, targetRule.index,
-                    targetRule.reverse_order, targetRule.Designation, targetRule.target).charPosition;
+                rotatoin = target.charPosition;
                 break;
             case Rotation.Skill:
                 rotatoin = GetNearestTile(skillObj.transform.position); // 임의
@@ -128,8 +127,7 @@ public class PassiveSkillCast : MonoBehaviour
                 targetPositionX = caster.charPosition.x + (targetRule.coordinate).x; // 자기 위치
                 break;
             case TargetTypeX.Character:
-                targetPositionX = GetClosestCharacter(caster, targetRule.index,
-                    targetRule.reverse_order, targetRule.Designation, targetRule.target).charPosition.x;
+                targetPositionX = target.charPosition.x;
                 break;
             case TargetTypeX.Skill:
                 targetPositionX = GetNearestTile(skillObj.transform.position).x; // 임의
@@ -147,8 +145,7 @@ public class PassiveSkillCast : MonoBehaviour
                 targetPositionY = caster.charPosition.z + (targetRule.coordinate).z; // 자기 위치
                 break;
             case TargetTypeY.Character:
-                targetPositionY = GetClosestCharacter(caster, targetRule.index,
-                    targetRule.reverse_order, targetRule.Designation, targetRule.target).charPosition.z;
+                targetPositionY = target.charPosition.z;
                 break;
             case TargetTypeY.Skill:
                 targetPositionY = GetNearestTile(skillObj.transform.position).z; // 임의
@@ -162,6 +159,8 @@ public class PassiveSkillCast : MonoBehaviour
         /*
                     Stats targetObject = GetClosestCharacter(enemy, pattern.index,
                                 pattern.reverse_order, pattern.Designation);*/
+
+
         int index = caster.usingSkill.FindIndex(x => x.skillName == skill.skillName);
         // 스킬 데이터 가져오기
         SkillData GetSkill = skillManager.SkillAutoSelected(index, caster.characterNumber).skill;
@@ -172,27 +171,32 @@ public class PassiveSkillCast : MonoBehaviour
         // 스킬 캐스터의 Stats 가져오기
         Stats GetStats = skillManager.SkillAutoSelected(index, caster.characterNumber).stats;
 
+        // 타겟 오브젝트 가져오기
+        GameObject GetTarget = target.characterPrefab;
+
         // 스킬 위치 자동 계산
         Vector3 GetTargetPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
-                rotatoin, targetPosition, null).targetPosition;
+                rotatoin, targetPosition, GetTarget).targetPosition;
 
         // 스킬 중앙 자동 계산
         Vector3 GetAoeCenterPos = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
-                rotatoin, targetPosition, null).aoeCenterPosition;
+                rotatoin, targetPosition, GetTarget).aoeCenterPosition;
+
+
 
         // 위치 유효성 계산
         bool effectiveness = skillManager.SkillPositionAuto(GetSkill, GetStats, true,
-                rotatoin, targetPosition, null).effectiveness;
+                rotatoin, targetPosition, GetTarget).effectiveness;
 
         int skillCode = 0;
-        skillManager.selectedTargetUnit = null;
+
         skillManager.ConfirmSkill(GetStats.team,
             GetSkill,
             GetCaster,
             GetStats,
             GetTargetPos,
             GetAoeCenterPos,
-            null,
+            GetTarget,
             effectiveness,
             ref skillCode
             );
