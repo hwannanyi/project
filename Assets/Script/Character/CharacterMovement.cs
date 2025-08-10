@@ -78,38 +78,21 @@ public class CharacterMovement : MonoBehaviour
 
         int indexnumber = CharacterSelection.selectedCharacterIndex;
         if(indexnumber < 0 || indexnumber >= CharacterStats.Instance.characters.Count || SkillManager.Instance.selectedSkill != null 
-            || (SkillManager.Instance.isSkillReadyFinal && !TurnManager.Instance.IsInReactPhase()))
+            || SkillManager.Instance.isSkillReadyFinal)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Plane groundPlane = new Plane(Vector3.up, Vector3.zero); // y = 0 기준 평면
-            float enter;
-            Vector3 mousePosition = transform.position;
-            if (groundPlane.Raycast(ray, out enter))
-            {
-                mousePosition = ray.GetPoint(enter);
-                mousePosition.y = 0f;
-            }
-            if (SkillManager.Instance.isSkillReady && characterNumber == indexnumber)
-            {
-                if (mousePosition.x > transform.position.x)
-                {
-                    spriteRenderer.flipX = false;
-                }
-                else if (mousePosition.x < transform.position.x)
-                {
-                    spriteRenderer.flipX = true;
-                }
-            }
-            ClearHighlights(); // 선택 해제 시 하이라이트 제거
+
             return; // 유효하지 않은 인덱스인 경우 아무 작업도 하지 않음
         }
-        int nowmoveCount = CharacterStats.Instance.characterList[indexnumber].NowMoveCount;
+        
+        //int nowmoveCount = CharacterStats.Instance.characterList[indexnumber].NowMoveCount;
+
         if (characterNumber == indexnumber)
         {
             //이동불가 상태라면 이동금지
-            if (character.movable == false)
+            //스킬 시전중 이동 금지
+            if (character.movable == false ||
+                SkillManager.Instance.isCastingSkill)
             {
-                ClearHighlights();
                 return;
             }
 
@@ -185,8 +168,8 @@ public class CharacterMovement : MonoBehaviour
             {
 
                 bool teamTurn = (character.team == Team.team && TurnManager.Instance.isPlayerTurn);
-                if (nowmoveCount <= 0 && teamTurn)//이동횟수가 있어야 이동가능
-                     return;
+//                if (nowmoveCount <= 0 && teamTurn)//이동횟수가 있어야 이동가능
+//                     return;
 
                 Vector3 chosenDir = Vector3.zero;
 
@@ -219,9 +202,7 @@ public class CharacterMovement : MonoBehaviour
                         startPosition = transform.position;
                         moveCoroutine = StartCoroutine(MoveToTarget());
                     }
-                    int count = CharacterStats.Instance.characterList[characterNumber].NowMoveCount;
-                    count = teamTurn ? count - 1 : count; // 팀 턴일 때만 이동 횟수 차감
-                    CharacterStats.Instance.characterList[characterNumber].NowMoveCount = count;
+
                 }
             }
         }
@@ -266,14 +247,24 @@ public class CharacterMovement : MonoBehaviour
 
         transform.position = targetPosition; // 정확한 목표 위치로 위치 보정
         isMoving = false; // 이동 완료 후 이동 가능 상태로 변경
-        PositionUpdate(); // 위치 갱신 및 이동 횟수 차감 등 처리
+        
+
+        var stats = CharacterStats.Instance;
+        var character = stats.GetStats(gameObject);
+        bool teamTurn = (character.team == Team.team && TurnManager.Instance.isPlayerTurn);
+/*        int count = CharacterStats.Instance.characterList[characterNumber].NowMoveCount;
+        count = teamTurn ? count - 1 : count; // 팀 턴일 때만 이동 횟수 차감
+        CharacterStats.Instance.characterList[characterNumber].NowMoveCount = count;*/
+
+        PositionUpdate(); // 위치 갱신 처리
     }
 
     // 타일에 부딪혔을 때 호출되는 메서드
     private void OnTriggerEnter(Collider other)
     {
+
         // 충돌한 오브젝트가 타일인 경우
-        if (other.CompareTag("Tile"))
+        if (other.CompareTag("Tile") || other.CompareTag("MapBorder"))
         {
             isBlocked = true;  // 이동을 막음
             isMoving = false;  // 이동 중 상태 해제
@@ -320,7 +311,7 @@ public class CharacterMovement : MonoBehaviour
     // 충돌이 끝났을 때 이동을 재개하도록 설정
     private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Tile"))
+        if (other.CompareTag("Tile") || other.CompareTag("MapBorder"))
         {
             isBlocked = false;  // 이동 차단 해제
         }
@@ -372,6 +363,9 @@ public class CharacterMovement : MonoBehaviour
         CharacterStats.Instance.characterList[characterNumber].charPosition = transform.position;
     }
 
+    public void OnDestroy()
+    {
+    }
 
     public void ShowMoveHighlights()
     {

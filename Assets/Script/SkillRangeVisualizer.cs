@@ -448,14 +448,23 @@ public class SkillRangeVisualizer : MonoBehaviour
     // 마우스 위치를 월드 좌표로 변환 (바닥이 y=0이라고 가정)
     private Vector3 GetMouseWorldPosition()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        Plane plane = new Plane(Vector3.up, Vector3.zero);
-        float distance;
-        if (plane.Raycast(ray, out distance))
+        /*        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                Plane plane = new Plane(Vector3.up, Vector3.zero);
+                float distance;
+                if (plane.Raycast(ray, out distance))
+                {
+                    return ray.GetPoint(distance);
+                }
+                return Vector3.zero;*/
+
+        try
         {
-            return ray.GetPoint(distance);
+            return skillManager.cursor.transform.position; // 마우스 위치 대신 커서 위치를 사용
         }
-        return Vector3.zero;
+        catch
+        {
+            return Vector3.zero;
+        }
     }
 
     // 스킬 범위 표시 시작

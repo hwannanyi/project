@@ -44,7 +44,7 @@ public class CameraZoom : MonoBehaviour
     void Update()
     {
 
-        // C키로 카메라 조정 모드 토글
+        /*// C키로 카메라 조정 모드 토글
         if (Input.GetKeyDown(KeyCode.C))
         {
             CameraMoveMode();
@@ -95,13 +95,13 @@ public class CameraZoom : MonoBehaviour
         {
             cam.fieldOfView -= scroll * zoomSpeed;
             cam.fieldOfView = Mathf.Clamp(cam.fieldOfView, minFOV, maxFOV);
-        }
+        }*/
     }
 
-    public void CameraMoveMode()
+/*    public void CameraMoveMode()
     {
         isControlMode = !isControlMode;
-        Cursor.lockState = isControlMode ? CursorLockMode.Locked : CursorLockMode.None;
-        Cursor.visible = !isControlMode;
-    }
+        UnityEngine.Cursor.lockState = isControlMode ? CursorLockMode.Locked : CursorLockMode.None;
+        UnityEngine.Cursor.visible = !isControlMode;
+    }*/
 }

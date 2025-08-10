@@ -24,10 +24,15 @@ MonoBehaviour:
     ID: 1
   - Target: stage
     storyTimingType: 2
+    value: 1
+    isPopUp: 0
+    ID: 1
+  - Target: stage
+    storyTimingType: 2
     value: 3
     isPopUp: 1
     ID: 2
-  - Target: stage
+  - Target: 
     storyTimingType: 1
     value: 1
     isPopUp: 1

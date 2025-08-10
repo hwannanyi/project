@@ -27,7 +27,7 @@ public class CharacterStats : MonoBehaviour
     public Dictionary<GameObject, Stats> characterMap = new();
     public GameObject validMainTarget = null;
 
-
+    public bool characterCreat = false; // 캐릭터 생성 여부
     // 캐릭터 생성 시 등록
     void RegisterCharacter(GameObject obj, Stats stats)
     {
@@ -41,7 +41,7 @@ public class CharacterStats : MonoBehaviour
         uiManager.UpdateWaveCount(wave);
 
             Instance = this;
-
+        characterCreat = false; // 캐릭터 생성 여부 초기화
 
         // Addressable Assets를 사용하여 Character Scriptable Object 로드
         Addressables.LoadAssetsAsync<Character>("Characters", null).Completed += OnCharactersLoaded;
@@ -63,10 +63,6 @@ public class CharacterStats : MonoBehaviour
     {
         if (characterList != null) {
             UEmenyCount(); }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            WaveUpdate();
-        }
     }
 
     /// <summary>
@@ -254,6 +250,7 @@ public class CharacterStats : MonoBehaviour
             }
         }
         ProfileuiManager.AssignMiniprofileTargets();
+        characterCreat = true; // 캐릭터 생성 완료
     }
 
     public void Charactercreat(Stats character,Vector3 startpostion)

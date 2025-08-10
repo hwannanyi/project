@@ -43,7 +43,7 @@ public class EventManager : MonoBehaviour
     public void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.P) && turnManager.isPlayerTurn) 
+        if (Input.GetKeyDown(KeyCode.Space) && turnManager.isPlayerTurn) 
         {
             FinishTurn(true);
         }

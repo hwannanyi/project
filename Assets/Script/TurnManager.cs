@@ -26,14 +26,14 @@ public class TurnManager : MonoBehaviour
 {
     public static TurnManager Instance;
 
-/*    public UnityEvent<string> OnStoryStart = new UnityEvent<string>();
-    public UnityEvent<string> OnStoryStop = new UnityEvent<string>();*/
-    public UnityEvent<string> PopUpOnStoryStart = new UnityEvent<string>();
-    public UnityEvent<string> PopUpOnStoryReStart = new UnityEvent<string>();
-    public UnityEvent<string> PopUpOnStoryStop = new UnityEvent<string>();
+    /*    public UnityEvent<string> OnStoryStart = new UnityEvent<string>();
+        public UnityEvent<string> OnStoryStop = new UnityEvent<string>();*/
+
+
 
     public StageManager stageManager;
     public TurnUIManager uiManager;
+    public SkillManager skillmanager; // 스킬 매니저 인스턴스
     public CharacterUIManager characterUIManager; // 캐릭터 프로필 UI 매니저
     public StoryManager storyManager; // 스토리 매니저 인스턴스
 
@@ -67,6 +67,7 @@ public class TurnManager : MonoBehaviour
 
     private void Awake()
     {
+        skillmanager = GetComponent<SkillManager>();
         characterSelection = GetComponent<CharacterSelection>();
         characterStats = GetComponent<CharacterStats>();
         stageDataManager = GetComponent<StageDataManager>();
@@ -89,7 +90,6 @@ public class TurnManager : MonoBehaviour
 
     public void Start()
     {
-        Tutorial();
         stageDataManager.CheckTurn();//스토리활성화
     }
     //  EventManager 연동 유지 (턴 종료 이벤트로 외부에서 턴 넘기기 가능)
@@ -178,14 +178,24 @@ public class TurnManager : MonoBehaviour
     //  턴 전환 (일반 턴 순환: 플레이어 <-> 적)
     public void NextTurn()
     {
-
+        skillmanager.Skillcancel(); // 스킬 쿨타임 초기화
         isPlayerTurn = !isPlayerTurn; // 플레이어 턴 여부 토글
         EnterReactPhase();
         //CharacterSelection.selectedCharacterIndex = -1;
         characterUIManager.UpdateProfileUIBySelection();
         Turn++;
         UITrunCount(Turn);//  턴 UI 업데이트
-                          // 모든 캐릭터의 스킬 쿨타임 감소
+        try
+        {
+            if(CharacterSelection.selectedCharacterIndex != -1)
+            characterUIManager.ProfileUpdate(characterSelection.PickcharNumber(CharacterSelection.selectedCharacterIndex),
+                isPlayerTurn);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"[TurnManager] 캐릭터 프로필 업데이트 실패: {e.Message}");
+        }
+        // 모든 캐릭터의 스킬 쿨타임 감소
         foreach (var character in CharacterStats.Instance.characterList)
         {
             foreach (var skill in character.usingSkill)
@@ -195,49 +205,21 @@ public class TurnManager : MonoBehaviour
                     skill.ReduceCooldown(1);
                 }
             }
-            if (character.mp < 10)
-            {
-                character.mp += 1;
-            }
-            if (character.NowMoveCount < 8)
-            {
-                character.NowMoveCount += 1;
-            }
-            character.isPatternEnd = false; // AI 패턴 초기화
+
+                character.mp = character.mp < 10 ? character.mp + 1 : character.mp;
+
+            /*            if (character.NowMoveCount < 8)
+                        {
+                            character.NowMoveCount += 1;
+                        }*/
+            character.isPatternEnd = character.isdie; // AI 패턴 초기화
         }
 
         Debug.Log($"[TurnManager] 턴 전환됨");
-        // Team.enemy인 캐릭터만 enemies 리스트에 저장
-        var enemies = characterStats.characterList
-            .Where(c => c.team == Team.enemy)
-            .ToList();
-        // 모든 적이 죽었는지 확인 (예시: enemies 리스트 사용)
-        bool allEnemiesDead = enemies.All(e => e.isdie);
 
-        // 스토리 종료 상태 확인
-        if (allEnemiesDead && StoryManager.instance != null && StoryManager.instance.isStoryEnd)
-        {
-            Debug.Log("스테이지 클리어!");
-            StartCoroutine(CheckStageClearRoutine()); // 게임 씬으로 전환
-            return;
-            // 필요하다면 UI에 메시지 표시 등 추가 작업
-        }
         stageDataManager.CheckTurn();//스토리활성화
     }
-    private IEnumerator CheckStageClearRoutine()
-    {
-        // popUpisStoryActive와 isStoryActive가 모두 true면 대기
-        while (StoryManager.instance != null &&
-               StoryManager.instance.popUpisStoryActive &&
-               StoryManager.instance.isStoryActive)
-        {
-            yield return null; // 한 프레임 대기
-        }
 
-            Debug.Log("스테이지 클리어!");
-            SceneManager.LoadScene("Stage_Selection"); // 게임 씬으로 전환
-            yield break;
-    }
     //  EventManager 이벤트용
     public void NextTurnEnd(bool value)
     {
@@ -256,21 +238,6 @@ public class TurnManager : MonoBehaviour
     {
         uiManager.UpdateTrunCount(turnCount);
         uiManager.UpdateReactTurn(isPlayerTurn);
-    }
-
-    ////////////////////////////////
-    
-    public void Tutorial()
-    {
-        if (stageManager.CurrentStage.stagenumber == 0)
-        {
-            if (Turn == 1)
-            {
-                // 스토리 시작 이벤트 발생
-                PopUpOnStoryStart.Invoke("");
-            }
-            //else if (Turn == 3 || Turn == 5 || Turn == 7) { PopUpOnStoryReStart.Invoke(""); }
-        }
     }
 }
 

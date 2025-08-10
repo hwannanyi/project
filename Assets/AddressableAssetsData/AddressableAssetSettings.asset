@@ -15,9 +15,9 @@ MonoBehaviour:
   m_DefaultGroup: 2c86d41f0af68304f9b60176d51e119b
   m_currentHash:
     serializedVersion: 2
-    Hash: 2e337765cf72f461e6c7017d38bd7297
+    Hash: 07186dac80e231088588eb49fb156ff5
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
   m_InternalIdNamingMode: 0
@@ -50,9 +50,9 @@ MonoBehaviour:
   m_CheckForContentUpdateRestrictionsOption: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
-    m_Id: 
+    m_Id: e6cad9306e6c47941bd653bcd6c1d9d9
   m_RemoteCatalogLoadPath:
-    m_Id: 
+    m_Id: 1da03c1ac1f165c4a88a1747f996d410
   m_ContentStateBuildPathProfileVariableName: <default settings path>
   m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
@@ -101,6 +101,7 @@ MonoBehaviour:
     - Characters
     - Stage
     - CharacterSprites
+    - EffectMark
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 217fadfebb538154188a4c0f5b91a2b7, type: 2}

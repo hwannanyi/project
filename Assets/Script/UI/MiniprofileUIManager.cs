@@ -23,11 +23,13 @@ public class MiniprofileUIManager : MonoBehaviour
     public List<Image> characterProfileSkillListUI;
 
 
-    [Header("이동")]
-    public Sprite MoveCount1;
-    public Sprite MoveCount2;
-    public List<Image> MoveCount;
+    /*    [Header("이동")]
+        public Sprite MoveCount1;
+        public Sprite MoveCount2;
+        public List<Image> MoveCount;
+    */
 
+    public TextMeshProUGUI characterNumber; // 캐릭터 번호 표시용
 
     [Header("이동")]
     public Image hpBar; // Fill Amount 방식
@@ -41,15 +43,15 @@ public class MiniprofileUIManager : MonoBehaviour
             return;
         UpdateCharacterProfile(targetCharacter);
         UpdateCharacterProfileSkill(targetCharacter);
-        UpdateMoveCount(targetCharacter.NowMoveCount);
+        //UpdateMoveCount(targetCharacter.NowMoveCount);
         UpdateHpMpBar(targetCharacter);
-
     }
 
     public void UpdateCharacterProfile(Stats character)
     {
         if (!string.IsNullOrEmpty(character.name) && character.characterProfileillustration != null)
         {
+            characterNumber.text = (character.characterNumber + 1).ToString(); // 캐릭터 번호 표시
             characterProfileUI.sprite = character.characterProfileillustration;
             characterProfileUI.enabled = true;
             if (character.isdie)
@@ -98,7 +100,7 @@ public class MiniprofileUIManager : MonoBehaviour
         UpdateHpMpBar(character);
     }
 
-    public void UpdateMoveCount(int moveCount)
+/*    public void UpdateMoveCount(int moveCount)
     {
         // 모든 MoveCount 이미지 비활성화
         foreach (var countImage in MoveCount)
@@ -114,10 +116,12 @@ public class MiniprofileUIManager : MonoBehaviour
                 MoveCount[i].enabled = true;
             }
         }
-    }
+    }*/
 
     public void ProfileUIOff()
     {
+        if(ProfileUI == null)
+            return;
         ProfileUI.SetActive(false);
     }
     public void ProfileUIOn()

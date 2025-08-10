@@ -9,6 +9,7 @@ public class CharacterForm : MonoBehaviour
     public bool isTeamForm;
     public GameObject parentObject;
     public GameObject highlightEffect; // 인스펙터에서 할당
+    public CharacterHighlight characterHighlight; // 인스펙터에서 할당
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -35,16 +36,13 @@ public class CharacterForm : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Characterform();
-        }
         if(CharacterSelection.selectedCharacterIndex == -1)
         {
             SetHighlight(false);
         }
     }
+
+
 
     public void Characterform()
     {
@@ -74,6 +72,12 @@ public class CharacterForm : MonoBehaviour
             {
                 int index = CharacterStats.Instance.characters.IndexOf(parentObject);
                 spriteRenderer.sprite = CharacterStats.Instance.characterList[index].characterillustration;
+
+                // 스프라이트의 세로 길이의 절반만큼 오브젝트를 부모 기준(로컬 좌표)으로 위로 이동
+                float halfHeight = spriteRenderer.sprite.bounds.size.y / 2f;
+                Vector3 localPos = transform.localPosition;
+                localPos.y += halfHeight;
+                transform.localPosition = localPos;
             }
         }
     }
@@ -84,6 +88,7 @@ public class CharacterForm : MonoBehaviour
             return;
         if (highlightEffect != null)
         highlightEffect.SetActive(isOn);
+
     }
 
 
