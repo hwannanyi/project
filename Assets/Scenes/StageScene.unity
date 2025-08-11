@@ -11563,6 +11563,7 @@ MonoBehaviour:
   characterCreat: 0
   HpBar: {fileID: 8739371295977204301, guid: 2a4556deadc894e4488b73e7e3ccf9e7, type: 3}
   canvas: {fileID: 1782829064}
+  HoldBar: {fileID: 8739371295977204301, guid: 7dbf96cb16ea9a14faa0807ab4e54d67, type: 3}
 --- !u!114 &62703691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11575,7 +11576,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 651af0d32900388448d59eae10481905, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  asd: 0
   characterUIManager: {fileID: 781908732}
   skillManager: {fileID: 0}
   turnManager: {fileID: 0}
@@ -11751,6 +11751,14 @@ MonoBehaviour:
       skillCastCode: 0
       gurd:
         time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: []
   MoveArrow: {fileID: 2587392798214893713}
 --- !u!114 &62703693
 MonoBehaviour:
@@ -11963,6 +11971,9 @@ MonoBehaviour:
     skillCastCode: 0
     gurd:
       time: 0
+    parryingT: 0
+    holdHit: []
+    keyMashingHit: []
   selectedCaster: {fileID: 0}
   selectedCharacter:
     characterNumber: 0
@@ -12134,6 +12145,14 @@ MonoBehaviour:
       skillCastCode: 0
       gurd:
         time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: []
   selectedAoeCenterPosition: {x: 0, y: 0, z: 0}
   selectedTargetPosition: {x: 0, y: 0, z: 0}
   isSkillReady: 0
@@ -12321,6 +12340,9 @@ MonoBehaviour:
     skillCastCode: 0
     gurd:
       time: 0
+    parryingT: 0
+    holdHit: []
+    keyMashingHit: []
   debugStart: {x: 0, y: 0, z: 0}
   debugTarget: {x: 0, y: 0, z: 0}
   debugAOECenter: {x: 0, y: 0, z: 0}
@@ -12558,6 +12580,14 @@ MonoBehaviour:
       skillCastCode: 0
       gurd:
         time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: []
   team: 0
 --- !u!114 &62703705
 MonoBehaviour:
@@ -30689,6 +30719,14 @@ MonoBehaviour:
       skillCastCode: 0
       gurd:
         time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: []
   characterProfileSkillTextListUI:
   - {fileID: 564570316}
   - {fileID: 1139404844}
@@ -31711,6 +31749,14 @@ MonoBehaviour:
       skillCastCode: 0
       gurd:
         time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: []
   characterProfileSkillTextListUI:
   - {fileID: 482984790}
   - {fileID: 389158282}
@@ -33130,6 +33176,14 @@ MonoBehaviour:
       skillCastCode: 0
       gurd:
         time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: []
   characterProfileSkillTextListUI:
   - {fileID: 1077903476}
   - {fileID: 1128796822}
@@ -35909,6 +35963,14 @@ MonoBehaviour:
       skillCastCode: 0
       gurd:
         time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: []
   characterProfileSkillTextListUI:
   - {fileID: 1795082709}
   - {fileID: 1889945620}
@@ -48986,6 +49048,14 @@ MonoBehaviour:
       skillCastCode: 0
       gurd:
         time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: []
   characterProfileSkillTextListUI:
   - {fileID: 1595793860}
   - {fileID: 456058284}

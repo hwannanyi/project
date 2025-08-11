@@ -90,6 +90,10 @@ public class SkillData
     public int skillCastCode; // 스킬 실행시 스킬을 찾기위한 임시코드 
     public Gurd gurd; //가드 정보
 
+    public bool parryingT; //패링가능여부
+    public List<HoldEffect> holdHit = new(); // 홀드 히트 정보
+    public List<MashingEffect> keyMashingHit = new();
+
     public SkillData(Skill data, string characterName, bool isreactSkill, int depth = 0)
     {
         if (data == null)
@@ -142,6 +146,9 @@ public class SkillData
         Yaoe = data.Yaoe;
         aoecenter = data.aoecenter;
         gurd = data.gurd; // 가드 정보
+        parryingT = data.parryingHit; // 패링 가능 여부
+        holdHit = data.holdHit;
+        keyMashingHit = data.keyMashingHit;
 
         // SkillData.cs 생성자 내 specialAoe 복사 부분 수정
         specialAoe = new AoeInfo[data.specialAoe.Length];

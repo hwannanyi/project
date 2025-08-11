@@ -32,6 +32,8 @@ public class CharacterStats : MonoBehaviour
     // 체력바
     public GameObject HpBar;
     public Canvas canvas;
+
+    public GameObject HoldBar;
     // 캐릭터 생성 시 등록
     void RegisterCharacter(GameObject obj, Stats stats)
     {

@@ -58,11 +58,6 @@ public class SkillCastSkill : MonoBehaviour
                     {
         */
 
-        if (Skill == null)
-        {
-            Debug.Log("연계스킬를 못찾음");
-            return;
-        }
         try
         {
             PassiveSkillCast.Instance.AutoCast(targetrule, self, Skill, gameObject);
@@ -70,6 +65,7 @@ public class SkillCastSkill : MonoBehaviour
         catch
         {
             Debug.Log("연계스킬이 없음: " + Skill.skillName);
+            SkillManager.Instance.isCastingSkill = StartTiming && SkillManager.Instance.isCastingSkill;
         }
         
             //}

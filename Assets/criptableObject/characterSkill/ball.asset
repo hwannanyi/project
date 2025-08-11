@@ -113,6 +113,7 @@ MonoBehaviour:
   projectileType: 0
   skillTarget: 0200000001000000
   projectileSpeed: 5
+  hitscantime: 1
   afterdelay: 0
   beforedelay: 0
   range: 7
@@ -161,3 +162,6 @@ MonoBehaviour:
       CCEffects: []
   react: 2
   reactTime: 0.5
+  gurd:
+    time: 0
+  parryingT: 0

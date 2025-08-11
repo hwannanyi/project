@@ -1,34 +1,39 @@
-using UnityEngine;
-using System.Linq;
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UnityEngine;
+using UnityEngine.Rendering;
+using static UnityEngine.GraphicsBuffer;
+
 
 public class CharacterEffect : MonoBehaviour
 {
     public CharacterMovement characterMovement;
     private Stats character;
-
-/*    void Start()
-    {
-        var stats = CharacterStats.Instance;
-        character = stats.GetStats(gameObject);
-
-        // 리스트가 null이거나 생성되지 않았을 때 새로 생성
-        if (character.buffEffects == null)
-            character.buffEffects = new List<Stats.Buffa>();
-        if (character.debuffEffects == null)
-            character.debuffEffects = new List<Stats.Debuffa>();
-        if (character.ccEffects == null)
-            character.ccEffects = new List<Stats.CC>();
-    }*/
+    public Characterdeath characterdeath;
+    public Dictionary<(EffectWrapper.EffectType, int), Action> EffectActions { get; private set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        characterdeath = GetComponent<Characterdeath>();
         characterMovement = GetComponent<CharacterMovement>();
         // TurnEnd 이벤트 구독
         EventManager.Instance.TurnEnd += OnTurnEnd;
 
     }
+    void Start()
+    {
+        // EffectActions 딕셔너리 초기화
+        EffectActions = new Dictionary<(EffectWrapper.EffectType, int), Action>
+        {
+            {(EffectWrapper.EffectType.Buff, (int)Buffs.solid), () => Buff_solid(character)},
+            {(EffectWrapper.EffectType.Debuff, (int)Debuffs.corrosion), () => DeBuff_corrosion(character)},
+            {(EffectWrapper.EffectType.CC, (int)CCs.stun), () => CC_stun(character)}
+        };
+    }
+
     void OnDestroy()
     {
         // 이벤트 구독 해제
@@ -45,11 +50,15 @@ public class CharacterEffect : MonoBehaviour
         {
             character.gurd -= Time.deltaTime;
         }
+        TimeFlow();
+        HitDamage();
 
         Buff_solid(character);
         DeBuff_corrosion(character);
         CC_stun(character);
     }
+
+
 
     // 턴 종료 시 버프의 trun 감소
     private void OnTurnEnd(bool value)
@@ -58,51 +67,107 @@ public class CharacterEffect : MonoBehaviour
         {
             buff.trun -= 1;
         }
-        // trun이 0 이하인 버프 제거
-        character.buffEffects.RemoveAll(b => b.trun <= 0);
 
         foreach (var buff in character.debuffEffects)
         {
             buff.trun -= 1;
         }
-        // trun이 0 이하인 버프 제거
-        character.debuffEffects.RemoveAll(b => b.trun <= 0);
 
         foreach (var buff in character.ccEffects)
         {
             buff.trun -= 1;
         }
+        
+    }
+
+    public void TimeFlow()
+    {
+        foreach (Stats.Buffa eft in character.buffEffects)
+        {
+            eft.time -= Time.deltaTime;
+        }
         // trun이 0 이하인 버프 제거
-        character.ccEffects.RemoveAll(b => b.trun <= 0);
+        character.buffEffects.RemoveAll(b => b.trun <= 0 && b.time <= 0);
+
+        foreach (Stats.Debuffa eft in character.debuffEffects)
+        {
+            eft.time -= Time.deltaTime;
+        }
+        // trun이 0 이하인 버프 제거
+        character.debuffEffects.RemoveAll(b => b.trun <= 0 && b.time <= 0);
+
+        foreach (Stats.CC eft in character.ccEffects)
+        {
+            eft.time -= Time.deltaTime;
+        }
+        character.ccEffects.RemoveAll(b => b.trun <= 0 && b.time <= 0);
+    }
+
+    //홀드 도중 들어오는 데미지
+    public void HitDamage()
+    {
+        try
+        {
+            foreach (HoldEffect buff in character.holdGauge)
+            {
+                // 기존 코드
+                // if(buff.effect == (EffectWrapper.EffectType.Hit, (int)SkillhitEffect.damage))
+
+                // 수정된 코드
+                if (!(buff.effect.effectType == EffectWrapper.EffectType.Hit && buff.effect.Hit == SkillhitEffect.damage))
+                    return;
+                buff.curtic += Time.deltaTime;
+                if (buff.curtic >= buff.tic)
+                {
+                    int finalDamage = (int)(buff.value);
+                    int targetShlields = character.shields; // 현재 대상의 보호막 값
+                    GameObject targetObj = character.characterPrefab;
+                    if (targetShlields > 0)
+                    {
+
+                        targetShlields = targetShlields >= finalDamage ? targetShlields - finalDamage : 0;
+
+                        int damageExceeded = targetShlields < finalDamage ? -(targetShlields - finalDamage) : 0;
+                        character.hp -= -damageExceeded;
+                        DamageText.Instance.ShowDamage(targetObj.transform.position + Vector3.up * 1.5f, finalDamage - damageExceeded, false);
+                        if (damageExceeded > 0) { DamageText.Instance.ShowDamage(targetObj.transform.position + Vector3.up * 2f, damageExceeded, false); }
+                    }
+                    else
+                    {
+                        character.hp -= finalDamage;
+                        DamageText.Instance.ShowDamage(character.characterPrefab.transform.position + Vector3.up * 1.5f, finalDamage, false);
+                    }
+                    buff.curtic = 0f; // 틱 초기화
+
+                    if (character != null && !character.isdie && character.hp <= 0)
+                        characterdeath.CheckDeath(character);
+                }
+            }
+        }
+        catch
+        {
+            return;
+        }
     }
 
     //버프
     //경화
-    //받는 피해 감소
     public void Buff_solid(Stats stats)
     {
-        bool hasSolidEffect = character.buffEffects.Any(b => b.effect == Buffs.solid);
-        bool turn = character.buffEffects.Any(b => b.trun >= 0);
-        bool applied = false;
-
-        // Buffs.solid 효과의 Value 합산
-        float solidBuffValue = character.buffEffects
-            .Where(b => b.effect == Buffs.solid)
-            .Sum(b => b.Value);
-
-        if (hasSolidEffect && turn && !applied)
+        foreach (var buff in character.buffEffects)
         {
-
-
-            stats.damageReduction += solidBuffValue;
-            applied = true; // 적용되었음을 표시
+            if (buff.effect == Buffs.solid && buff.trun > 0 && !buff.isApplied)
+            {
+                stats.damageReduction += buff.Value;
+                buff.isApplied = true;
+            }
+            // 만약 trun이 0 이하인데 isApplied가 true라면 효과 해제
+            else if (buff.effect == Buffs.solid && buff.trun <= 0 && buff.isApplied)
+            {
+                stats.damageReduction -= buff.Value;
+                buff.isApplied = false;
+            }
         }
-        else if (hasSolidEffect && !turn && !applied)
-        {
-            stats.damageReduction -= solidBuffValue;
-            return; // 지속시간이 끝나면 되돌리기
-        }
-
     }
 
     //디버프
@@ -110,26 +175,18 @@ public class CharacterEffect : MonoBehaviour
     //받는 피해 증가
     public void DeBuff_corrosion(Stats stats)
     {
-        bool hasSolidEffect = character.debuffEffects.Any(b => b.effect == Debuffs.corrosion);
-        bool turn = character.debuffEffects.Any(b => b.trun >= 0);
-        bool applied = false;
-
-        // Buffs.solid 효과의 Value 합산
-        float solidBuffValue = character.debuffEffects
-            .Where(b => b.effect == Debuffs.corrosion)
-            .Sum(b => b.Value);
-
-        if (hasSolidEffect && turn && !applied)
+        foreach (var debuff in character.debuffEffects)
         {
-
-
-            stats.damageReduction -= solidBuffValue; // 10% 피해 감소
-            applied = true; // 적용되었음을 표시
-        }
-        else if (hasSolidEffect && !turn && !applied)
-        {
-            stats.damageReduction += solidBuffValue;
-            return; // 지속시간이 끝나면 되돌리기
+            if (debuff.effect == Debuffs.corrosion && debuff.trun > 0 && !debuff.isApplied)
+            {
+                stats.damageReduction -= debuff.Value;
+                debuff.isApplied = true;
+            }
+            else if (debuff.effect == Debuffs.corrosion && debuff.trun <= 0 && debuff.isApplied)
+            {
+                stats.damageReduction += debuff.Value;
+                debuff.isApplied = false;
+            }
         }
     }
 
@@ -138,27 +195,20 @@ public class CharacterEffect : MonoBehaviour
     //행동불가
     public void CC_stun(Stats stats)
     {
-        bool hasSolidEffect = character.ccEffects.Any(b => b.effect == CCs.stun);
-        bool turn = character.ccEffects.Any(b => b.trun >= 0);
-        //bool applied = false;
-
-        // CCs.stun 효과의 Value 합산
-        float stunCCValue = character.ccEffects
-            .Where(b => b.effect == CCs.stun)
-            .Sum(b => b.Value);
-
-
-        if (hasSolidEffect && turn)
+        foreach (var cc in character.ccEffects)
         {
-            stats.available = false; // 행동불가
-            stats.movable = false; // 이동불가
-            //applied = true; // 적용되었음을 표시
-        }
-        else if (hasSolidEffect && !turn)
-        {
-            stats.available = true; // 행동불가
-            stats.movable = true; // 이동불가
-            return; // 지속시간이 끝나면 되돌리기
+            if (cc.effect == CCs.stun && cc.trun > 0 && !cc.isApplied)
+            {
+                stats.available = false;
+                stats.movable = false;
+                cc.isApplied = true;
+            }
+            else if (cc.effect == CCs.stun && cc.trun <= 0 && cc.isApplied)
+            {
+                stats.available = true;
+                stats.movable = true;
+                cc.isApplied = false;
+            }
         }
     }
 

@@ -164,3 +164,16 @@ MonoBehaviour:
   reactTime: 0.5
   gurd:
     time: 0
+  parryingHit: 0
+  holdHit:
+  - holdGauge: 1
+    effect:
+      effectType: 4
+      debuff: 0
+      buff: 0
+      cc: 0
+      Hit: 1
+    value: 1
+    tic: 3
+    curtic: 0
+  keyMashingHit: []

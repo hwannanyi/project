@@ -39,6 +39,8 @@ public class CharacterHighlight : MonoBehaviour
     public void Update()
     {
         SetHighlightByKey("gurd"); //방어상태?
+        SetHighlightByKey("hold"); // 방어(홀드) 상태?
+        SetHighlightByKey("parrying"); // 패링 상태?
 
         // SkillSave.Instance와 Skillaction 리스트가 null이거나 비어있는지 체크
         if (SkillSave.Instance == null ||
@@ -100,6 +102,8 @@ public class CharacterHighlight : MonoBehaviour
         Effect = new Dictionary<string, Func<bool>>
         {
             { "gurd", IsGurd },
+            { "hold", isHold },
+            { "parrying", isparrying },
             // 추가 명령어 및 함수 매핑
         };
     }
@@ -107,5 +111,14 @@ public class CharacterHighlight : MonoBehaviour
     public bool IsGurd()
     {
         return character.Character.gurd > 0;
+    }
+
+    public bool isHold()
+    {
+        return character.Character.IsHold();
+    }
+    public bool isparrying()
+    {
+        return character.Character.isparrying;
     }
 }

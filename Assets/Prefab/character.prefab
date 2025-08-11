@@ -148,8 +148,12 @@ MonoBehaviour:
   sprite:
     keys:
     - gurd
+    - hold
+    - parrying
     values:
     - {fileID: -398341292, guid: d2736e599297c954fabb954320e029fc, type: 3}
+    - {fileID: 605166660, guid: 86d47658a2b0ae94f83019dcdf559fee, type: 3}
+    - {fileID: -1829394237, guid: d2736e599297c954fabb954320e029fc, type: 3}
   moveAllow:
   - {fileID: 0}
   - {fileID: 0}
@@ -565,6 +569,11 @@ MonoBehaviour:
       skillCastCode: 0
       gurd:
         time: 0
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: 
 --- !u!1 &8885726257730448549
 GameObject:
   m_ObjectHideFlags: 0

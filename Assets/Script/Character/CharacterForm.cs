@@ -12,11 +12,6 @@ public class CharacterForm : MonoBehaviour
     public CharacterHighlight characterHighlight; // 인스펙터에서 할당
 
 
-    void Start()
-    {
-        
-        
-    }
 
     private void Awake()
     {

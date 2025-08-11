@@ -143,7 +143,7 @@ public class SkillEffectProjectile : MonoBehaviour
         // 도착처리
         if (Vector3.Distance(transform.position, destination) < 0.2f)
         {
-            OnHit();
+            Destroy(gameObject);
         }
 
         Tracking(skill.tracking);
@@ -182,8 +182,13 @@ public class SkillEffectProjectile : MonoBehaviour
     {
         if (other.CompareTag("MapBorder"))
         {
-            OnHit();
+            Destroy(gameObject);
         }
+    }
+
+    public void OnDestroy()
+    {
+        OnHit();
     }
 
     public void OnHit()
@@ -206,13 +211,8 @@ public class SkillEffectProjectile : MonoBehaviour
             }
         }
 
-
         // AI 스킬 시전 잠금 해제
         aICastSkill.skillCastLock = !CastLock && aICastSkill.skillCastLock;
-
-
-
-        Destroy(gameObject);
         //TurnManager.Instance.ExitReactPhase(); //미사용, 스킬종료로 인해 대응단계가 종료되지 않도록 변경
     }
 

@@ -82,8 +82,8 @@ public class Stats
     public bool isparrying; //패링중
     public float parryingTime; //패링 지속시간
     public bool hold; // 홀드중
-    public List<float> holdGauge =new();
-    public List<int> keyMashing = new();
+    public List<HoldEffect> holdGauge =new();
+    public List<MashingEffect> keyMashing = new();
 
     public Stats(Character data, bool die, List<SkillData> usingSkill)
     {
@@ -133,7 +133,7 @@ public class Stats
 
         //방어관련
         gurd = 0f; // 방어시간 초기화
-        parryingTime = 0.2f;
+        parryingTime = 0.05f;
         isparrying = false;
         hold = false;
         holdGauge = new();
@@ -188,10 +188,8 @@ public class Stats
     }
 
     //홀드하고 있는 중인가?
-    public bool IsHold(int num)
+    public bool IsHold()
     {
-        if (characterNumber != num) return false;
-        // characterNumber가 0~9일 때 각각 1,2,3,4 키를 사용
         switch (characterNumber)
         {
             case 0:
@@ -204,33 +202,45 @@ public class Stats
                 return Input.GetKey(KeyCode.Alpha4);
             default:
                 // 기본값: LeftShift
-                return Input.GetKey(KeyCode.LeftShift);
+                return false;
         }
     }
     
-    // 홀드시 모든 홀드 게이지가 줄어듬
-    public void Hold(int num)
-    {
-        if (IsHold(num))
-        {
-            for (int i = 0; i < holdGauge.Count; i++)
-            {
-                holdGauge[i] -= Time.deltaTime;
-            }
-        }
-    }
 
-    // 홀드시 모든 홀드 게이지가 줄어듬
-    public void Mashing(int num)
-    {
-        if (characterNumber == num)
+// 홀드시 모든 홀드 게이지가 줄어듬
+public void Hold()
+{
+
+        for (int i = 0; i < holdGauge.Count; i++)
         {
-            for (int i = 0; i < keyMashing.Count; i++)
-            {
-                keyMashing[i] -= 1;
-            }
+            holdGauge[i].holdGauge -= Time.deltaTime;
+        }
+        // 0 이하 값 제거 (뒤에서부터)
+        for (int i = holdGauge.Count - 1; i >= 0; i--)
+        {
+            if (holdGauge[i].holdGauge <= 0f)
+                holdGauge.RemoveAt(i);
+        }
+    
+}
+
+// 키매싱 값이 0 이하가 되면 제거
+public void Mashing(int num)
+{
+    if (characterNumber == num)
+    {
+        for (int i = 0; i < keyMashing.Count; i++)
+        {
+            keyMashing[i].keyMashingCount -= 1;
+        }
+        // 0 이하 값 제거 (뒤에서부터)
+        for (int i = keyMashing.Count - 1; i >= 0; i--)
+        {
+            if (keyMashing[i].keyMashingCount <= 0)
+                keyMashing.RemoveAt(i);
         }
     }
+}
 
     public Transform GetCharacterTransform()
     {
@@ -243,6 +253,8 @@ public class Stats
         public Debuffs effect;
         public float Value;        // 기본 위력
         public int trun;       // 지속 시간
+        public float time;       // 실시간 지속 시간
+        public bool isApplied = false;
     }
 
     [System.Serializable]
@@ -251,6 +263,8 @@ public class Stats
         public Buffs effect;
         public float Value;        // 기본 위력
         public int trun;       // 지속 시간
+        public float time;       // 실시간 지속 시간
+        public bool isApplied = false;
     }
 
     [System.Serializable]
@@ -259,6 +273,8 @@ public class Stats
         public CCs effect;
         public float Value;        // 기본 위력
         public int trun;       // 지속 시간
+        public float time;       // 실시간 지속 시간
+        public bool isApplied = false;
     }
 }
 

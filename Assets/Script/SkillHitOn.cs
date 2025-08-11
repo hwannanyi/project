@@ -1,10 +1,12 @@
-using UnityEngine;
-using System.Collections;
-using static UnityEngine.GraphicsBuffer;
-using System.Linq;
-using UnityEngine.TextCore.Text;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.ConstrainedExecution;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.TextCore.Text;
+using static UnityEngine.GraphicsBuffer;
 
 public class SkillHitOn : MonoBehaviour
 {
@@ -103,10 +105,50 @@ public class SkillHitOn : MonoBehaviour
             // 여기서 팀 비교 등 처리
             Debug.Log($"'{target.name}' 가 '{casterObj.name}' 의 스킬에 피격됨!");
 
-
+            // 패링 성공시 파괴
+            if (skillData.parryingT && targetStats.isparrying)
+            {
+                SkillManager.Instance.isCastingSkill = false;
+                Destroy(gameObject);
+            }
+            
             skillHitEffects.TargetOnHit(target, self, skillData, Target.self);
             skillHitEffects.TargetOnHit(target, self, skillData, Target.enemy);
             skillHitEffects.TargetOnHit(target, self, skillData, Target.team);
+            if (casterStats.team == Team.enemy && targetStats.team == Team.team)
+            {
+                // 적중 시 홀드 게이지 증가
+                foreach (var effect in skillData.holdHit)
+                {
+                    targetStats.holdGauge.Add(new HoldEffect
+                    {
+                        holdGauge = effect.holdGauge,
+                        effect = effect.effect,
+                        value = effect.value,
+                        tic = effect.tic,
+                        curtic = effect.curtic
+                    });
+
+                    WorldHoldBar.Create(
+                        CharacterStats.Instance.HoldBar,
+                        target.transform,
+                        CharacterStats.Instance.canvas,
+                        targetStats,
+                        targetStats.holdGauge.Count - 1);
+                }
+
+                // 적중 시 연타 게이지 증가
+                foreach (var effect in skillData.keyMashingHit)
+                {
+                    targetStats.keyMashing.Add(new MashingEffect
+                    {
+                        keyMashingCount = effect.keyMashingCount,
+                        effect = effect.effect,
+                        value = effect.value,
+                        time = effect.time
+                    });
+                }
+            }
             //OnHit(target, skillData);
             // SkillHitOn.cs에서 적중 시
             targetStats.lastHitSkillData = skillData; // 마지막 적중 스킬 데이터 저장
@@ -125,6 +167,7 @@ public class SkillHitOn : MonoBehaviour
             Debug.Log("스킬에 충돌!");
         }
     }
+
 
 
 

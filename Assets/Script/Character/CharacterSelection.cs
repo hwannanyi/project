@@ -1,17 +1,17 @@
-using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine.TextCore.Text;
 using System.Linq;
 using System.Xml.Linq;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class CharacterSelection : MonoBehaviour
 {
     public static CharacterSelection Instance;
     public static int selectedCharacterIndex = -1; // 선택된 캐릭터 (-1: 선택 없음)
     public static int prevSelectedIndex = -1; // 이전에 선택된 캐릭터 인덱스
-    public int asd;
 
     public CharacterUIManager characterUIManager;
     public SkillManager skillManager;
@@ -48,14 +48,12 @@ public class CharacterSelection : MonoBehaviour
         {
             
             return; // StoryManager를 못불려와도 모든입력무시
-        }
+        }  
 
-        asd = selectedCharacterIndex;
-        if (CameraZoom.isControlMode) return;
         HandleCharacterSelection();
 
        
-        if (selectedCharacterIndex >= CharacterStats.Instance.playerCharacters.Count)
+        if (selectedCharacterIndex >= characterStats.playerCharacters.Count)
         {
             //OnCharacterSelectedMoveCount2P(selectedCharacterIndex);
             return;
@@ -78,60 +76,47 @@ public class CharacterSelection : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1)) SelectCharacter(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SelectCharacter(1);
-        //if (Input.GetKeyDown(KeyCode.Alpha3)) SelectCharacter(2);
-        //if (Input.GetKeyDown(KeyCode.Alpha4)) SelectCharacter(3);
         if (Input.GetKeyDown(KeyCode.Alpha3)) SelectCharacter(2);
         if (Input.GetKeyDown(KeyCode.Alpha4)) SelectCharacter(3);
-/*        if (Input.GetKeyDown(KeyCode.Alpha5)) SelectCharacter2P(4);// 0
-        if (Input.GetKeyDown(KeyCode.Alpha6)) SelectCharacter2P(5);// 1
-        if (Input.GetKeyDown(KeyCode.Alpha7)) SelectCharacter(6);// 2*/
+
+        if (Input.GetKeyDown(KeyCode.BackQuote)) CancelSelection();
+
+        if (Input.GetKey(KeyCode.Alpha1)) Holding(0);
+        if (Input.GetKey(KeyCode.Alpha2)) Holding(1);
+        if (Input.GetKey(KeyCode.Alpha3)) Holding(2);
+        if (Input.GetKey(KeyCode.Alpha4)) Holding(3);
+        /*        if (Input.GetKeyDown(KeyCode.Alpha5)) SelectCharacter2P(4);// 0
+                if (Input.GetKeyDown(KeyCode.Alpha6)) SelectCharacter2P(5);// 1
+                if (Input.GetKeyDown(KeyCode.Alpha7)) SelectCharacter(6);// 2*/
         //if (Input.GetKeyDown(KeyCode.Alpha8)) SelectCharacter2P(7);// 3
     }
     public void SelectCharacter(int index)
     {
-        
-        
-        
-/*        // 대응단계에서만 유효한 대상 제한
-        if (TurnManager.Instance.IsInReactPhase())
-        {
-            GameObject candidate = CharacterStats.Instance.characters[index];
-            if (!SkillManager.Instance.validReactTargets.Contains(candidate))
-            {
-                Debug.LogWarning("선택된 캐릭터는 대응 대상이 아닙니다.");
-                //return;
-            }
-            // 메인 타겟 여부 확인 가능:
-            if (SkillManager.Instance.validMainTarget == candidate)
-            {
-                Debug.Log("이 캐릭터는 메인 타겟입니다.");
-            }
-        }*/
-
-            var character = CharacterStats.Instance.characterList[index];
-        SkillManager.Instance.Skillcancel();
+        Stats character = characterStats.characterList[index];
+        skillManager.Skillcancel();
             if (character.team != Team.team)
             {
-            return;
+                return;
             }
             if (character.isdie)
             {
                 Debug.Log("죽은 캐릭터는 선택할 수 없습니다.");
                 return;
             }
+
             if ( selectedCharacterIndex != index)
             {
                 // 이전 캐릭터 하이라이트 끄기
-                if (prevSelectedIndex >= 0 && prevSelectedIndex < CharacterStats.Instance.characterList.Count)
+                if (prevSelectedIndex >= 0 && prevSelectedIndex < characterStats.characterList.Count)
                 {
-                    CharacterStats.Instance.characterList[prevSelectedIndex].SetHighlight(false);
+                characterStats.characterList[prevSelectedIndex].SetHighlight(false);
                 }
 
                 selectedCharacterIndex = index;
                 prevSelectedIndex = index;
 
                 // 새 캐릭터 하이라이트 켜기
-                CharacterStats.Instance.characterList[selectedCharacterIndex].SetHighlight(true);
+                characterStats.characterList[selectedCharacterIndex].SetHighlight(true);
 
                 selectedCharacter = characterStats.characterList[selectedCharacterIndex];
 
@@ -144,23 +129,44 @@ public class CharacterSelection : MonoBehaviour
             }
             else if (selectedCharacterIndex == index)
             {
-                // 선택 해제 시 하이라이트 끄기
-                CharacterStats.Instance.characterList[selectedCharacterIndex].SetHighlight(false);
-
-                selectedCharacter = null;
-
-                selectedCharacterIndex = -1;
-                //characterUIManager.ProfileUIOn();
-                prevSelectedIndex = -1;
-                characterUIManager.SelectionMiniprofileUI(selectedCharacterIndex);
-                characterUIManager.UpdateProfileUIBySelection();
-                Debug.Log("캐릭선택취소");
+                StartCoroutine(character.ParryingCoroutine());
+                character.Mashing(index);
             }
             else
             {
                 Debug.Log("캐릭 선택실패");
             }
             SetArrow();
+    }
+
+    public void CancelSelection()
+    {
+        // 선택 해제 시 하이라이트 끄기
+        characterStats.characterList[selectedCharacterIndex].SetHighlight(false);
+
+        selectedCharacter = null;
+
+        selectedCharacterIndex = -1;
+        //characterUIManager.ProfileUIOn();
+        prevSelectedIndex = -1;
+        characterUIManager.SelectionMiniprofileUI(selectedCharacterIndex);
+        characterUIManager.UpdateProfileUIBySelection();
+        Debug.Log("캐릭선택취소");
+    }
+
+    public void Holding(int idx)
+    {
+        Stats character = characterStats.characterList[idx];
+        if (character.team != Team.team)
+        {
+            return;
+        }
+        if (character.isdie)
+        {
+            Debug.Log("죽은 캐릭터는 선택할 수 없습니다.");
+            return;
+        }
+        character.Hold();
     }
 
     /*    public void SelectCharacter2P(int index)
@@ -254,12 +260,12 @@ public class CharacterSelection : MonoBehaviour
     }
     public void OnCharacterSelected(int index)
     {
-        if (index < 0 || index >= CharacterStats.Instance.characterList.Count)
+        if (index < 0 || index >= characterStats.characterList.Count)
         {
             Debug.LogError("잘못된 캐릭터 인덱스입니다.");
             return;
         }
-        var character = CharacterStats.Instance.characterList[index];
+        Stats character = characterStats.characterList[index];
         
         characterUIManager.UpdateCharacterProfile(character);
         characterUIManager.UpdateCharacterProfileSkill(character, turnManager.isPlayerTurn);

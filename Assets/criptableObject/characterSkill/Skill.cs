@@ -55,6 +55,27 @@ public enum React
     no, maintarget, all
 }
 
+
+[System.Serializable]
+public class EffectWrapper
+{
+    // 여러 종류의 효과(enum)를 하나의 변수로 다루기 위한 래퍼 클래스입니다.
+    public enum EffectType { None, Debuff, Buff, CC, Hit } // 효과의 종류 구분용
+    public EffectType effectType; // 현재 저장된 효과의 타입
+    public Debuffs debuff;        // 디버프 효과
+    public Buffs buff;            // 버프 효과
+    public CCs cc;                // CC(군중제어) 효과
+    public SkillhitEffect Hit; // 힐, 딜, 실드
+
+    // 디버프 효과 생성자
+    public EffectWrapper(Debuffs d) { effectType = EffectType.Debuff; debuff = d; }
+    // 버프 효과 생성자
+    public EffectWrapper(Buffs b) { effectType = EffectType.Buff; buff = b; }
+    // CC 효과 생성자
+    public EffectWrapper(CCs c) { effectType = EffectType.CC; cc = c; }
+    // 스킬 히트 효과 생성자
+    public EffectWrapper(SkillhitEffect s) { effectType = EffectType.Hit; Hit = s; }
+}
 // 크기(x, y)와 위치(x, y)를 저장하는 구조체 정의
 [System.Serializable]
 public struct AoeInfo
@@ -146,7 +167,44 @@ public class Skill : ScriptableObject
 
     [Header("가드 정보")]
     public Gurd gurd; //가드 정보
+
+    [Header("버튼액션 정보")]
+    public bool parryingHit; //패링가능여부
+    public List<HoldEffect> holdHit = new();
+    public List<MashingEffect> keyMashingHit = new();
 }
+
+[System.Serializable]
+public class HoldEffect
+{
+    public float holdGauge; // 홀드 게이지
+    public EffectWrapper effect; // 개이지가 있을때 효과
+    public float value; // 효과의 값
+    public float tic; // 효과의 틱 시간
+    public float curtic; // 효과의 현제 틱 시간
+
+/*    public HoldEffect() { }
+
+    // 복사 생성자
+    public HoldEffect(HoldEffect src)
+    {
+        holdGauge = src.holdGauge;
+        effect = src.effect;
+        value = src.value;
+        tic = src.tic;
+        curtic = src.curtic;
+    }*/
+}
+
+[System.Serializable]
+public class MashingEffect
+{
+    public int keyMashingCount; // 연타 카운트
+    public EffectWrapper effect; // 발동 효과
+    public float value; // 효과의 값
+    public float time; // 효과 발동까지 남은 시간
+}
+
 
 
 [System.Serializable]

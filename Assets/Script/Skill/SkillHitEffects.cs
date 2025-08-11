@@ -191,10 +191,8 @@ public class SkillHitEffects : MonoBehaviour
             int damageValue = ValueCalculation(HitEffects.DamageEffect, target, casterStats, skillData, 0);
             if (HasSkillHitEffect_Damge_ByTarget(skillData, target, 0, SkillhitEffect.damage))
             {
-                if(targetStats.gurd > 0)
-                {
-                    return; // 가드가 있는 경우 데미지 무시
-                }
+                if(targetStats.gurd > 0) return; // 가드가 있는 경우 데미지 무시
+                if(skillData.parryingT && targetStats.isparrying) return; // 패링중인 경우 데미지 무시
                 int finalDamage = DamageFormula(damageValue, targetStats, casterStats, skillData);
                 int targetShlields = targetStats.shields; // 현재 대상의 보호막 값
                 if (targetShlields > 0)
