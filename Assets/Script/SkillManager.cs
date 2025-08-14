@@ -841,7 +841,7 @@ public class SkillManager : MonoBehaviour
 
             float mousePlayerRange = dx >= dy ? dx : dy;
             float range = skill.RangeAdjustment ? mousePlayerRange : skill.range;
-            targetPosition = startPosition + closestDirection * range;
+            targetPosition = skill.projectile ? startPosition + closestDirection * range : startPosition;
             targetPosition.y = 0f;
         }
 
@@ -1123,7 +1123,7 @@ public class SkillManager : MonoBehaviour
         {
             GameObject skillObject = Instantiate(skillPreview, aoeCenterPosition, Quaternion.identity);
             if (skillObject.TryGetComponent<SkillPreview>(out var effect))
-                effect.Initialize(skill, targetPosition, casterObject, character, target);
+                effect.Initialize(skill, targetPosition, casterObject, character, aoeCenterPosition, target);
         }
         else 
         {

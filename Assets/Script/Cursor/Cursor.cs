@@ -10,6 +10,8 @@ using System.Data.SqlTypes;
 public class Cursor : MonoBehaviour
 {
     public static Cursor Instance;
+    public SkillManager skillManager; // 스킬 매니저 참조
+    public StoryManager storyManager; // 스토리 매니저 참조
     public int moveSpeed = 10;  // 이동 속도
     private Vector3 targetPosition;  // 목표 위치
     private Vector3 startPosition;   // 이동 시작 위치
@@ -33,7 +35,7 @@ public class Cursor : MonoBehaviour
         {
             Vector3 chosenDir = Vector3.zero;//이동방향 기본값
 
-            if (!StoryManager.instance.moveLock)
+            if (!storyManager.moveLock)
             {
                 if (Input.GetKey(KeyCode.UpArrow))
                     chosenDir = Vector3.forward;
@@ -45,14 +47,26 @@ public class Cursor : MonoBehaviour
                     chosenDir = Vector3.right;
             }
 
+
             // 방향이 설정되었을 때만 이동 시작
             // 이동 딜레이 체크
             if (chosenDir != Vector3.zero && Time.time - lastMoveTime > moveDelay)
             {
-                Vector3 nextPos = transform.position + chosenDir;
-                Vector2Int nextTile = new Vector2Int(Mathf.RoundToInt(nextPos.x), Mathf.RoundToInt(nextPos.z));
-                transform.position = new Vector3(nextTile.x, 0f, nextTile.y);
-                lastMoveTime = Time.time; // 마지막 이동 시간 갱신
+                if (skillManager.selectedSkill.projectile)
+                {
+                    Vector3 nextPos = skillManager.selectedCaster.transform.position + chosenDir;
+                    Vector2Int nextTile = new Vector2Int(Mathf.RoundToInt(nextPos.x), Mathf.RoundToInt(nextPos.z));
+                    transform.position = new Vector3(nextTile.x, 0f, nextTile.y);
+                    lastMoveTime = Time.time; // 마지막 이동 시간 갱신
+                }
+                else
+                {
+                    Vector3 nextPos = transform.position + chosenDir;
+                    Vector2Int nextTile = new Vector2Int(Mathf.RoundToInt(nextPos.x), Mathf.RoundToInt(nextPos.z));
+                    transform.position = new Vector3(nextTile.x, 0f, nextTile.y);
+                    lastMoveTime = Time.time; // 마지막 이동 시간 갱신
+                }
+
             }
         }
 

@@ -167,4 +167,4 @@ MonoBehaviour:
   parryingHit: 0
   holdHit: []
   keyMashingHit: []
-  skillPreview: 0
+  skillPreview: 1

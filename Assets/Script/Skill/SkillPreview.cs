@@ -1,5 +1,8 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
+using static UnityEngine.GraphicsBuffer;
 
 public class SkillPreview : MonoBehaviour
 {
@@ -8,16 +11,17 @@ public class SkillPreview : MonoBehaviour
 
     public SkillData skill;
     public Vector3 targetPosition;
-    public GameObject caster;
-    public Stats casterStats;
+    public GameObject casterObj;
+    public Stats caster;
 
-    private GameObject targetUnit; // 유도 타겟
+    private GameObject targetObj; // 유도 타겟
     public float speed = 5f;
 
 
     public UnityEngine.Transform rotatingVisual;
 
     public Vector3 direction;
+    public Vector3 aoeCenter; // AOE 중심 위치
 
     public GameObject trackingObject; //tracking이 참이라면 생성해 경로를 남김
 
@@ -31,12 +35,14 @@ public class SkillPreview : MonoBehaviour
         Vector3 targetPos,
         GameObject casterObject,
         Stats character,
-        GameObject target = null)
+        Vector3 aoeCenterPosition,
+        GameObject target = null
+        )
     {
         skill = skillData;
-        caster = casterObject;
-        casterStats = character;
-
+        casterObj = casterObject;
+        caster = character;
+        aoeCenter = aoeCenterPosition;
 
         aICastSkill = casterObject.GetComponent<AICastSkill>();
         CastLock = aICastSkill.skillCastLock;
@@ -44,7 +50,7 @@ public class SkillPreview : MonoBehaviour
 
         if (skill.targeting && target != null)
         {
-            targetUnit = target;
+            targetObj = target;
             targetPosition = target.transform.position;
         }
         else
@@ -64,15 +70,14 @@ public class SkillPreview : MonoBehaviour
             rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f);
         }
 
-        StretchObjectToTarget(skill, targetPosition);
+        StartCoroutine(StretchObjectToTarget(skill, targetPosition));
     }
 
-    public void StretchObjectToTarget(SkillData skill,Vector3 targetPosition)
+    public IEnumerator StretchObjectToTarget(SkillData skill,Vector3 targetPosition)
     {
-
         Vector3 start = transform.position;
         Vector3 end = targetPosition;
-        
+
         // 1. 두 점의 중간 위치로 이동
         Vector3 center = (start + end) * 0.5f;
         transform.position = skill.startSkillPosition == StartSkillPosition.mouse ? targetPosition : center;
@@ -83,10 +88,10 @@ public class SkillPreview : MonoBehaviour
         // 3. 오브젝트의 크기(Scale) 조정 (y축을 길이로)
         Vector3 newScale = transform.localScale;
         newScale.x = skill.startSkillPosition == StartSkillPosition.mouse ?
-            skill.Xaoe : newScale.x + Mathf.FloorToInt(skill.Xaoe * 0.5f)*2;
+            skill.Xaoe : newScale.x + Mathf.FloorToInt(skill.Xaoe * 0.5f) * 2;
 
         newScale.y = skill.startSkillPosition == StartSkillPosition.mouse ?
-            skill.Yaoe :distance + Mathf.FloorToInt(skill.Yaoe * 0.5f)*2 + 1;
+            skill.Yaoe : distance + Mathf.FloorToInt(skill.Yaoe * 0.5f) * 2 + 1;
         transform.localScale = newScale;
 
         // 4. y축 회전각 계산 (수평 방향만)
@@ -95,10 +100,27 @@ public class SkillPreview : MonoBehaviour
 
         // 5. x축 90도 고정, y축만 회전
         transform.rotation = Quaternion.Euler(90f, yAngle, 0f);
+        
+        float elapsed = 0f;
+        while (elapsed < skill.skillPreview)
+        {
+            elapsed += Time.deltaTime;
+            yield return null; // 다음 프레임까지 대기
+        }
+        GameObject skillObject = Instantiate(skill.SkillEffectPrefab, aoeCenter, Quaternion.identity);
 
-/*        // 6. 바라보는 방향으로 -0.5만큼 이동
-        float rad = yAngle * Mathf.Deg2Rad;
-        Vector3 moveDir = new Vector3(Mathf.Sin(rad), 0f, Mathf.Cos(rad));
-        transform.position -= moveDir * 0.5f;*/
+        if (skill.projectile)
+        {
+            if (skillObject.TryGetComponent<SkillEffectProjectile>(out var effect))
+                effect.Initialize(skill, targetPosition, casterObj, caster, targetObj);
+        }
+        else
+        {
+            if (skillObject.TryGetComponent<SkillEffectHitscan>(out var effect))
+                effect.Initialize(skill, targetPosition, casterObj, caster, targetObj);
+        }
+
+        Destroy(gameObject); // 스킬 프리뷰 오브젝트 제거
     }
+
 }

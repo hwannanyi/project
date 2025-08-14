@@ -28,6 +28,16 @@ public class MoveAllow : MonoBehaviour
         }
     }
 
-
+    // 타일에 접촉 중일 때 계속 호출되는 메서드
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("Tile") || other.CompareTag("MapBorder"))
+        {
+            foreach (var renderer in GetComponentsInChildren<Renderer>())
+            {
+                renderer.enabled = false;
+            }
+        }
+    }
 
 }
