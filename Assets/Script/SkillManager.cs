@@ -23,6 +23,7 @@ public class SkillManager : MonoBehaviour
     public TurnManager turnManager; // 턴 매니저
     public StoryManager storyManager; // 스토리 매니저 인스턴스
     public CharacterSelection characterSelection; // 캐릭터 선택 스크립트
+    public CharacterStats characterStats; // 캐릭터 스탯 매니저
 
 
     ///선택한 스킬이 일시적으로 저장되는곳
@@ -38,31 +39,10 @@ public class SkillManager : MonoBehaviour
 
     //private bool isWaitingForReaction = false;    // 대응단계로 인해 중단되었는지 여부
 
-
-    /// 대응을 위한 대기상태 스킬을 저장하는 변수
-    private SkillData pendingSkill;
-    private GameObject pendingCaster;
-    private Stats pendingCharacter;
-    private Vector3 pendingAoeCenterPosition;
-    private Vector3 pendingTargetPosition;
-    private GameObject pendingTargetUnit = null;
     // 대응 중 한 번만 대응하도록 제한
     private bool hasReacted = false;
 
     public bool waitingForResponse = false;
-
-
-
-
-    //대응상대 스킬 저장
-    private int pendingSelectedCharacterIndex;
-    private SkillData pendingReactSkill;
-    private GameObject pendingReactCaster;
-    private Stats pendingReactCharacter;
-    private Vector3 pendingReactAoeCenterPosition;
-    private Vector3 pendingReactTargetPosition;
-    private GameObject pendingReactTargetUnit = null;
-
 
     public GameObject targetIndicator; // 타겟 선택 UI 오브젝트
 
@@ -117,13 +97,19 @@ public class SkillManager : MonoBehaviour
 
     private bool skillSelectLocked = false; // 스킬 선택 잠금 여부
     private float skillSelectLockTime = 0.5f;// 스킬 선택 잠금 시간 (초 단위)
+
+    [Header("스킬범위 표시")]
+    public GameObject skillPreview; // 스킬 프리팹
     void Awake()
     {
         skillRangeVisualizer = GetComponent<SkillRangeVisualizer>();
         characterSelection = GetComponent<CharacterSelection>();
         turnManager = GetComponent<TurnManager>();
-        storyManager = GetComponent<StoryManager>(); 
+        storyManager = GetComponent<StoryManager>();
+        characterStats = GetComponent<CharacterStats>();
+
         validReactTargets = new List<GameObject>();
+
 
         // 상태 변수 초기화
         selectedSkill = null;
@@ -469,18 +455,18 @@ public class SkillManager : MonoBehaviour
             return (null, null, null);
         }
 
-        var character = CharacterStats.Instance.characterList[CharacterNumber];
+        Stats character = characterStats.characterList[CharacterNumber];
         if (character.usingSkill[skillIndex].skillName == null)
         {
             Debug.LogWarning($"선택된 캐릭터의 스킬이 비어있습니다. 인덱스: {skillIndex}");
             return (null, null, null);
         }
 
-        var skill = character.usingSkill[skillIndex];
-        GameObject caster = CharacterStats.Instance.characters[CharacterNumber];
-        var stats = CharacterStats.Instance;
-        var characterStats = stats.GetStats(caster);
-        if (characterStats.available == false)
+        SkillData skill = character.usingSkill[skillIndex];
+        GameObject caster = characterStats.characters[CharacterNumber];
+
+        Stats Stats = characterStats.GetStats(caster);
+        if (Stats.available == false)
         {
             Debug.Log($"[SkillManager] 캐릭터가 스킬사용불가 상태 입니다: {skill.skillName}");
             return (null, null, null);
@@ -666,7 +652,7 @@ public class SkillManager : MonoBehaviour
 
             float mousePlayerRange = dx >= dy ? dx : dy;
             float range = skill.RangeAdjustment ? mousePlayerRange : skill.range;
-            targetPosition = startPosition + closestDirection * range;
+            targetPosition = skill.projectile ? startPosition + closestDirection * range : startPosition;
             targetPosition.y = 0f;
         }
 
@@ -1133,20 +1119,26 @@ public class SkillManager : MonoBehaviour
     public void ExecuteSkill(SkillData skill, Vector3 aoeCenterPosition, Vector3 targetPosition, 
         GameObject casterObject, Stats character, GameObject target = null)
     {
-
-        GameObject skillObject = Instantiate(skill.SkillEffectPrefab, aoeCenterPosition, Quaternion.identity);
-
-        if (skill.projectile)
+        if (skill.skillPreview > 0)
         {
-            SkillEffectProjectile effect = skillObject.GetComponent<SkillEffectProjectile>();
-            if (effect != null)
+            GameObject skillObject = Instantiate(skillPreview, aoeCenterPosition, Quaternion.identity);
+            if (skillObject.TryGetComponent<SkillPreview>(out var effect))
                 effect.Initialize(skill, targetPosition, casterObject, character, target);
         }
-        else
+        else 
         {
-            SkillEffectHitscan effect = skillObject.GetComponent<SkillEffectHitscan>();
-            if (effect != null)
-                effect.Initialize(skill, targetPosition, casterObject, character, target);
+            GameObject skillObject = Instantiate(skill.SkillEffectPrefab, aoeCenterPosition, Quaternion.identity);
+
+            if (skill.projectile)
+            {
+                if (skillObject.TryGetComponent<SkillEffectProjectile>(out var effect))
+                    effect.Initialize(skill, targetPosition, casterObject, character, target);
+            }
+            else
+            {
+                if (skillObject.TryGetComponent<SkillEffectHitscan>(out var effect))
+                    effect.Initialize(skill, targetPosition, casterObject, character, target);
+            } 
         }
 
         // 코스트 차감
@@ -1324,50 +1316,6 @@ public class SkillManager : MonoBehaviour
         waitingForResponse = false;
     }
 
-    /// <summary>
-    /// 대응단계 종료시 스킬을 실행한다, ExecuteSkill을 호출한다
-    /// </summary>
-    public void ContinuePendingSkill()
-    {
-        if (waitingForResponse && pendingSkill != null && pendingCaster != null)
-        {
-            if (pendingReactSkill != null)
-            {
-                Vector3 reactPos = pendingReactSkill.targeting && pendingReactTargetUnit != null ?
-                    pendingReactTargetUnit.transform.position : pendingReactTargetPosition;
-
-                ExecuteSkill(pendingReactSkill, pendingReactAoeCenterPosition, reactPos, pendingReactCaster, pendingReactCharacter);
-                Debug.Log($"[SkillManager] 대응 스킬 실행: {pendingReactSkill.skillName}");
-            }
-
-            Vector3 targetPos = pendingSkill.targeting && pendingTargetUnit != null ?
-                pendingTargetUnit.transform.position : pendingTargetPosition;
-
-            ExecuteSkill(pendingSkill, pendingAoeCenterPosition, targetPos, pendingCaster, pendingCharacter);
-            Debug.Log($"[SkillManager] 본 스킬 실행: {pendingSkill.skillName}");
-            SelectedSkillClear();
-
-
-
-            // 초기화
-            pendingSkill = null;
-            pendingCaster = null;
-            pendingCharacter = null;
-            pendingAoeCenterPosition = Vector3.zero;
-            pendingTargetPosition = Vector3.zero;
-            pendingTargetUnit = null;
-
-            pendingReactSkill = null;
-            pendingReactCaster = null;
-            pendingReactCharacter = null;
-            pendingReactAoeCenterPosition = Vector3.zero;
-            pendingReactTargetPosition = Vector3.zero;
-            pendingReactTargetUnit = null;
-
-            waitingForResponse = false; 
-        }
-    }
-
     public void CastSkillImmediately(SkillData skill, GameObject caster)
     {
         Vector3 position = caster.transform.position;
@@ -1474,19 +1422,6 @@ public class SkillManager : MonoBehaviour
         }
 
 
-    }
-
-    // 대응시간 코루틴
-    private System.Collections.IEnumerator ExecuteSkillAfterDelay(float delay, SelectedSkill skillData)
-    {
-        yield return new WaitForSeconds(delay);
-        // 대응시간이 끝난 뒤 스킬 실행
-        isSkillReadyFinal = false;
-        ExecuteSkill(skillData);
-        TeamSkill = null;
-        EnemySkill = null;
-        //isWaitingForReaction = false; //미사용
-        Debug.Log("[SkillManager] 스킬 실행 완료 (reactTime 대기 후)");
     }
 
 

@@ -172,6 +172,10 @@ public class Skill : ScriptableObject
     public bool parryingHit; //패링가능여부
     public List<HoldEffect> holdHit = new();
     public List<MashingEffect> keyMashingHit = new();
+
+
+    [Header("스킬 시전전에 범위 표시")]
+    public float skillPreview = 0f; // 범위 표시 시간 제한
 }
 
 [System.Serializable]

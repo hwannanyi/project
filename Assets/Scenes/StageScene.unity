@@ -11754,6 +11754,7 @@ MonoBehaviour:
       parryingT: 0
       holdHit: []
       keyMashingHit: []
+      skillPreview: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -11837,6 +11838,7 @@ MonoBehaviour:
   turnManager: {fileID: 0}
   storyManager: {fileID: 0}
   characterSelection: {fileID: 0}
+  characterStats: {fileID: 0}
   selectedSkill:
     useCharacterName: 
     skillName: 
@@ -11974,6 +11976,7 @@ MonoBehaviour:
     parryingT: 0
     holdHit: []
     keyMashingHit: []
+    skillPreview: 0
   selectedCaster: {fileID: 0}
   selectedCharacter:
     characterNumber: 0
@@ -12148,6 +12151,7 @@ MonoBehaviour:
       parryingT: 0
       holdHit: []
       keyMashingHit: []
+      skillPreview: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12169,6 +12173,7 @@ MonoBehaviour:
   skillCode: 0
   cursor: {fileID: 1749610548}
   cursorOn: 0
+  skillPreview: {fileID: 7146173340283780072, guid: dc797be0f1f749d4b9ae3f0790a4ef3a, type: 3}
 --- !u!114 &62703698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12343,6 +12348,7 @@ MonoBehaviour:
     parryingT: 0
     holdHit: []
     keyMashingHit: []
+    skillPreview: 0
   debugStart: {x: 0, y: 0, z: 0}
   debugTarget: {x: 0, y: 0, z: 0}
   debugAOECenter: {x: 0, y: 0, z: 0}
@@ -12583,6 +12589,7 @@ MonoBehaviour:
       parryingT: 0
       holdHit: []
       keyMashingHit: []
+      skillPreview: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -30722,6 +30729,7 @@ MonoBehaviour:
       parryingT: 0
       holdHit: []
       keyMashingHit: []
+      skillPreview: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -31752,6 +31760,7 @@ MonoBehaviour:
       parryingT: 0
       holdHit: []
       keyMashingHit: []
+      skillPreview: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -33179,6 +33188,7 @@ MonoBehaviour:
       parryingT: 0
       holdHit: []
       keyMashingHit: []
+      skillPreview: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -35966,6 +35976,7 @@ MonoBehaviour:
       parryingT: 0
       holdHit: []
       keyMashingHit: []
+      skillPreview: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -49051,6 +49062,7 @@ MonoBehaviour:
       parryingT: 0
       holdHit: []
       keyMashingHit: []
+      skillPreview: 0
     isparrying: 0
     parryingTime: 0
     hold: 0

@@ -94,6 +94,7 @@ public class SkillData
     public List<HoldEffect> holdHit = new(); // 홀드 히트 정보
     public List<MashingEffect> keyMashingHit = new();
 
+    public float skillPreview = 1f; // 범위 표시 시간 제한
     public SkillData(Skill data, string characterName, bool isreactSkill, int depth = 0)
     {
         if (data == null)
@@ -178,6 +179,8 @@ public class SkillData
         react = data.react;
         fourRotation = data.fourRotation; 
         reactTime = data.reactTime;
+
+        skillPreview = data.skillPreview; // 범위 표시 시간 제한
 
         // 연계 스킬 데이터이 있으면 추가하고 없으면 null을 입력
         // AdditionalSkills

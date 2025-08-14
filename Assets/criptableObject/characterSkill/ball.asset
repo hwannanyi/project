@@ -116,7 +116,7 @@ MonoBehaviour:
   hitscantime: 1
   afterdelay: 0
   beforedelay: 0
-  range: 7
+  range: 9
   aoetype: 1
   fourRotation: 0
   effectRotation: 0
@@ -164,4 +164,7 @@ MonoBehaviour:
   reactTime: 0.5
   gurd:
     time: 0
-  parryingT: 0
+  parryingHit: 0
+  holdHit: []
+  keyMashingHit: []
+  skillPreview: 1

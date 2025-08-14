@@ -27,7 +27,6 @@ public class SkillRangeVisualizer : MonoBehaviour
 
     private bool isNonTargetProjectileMode = false;
     private float noproXaoe, noproYaoe, range;
-    private Vector3 noprocasterPosition;
 
     //마우스 좌표 저장
     private Vector3 prevMouseWorldTile = Vector3.positiveInfinity;
