@@ -476,33 +476,46 @@ public class StoryManager : MonoBehaviour
     {
         try
         {
-            bool isnext = IsnextStory(PopUptalkRead[currentPopUpTalkIndex].next);
-
+            string next = PopUptalkRead[currentPopUpTalkIndex].next;
+            bool isNumber = float.TryParse(next, out float numberValue);
+            bool isnext = isNumber ? isNumber : IsnextStory(next);
             if (!isStoryActive && popUpisStoryActive &&
                 ((Input.GetKeyDown(KeyCode.Return) && String.IsNullOrEmpty(PopUptalkRead[currentPopUpTalkIndex].next)) || isnext)
                 )
             {
-                if (PopUptalkRead.Count >= 0 && currentPopUpTalkIndex < PopUptalkRead.Count - 1)
-                {
-                    currentPopUpTalkIndex++;
-                    ShowCurrentPopUpTalk();
-                    LayoutRebuilder.ForceRebuildLayoutImmediate(popUptalkRect);
-                    popUptalkRect.anchoredPosition = UItrans();
-                    PopUpStoryProductionLock(PopUptalkRead[currentPopUpTalkIndex].production);
-
-                }
-                else
-                {
-                    Action end = (PopUptalkRead[PopUptalkRead.Count - 1] == PopUptalklist[PopUptalklist.Count - 1]) ? 
-                        PopUpStoryEnd : PopUpStoryStop; // 마지막 대사면 팝업 스토리 종료, 아니면 팝업 스토리 중지
-                    end.Invoke();
-                }
-
-
+                if(isNumber) StartCoroutine(AutoTextAndNext(numberValue)); // 숫자 값이면 자동 텍스트 실행
+                else AdvancePopUpStory();
             }
         }
         catch
         {
+        }
+    }
+
+    // 대기 후 대사 넘김
+    private IEnumerator AutoTextAndNext(float time)
+    {
+        yield return new WaitForSeconds(time);
+        AdvancePopUpStory();
+    }
+
+    // 대사 넘김 로직 분리
+    private void AdvancePopUpStory()
+    {
+        if (PopUptalkRead.Count >= 0 && currentPopUpTalkIndex < PopUptalkRead.Count - 1)
+        {
+            currentPopUpTalkIndex++;
+            ShowCurrentPopUpTalk();
+            LayoutRebuilder.ForceRebuildLayoutImmediate(popUptalkRect);
+            popUptalkRect.anchoredPosition = UItrans();
+            PopUpStoryProductionLock(PopUptalkRead[currentPopUpTalkIndex].production);
+        }
+        else
+        {
+            Action end = (PopUptalkRead[PopUptalkRead.Count - 1] == PopUptalklist[PopUptalklist.Count - 1]) ?
+                PopUpStoryEnd : PopUpStoryStop;
+            UnPause();
+            end.Invoke();
         }
     }
 
@@ -582,6 +595,7 @@ public class StoryManager : MonoBehaviour
 
         foreach (var command in Production)
         {
+
             if (LockActions.TryGetValue(command, out var action))
             {
                 action.Invoke();//델리게이트 실행
