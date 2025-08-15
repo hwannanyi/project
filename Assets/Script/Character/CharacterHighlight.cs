@@ -102,8 +102,6 @@ public class CharacterHighlight : MonoBehaviour
         Effect = new Dictionary<string, Func<bool>>
         {
             { "gurd", IsGurd },
-            { "hold", isHold },
-            { "parrying", isparrying },
             // 추가 명령어 및 함수 매핑
         };
     }

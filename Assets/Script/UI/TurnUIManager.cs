@@ -1,34 +1,29 @@
-using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine;
 
 public class TurnUIManager : MonoBehaviour
 {
+    public TurnManager turnManager; // TurnManager
+
 
     [Header("UI 텍스트 연결")]
-    public TextMeshProUGUI trunCountText;  // UI에 표시될 텍스트
-    public TextMeshProUGUI enemyCount; // 남은 적
-    public TextMeshProUGUI waveCount; // 남은 적
-
-    [Header("대응턴 확인")]
-    public Image playerTrun;
-    public Image enemyTrun;
-    public Image playerReact;
-    public Image enemyReact;
-
-    [Header("대응턴 UI이미지")]
-    public Sprite playerTrunAttack;
-    public Sprite enemyTrunAttack;
-    public Sprite NotplayerTrunAttack;
-    public Sprite NotenemyTrunAttack;
-    public Sprite playerReactGuard;
-    public Sprite enemyReactGuard;
-    public Sprite NotReactGuard;
+    public TextMeshProUGUI trunCountText;  // 턴
 
     public GameObject Skill_Cancel_Button;
     public GameObject Skill_Start_Button;
     public GameObject Skill_TurnEnd_Button;
 
+
+    public RectTransform AttackTurn;
+    public RectTransform GurdTurn;
+
+    public void Start()
+    {
+        UpdateReactTurn(true);
+    }
     public void UpdateTrunCount(int turnCount)
     {
         trunCountText.text = turnCount.ToString() + "턴";
@@ -36,11 +31,11 @@ public class TurnUIManager : MonoBehaviour
 
     public void Updatenemytcount(int emeny)
     {
-        enemyCount.text = "x" + emeny.ToString();
+
     }
     public void UpdateWaveCount(int wave)
     {
-        waveCount.text = wave.ToString();
+
     }
 
     public void UpdateButtonActive(bool playerturn)
@@ -61,21 +56,92 @@ public class TurnUIManager : MonoBehaviour
 
     public void UpdateReactTurn(bool playerturn)
     {
-        if(playerturn)
+        if (turnManager.isPlayerTurn)
         {
-            playerTrun.sprite = playerTrunAttack;
-            enemyTrun.sprite = NotenemyTrunAttack;
-            playerReact.sprite = NotReactGuard;
-            enemyReact.sprite = enemyReactGuard;
+            StartCoroutine(MoveGurdTurnToZero());
+            StartCoroutine(MoveAttackTurnTo150());
         }
         else
         {
-            playerTrun.sprite = NotplayerTrunAttack;
-            enemyTrun.sprite = enemyTrunAttack;
-            playerReact.sprite = playerReactGuard;
-            enemyReact.sprite = NotReactGuard;
+            StartCoroutine(MoveAttackTurnToZero());
+            StartCoroutine(MoveGurdTurnTo150());
         }
         UpdateButtonActive(playerturn);
     }
 
+    public IEnumerator MoveAttackTurnToZero()
+    {
+        Vector3 startPos = AttackTurn.anchoredPosition;
+        Vector3 targetPos = new Vector3(0, startPos.y, startPos.z);
+
+        float duration = 0.8f; // 전체 이동 시간(초)
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            // t: 0~1, 빠르게 시작해서 느리게 끝나는 곡선
+            float t = Mathf.SmoothStep(0, 1, elapsed / duration);
+            AttackTurn.anchoredPosition = Vector3.Lerp(startPos, targetPos, t);
+            yield return null;
+        }
+        AttackTurn.anchoredPosition = targetPos;
+    }
+
+    public IEnumerator MoveGurdTurnToZero()
+    {
+        Vector3 startPos = GurdTurn.anchoredPosition;
+        Vector3 targetPos = new Vector3(0, startPos.y, startPos.z);
+
+        float duration = 0.8f; // 전체 이동 시간(초)
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            // t: 0~1, 빠르게 시작해서 느리게 끝나는 곡선
+            float t = Mathf.SmoothStep(0, 1, elapsed / duration);
+            GurdTurn.anchoredPosition = Vector3.Lerp(startPos, targetPos, t);
+            yield return null;
+        }
+        GurdTurn.anchoredPosition = targetPos;
+    }
+
+    public IEnumerator MoveAttackTurnTo150()
+    {
+        Vector3 startPos = AttackTurn.anchoredPosition;
+        Vector3 targetPos = new Vector3(-150, startPos.y, startPos.z);
+
+        float duration = 0.8f; // 전체 이동 시간(초)
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            // t: 0~1, 빠르게 시작해서 느리게 끝나는 곡선
+            float t = Mathf.SmoothStep(0, 1, elapsed / duration);
+            AttackTurn.anchoredPosition = Vector3.Lerp(startPos, targetPos, t);
+            yield return null;
+        }
+        AttackTurn.anchoredPosition = targetPos;
+    }
+
+    public IEnumerator MoveGurdTurnTo150()
+    {
+        Vector3 startPos = GurdTurn.anchoredPosition;
+        Vector3 targetPos = new Vector3(150, startPos.y, startPos.z);
+
+        float duration = 0.8f; // 전체 이동 시간(초)
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            // t: 0~1, 빠르게 시작해서 느리게 끝나는 곡선
+            float t = Mathf.SmoothStep(0, 1, elapsed / duration);
+            GurdTurn.anchoredPosition = Vector3.Lerp(startPos, targetPos, t);
+            yield return null;
+        }
+        GurdTurn.anchoredPosition = targetPos;
+    }
 }
