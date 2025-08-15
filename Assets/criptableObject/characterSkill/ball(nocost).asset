@@ -147,19 +147,6 @@ MonoBehaviour:
       DebuffEffects: []
       BuffEffects: []
       CCEffects: []
-  - target: 1
-    effects:
-      DamageEffect:
-      - skillhitEffect: 1000000
-        baseValue: 1
-        increase:
-          keys: 01000000
-          values:
-          - 0.2
-        dot: 0
-      DebuffEffects: []
-      BuffEffects: []
-      CCEffects: []
   react: 2
   reactTime: 0.5
   gurd:

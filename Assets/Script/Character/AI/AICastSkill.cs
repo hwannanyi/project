@@ -163,7 +163,7 @@ public class AICastSkill : MonoBehaviour
                 }
 
                 Vector3 targetPosition = Vector3.zero; // 기본값 초기화
-                targetPosition = new Vector3(targetPositionX+ (pattern.coordinate).x, 0f, targetPositionY+ (pattern.coordinate).y); // Y축은 0으로 설정
+                targetPosition = new Vector3(targetPositionX+ (pattern.coordinate).x, 0f, targetPositionY+ (pattern.coordinate).z); // Y축은 0으로 설정
 
 
             // 스킬 데이터 가져오기

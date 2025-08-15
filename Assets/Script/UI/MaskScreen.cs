@@ -2,33 +2,15 @@ using UnityEngine;
 
 public class MaskScreen : MonoBehaviour
 {
-    public GameObject charpick;
-    public GameObject profile;
-    public GameObject trun;
-    public GameObject nextTrun;
-    public GameObject skillCancel;
-    public GameObject skillCast;
+
 
     public GameObject canvasObj;
     public GameObject maskScreen;
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.L))
-        {
-            SetMaskScreen(charpick);
-        }
-    }
+
 
     public void SetMaskScreen(GameObject UI)
     {
-        gameObject.SetActive(true);
-
         RectTransform targetRect = UI.GetComponent<RectTransform>();
         RectTransform myRect = GetComponent<RectTransform>();
 
@@ -47,7 +29,6 @@ public class MaskScreen : MonoBehaviour
             SetMaskScreenToCanvas();
         }
     }
-
     public void SetMaskScreenToCanvas()
     {
         RectTransform canvasRect = canvasObj.GetComponent<RectTransform>();

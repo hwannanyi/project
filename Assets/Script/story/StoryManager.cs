@@ -17,6 +17,7 @@ public class StoryManager : MonoBehaviour
     public StageDataManager stageDataManager; // 스테이지 데이터 매니저 참조 필드
     public AITurn aITurn; // AI 턴 매니저 참조 필드
     public TurnManager turnManager; // 턴 매니저 참조 필드
+    public MaskScreenUI maskScreenUI; // 마스크 스크린 UI 참조 필드
 
     public UnityEvent<string> OnStoryStart = new UnityEvent<string>();
     public UnityEvent<SkillManager> OnStoryStop = new UnityEvent<SkillManager>();
@@ -60,7 +61,7 @@ public class StoryManager : MonoBehaviour
     public List<string> readpopupStoryID = new(); // 읽은 스토리 ID 리스트
 
 
-    private Dictionary<string, Action> LockActions; // 잠금 액션 딕셔너리
+    private Dictionary<string, Action> LockActions = new(); // 잠금 액션 딕셔너리
 
     [Header("잠금")]
     public bool chPickLock = false; // 캐릭터 선택 잠금 상태
@@ -163,7 +164,7 @@ public class StoryManager : MonoBehaviour
     public void StoryEnd()
     {
         readStoryID.Add(talkRead[0].id); // 대사 ID를 읽은 스토리 ID 리스트에 추가
-        UnPause(); // 모든 잠금 해제
+        //UnPause(); // 모든 잠금 해제
         isStoryActive = false; // 스토리 UI 비활성화
         isStoryEnd = true; // 스토리 종료 상태 설정
         StoryUI.SetActive(false); // 스토리 UI 비활성화
@@ -347,7 +348,7 @@ public class StoryManager : MonoBehaviour
         public string character;
         public string talk;
         public string tran;
-        public List<string> production;
+        public List<string> production = new();
         public string id;
         public string next;
     }
@@ -508,14 +509,17 @@ public class StoryManager : MonoBehaviour
             ShowCurrentPopUpTalk();
             LayoutRebuilder.ForceRebuildLayoutImmediate(popUptalkRect);
             popUptalkRect.anchoredPosition = UItrans();
+            
             PopUpStoryProductionLock(PopUptalkRead[currentPopUpTalkIndex].production);
         }
         else
         {
             Action end = (PopUptalkRead[PopUptalkRead.Count - 1] == PopUptalklist[PopUptalklist.Count - 1]) ?
                 PopUpStoryEnd : PopUpStoryStop;
-            UnPause();
             end.Invoke();
+            UnPause();
+
+            PopUpStoryProductionLock(new List<string>());
         }
     }
 
@@ -574,7 +578,12 @@ public class StoryManager : MonoBehaviour
         { "skillLock", SkillLock },
         { "turnLock", TurnLock },
         { "chPickLock", ChPickLock },
-        { "timeLock", TimeLock }
+        { "timeLock", TimeLock },
+        { "chpickUI", ChpickUI },
+        { "turnUI", TurnUI },
+        { "turnNextUI", TurnNextUI },
+        { "skillUI", SkillUI },
+        {"UImaskDown", DownMaskScreen }
         // 추가 명령어 및 함수 매핑
     };
     }
@@ -662,6 +671,27 @@ public class StoryManager : MonoBehaviour
         Time.timeScale = 0f; // 게임 시간 정지
     }
 
+    public void ChpickUI()
+    {
+        maskScreenUI.SetMaskScreen(maskScreenUI.charpick);
+    }
+    public void TurnUI()
+    {
+        maskScreenUI.SetMaskScreen(maskScreenUI.turn);
+    }
+    public void TurnNextUI()
+    {
+        maskScreenUI.SetMaskScreen(maskScreenUI.nextTurn);
+    }
+    public void SkillUI()
+    {
+        maskScreenUI.SetMaskScreen(maskScreenUI.profile);
+    }
+
+    public void DownMaskScreen()
+    {
+        maskScreenUI.DownMaskScreen(); // 마스크 스크린 UI 비활성화
+    }
 
     public void UnPause()
     {
@@ -671,6 +701,7 @@ public class StoryManager : MonoBehaviour
         chPickLock = false; // 캐릭터 선택 잠금 비활성화
         timeLock = false; // 시간 정지 비활성화
         Time.timeScale = 1f; // 게임 시간 재개
+        //Debug.Log($"[UnPause] skillLock:{skillLock}, turnLock:{turnLock}, moveLock:{moveLock}, chPickLock:{chPickLock}, timeLock:{timeLock}");
     }
 
     public void PauseOn()
@@ -680,6 +711,7 @@ public class StoryManager : MonoBehaviour
         MoveLock();
         ChPickLock();
         TimeLock();
+        Debug.Log("퍼즈");
     }
 
     /////////////////////////////////////////////////////////

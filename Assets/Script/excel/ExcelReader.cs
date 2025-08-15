@@ -5,17 +5,21 @@ using System.IO;
 using System.Text;
 //using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
+using System.Text.RegularExpressions;
+
 
 public class ExcelReader : MonoBehaviour
 {
+
+
     // 읽어 올 파일 이름
     public string csvFileName = "storyTalk";
     public string csvpopUpStoryFileName = "popUpStory";
     // key:value 형태로 저장
     // key(메뉴명)로 value를 뽑아오기 위해
     // 원하는 형태로 선언해도 무방
-    public List<Talk> storyTalk = new List<Talk>();
-    public List<PopUpTalk> popupstoryTalk = new List<PopUpTalk>();
+    public List<Talk> storyTalk = new();
+    public List<PopUpTalk> popupstoryTalk = new();
 
     // 읽어 온 데이터를 담을 구조체
     // 저는 클래스로 생성했습니다! struct로 생성해도 동일해요.
@@ -185,7 +189,7 @@ public class ExcelReader : MonoBehaviour
     {
         string path = Path.Combine(Application.streamingAssetsPath, "exceldata/storyTalk.csv");
 
-        List<Talk> menuList = new List<Talk>();
+        List<Talk> menuList = new();
 
         string csvText = "";
 
@@ -209,9 +213,9 @@ public class ExcelReader : MonoBehaviour
         {
             if (string.IsNullOrWhiteSpace(line)) continue;
 
-            var splitData = line.Split(',');
+            var splitData = SplitCsvLine(line);
 
-            if (splitData.Length < 9)
+            if (splitData.Count < 7)
             {
                 Debug.LogWarning("잘못된 줄 무시: " + line);
                 continue;
@@ -241,7 +245,7 @@ public class ExcelReader : MonoBehaviour
     {
         string path = Path.Combine(Application.streamingAssetsPath, "exceldata/popUpStory.csv");
 
-        List<PopUpTalk> menuList = new List<PopUpTalk>();
+        List<PopUpTalk> menuList = new();
 
         string csvText = "";
 
@@ -265,9 +269,9 @@ public class ExcelReader : MonoBehaviour
         {
             if (string.IsNullOrWhiteSpace(line)) continue;
 
-            var splitData = line.Split(',');
+            var splitData = SplitCsvLine(line);
 
-            if (splitData.Length < 7)
+            if (splitData.Count < 7)
             {
                 Debug.LogWarning("잘못된 줄 무시: " + line);
                 continue;
@@ -291,5 +295,15 @@ public class ExcelReader : MonoBehaviour
         yield return null;
     }
 
-
+    private static List<string> SplitCsvLine(string line)
+    {
+        var matches = Regex.Matches(line, @"(?<=^|,)(?:""(?<val>([^""]|"""")*)""|(?<val>[^,]*))");
+        var result = new List<string>();
+        foreach (Match match in matches)
+        {
+            string value = match.Groups["val"].Value.Replace("\"\"", "\"");
+            result.Add(value);
+        }
+        return result;
+    }
 }

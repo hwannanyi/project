@@ -154,7 +154,7 @@ public class PassiveSkillCast : MonoBehaviour
 
         Vector3 targetPosition = Vector3.zero; // 기본값 초기화
         targetPosition = new Vector3(targetPositionX + (targetRule.coordinate).x,
-            0f, targetPositionY + (targetRule.coordinate).y); // Y축은 0으로 설정
+            0f, targetPositionY + (targetRule.coordinate).z); // Y축은 0으로 설정
 
         /*
                     Stats targetObject = GetClosestCharacter(enemy, pattern.index,
