@@ -6,6 +6,10 @@ using static UnityEngine.GraphicsBuffer;
 
 public class SkillPreview : MonoBehaviour
 {
+    public GameObject PreviewTimer; // 스킬 프리뷰 타이머 오브젝트
+
+
+
     public GameObject skillPrefab;
     public GameObject skillPrefab2;
 
@@ -75,6 +79,7 @@ public class SkillPreview : MonoBehaviour
 
     public IEnumerator StretchObjectToTarget(SkillData skill,Vector3 targetPosition)
     {
+        PreviewTimer.transform.localScale = Vector3.zero; // 초기 스케일 설정
         Vector3 start = transform.position;
         Vector3 end = targetPosition;
 
@@ -102,9 +107,13 @@ public class SkillPreview : MonoBehaviour
         transform.rotation = Quaternion.Euler(90f, yAngle, 0f);
         
         float elapsed = 0f;
+        Vector3 startScale = PreviewTimer.transform.localScale;
+        Vector3 targetScale = transform.localScale;
         while (elapsed < skill.skillPreview)
         {
             elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / skill.skillPreview);
+            PreviewTimer.transform.localScale = Vector3.Lerp(startScale, targetScale, t);
             yield return null; // 다음 프레임까지 대기
         }
         GameObject skillObject = Instantiate(skill.SkillEffectPrefab, aoeCenter, Quaternion.identity);

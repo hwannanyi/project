@@ -50,9 +50,6 @@ public class SkillManager : MonoBehaviour
     public GameObject selectedTargetUnit = null;
     private int selectedTargetIndex = -1;
 
-    public bool hasMovedInReact = false; // 대응단계에서 이동 여부
-
-
     public Dictionary<int, ActionWrapper> _skillAction = new();
     public Dictionary<int, ActionWrapper> _reactSkillAction = new();
 
@@ -100,6 +97,10 @@ public class SkillManager : MonoBehaviour
 
     [Header("스킬범위 표시")]
     public GameObject skillPreview; // 스킬 프리팹
+
+    [Header("현제 수비중인 캐릭터")]
+    public Stats defendingCharacter; // 현재 수비 중인 캐릭터
+
     void Awake()
     {
         skillRangeVisualizer = GetComponent<SkillRangeVisualizer>();
@@ -189,91 +190,18 @@ public class SkillManager : MonoBehaviour
             if (!turnManager.isPlayerTurn) React_Instant_Cast(); // 대응단계에서 즉시 시전
             else StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
         }
-/*
-        if (!turnManager.isPlayerTurn)
-        {
-            if (selectedSkill != null && selectedCharacter != null) //스킬 확정 기준
-            {
-                CalculateSkillPosition(selectedSkill, selectedCharacter, false, Vector3.zero, Vector3.zero, selectedTargetUnit); // 항상 호출해야 함
-                if (isSkillReady)
-                {
 
-                    if (selectedSkill.targeting && selectedTargetUnit == null)
-                        return;
-
-                    // 3. 시전 확정
-                    SkillRangeVisualizer.Instance.HideSkillRange();
-                    ConfirmSkillCast(selectedCharacter.team); // 위치 계산 성공했을 때만 확정
-                    SkillCastTeam(skillCode);
-                    //ExecuteReactionThenSkill(0);
-                    ResetResponseState();
-                }
-            }
-        }
-*/
         if (Input.GetKeyDown(KeyCode.Z))
         {
             characterSelection.MoveArrow.SetActive(true);
             Skillcancel();
         }
 
-        // 대응단계 강제 종료 테스트용 (게임 흐름에 따라 UI 버튼 등으로 대체 가능)
-        if (Input.GetKeyDown(KeyCode.M))
-        {
-/*            if (TurnManager.Instance.IsInReactPhase())
-            {
-                Debug.Log("대응단계 M키 입력 - 대응스킬 먼저 실행");
-                ExecuteReactionThenSkill();     // ← 변경됨
-                ResetResponseState();
-                //ExecuteSingleSkillWithReactionCheck(); // ← 변경됨
-            }
-            else
-            {*/
-
-        }
-
         // 마우스 클릭으로 타겟 유닛 선택
         if (Input.GetKeyDown(KeyCode.Return) && !storyManager.skillLock)
         {
             selectedTargetUnit=null; // 클릭시 타겟 초기화
-/*
-            Collider[] hits = Physics.OverlapSphere(mouseWorld, 0.1f);
-            foreach (var hit in hits)
-            {
-                if (hit.CompareTag("Character"))
-                {
-                    GameObject target = hit.gameObject;
 
-                    if (selectedCharacter != null && selectedSkill != null)
-                    {
-                        Vector3 unitPos = selectedCharacter.charPosition;
-                        Vector3 targetPos = target.transform.position;
-
-                        int tileDist = Mathf.Abs(Mathf.RoundToInt(unitPos.x - targetPos.x)) +
-                                       Mathf.Abs(Mathf.RoundToInt(unitPos.z - targetPos.z));
-
-                        if (tileDist > selectedSkill.range)
-                        {
-                            Debug.LogWarning("[SkillManager] 사거리 밖의 유닛입니다.");
-                            return;
-                        }
-                    }
-                    else if(!isSkillReady)
-                    {
-                        CharacterMovement movement = target.GetComponent<CharacterMovement>();
-                        if (movement != null)
-                        {
-                            int number = movement.characterNumber;
-                            CharacterSelection.Instance.SelectCharacter(number);
-                        }
-                    }
-
-                    selectedTargetUnit = target;
-                    selectedTargetIndex = CharacterStats.Instance.characters.IndexOf(target);
-                    Debug.Log($"[SkillManager] 대상 선택됨: {target.name}");
-                    break; // 첫 번째 캐릭터만 처리
-                }
-            }*/
             if (selectedSkill != null && selectedCharacter != null) //스킬 확정 기준
             {
                 CalculateSkillPosition(selectedSkill, selectedCharacter,false,Vector3.zero, Vector3.zero, selectedTargetUnit); // 항상 호출해야 함
@@ -294,17 +222,6 @@ public class SkillManager : MonoBehaviour
             }
 
         }
-
-
-/*        if (Skillaction != null && Skillaction.selectedSkill.targeting && Skillaction.selectedTargetUnit != null)
-        {
-            targetIndicator.SetActive(true);
-        }
-        else
-        {
-            targetIndicator.SetActive(false);
-        }*/
-
     }
 
     // 스킬 선택 잠금
@@ -1261,54 +1178,6 @@ public class SkillManager : MonoBehaviour
         Poffset = offset;
     }
 
-
-    //미사용 함수
-
-/*    // 일반 스킬 실행 함수
-    public void ExecuteCurrentSkill(int i)
-    {
-        if (Skillaction != null && Skillaction.Count > 0)
-        {
-            var action = Skillaction[i];
-            if (action.type == ActionType.Skill && action.skillData != null)
-            {
-                ExecuteSkill(action.skillData); // SelectedSkill만 전달
-            }
-            Skillaction.RemoveAt(0); // 실행한 스킬만 제거
-        }
-    }
-
-    // 대응 스킬 실행 함수
-    public void ExecuteReactSkillList()
-    {
-        if (ReactSkillaction != null && ReactSkillaction.Count > 0)
-        {
-            var action = ReactSkillaction[0];
-            if (action.type == ActionType.Skill && action.skillData != null)
-            {
-                ExecuteSkill(action.skillData);
-            }
-            ReactSkillaction.RemoveAt(0);
-        }
-    }*/
-
-
-
-/*    // 대응 스킬 → 일반 스킬 순차 실행 함수
-    public void ExecuteReactionThenSkill(int i)
-    {
-        if (EnemySkill != null && EnemySkill.Count > 0)
-        {
-            var action = EnemySkill[i];
-            if (action.type == ActionType.Skill && action.skillData != null)
-            {
-                ExecuteSkill(action.skillData);
-            }
-            EnemySkill.RemoveAt(0);
-        }
-        //isWaitingForReaction = false;
-    }*/
-
     public void ResetResponseState()
     {
         validReactTargets.Clear();
@@ -1330,28 +1199,6 @@ public class SkillManager : MonoBehaviour
             Debug.LogWarning("[SkillManager] 대응 스킬 프리팹이 비어 있음");
         }
     }
-
-
-    /*    /// <summary>
-        /// 대응단계 종료 시 대응 스킬 실행 후 본래 중단되었던 스킬 실행 재개
-        /// </summary>
-        public void EndResponsePhase()
-        {
-            Debug.Log("[TurnManager] 대응단계");
-
-            TurnManager.Instance.ExitReactPhase();
-
-            // 대응 스킬 먼저 실행
-            ExecuteReactSkillList();
-
-            // 대응 상태 초기화
-            isWaitingForReaction = false;
-            hasMovedInReact = false;
-            hasReacted = false;
-
-            // 대응으로 중단되었던 스킬 실행 이어서 처리
-            ExecuteSingleSkillWithReactionCheck();
-        }*/
 
     /// <summary>
     /// Skillaction 리스트를 순서대로 실행
@@ -1450,21 +1297,10 @@ public class SkillManager : MonoBehaviour
         return selectedSkill != null && isSkillReady;
     }
 
-    public void MarkReactMove()
-    {
-        hasMovedInReact = true;
-        Debug.Log("[SkillManager] 대응단계에서 이동 선택 완료");
-    }
-
     public bool HasAlreadyReacted()
     {
         return hasReacted;
     }
-
-/*    public Stats GetRespondingCharacter()
-    {
-        return respondingCharacter;
-    }*/
 
     public void Skillcancel()
     {
@@ -1474,8 +1310,8 @@ public class SkillManager : MonoBehaviour
         isSkillReady = false;
         isSkillReadyFinal = false;
         cursor.SetActive(false);// 커서 비활성화
-        SkillRangeVisualizer.Instance.StopNonTargetProjectileRange();
-        SkillRangeVisualizer.Instance.StopSkillRangePreview();
-        SkillRangeVisualizer.Instance.HideSkillRange();
+        skillRangeVisualizer.StopNonTargetProjectileRange();
+        skillRangeVisualizer.StopSkillRangePreview();
+        skillRangeVisualizer.HideSkillRange();
     }
 }

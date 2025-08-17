@@ -238,6 +238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0182db07826226949bf7de80011ced2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PreviewTimer: {fileID: 2804358557091007009}
   skillPrefab: {fileID: 0}
   skillPrefab2: {fileID: 0}
   skill:
