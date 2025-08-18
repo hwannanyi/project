@@ -31,8 +31,8 @@ public class AICastSkill : MonoBehaviour
     }
     private void OnTurnEnd(bool value)
     {
-        var manager = CharacterStats.Instance;
-        var character = manager.GetStats(gameObject);
+        CharacterStats manager = CharacterStats.Instance;
+        Stats character = manager.GetStats(gameObject);
         if (character.aIPattern.skillQueueList == null)
             return;
         StartCoroutine(OnTurnEndCoroutine());
@@ -44,8 +44,8 @@ public class AICastSkill : MonoBehaviour
         TurnManager turnManager = TurnManager.Instance;
         SkillManager skillManager = SkillManager.Instance;
 
-        var manager = CharacterStats.Instance;
-        var character = manager.GetStats(gameObject);
+        CharacterStats manager = CharacterStats.Instance;
+        Stats character = manager.GetStats(gameObject);
         character.isPatternEnd = false;
 
         if (character.aIPattern.skillQueueList == null || character.aIPattern.skillQueueList.Count == 0)
@@ -99,7 +99,8 @@ public class AICastSkill : MonoBehaviour
                 }
 
 
-                Stats target = GetClosestCharacter(character, pattern.index, pattern.reverse_order, pattern.Designation, pattern.target);
+                //Stats target = GetClosestCharacter(character, pattern.index, pattern.reverse_order, pattern.Designation, pattern.target);
+                Stats target = skillManager.defendingCharacter;
                 if (target == character)
                     continue; // 대상이 자기인 경우 종료
 
@@ -223,7 +224,7 @@ public class AICastSkill : MonoBehaviour
     {
         // 자기 자신, 죽은 캐릭터, 같은 팀 제외
         var candidates = new List<Stats>();
-        foreach (var character in CharacterStats.Instance.characterList)
+        foreach (Stats character in CharacterStats.Instance.characterList)
         {
             if (character == self || character.isdie)
                 continue;
