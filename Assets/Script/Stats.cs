@@ -53,6 +53,8 @@ public class Stats
 
     public GameObject highlightEffect; // 인스펙터에서 하이라이트 오브젝트 할당
 
+    public WorldHPBar HPbar; // HP바 오브젝트
+
 
     public bool isPatternEnd;
     public float gurd;
@@ -130,6 +132,9 @@ public class Stats
 
         available = true;
         movable = true;
+
+
+        HPbar = null; // HP바 오브젝트
 
         //방어관련
         gurd = 0f; // 방어시간 초기화

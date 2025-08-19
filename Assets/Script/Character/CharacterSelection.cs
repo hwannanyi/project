@@ -79,7 +79,6 @@ public class CharacterSelection : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha3)) SelectCharacter(2);
         if (Input.GetKeyDown(KeyCode.Alpha4)) SelectCharacter(3);
 
-        if (Input.GetKeyDown(KeyCode.BackQuote)) CancelSelection();
 
         if (Input.GetKey(KeyCode.Alpha1)) Holding(0);
         if (Input.GetKey(KeyCode.Alpha2)) Holding(1);
@@ -115,8 +114,11 @@ public class CharacterSelection : MonoBehaviour
                 selectedCharacterIndex = index;
                 prevSelectedIndex = index;
 
-                // 새 캐릭터 하이라이트 켜기
-                characterStats.characterList[selectedCharacterIndex].SetHighlight(true);
+            //선택된 캐릭은 수비
+            skillManager.defendingCharacter = characterStats.characterList[selectedCharacterIndex];
+
+            // 새 캐릭터 하이라이트 켜기
+            characterStats.characterList[selectedCharacterIndex].SetHighlight(true);
 
                 selectedCharacter = characterStats.characterList[selectedCharacterIndex];
 
@@ -129,9 +131,8 @@ public class CharacterSelection : MonoBehaviour
             }
             else if (selectedCharacterIndex == index)
             {
-                StartCoroutine(character.ParryingCoroutine());
-                character.Mashing(index);
-            }
+            CancelSelection();
+        }
             else
             {
                 Debug.Log("캐릭 선택실패");
@@ -145,7 +146,7 @@ public class CharacterSelection : MonoBehaviour
         characterStats.characterList[selectedCharacterIndex].SetHighlight(false);
 
         selectedCharacter = null;
-
+        skillManager.defendingCharacter = null;
         selectedCharacterIndex = -1;
         //characterUIManager.ProfileUIOn();
         prevSelectedIndex = -1;

@@ -31,12 +31,28 @@ public class AICastSkill : MonoBehaviour
     }
     private void OnTurnEnd(bool value)
     {
+        if (!gameObject.activeInHierarchy) return;
+
         CharacterStats manager = CharacterStats.Instance;
         Stats character = manager.GetStats(gameObject);
         if (character.aIPattern.skillQueueList == null)
             return;
         StartCoroutine(OnTurnEndCoroutine());
         //character.isPatternEnd = true; // 패턴 종료 상태로 설정
+    }
+
+    public void OnDisable()
+    {
+        StopAllCoroutines(); // 모든 코루틴 중지
+
+        // 이벤트 구독 해제
+        EventManager.Instance.TurnEnd -= OnTurnEnd;
+    }
+
+    public void OnEnable()
+    {
+        // 이벤트 구독
+        EventManager.Instance.TurnEnd += OnTurnEnd;
     }
 
     private IEnumerator OnTurnEndCoroutine()

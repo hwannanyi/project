@@ -11,15 +11,15 @@ public class SkillTargetManager : MonoBehaviour
         }*/
 
     // 예시: 특정 키를 눌렀을 때 출력
-    void Update()
+/*    void Update()
     {
         if (Input.GetKeyDown(KeyCode.B))
         {
             PrintRespondingCharacters();
         }
     }
-
-    private void OnTriggerEnter(Collider other)
+*/
+/*    private void OnTriggerEnter(Collider other)
     {
         // Character 태그를 가진 오브젝트가 들어오면 중복 없이 리스트에 추가
         if (other.CompareTag("Character"))
@@ -62,5 +62,5 @@ public class SkillTargetManager : MonoBehaviour
         {
             list.Add(obj);
         }
-    }
+    }*/
 }

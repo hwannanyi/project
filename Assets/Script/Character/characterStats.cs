@@ -14,6 +14,7 @@ using static UnityEngine.Rendering.VolumeComponent;
 public class CharacterStats : MonoBehaviour
 {
     public static CharacterStats Instance;
+    public TurnManager turnManager; // 턴 매니저
     public TurnUIManager uiManager;
     public CharacterUIManager ProfileuiManager; // 캐릭터 프로필 UI 매니저
 
@@ -28,6 +29,10 @@ public class CharacterStats : MonoBehaviour
     public GameObject validMainTarget = null;
 
     public bool characterCreat = false; // 캐릭터 생성 여부
+
+    public Stats PlayerCharacter1; // 플레이어 캐릭터 1
+    public Stats PlayerCharacter2; // 플레이어 캐릭터 2
+    
 
     // 체력바
     public GameObject HpBar;
@@ -44,6 +49,7 @@ public class CharacterStats : MonoBehaviour
     void Awake()
     {
         wave = 1;
+        turnManager = GetComponent<TurnManager>();
         uiManager.UpdateWaveCount(wave);
 
             Instance = this;
@@ -67,8 +73,6 @@ public class CharacterStats : MonoBehaviour
 
     public void Update()
     {
-        if (characterList != null) {
-            UEmenyCount(); }
     }
 
     /// <summary>
@@ -118,6 +122,8 @@ public class CharacterStats : MonoBehaviour
             {
                 CharacterAdd(playerCharacters[i]);
             }
+            PlayerCharacter1 = characterList[0]; // 플레이어 캐릭터 1로 설정
+            PlayerCharacter2 = characterList[1]; // 플레이어 캐릭터 1로 설정
             for (int j = 0; j < EnemieCharacters.Count; j++) // EnemieCharacters 리스트의 길이만큼 반복
             {
                 CharacterAdd(EnemieCharacters[j]);
@@ -149,6 +155,7 @@ public class CharacterStats : MonoBehaviour
             var newStats = new Stats(ALLcharacterList[index], false, new());
             newStats.name = uniqueName; // 이름 덮어쓰기
             characterList.Add(newStats);
+
         }
         else
         {
@@ -227,6 +234,7 @@ public class CharacterStats : MonoBehaviour
                 Vector3 startpostion = new Vector3(postion.x, 0, postion.y);
                 chterObj.transform.position = startpostion;
 
+
             }
             else if (chter.team == Team.enemy)
             {
@@ -249,45 +257,45 @@ public class CharacterStats : MonoBehaviour
             else
                 chter.highlightEffect = null;
 
+            RegisterCharacter(chterObj, chter);
+
+            if (!characters.Contains(chterObj))
+            {
+                characters.Add(chterObj);
+            }
+            chter.HPbar = WorldHPBar.Create(HpBar, chterObj.transform, canvas, chter);
+        }
+        ProfileuiManager.AssignMiniprofileTargets();
+        characterCreat = true; // 캐릭터 생성 완료
+    }
+
+    public void Charactercreat(Stats chter,Vector3 startpostion)
+    {
+
+            GameObject chterObj = Instantiate(chter.characterPrefab);
+            chterObj.name = chter.name;
+            characters.Add(chterObj);
+
+
+            chterObj.transform.position = startpostion;
+
+            chter.characterPrefab = chterObj;
+
+            Transform highlight = chterObj.transform.Find("HighlightEffect");
+            if (highlight != null)
+            chter.highlightEffect = highlight.gameObject;
+            else
+            chter.highlightEffect = null;
+
             CharacterStats.Instance.RegisterCharacter(chterObj, chter);
 
             if (!CharacterStats.Instance.characters.Contains(chterObj))
             {
                 CharacterStats.Instance.characters.Add(chterObj);
             }
-            WorldHPBar.Create(HpBar, chterObj.transform, canvas, chter);
-        }
-        ProfileuiManager.AssignMiniprofileTargets();
-        characterCreat = true; // 캐릭터 생성 완료
-    }
 
-    public void Charactercreat(Stats character,Vector3 startpostion)
-    {
-
-            GameObject chterObj = Instantiate(character.characterPrefab);
-            var stageManager = StageManager.Instance;
-            chterObj.name = character.name;
-            characters.Add(chterObj);
-
-
-            chterObj.transform.position = startpostion;
-
-            character.characterPrefab = chterObj;
-
-            Transform highlight = chterObj.transform.Find("HighlightEffect");
-            if (highlight != null)
-            character.highlightEffect = highlight.gameObject;
-            else
-            character.highlightEffect = null;
-
-            CharacterStats.Instance.RegisterCharacter(chterObj, character);
-
-            if (!CharacterStats.Instance.characters.Contains(chterObj))
-            {
-                CharacterStats.Instance.characters.Add(chterObj);
-            }
-
-        WorldHPBar.Create(HpBar, chterObj.transform, canvas, character);
+        
+        chter.HPbar = WorldHPBar.Create(HpBar, chterObj.transform, canvas, chter);
 
         ProfileuiManager.AssignMiniprofileTargets();
     }

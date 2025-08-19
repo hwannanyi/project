@@ -1,10 +1,10 @@
-using UnityEngine;
 using System;
-using System.Linq;
 using System.Collections;
-
-using UnityEngine.SceneManagement;
+using System.Linq;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
+using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 /*public enum TurnPhase
 {
@@ -150,7 +150,7 @@ public class TurnManager : MonoBehaviour
     //  캐릭터가 플레이어 팀인지 판별
     public bool IsPlayerTeam(Stats character)
     {
-        return CharacterStats.Instance.playerCharacters.Contains(character.name);
+        return characterStats.playerCharacters.Contains(character.name);
     }
 
     //  대응단계 진입 → 대응하는 팀에게 턴을 넘김
@@ -174,10 +174,47 @@ public class TurnManager : MonoBehaviour
         Debug.Log($"[TurnManager] 대응단계 종료: 턴 복귀");
     }
 
+    public void ChrtTag()//수비턴일시 비선택된 캐릭은 퇴각, 공격턴에 복귀
+    {
+        if (isPlayerTurn)
+        {
+            // 공격턴일 때는 모든 캐릭터 복귀
+            characterStats.PlayerCharacter1.characterPrefab.SetActive(true);
+            characterStats.PlayerCharacter2.characterPrefab.SetActive(true);
+
+            // HP바 활성화
+            characterStats.PlayerCharacter1.HPbar.gameObject.SetActive(true);
+            characterStats.PlayerCharacter2.HPbar.gameObject.SetActive(true);
+
+        }
+        else
+        {
+            GameObject chrtObj= skillmanager.defendingCharacter.characterPrefab;
+            Stats chrt1 = characterStats.PlayerCharacter1;
+            Stats chrt2 = characterStats.PlayerCharacter2;
+
+            // 수비턴일 때는 선택된 캐릭터만 활성화
+
+            chrt1.characterPrefab.SetActive(!chrt1.isdie && chrt1.characterPrefab == chrtObj);
+            chrt2.characterPrefab.SetActive(!chrt2.isdie && chrt2.characterPrefab == chrtObj);
+
+            // 선택된 캐릭만 HP바 활성화
+            characterStats.PlayerCharacter1.HPbar.gameObject.SetActive(characterStats.PlayerCharacter1.characterPrefab == chrtObj);
+
+            characterStats.PlayerCharacter2.HPbar.gameObject.SetActive(characterStats.PlayerCharacter2.characterPrefab == chrtObj);
+        }
+        
+    }
 
     //  턴 전환 (일반 턴 순환: 플레이어 <-> 적)
     public void NextTurn()
     {
+        if (isPlayerTurn &&
+            !(skillmanager.defendingCharacter == characterStats.PlayerCharacter1 ||
+            skillmanager.defendingCharacter == characterStats.PlayerCharacter2))
+            return; //공격턴에서 선택된 캐릭이 없으면 턴 전환 불가
+        
+
         skillmanager.Skillcancel(); // 스킬 쿨타임 초기화
         isPlayerTurn = !isPlayerTurn; // 플레이어 턴 여부 토글
         EnterReactPhase();
@@ -185,6 +222,7 @@ public class TurnManager : MonoBehaviour
         characterUIManager.UpdateProfileUIBySelection();
         Turn++;
         UITrunCount(Turn);//  턴 UI 업데이트
+        ChrtTag();
         try
         {
             if(CharacterSelection.selectedCharacterIndex != -1)
@@ -196,7 +234,7 @@ public class TurnManager : MonoBehaviour
             Debug.LogError($"[TurnManager] 캐릭터 프로필 업데이트 실패: {e.Message}");
         }
         // 모든 캐릭터의 스킬 쿨타임 감소
-        foreach (var character in CharacterStats.Instance.characterList)
+        foreach (var character in characterStats.characterList)
         {
             foreach (var skill in character.usingSkill)
             {

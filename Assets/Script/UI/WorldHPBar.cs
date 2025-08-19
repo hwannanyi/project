@@ -49,7 +49,6 @@ public class WorldHPBar : MonoBehaviour
             // 캐릭터의 위치를 따라다니도록 설정
             // World Space
             transform.position = target.position + Vector3.forward * 1.3f;
-
             // 체력바 fillAmount 갱신
             if (hpFillImage != null && stats != null && stats.maxhp > 0)
             {
@@ -58,6 +57,7 @@ public class WorldHPBar : MonoBehaviour
             }
             
         }
-        if (stats.isdie) Destroy(gameObject); // 캐릭터가 죽으면 체력바 제거
+        if (stats.isdie) gameObject.SetActive(false); // 캐릭터가 죽으면 체력바 제거
+        
     }
 }
