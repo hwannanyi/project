@@ -18,7 +18,7 @@ MonoBehaviour:
   ID: 1
   storyTiming: []
   stagenumber: 1
-  participants: 1
+  participants: 2
   startPositions:
   - {x: -1, y: 1}
   - {x: -1, y: -1}

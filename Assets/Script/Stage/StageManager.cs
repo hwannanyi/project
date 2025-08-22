@@ -15,7 +15,12 @@ public class StageManager : MonoBehaviour
     public List<string> character;
     void Awake()
     {
-            Instance = this;
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); // 기존 인스턴스가 있으면 자신을 파괴
+            return;
+        }
+        Instance = this;
         ALLStageList = Array.Empty<Stage>(); // 빈 배열로 초기화
         CurrentStage = null; // 명시적으로 null로 초기화
         DontDestroyOnLoad(gameObject);
