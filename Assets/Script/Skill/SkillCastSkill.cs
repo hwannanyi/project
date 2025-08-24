@@ -64,7 +64,7 @@ public class SkillCastSkill : MonoBehaviour
         }
         catch
         {
-            Debug.Log("연계스킬이 없음: " + Skill.skillName);
+            Debug.Log("연계스킬이 없음");
             SkillManager.Instance.isCastingSkill = StartTiming && SkillManager.Instance.isCastingSkill;
         }
         

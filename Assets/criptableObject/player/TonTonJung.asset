@@ -29,11 +29,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e707074c77219c249ac26d78f0db649c, type: 2}
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 11400000, guid: 7c0386b6a6c8feb4ea9f69f833121d62, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   - {fileID: 11400000, guid: 7c0386b6a6c8feb4ea9f69f833121d62, type: 2}
   - {fileID: 11400000, guid: 592933e3c6303084ca1027c7df2065fb, type: 2}
   passiveSkill: []

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public enum skillType 
@@ -176,7 +177,13 @@ public class Skill : ScriptableObject
 
     [Header("스킬 시전전에 범위 표시")]
     public float skillPreview = 0f; // 범위 표시 시간 제한
+
+    [Header("스킬 정지연출")]
+    public SFDType SFDtype = SFDType.none; // 정지해체 기준
+    public float SFDtime = 0f; // 정지 선딜 시간
+    public bool skillPreviewStop = false; // 스킬 시전 전에 정지
 }
+public enum SFDType { none, moveUp, moveDo, moveUpDo, skillE }
 
 [System.Serializable]
 public class HoldEffect

@@ -26,9 +26,9 @@ MonoBehaviour:
   useSkill:
   - {fileID: 11400000, guid: ef061324dfda5d14ab8b7962c9344a8b, type: 2}
   - {fileID: 11400000, guid: 641aec7d6d316bb47a97bc3b28c6668c, type: 2}
-  - {fileID: 11400000, guid: c9b8b31d638b40d4da50d4111063d677, type: 2}
-  - {fileID: 11400000, guid: 6abd7091a0864df4b8d225ba590ac163, type: 2}
-  - {fileID: 11400000, guid: b204837b166a5494b96fd8541172cd4e, type: 2}
+  - {fileID: 11400000, guid: 7c0386b6a6c8feb4ea9f69f833121d62, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}

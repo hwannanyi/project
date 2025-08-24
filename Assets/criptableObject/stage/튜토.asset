@@ -28,10 +28,15 @@ MonoBehaviour:
     isPopUp: 1
     ID: 2
   - Target: 
-    storyTimingType: 1
-    value: 1
+    storyTimingType: 2
+    value: 5
     isPopUp: 1
     ID: 3
+  - Target: 
+    storyTimingType: 1
+    value: 0
+    isPopUp: 1
+    ID: 4
   stagenumber: 0
   participants: 2
   startPositions:

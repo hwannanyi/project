@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
+using static ExcelReader;
 //using static UnityEditor.ShaderData;
 
 public class StoryManager : MonoBehaviour
@@ -70,9 +72,15 @@ public class StoryManager : MonoBehaviour
     public bool skillLock = false;  // 스킬 사용 잠금 상태
     public bool timeLock = false;   // 시간정지 상태
 
+    [Header("행동강제 정지연출")]
+    public bool isOnSFDEnd = false; // SFD 종료 상태
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
+        Skill_SFD.OnSFDEnd += OnSFDEnd; // 이벤트 구독
+        SkillPreview.OnSFDEnd += OnSFDEnd; // 이벤트 구독
+
         excelReader = GetComponent<ExcelReader>();
         skillManager = GetComponent<SkillManager>();
         stageDataManager = GetComponent<StageDataManager>();
@@ -82,17 +90,23 @@ public class StoryManager : MonoBehaviour
 
     void Start()
     {
-        (isStoryEnd,ispopUpStoryEnd) = stageDataManager.CurrentStage.storyTiming.Count == 0 ? (true, true) : (false, false); 
+
+        List<StoryTiming> timings = stageDataManager.CurrentStage.storyTiming;
+        (isStoryEnd, ispopUpStoryEnd) = timings.Count == 0 ?
+        (true, true)
+        :
+        (isStoryEnd = !timings.Any(t => !t.isPopUp), ispopUpStoryEnd = !timings.Any(t => t.isPopUp));
+
     }
 
-/*    private IEnumerator WaitForExcelDataAndStartStory()
-    {
-        // 데이터가 로드될 때까지 대기
-        while (excelReader == null || excelReader.storyTalk == null || excelReader.storyTalk.Count == 0)
+    /*    private IEnumerator WaitForExcelDataAndStartStory()
         {
-            yield return null; // 한 프레임 대기
-        }
-    }*/
+            // 데이터가 로드될 때까지 대기
+            while (excelReader == null || excelReader.storyTalk == null || excelReader.storyTalk.Count == 0)
+            {
+                yield return null; // 한 프레임 대기
+            }
+        }*/
 
     // Update is called once per frame
     void Update()
@@ -120,7 +134,7 @@ public class StoryManager : MonoBehaviour
             }
 
         }
-        
+
     }
 
     public void StoryStart(string storyID)
@@ -130,7 +144,7 @@ public class StoryManager : MonoBehaviour
         GameUI.SetActive(false); // 게임 UI 비활성화
 
         // 읽은 스토리 ID 리스트 초기화
-        readStoryID = new(); 
+        readStoryID = new();
 
         LoadStory(storyID); // 예시로 스토리 ID 1을 시작
     }
@@ -142,7 +156,7 @@ public class StoryManager : MonoBehaviour
             StoryStart(stageDataManager.CurrentStage.ID);
             StoryReStart(ID); // 스토리 ID가 없으면 현재 스테이지의 ID로 시작
         }
-        else 
+        else
         {
             isStoryActive = true;
             ReadStory(ID); // 스토리 ID로 대사 읽기
@@ -203,11 +217,11 @@ public class StoryManager : MonoBehaviour
             characterName.text = talkRead[currentTalkIndex].talk_character;
             talktext.text = talkRead[currentTalkIndex].talk;
             HowCharacterUI(talkRead[currentTalkIndex].talk_character);
-/*            if (talklist[currentTalkIndex].production == "stop")
-            {
-                currentTalkIndex++;
-                StoryStop();
-            }*/
+            /*            if (talklist[currentTalkIndex].production == "stop")
+                        {
+                            currentTalkIndex++;
+                            StoryStop();
+                        }*/
         }
 
     }
@@ -388,7 +402,7 @@ public class StoryManager : MonoBehaviour
                 LayoutRebuilder.ForceRebuildLayoutImmediate(popUptalkRect);
             }
         }
-    
+
     }
 
     public void PopUpStoryEnd()
@@ -430,15 +444,19 @@ public class StoryManager : MonoBehaviour
     {
         PopUptalkRead.Clear(); // 기존 내용 초기화
 
-        foreach (var talk in PopUptalklist)
+        foreach (var talkdata in PopUptalklist)
         {
-            if (talk.id == ID)
+            if (talkdata.id == ID)
             {
-                PopUptalkRead.Add(talk);
+                PopUptalkRead.Add(talkdata);
             }
         }
         ShowCurrentPopUpTalk();
-        popUptalkRect.anchoredPosition = UItrans();
+
+        // 빈 텍스트는 한곳에 치우기
+        string talk = PopUptalkRead[currentPopUpTalkIndex].talk;
+        popUptalkRect.anchoredPosition = string.IsNullOrEmpty(talk) ? new Vector2(1000, 0) : UItrans();
+
         PopUpStoryProductionLock(PopUptalkRead[currentPopUpTalkIndex].production);
     }
 
@@ -448,14 +466,15 @@ public class StoryManager : MonoBehaviour
         if (PopUptalkRead.Count > 0 && currentPopUpTalkIndex < PopUptalkRead.Count)
         {
             string talk = PopUptalkRead[currentPopUpTalkIndex].talk;
-            if (!string.IsNullOrEmpty(talk) && talk.Contains("/"))
+            if (talk.Contains("/"))
             {
                 popUptalktext.text = string.Join("\n", talk.Split('/'));
                 popUptalkNexttext.text = Nexttext(PopUptalkRead[currentPopUpTalkIndex].next);
             }
             else
             {
-                popUptalktext.text = talk;
+                popUptalktext.text = string.IsNullOrEmpty(talk) ? "" : talk;
+
             }
         }
         else
@@ -471,7 +490,7 @@ public class StoryManager : MonoBehaviour
         isNext = next == "skillCast" ? "Skill Cast" : isNext; // 스킬 시전이 필요한 경우
         isNext = next == "turn" ? "Pass the turn" : isNext; // 턴 넘기기가 필요한 경우
         isNext = next == "move" ? "Character Move" : isNext; // 이동이 필요한 경우
-        return isNext+">>>";
+        return isNext + ">>>";
     }
     public void NextPopUpStory()
     {
@@ -484,7 +503,7 @@ public class StoryManager : MonoBehaviour
                 ((Input.GetKeyDown(KeyCode.Return) && String.IsNullOrEmpty(PopUptalkRead[currentPopUpTalkIndex].next)) || isnext)
                 )
             {
-                if(isNumber) StartCoroutine(AutoTextAndNext(numberValue)); // 숫자 값이면 자동 텍스트 실행
+                if (isNumber) StartCoroutine(AutoTextAndNext(numberValue)); // 숫자 값이면 자동 텍스트 실행
                 else AdvancePopUpStory();
             }
         }
@@ -508,8 +527,11 @@ public class StoryManager : MonoBehaviour
             currentPopUpTalkIndex++;
             ShowCurrentPopUpTalk();
             LayoutRebuilder.ForceRebuildLayoutImmediate(popUptalkRect);
-            popUptalkRect.anchoredPosition = UItrans();
-            
+
+            // 빈 텍스트는 한곳에 치우기
+            string talk = PopUptalkRead[currentPopUpTalkIndex].talk;
+            popUptalkRect.anchoredPosition = string.IsNullOrEmpty(talk) ? new Vector2(1000,0) : UItrans();
+
             PopUpStoryProductionLock(PopUptalkRead[currentPopUpTalkIndex].production);
         }
         else
@@ -521,6 +543,9 @@ public class StoryManager : MonoBehaviour
 
             PopUpStoryProductionLock(new List<string>());
         }
+
+        //행동강제 정지 연출 종료
+        isOnSFDEnd = false;
     }
 
     /////////////////////////////////////////////////////////
@@ -724,6 +749,7 @@ public class StoryManager : MonoBehaviour
         isNext = next == "skillCast" ? ISskillCast() : isNext; // 스킬 시전이 필요한 경우
         isNext = next == "turn" ? ISturn() : isNext; // 턴 넘기기가 필요한 경우
         isNext = next == "move" ? ISmove() : isNext; // 이동이 필요한 경우
+        isNext = next == "stopEnd" ? isOnSFDEnd : isNext; // 상하 이동이 필요한 경우
         return isNext;
     }
 
@@ -732,7 +758,7 @@ public class StoryManager : MonoBehaviour
         return CharacterSelection.selectedCharacterIndex != -1; // 캐릭터가 선택되지 않은 상태
     }
 
-    public bool ISskillPick() 
+    public bool ISskillPick()
     {
         return skillManager.isSkillReady;
     }
@@ -754,5 +780,16 @@ public class StoryManager : MonoBehaviour
             Input.GetKeyDown(KeyCode.DownArrow) ||
             Input.GetKeyDown(KeyCode.LeftArrow) ||
             Input.GetKeyDown(KeyCode.RightArrow));
+    }
+
+    public bool ISmoveUpDown()
+    {
+        return IschPick() && (
+            Input.GetKeyDown(KeyCode.UpArrow) ||
+            Input.GetKeyDown(KeyCode.DownArrow));
+    }
+    public void OnSFDEnd()
+    {
+        isOnSFDEnd = true;
     }
 }

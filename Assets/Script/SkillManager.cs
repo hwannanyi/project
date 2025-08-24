@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 //using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using System;
+using UnityEngine.InputSystem.XR;
 
 public enum SkillTiming
 {
@@ -24,6 +25,7 @@ public class SkillManager : MonoBehaviour
     public StoryManager storyManager; // 스토리 매니저 인스턴스
     public CharacterSelection characterSelection; // 캐릭터 선택 스크립트
     public CharacterStats characterStats; // 캐릭터 스탯 매니저
+    public SFDController SFD; // SFD 컨트롤러
 
 
     ///선택한 스킬이 일시적으로 저장되는곳
@@ -108,6 +110,7 @@ public class SkillManager : MonoBehaviour
         turnManager = GetComponent<TurnManager>();
         storyManager = GetComponent<StoryManager>();
         characterStats = GetComponent<CharacterStats>();
+        SFD = GetComponent<SFDController>();
 
         validReactTargets = new List<GameObject>();
 
@@ -149,52 +152,59 @@ public class SkillManager : MonoBehaviour
                
         try 
         { 
-            if (storyManager.isStoryActive || storyManager.skillLock)
+            if (storyManager.isStoryActive || storyManager.skillLock && !SFD.isSFD)
             return; // 모든 입력 무시
         }
         catch
         {
             return; // StoryManager를 못불려와도 모든입력무시
         }
+
+        // 정지상태에서 사용해야할 스킬이 아니면 스킬 선택 취소(선택불가)
+        if (Input.GetKeyDown(KeyCode.Q) && SFD.isSFD && !SFD.skillQ)
+            return;
+        if (Input.GetKeyDown(KeyCode.W) && SFD.isSFD && !SFD.skillW)
+            return;
+        if (Input.GetKeyDown(KeyCode.E) && SFD.isSFD && !SFD.skillE)
+            return;
+        if (Input.GetKeyDown(KeyCode.R) && SFD.isSFD && !SFD.skillR)
+            return;
+
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            PrepareSkillCast(0, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 0)
-            if(!turnManager.isPlayerTurn) React_Instant_Cast(); // 대응단계에서 즉시 시전
-            else StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
+            if (turnManager.isPlayerTurn)
+            {
+                PrepareSkillCast(0, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 0)
+                StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            PrepareSkillCast(1, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 1)
-            if (!turnManager.isPlayerTurn) React_Instant_Cast(); // 대응단계에서 즉시 시전
-            else StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
+            if (turnManager.isPlayerTurn)
+            {
+                PrepareSkillCast(1, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 1)
+                StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.E))
         {
-            PrepareSkillCast(2, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 2)
-            if (!turnManager.isPlayerTurn) React_Instant_Cast(); // 대응단계에서 즉시 시전
-            else StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
+            if (!turnManager.isPlayerTurn)
+            {
+                PrepareSkillCast(2, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 2)
+                React_Instant_Cast(); // 대응단계에서 즉시 시전
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            PrepareSkillCast(3, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 3)
-            if (!turnManager.isPlayerTurn) React_Instant_Cast(); // 대응단계에서 즉시 시전
-            else StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
-        }
-
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            PrepareSkillCast(4, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 4)
-            if (!turnManager.isPlayerTurn) React_Instant_Cast(); // 대응단계에서 즉시 시전
-            else StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
-        }
-
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            characterSelection.MoveArrow.SetActive(true);
-            Skillcancel();
+            if (turnManager.isPlayerTurn)
+            {
+                PrepareSkillCast(3, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 3)
+                StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
+            }
         }
 
         // 마우스 클릭으로 타겟 유닛 선택
@@ -262,31 +272,45 @@ public class SkillManager : MonoBehaviour
     /// <param name="skillIndex">선택할 스킬의 인덱스 (예: 0 = Q, 1 = W)</param>
     public void PrepareSkillCast(int Index, int CharacterNumber)
     {
-        int skillIndex = turnManager.isPlayerTurn ? Index : Index + 5;
-
         if (CharacterNumber == -1)
         {
             Debug.LogWarning("캐릭터가 선택되지 않았습니다.");
             return;
         }
-        var character = CharacterStats.Instance.characterList[CharacterNumber];
+
+
+        Stats character = CharacterStats.Instance.characterList[CharacterNumber];
         if(character.characterPrefab.GetComponent<CharacterMovement>().isMoving == true)
             return; // 캐릭터가 이동 중이면 스킬 선택 불가
-        Skillcancel();
 
-
-        if (character.usingSkill[skillIndex].skillName == null)
+        if (character.usingSkill[Index].skillName == null)
         {
-            Debug.LogWarning($"선택된 캐릭터의 스킬이 비어있습니다. 인덱스: {skillIndex}");
+            Debug.LogWarning($"선택된 캐릭터의 스킬이 비어있습니다. 인덱스: {Index}");
             return;
         }
 
+        // 선택한 스킬
+        SkillData skill = character.usingSkill[Index];
 
+        // 이전에 선택된 스킬을 다시 고를시 스킬취소
+        if (selectedSkill == skill)
+        {
+            // 이동 커서 활성화
+            characterSelection.MoveArrow.SetActive(true);
+            // 선택한 스킬 초기화
+            Skillcancel();
+            // 리턴
+            return;
+        }
+        else
+        {
+            // 선택한 스킬 초기화
+            Skillcancel();
+        }
 
-        var skill = character.usingSkill[skillIndex];
         GameObject caster = CharacterStats.Instance.characters[CharacterNumber];
-        var stats = CharacterStats.Instance;
-        var characterStats = stats.GetStats(caster);
+        CharacterStats stats = CharacterStats.Instance;
+        Stats characterStats = stats.GetStats(caster);
         if (characterStats.available == false)
         {
             Debug.Log($"[SkillManager] 캐릭터가 스킬사용불가 상태 입니다: {skill.skillName}");

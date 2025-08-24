@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +8,17 @@ using static UnityEngine.GraphicsBuffer;
 
 public class SkillPreview : MonoBehaviour
 {
+
+    public static event Action<SFDType, float> OnSFDStart; // SFD 시작 이벤트
+    public static event Action OnSFDEnd; // SFD 시작 이벤트
+
+    public StoryManager storyManager;
+    public bool isSFD = false;
+
+
+    ////////////////////////////
+
+
     public GameObject PreviewTimer; // 스킬 프리뷰 타이머 오브젝트
 
 
@@ -32,7 +45,6 @@ public class SkillPreview : MonoBehaviour
     public bool CastLock = false;
 
     public AICastSkill aICastSkill;
-
 
     public void Initialize(
         SkillData skillData,
@@ -74,12 +86,29 @@ public class SkillPreview : MonoBehaviour
             rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f);
         }
 
+        if (skill.skillPreviewStop && skill.SFDtype != SFDType.none)
+        {
+            /////////////////////////////
+            storyManager = StoryManager.instance;
+            TurnManager turnManager = TurnManager.Instance;
+            StageDataManager stageDataManager = StageDataManager.Instance;
+            isSFD = false;
+
+            if (stageDataManager.CurrentStage.ID == "1" && storyManager.PopUptalkRead.Any(t => t.id == "2") && !isSFD)
+            {
+                Debug.Log("SFD 시작SFD 시작SFD 시작SFD 시작SFD 시작SFD 시작SFD 시작SFD 시작");    
+                isSFD = true;
+                OnSFDStart?.Invoke(skill.SFDtype, skill.SFDtime); // 이벤트 발생
+                StartCoroutine(skill.SFD(skill.SFDtype, skill.SFDtime));
+            }
+        }
+
         StartCoroutine(StretchObjectToTarget(skill, targetPosition));
     }
 
     public IEnumerator StretchObjectToTarget(SkillData skill,Vector3 targetPosition)
     {
-        PreviewTimer.transform.localScale = Vector3.zero; // 초기 스케일 설정
+        PreviewTimer.transform.localScale = new(0.1f, 0.1f, 0); // 초기 스케일 설정
         Vector3 start = transform.position;
         Vector3 end = targetPosition;
 
@@ -113,7 +142,7 @@ public class SkillPreview : MonoBehaviour
         {
             elapsed += Time.deltaTime;
             float t = Mathf.Clamp01(elapsed / skill.skillPreview);
-            PreviewTimer.transform.localScale = Vector3.Lerp(startScale, targetScale, t);
+            PreviewTimer.transform.localScale = Vector3.Lerp(startScale, new Vector3(1,1,0), t);
             yield return null; // 다음 프레임까지 대기
         }
         GameObject skillObject = Instantiate(skill.SkillEffectPrefab, aoeCenter, Quaternion.identity);
@@ -131,5 +160,14 @@ public class SkillPreview : MonoBehaviour
 
         Destroy(gameObject); // 스킬 프리뷰 오브젝트 제거
     }
-
+    public void OnDestroy()
+    {
+        if (skill.skillPreviewStop)
+        {
+            if (skill.SFDtype == SFDType.none)
+                return;
+            OnSFDEnd?.Invoke(); // 이벤트 발생
+            isSFD = false;
+        }
+    }
 }

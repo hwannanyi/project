@@ -27,13 +27,17 @@ public class CharacterMovement : MonoBehaviour
     public bool isShowMoveHighlights;
     public SpriteRenderer spriteRenderer;
 
+    //SFD
+    public SFDController SFD;
 
     void Start()
     {  
         targetPosition = transform.position;  // 시작 위치 설정
         startPosition = transform.position;   // 초기 위치 설정
         CharacterSelection.selectedCharacterIndex = -1;
-        
+        SFD = SFDController.Instance;
+
+
     }
     void Awake()
     {
@@ -177,7 +181,7 @@ public class CharacterMovement : MonoBehaviour
                 {
                     if (!StoryManager.instance.moveLock)
                     {
-                        if (Input.GetKey(KeyCode.UpArrow))
+                        if (Input.GetKey(KeyCode.UpArrow) )
                             chosenDir = Vector3.forward;
                         else if (Input.GetKey(KeyCode.DownArrow))
                             chosenDir = Vector3.back;
@@ -185,6 +189,29 @@ public class CharacterMovement : MonoBehaviour
                             chosenDir = Vector3.left;
                         else if (Input.GetKey(KeyCode.RightArrow))
                             chosenDir = Vector3.right;
+                    }
+                    else
+                    {
+                        if (Input.GetKey(KeyCode.UpArrow) && SFD.moveUp && SFD.isSFD)
+                        {
+                            chosenDir = Vector3.forward;
+                            SFD.isSFD = false;
+                        }
+                        else if (Input.GetKey(KeyCode.DownArrow) && SFD.moveDo)
+                        {
+                            chosenDir = Vector3.back;
+                            SFD.isSFD = false;
+                        }
+                        else if (Input.GetKey(KeyCode.LeftArrow) && SFD.moveL)
+                        {
+                            chosenDir = Vector3.left;
+                            SFD.isSFD = false;
+                        }
+                        else if (Input.GetKey(KeyCode.RightArrow) && SFD.moveR)
+                        {
+                            chosenDir = Vector3.right;
+                            SFD.isSFD = false;
+                        }
                     }
                 }
                 catch
@@ -388,7 +415,7 @@ public class CharacterMovement : MonoBehaviour
         Vector3 dir = mousePosition - transform.position;
         dir.y = 0f;
 
-        Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right };
+        Vector3[] directions = { Vector3.forward, Vector3.back, Vector3.left, Vector3.right};
         float maxDot = float.NegativeInfinity;
         Vector3 chosenDir = Vector3.zero;
         foreach (var d in directions)

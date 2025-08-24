@@ -112,31 +112,29 @@ public class StageDataManager : MonoBehaviour
 
 
 
-            if (timing == null && bartiming == null) return;
-            if (timing != null)
+            try
             {
-                // 말풍선 스토리 실행
-                storyManager.PopUpStoryReStart(timing.ID);
+                if (timing.isPopUp)
+                {
+                    // 말풍선 스토리 실행
+                    storyManager.PopUpStoryReStart(timing.ID);
+                }
             }
-            if (bartiming != null)
+            catch
             {
-                // 바 형태 스토리 실행
-                storyManager.StoryReStart(CurrentStage.ID);
             }
-            return;
+            try
+            {
+                if (!bartiming.isPopUp)
+                {
+                    // 말풍선 스토리 실행
+                    storyManager.StoryReStart(bartiming.ID);
+                }
+            }
+            catch
+            {
+            }
         }
-
-/*        // 살아있는 적이 있을 때 기존 조건대로 실행
-        var killTiming = timingList
-            .FirstOrDefault(t => aliveEnemyCount >= t.value && !storyManager.readpopupStoryID.Contains(t.ID));
-
-        if (killTiming != null && !string.IsNullOrEmpty(killTiming.ID))
-        {
-            if (killTiming.isPopUp)
-                PopUpOnStoryReStart.Invoke(killTiming.ID);
-            else
-                OnStoryReStop.Invoke(killTiming.ID);
-        }*/
     }
 
     public void CheckTurn()

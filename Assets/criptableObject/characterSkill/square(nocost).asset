@@ -155,3 +155,6 @@ MonoBehaviour:
   holdHit: []
   keyMashingHit: []
   skillPreview: 1
+  SFDtype: 4
+  SFDtime: 0.8
+  skillPreviewStop: 1

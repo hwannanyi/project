@@ -76,12 +76,10 @@ public class CharacterUIManager : MonoBehaviour
         int slotCount = Mathf.Min(skillSlotImages.Count, characterProfileSkillTextListUI.Count);
         Color normalColor = Color.white;
 
-        for (int i = 0; i < slotCount; i++)
+        for (int index = 0; index < slotCount; index++)
         {
-            // 플레이어 턴에 따라 인덱스 결정
-            int index = playerturn ? i : i + 5;
-            Image skillImage = skillSlotImages[i];
-            TextMeshProUGUI skillText = characterProfileSkillTextListUI[i];
+            Image skillImage = skillSlotImages[index];
+            TextMeshProUGUI skillText = characterProfileSkillTextListUI[index];
 
             // 해당 슬롯에 스킬이 존재하는 경우
             if (character.usingSkill.Count > index && character.usingSkill[index].skillName != null)
@@ -98,6 +96,18 @@ public class CharacterUIManager : MonoBehaviour
 
                 // 쿨타임이 있을 경우 쿨타임 숫자 표시, 아니면 빈 문자열
                 skillText.text = skill.colldownTime > 0 ? skill.colldownTime.ToString() : string.Empty;
+
+                if (!playerturn)
+                {
+                    skillImage.color = index == 2 ? nompdownColor : Color.gray;
+                }
+
+                if (index == 2 && playerturn)
+                {
+                    skillImage.color = Color.gray;
+                }
+
+                
             }
             else // 스킬이 없는 슬롯
             {

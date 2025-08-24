@@ -11380,6 +11380,7 @@ GameObject:
   - component: {fileID: 62703707}
   - component: {fileID: 62703709}
   - component: {fileID: 62703708}
+  - component: {fileID: 62703710}
   m_Layer: 0
   m_Name: BattelManager
   m_TagString: Untagged
@@ -11616,6 +11617,8 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -11796,6 +11799,8 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -11996,6 +12001,8 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12218,6 +12225,8 @@ MonoBehaviour:
     holdHit: []
     keyMashingHit: []
     skillPreview: 0
+    SFDtype: 0
+    SFDtime: 0
   selectedCaster: {fileID: 0}
   selectedCharacter:
     characterNumber: 0
@@ -12394,6 +12403,8 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12590,6 +12601,8 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12770,6 +12783,8 @@ MonoBehaviour:
     holdHit: []
     keyMashingHit: []
     skillPreview: 0
+    SFDtype: 0
+    SFDtime: 0
   debugStart: {x: 0, y: 0, z: 0}
   debugTarget: {x: 0, y: 0, z: 0}
   debugAOECenter: {x: 0, y: 0, z: 0}
@@ -13012,6 +13027,8 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -13151,6 +13168,24 @@ MonoBehaviour:
   turnLock: 0
   skillLock: 0
   timeLock: 0
+--- !u!114 &62703710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62703682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55511353fb4d024419e1e768ff3382bb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSFD: 0
+  sfdtype: 0
+  moveUp: 0
+  moveDo: 0
+  moveL: 0
+  moveR: 0
 --- !u!4 &72771762 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5236981650925629645, guid: 78e847a47d13ecc43b14da6abaea6898, type: 3}
@@ -19653,7 +19688,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 5.9479165
+  orthographic size: 5.9270835
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -31062,6 +31097,8 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -32094,6 +32131,8 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -33584,6 +33623,8 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -36373,6 +36414,8 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -49126,6 +49169,8 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -63697,7 +63742,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2138139591
 RectTransform:
   m_ObjectHideFlags: 0

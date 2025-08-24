@@ -53,7 +53,7 @@ public class DoubleList_SkillCondition
 public struct SkillQueue
 {
     public Skill skill; //스킬
-    [Header("스킬시전턴")]
+    [Header("몇턴부터 사용함?")]
     public int currentIndex; // 현재 인덱스
 
     [Header("스킬시전조건")]

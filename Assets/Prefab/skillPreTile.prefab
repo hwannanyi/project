@@ -27,7 +27,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.06424624, y: 0.06424624, z: 0.06424624}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2273953605623041967}
@@ -75,9 +75,9 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 4fd18ce22bbfb6e4dbe98cda9d8735da, type: 3}
-  m_Color: {r: 1, g: 0.07627119, b: 0, a: 0.23921569}
+  m_Color: {r: 0.4245283, g: 0.13787746, b: 0.11013707, a: 0.8352941}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -238,6 +238,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0182db07826226949bf7de80011ced2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  storyManager: {fileID: 0}
+  isSFD: 0
   PreviewTimer: {fileID: 2804358557091007009}
   skillPrefab: {fileID: 0}
   skillPrefab2: {fileID: 0}
@@ -379,6 +381,9 @@ MonoBehaviour:
     holdHit: []
     keyMashingHit: []
     skillPreview: 0
+    SFDtype: 0
+    SFDtime: 0
+    skillPreviewStop: 0
   targetPosition: {x: 0, y: 0, z: 0}
   casterObj: {fileID: 0}
   caster:
@@ -414,6 +419,7 @@ MonoBehaviour:
     available: 0
     movable: 0
     highlightEffect: {fileID: 0}
+    HPbar: {fileID: 0}
     isPatternEnd: 0
     gurd: 0
     lastHitType: 0
@@ -555,6 +561,9 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0

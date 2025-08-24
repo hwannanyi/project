@@ -14,12 +14,18 @@ public class AICastSkill : MonoBehaviour
 
     public bool SkillCasting = false; // 스킬 시전 중인지 여부'
     public bool skillCastLock = false; //다음 스킬 시전 잠금
-    //public bool AI = false; //AI
+
+    private Coroutine skillCoroutine = null;
+
 
     private void Awake()
     {
-        EventManager.Instance.TurnEnd += OnTurnEnd;
 
+    }
+    void OnEnable()
+    {
+        EventManager.Instance.TurnEnd -= OnTurnEnd; // 혹시 남아있을 구독 제거
+        EventManager.Instance.TurnEnd += OnTurnEnd;
     }
 
     void OnDestroy()
@@ -37,7 +43,13 @@ public class AICastSkill : MonoBehaviour
         Stats character = manager.GetStats(gameObject);
         if (character.aIPattern.skillQueueList == null)
             return;
-        StartCoroutine(OnTurnEndCoroutine());
+
+        if(skillCoroutine != null)
+        {
+            StopAllCoroutines();
+        }
+        skillCoroutine = StartCoroutine(OnTurnEndCoroutine());
+
         //character.isPatternEnd = true; // 패턴 종료 상태로 설정
     }
 
@@ -47,12 +59,6 @@ public class AICastSkill : MonoBehaviour
 
         // 이벤트 구독 해제
         EventManager.Instance.TurnEnd -= OnTurnEnd;
-    }
-
-    public void OnEnable()
-    {
-        // 이벤트 구독
-        EventManager.Instance.TurnEnd += OnTurnEnd;
     }
 
     private IEnumerator OnTurnEndCoroutine()
@@ -93,6 +99,9 @@ public class AICastSkill : MonoBehaviour
 
             var pattern = character.aIPattern.skillQueueList[patternCount][i];
             if (pattern.skill == null) continue;
+
+            // 일정턴이 되어야 스킬 발동
+            if(pattern.currentIndex >= turnManager.Turn) continue;
 
             var targetSkill = new SkillData(pattern.skill, character.name, false);
 
@@ -225,6 +234,7 @@ public class AICastSkill : MonoBehaviour
                     );
                 skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
                 skillManager.SkillAutoCast(character.team, skillCode);
+                Debug.Log("ai스킬 실행완료");
                 SkillCasting = true; // 스킬 시전 중으로 설정
             
         }

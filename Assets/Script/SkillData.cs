@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
@@ -95,6 +96,11 @@ public class SkillData
     public List<MashingEffect> keyMashingHit = new();
 
     public float skillPreview = 1f; // 범위 표시 시간 제한
+
+    //정지연출
+    public SFDType SFDtype = SFDType.none; // 정지해체 기준
+    public float SFDtime = 0f; // 정지 선딜 시간
+    public bool skillPreviewStop = false; // 스킬 시전 전에 정지
     public SkillData(Skill data, string characterName, bool isreactSkill, int depth = 0)
     {
         if (data == null)
@@ -263,6 +269,11 @@ public class SkillData
                 }
             }
         }
+
+        //정지연출
+        SFDtype = data.SFDtype;
+        SFDtime = data.SFDtime;
+        skillPreviewStop = data.skillPreviewStop;
     }
 
     public void StartCooldown()
@@ -279,6 +290,50 @@ public class SkillData
     {
         return colldownTime <= 0;
     }
+
+    //정지연출
+    
+    public IEnumerator SFD(SFDType sfdType, float delay) //Suspended for directing
+    {
+        Debug.Log("SFD Start");
+
+        if(SFDType.none == sfdType)
+            yield break;
+
+        // delay만큼 대기
+        if (delay > 0f)
+            yield return new WaitForSeconds(delay);
+
+        // Dictionary를 while문 안에서 new로 생성해야 합니다.
+        Dictionary<SFDType, bool> sfdDurations = new()
+        {
+            { SFDType.moveUp, false },
+            { SFDType.moveDo, false },
+            { SFDType.skillE, false },
+            { SFDType.moveUpDo, false}
+        };
+        SFDController.Instance.isSFD = true;
+        Time.timeScale = 0f; // 게임 시간 정지
+        while (true)
+        {
+            // 원하는 조건에 따라 반복문을 종료하세요.
+            // 예시: 해당 키가 눌렸을 때 종료
+            if (sfdDurations.ContainsKey(sfdType) && sfdDurations[sfdType])
+            {
+                break;
+            }
+            yield return null;
+            // 매 프레임마다 키 입력을 갱신
+            sfdDurations[SFDType.moveUp] = Input.GetKeyDown(KeyCode.UpArrow);
+            sfdDurations[SFDType.moveDo] = Input.GetKeyDown(KeyCode.DownArrow);
+            sfdDurations[SFDType.skillE] = Input.GetKeyDown(KeyCode.E);
+            sfdDurations[SFDType.moveUpDo] = Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.DownArrow);
+        }
+        Time.timeScale = 1f; // 게임 시간 재개
+        SFDController.Instance.isSFD = false;
+    }
+    
+
 
     public SkillData GetSkillDataByName(string name, Stats character)
     {

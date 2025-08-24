@@ -16,6 +16,7 @@ public class Characterdeath : MonoBehaviour
         {
             stats.isdie = true;
             stats.isPatternEnd = true; // 패턴 종료 상태로 설정
+            StageDataManager.Instance.CheckKill();
             Die();
         }
     }

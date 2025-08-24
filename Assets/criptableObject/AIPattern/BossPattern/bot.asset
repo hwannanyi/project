@@ -73,7 +73,7 @@ MonoBehaviour:
       index: 1
       target: 0
     - skill: {fileID: 11400000, guid: 01f03fc2daa06e64bad2c219f8a6dcd6, type: 2}
-      currentIndex: 0
+      currentIndex: 4
       condition:
         isactive: 0
         target: 0
@@ -92,7 +92,7 @@ MonoBehaviour:
       index: 1
       target: 0
     - skill: {fileID: 11400000, guid: 8da697a8ec9af084d8ec2e4186dcccb9, type: 2}
-      currentIndex: 0
+      currentIndex: 4
       condition:
         isactive: 0
         target: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
       index: 1
       target: 0
     - skill: {fileID: 11400000, guid: 01f03fc2daa06e64bad2c219f8a6dcd6, type: 2}
-      currentIndex: 0
+      currentIndex: 4
       condition:
         isactive: 0
         target: 0
@@ -130,7 +130,7 @@ MonoBehaviour:
       index: 1
       target: 0
     - skill: {fileID: 11400000, guid: 8da697a8ec9af084d8ec2e4186dcccb9, type: 2}
-      currentIndex: 0
+      currentIndex: 4
       condition:
         isactive: 0
         target: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
       index: 1
       target: 0
     - skill: {fileID: 11400000, guid: 01f03fc2daa06e64bad2c219f8a6dcd6, type: 2}
-      currentIndex: 0
+      currentIndex: 4
       condition:
         isactive: 0
         target: 0
@@ -168,7 +168,7 @@ MonoBehaviour:
       index: 1
       target: 0
     - skill: {fileID: 11400000, guid: 8da697a8ec9af084d8ec2e4186dcccb9, type: 2}
-      currentIndex: 0
+      currentIndex: 4
       condition:
         isactive: 0
         target: 0
@@ -198,6 +198,25 @@ MonoBehaviour:
         value: 0
       delay: 0
       isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 2
+      targetTypeY: 2
+      RotationType: 0
+      Designation: 3
+      reverse_order: 0
+      index: 1
+      target: 0
+    - skill: {fileID: 11400000, guid: dfa00a7ae5001754fbd63660a114a15a, type: 2}
+      currentIndex: 6
+      condition:
+        isactive: 0
+        target: 0
+        type: 0
+        comparison: 0
+        value: 0
+      delay: 0
+      isCastingNotCast: 0
       coordinate: {x: 3, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
@@ -208,7 +227,7 @@ MonoBehaviour:
       index: 1
       target: 0
     - skill: {fileID: 11400000, guid: dfa00a7ae5001754fbd63660a114a15a, type: 2}
-      currentIndex: 0
+      currentIndex: 6
       condition:
         isactive: 0
         target: 0
@@ -227,7 +246,7 @@ MonoBehaviour:
       index: 1
       target: 0
     - skill: {fileID: 11400000, guid: dfa00a7ae5001754fbd63660a114a15a, type: 2}
-      currentIndex: 0
+      currentIndex: 6
       condition:
         isactive: 0
         target: 0
@@ -246,7 +265,7 @@ MonoBehaviour:
       index: 1
       target: 0
     - skill: {fileID: 11400000, guid: dfa00a7ae5001754fbd63660a114a15a, type: 2}
-      currentIndex: 0
+      currentIndex: 6
       condition:
         isactive: 0
         target: 0
