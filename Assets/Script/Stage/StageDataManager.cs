@@ -1,8 +1,9 @@
-using UnityEngine;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.SceneManagement;
 
 public class StageDataManager : MonoBehaviour
 {
@@ -180,4 +181,8 @@ public class StageDataManager : MonoBehaviour
     }
 
 
+    public void GoStage_Selection()
+    {
+        SceneManager.LoadScene("Stage_Selection"); // 게임 씬으로 전환
+    }
 }

@@ -180,7 +180,7 @@ public class SkillEffectProjectile : MonoBehaviour
 
     public void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("MapBorder"))
+        if ((!skill.penetration || skill.skillTypes.Contains(skillType.movement)) && other.CompareTag("MapBorder"))
         {
             Destroy(gameObject);
         }

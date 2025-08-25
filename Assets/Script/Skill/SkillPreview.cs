@@ -46,6 +46,7 @@ public class SkillPreview : MonoBehaviour
 
     public AICastSkill aICastSkill;
 
+    public Coroutine skillCoroutine = null;
     public void Initialize(
         SkillData skillData,
         Vector3 targetPos,
@@ -103,9 +104,69 @@ public class SkillPreview : MonoBehaviour
             }
         }
 
-        StartCoroutine(StretchObjectToTarget(skill, targetPosition));
+        skillCoroutine = !skill.projectile ? StartCoroutine(StretchObjectToTarget(skill, targetPosition))
+            :
+            StartCoroutine(StretchObjectToTargetSlide(skill, targetPosition));
     }
+    public IEnumerator StretchObjectToTargetSlide(SkillData skill, Vector3 targetPosition)
+    {
+        PreviewTimer.transform.localScale = new(1, 0, 0); // 초기 스케일 설정
+        PreviewTimer.transform.position = new(0, -0.5f, 0); // 초기 스케일 설정
+        Vector3 start = transform.position;
+        Vector3 end = targetPosition;
 
+        // 1. 두 점의 중간 위치로 이동
+        Vector3 center = (start + end) * 0.5f;
+        transform.position = skill.startSkillPosition == StartSkillPosition.mouse ? targetPosition : center;
+
+        // 2. 거리 계산 (y축을 따라 늘릴 길이)
+        float distance = Vector3.Distance(start, end);
+
+        // 3. 오브젝트의 크기(Scale) 조정 (y축을 길이로)
+        Vector3 newScale = transform.localScale;
+        newScale.x = skill.startSkillPosition == StartSkillPosition.mouse ?
+            skill.Xaoe : newScale.x + Mathf.FloorToInt(skill.Xaoe * 0.5f) * 2;
+
+        newScale.y = skill.startSkillPosition == StartSkillPosition.mouse ?
+            skill.Yaoe : distance + Mathf.FloorToInt(skill.Yaoe * 0.5f) * 2 + 1;
+        transform.localScale = newScale;
+
+        // 4. y축 회전각 계산 (수평 방향만)
+        Vector3 dir = end - start;
+        float yAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
+
+        // 5. x축 90도 고정, y축만 회전
+        transform.rotation = Quaternion.Euler(90f, yAngle, 0f);
+
+        float elapsed = 0f;
+        Vector3 startScale = PreviewTimer.transform.localScale;
+        float targetY = 1f; // 목표 y 스케일
+        while (elapsed < skill.skillPreview)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / skill.skillPreview);
+            float newY = Mathf.Lerp(startScale.y, targetY, t);
+            float newPosY = Mathf.Lerp(-0.5f, 0, t);
+            PreviewTimer.transform.localScale = new Vector3(startScale.x, newY, startScale.z);
+            PreviewTimer.transform.localPosition = new Vector3(0, newPosY, 0);
+
+            yield return null; // 다음 프레임까지 대기
+        }
+        GameObject skillObject = Instantiate(skill.SkillEffectPrefab, aoeCenter, Quaternion.identity);
+
+        if (skill.projectile)
+        {
+            if (skillObject.TryGetComponent<SkillEffectProjectile>(out var effect))
+                effect.Initialize(skill, targetPosition, casterObj, caster, targetObj);
+        }
+        else
+        {
+            if (skillObject.TryGetComponent<SkillEffectHitscan>(out var effect))
+                effect.Initialize(skill, targetPosition, casterObj, caster, targetObj);
+        }
+
+        Destroy(gameObject); // 스킬 프리뷰 오브젝트 제거
+    }
     public IEnumerator StretchObjectToTarget(SkillData skill,Vector3 targetPosition)
     {
         PreviewTimer.transform.localScale = new(0.1f, 0.1f, 0); // 초기 스케일 설정

@@ -1,0 +1,160 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
+  m_Name: "1\uC2A4\uD14C\uC774\uC9C01\uD328\uD134\uD0C4\uB9C9"
+  m_EditorClassIdentifier: 
+  skillName: "1\uC2A4\uD14C\uC774\uC9C01\uD328\uD134\uD0C4\uB9C9"
+  skillIcon: {fileID: 21300000, guid: 3c3ec127f563e7145a5c394a39286a1e, type: 3}
+  SkillEffectIllustration: {fileID: 21300000, guid: 3c3ec127f563e7145a5c394a39286a1e, type: 3}
+  SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
+  passive: 0
+  skillTypes: 00000000
+  tooltip: 
+  AdditionalSkills:
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    conditionHit:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 
+    skillName: 
+    targetrule:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+      target: 0
+  StartAddSkills:
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    conditionHit:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 
+    skillName: 
+    targetrule:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 0
+      targetTypeY: 0
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+      target: 0
+  EndAddSkills:
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    conditionHit:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 
+    skillName: 
+    targetrule:
+      isCastingNotCast: 0
+      coordinate: {x: 0, y: 0, z: 0}
+      Rotation: {x: 0, y: 0, z: 0}
+      targetTypeX: 3
+      targetTypeY: 3
+      RotationType: 0
+      Designation: 0
+      reverse_order: 0
+      index: 0
+      target: 0
+  summonCharacter: {fileID: 0}
+  actionsNumber: 1
+  skillNumber: 1
+  skillCumulative: 1
+  cost:
+    keys: 00000000
+    values: 00000000
+  startSkillPosition: 2
+  XstartSkillPosition: 0
+  YstartSkillPosition: 0
+  projectile: 1
+  targeting: 0
+  penetration: 0
+  tracking: 0
+  RangeAdjustment: 0
+  unlimitedRota: 0
+  projectileType: 0
+  skillTarget: 02000000
+  projectileSpeed: 5
+  hitscantime: 1
+  afterdelay: 0
+  beforedelay: 0
+  range: 7
+  aoetype: 1
+  fourRotation: 0
+  effectRotation: 0
+  Xaoe: 0.7
+  Yaoe: 0.7
+  specialAoe: []
+  aoecenter: 0
+  cooldown: 0
+  colldownSkill: 0
+  basicValue: 2
+  increase:
+    keys: 01000000
+    values:
+    - 0.1
+  damageHit: 1
+  hitSpeed: 0
+  hitEffects:
+  - target: 2
+    effects:
+      DamageEffect:
+      - skillhitEffect: 1
+        baseValue: 2
+        increase:
+          keys: 01000000
+          values:
+          - 0.1
+        dot: 0
+      DebuffEffects: []
+      BuffEffects: []
+      CCEffects: []
+  react: 2
+  reactTime: 0.5
+  gurd:
+    time: 0
+  parryingHit: 0
+  holdHit: []
+  keyMashingHit: []
+  skillPreview: 0.2
+  SFDtype: 0
+  SFDtime: 0
+  skillPreviewStop: 0

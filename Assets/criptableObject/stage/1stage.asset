@@ -15,7 +15,7 @@ MonoBehaviour:
   stageName: 1
   stageDescription: "\uCCAB\uBC88\uC9F8 \uC2A4\uD14C\uC774\uC9C0 \uC785\uB2C8\uB2E4"
   stageImage: {fileID: 21300000, guid: 1a6bc54d6e9489b44a4b2a1fd9711151, type: 3}
-  ID: 1
+  ID: 2
   storyTiming: []
   stagenumber: 1
   participants: 2
@@ -23,9 +23,7 @@ MonoBehaviour:
   - {x: -1, y: 1}
   - {x: -1, y: -1}
   enemyDatalist:
-  - enemyName: bot(1)
-    position: {x: 5, y: 0}
-  - enemyName: bot(2)
-    position: {x: 0, y: 3}
+  - enemyName: stage1
+    position: {x: 0, y: 0}
   clear: 0
   feil: 0

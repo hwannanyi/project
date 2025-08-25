@@ -129,6 +129,7 @@ public class Skill : ScriptableObject
     public bool penetration;     // 투사체의 관통 여부
     public bool tracking;       // 경로에 스킬 생성
     public bool RangeAdjustment;// 임의로 거리 조절 가능한
+    public bool unlimitedRota;         // 자유 회전 가능한
     public projectileType projectileType;
 
     [Header("스킬의 대상")]

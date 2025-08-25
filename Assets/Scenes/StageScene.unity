@@ -11581,6 +11581,7 @@ MonoBehaviour:
       penetration: 0
       tracking: 0
       RangeAdjustment: 0
+      unlimitedRota: 0
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
@@ -11619,6 +11620,7 @@ MonoBehaviour:
       skillPreview: 0
       SFDtype: 0
       SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -11763,6 +11765,7 @@ MonoBehaviour:
       penetration: 0
       tracking: 0
       RangeAdjustment: 0
+      unlimitedRota: 0
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
@@ -11801,6 +11804,7 @@ MonoBehaviour:
       skillPreview: 0
       SFDtype: 0
       SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -11965,6 +11969,7 @@ MonoBehaviour:
       penetration: 0
       tracking: 0
       RangeAdjustment: 0
+      unlimitedRota: 0
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
@@ -12003,6 +12008,7 @@ MonoBehaviour:
       skillPreview: 0
       SFDtype: 0
       SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12087,6 +12093,7 @@ MonoBehaviour:
   storyManager: {fileID: 0}
   characterSelection: {fileID: 0}
   characterStats: {fileID: 0}
+  SFD: {fileID: 0}
   selectedSkill:
     useCharacterName: 
     skillName: 
@@ -12189,6 +12196,7 @@ MonoBehaviour:
     penetration: 0
     tracking: 0
     RangeAdjustment: 0
+    unlimitedRota: 0
     projectileType: 0
     skillTarget: 
     projectileSpeed: 0
@@ -12227,6 +12235,7 @@ MonoBehaviour:
     skillPreview: 0
     SFDtype: 0
     SFDtime: 0
+    skillPreviewStop: 0
   selectedCaster: {fileID: 0}
   selectedCharacter:
     characterNumber: 0
@@ -12367,6 +12376,7 @@ MonoBehaviour:
       penetration: 0
       tracking: 0
       RangeAdjustment: 0
+      unlimitedRota: 0
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
@@ -12405,6 +12415,7 @@ MonoBehaviour:
       skillPreview: 0
       SFDtype: 0
       SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12565,6 +12576,7 @@ MonoBehaviour:
       penetration: 0
       tracking: 0
       RangeAdjustment: 0
+      unlimitedRota: 0
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
@@ -12603,6 +12615,7 @@ MonoBehaviour:
       skillPreview: 0
       SFDtype: 0
       SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12747,6 +12760,7 @@ MonoBehaviour:
     penetration: 0
     tracking: 0
     RangeAdjustment: 0
+    unlimitedRota: 0
     projectileType: 0
     skillTarget: 
     projectileSpeed: 0
@@ -12785,6 +12799,7 @@ MonoBehaviour:
     skillPreview: 0
     SFDtype: 0
     SFDtime: 0
+    skillPreviewStop: 0
   debugStart: {x: 0, y: 0, z: 0}
   debugTarget: {x: 0, y: 0, z: 0}
   debugAOECenter: {x: 0, y: 0, z: 0}
@@ -12991,6 +13006,7 @@ MonoBehaviour:
       penetration: 0
       tracking: 0
       RangeAdjustment: 0
+      unlimitedRota: 0
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
@@ -13029,6 +13045,7 @@ MonoBehaviour:
       skillPreview: 0
       SFDtype: 0
       SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -13168,6 +13185,7 @@ MonoBehaviour:
   turnLock: 0
   skillLock: 0
   timeLock: 0
+  isOnSFDEnd: 0
 --- !u!114 &62703710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13186,6 +13204,10 @@ MonoBehaviour:
   moveDo: 0
   moveL: 0
   moveR: 0
+  skillQ: 0
+  skillW: 0
+  skillE: 0
+  skillR: 0
 --- !u!4 &72771762 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5236981650925629645, guid: 78e847a47d13ecc43b14da6abaea6898, type: 3}
@@ -19688,7 +19710,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 5.9270835
+  orthographic size: 6
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -31061,6 +31083,7 @@ MonoBehaviour:
       penetration: 0
       tracking: 0
       RangeAdjustment: 0
+      unlimitedRota: 0
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
@@ -31099,6 +31122,7 @@ MonoBehaviour:
       skillPreview: 0
       SFDtype: 0
       SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -32095,6 +32119,7 @@ MonoBehaviour:
       penetration: 0
       tracking: 0
       RangeAdjustment: 0
+      unlimitedRota: 0
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
@@ -32133,6 +32158,7 @@ MonoBehaviour:
       skillPreview: 0
       SFDtype: 0
       SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -33587,6 +33613,7 @@ MonoBehaviour:
       penetration: 0
       tracking: 0
       RangeAdjustment: 0
+      unlimitedRota: 0
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
@@ -33625,6 +33652,7 @@ MonoBehaviour:
       skillPreview: 0
       SFDtype: 0
       SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -36378,6 +36406,7 @@ MonoBehaviour:
       penetration: 0
       tracking: 0
       RangeAdjustment: 0
+      unlimitedRota: 0
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
@@ -36416,6 +36445,7 @@ MonoBehaviour:
       skillPreview: 0
       SFDtype: 0
       SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -39872,6 +39902,7 @@ MonoBehaviour:
   turnLock: 0
   skillLock: 0
   timeLock: 0
+  isOnSFDEnd: 0
 --- !u!1001 &1375955273
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41594,9 +41625,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 62703706}
-        m_TargetAssemblyTypeName: StageClear, Assembly-CSharp
-        m_MethodName: CheckStageClear
+      - m_Target: {fileID: 62703707}
+        m_TargetAssemblyTypeName: StageDataManager, Assembly-CSharp
+        m_MethodName: GoStage_Selection
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -48326,6 +48357,7 @@ MonoBehaviour:
   highlightPrefab: {fileID: 0}
   isShowMoveHighlights: 0
   spriteRenderer: {fileID: 0}
+  SFD: {fileID: 0}
 --- !u!212 &1672660646
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -49133,6 +49165,7 @@ MonoBehaviour:
       penetration: 0
       tracking: 0
       RangeAdjustment: 0
+      unlimitedRota: 0
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
@@ -49171,6 +49204,7 @@ MonoBehaviour:
       skillPreview: 0
       SFDtype: 0
       SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -55108,6 +55142,7 @@ MonoBehaviour:
   highlightPrefab: {fileID: 0}
   isShowMoveHighlights: 0
   spriteRenderer: {fileID: 0}
+  SFD: {fileID: 0}
 --- !u!212 &1930392186
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -78,7 +78,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 5
+  m_SortingOrder: 6
   m_Sprite: {fileID: 21300000, guid: 0ed4d60afa2f43d4485494f2a4f96fff, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -277,6 +277,7 @@ MonoBehaviour:
   highlightPrefab: {fileID: 7146173340283780072, guid: 2dee0d61832042e46b2ee6a471fa15fc, type: 3}
   isShowMoveHighlights: 0
   spriteRenderer: {fileID: 8694669764875988480}
+  SFD: {fileID: 0}
 --- !u!114 &4141925944930643250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,6 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterMovement: {fileID: 0}
+  characterdeath: {fileID: 0}
 --- !u!114 &3680048953721835883
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -432,6 +434,7 @@ MonoBehaviour:
     available: 0
     movable: 0
     highlightEffect: {fileID: 0}
+    HPbar: {fileID: 0}
     isPatternEnd: 0
     gurd: 0
     lastHitType: 0
@@ -537,6 +540,7 @@ MonoBehaviour:
       penetration: 0
       tracking: 0
       RangeAdjustment: 0
+      unlimitedRota: 0
       projectileType: 0
       skillTarget: 
       projectileSpeed: 0
@@ -569,11 +573,18 @@ MonoBehaviour:
       skillCastCode: 0
       gurd:
         time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+      skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
+      skillPreviewStop: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
     holdGauge: []
-    keyMashing: 
+    keyMashing: []
 --- !u!1 &8885726257730448549
 GameObject:
   m_ObjectHideFlags: 0

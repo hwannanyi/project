@@ -767,6 +767,7 @@ public class SkillManager : MonoBehaviour
             }
         }
 
+
         // 여기서 타겟팅 스킬인 경우, 타겟 유닛의 위치를 targetPosition으로 강제 지정
         Vector3 targetPosition;
         if (skill.targeting && selectedTargetUnit != null)
@@ -782,7 +783,10 @@ public class SkillManager : MonoBehaviour
 
             float mousePlayerRange = dx >= dy ? dx : dy;
             float range = skill.RangeAdjustment ? mousePlayerRange : skill.range;
-            targetPosition = skill.projectile ? startPosition + closestDirection * range : startPosition;
+
+            targetPosition = skill.projectile ?
+                skill.unlimitedRota ? startPosition + direction * range : startPosition + closestDirection * range 
+                : startPosition;
             targetPosition.y = 0f;
         }
 

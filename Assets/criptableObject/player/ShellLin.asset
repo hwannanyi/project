@@ -37,7 +37,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
   - {fileID: 11400000, guid: e1cc30e36368cc94380039d364fcfc7f, type: 2}
   passiveSkill: []
-  characterillustration: {fileID: 21300000, guid: aa83eac909e68b9449d576d97a65f5e9, type: 3}
+  characterillustration: {fileID: 1321304671, guid: cfdd6bc0cf2fde74489ab8a1aad0a64a, type: 3}
   characterProfileillustration: {fileID: 21300000, guid: f29bc33c520411f4187111604d3ea327, type: 3}
   characterPrefab: {fileID: 4344314745404087944, guid: 33c9802a4c0ec3c49b44d7ef4cc4c6e7, type: 3}
   skillQueue: {fileID: 0}
