@@ -179,29 +179,37 @@ public class TurnManager : MonoBehaviour
         if (isPlayerTurn)
         {
             // 공격턴일 때는 모든 캐릭터 복귀
-            characterStats.PlayerCharacter1.characterPrefab.SetActive(true);
-            characterStats.PlayerCharacter2.characterPrefab.SetActive(true);
+            if (characterStats.PlayerCharacter1.characterPrefab)
+                characterStats.PlayerCharacter1.characterPrefab.SetActive(true);
+            if (characterStats.PlayerCharacter2.characterPrefab)
+                characterStats.PlayerCharacter2.characterPrefab.SetActive(true);
 
             // HP바 활성화
-            characterStats.PlayerCharacter1.HPbar.gameObject.SetActive(true);
-            characterStats.PlayerCharacter2.HPbar.gameObject.SetActive(true);
+            if (characterStats.PlayerCharacter1.HPbar.gameObject)
+                characterStats.PlayerCharacter1.HPbar.gameObject.SetActive(true);
+            if (characterStats.PlayerCharacter2.HPbar.gameObject)
+                characterStats.PlayerCharacter2.HPbar.gameObject.SetActive(true);
 
         }
         else
         {
-            GameObject chrtObj= skillmanager.defendingCharacter.characterPrefab;
+            GameObject chrtObj = skillmanager.defendingCharacter?.characterPrefab;
             Stats chrt1 = characterStats.PlayerCharacter1;
             Stats chrt2 = characterStats.PlayerCharacter2;
 
             // 수비턴일 때는 선택된 캐릭터만 활성화
 
-            chrt1.characterPrefab.SetActive(!chrt1.isdie && chrt1.characterPrefab == chrtObj);
-            chrt2.characterPrefab.SetActive(!chrt2.isdie && chrt2.characterPrefab == chrtObj);
+            if (characterStats.PlayerCharacter1.characterPrefab)
+                chrt1.characterPrefab.SetActive(!chrt1.isdie && chrt1.characterPrefab == chrtObj);
+            if (characterStats.PlayerCharacter2.characterPrefab)
+                chrt2.characterPrefab.SetActive(!chrt2.isdie && chrt2.characterPrefab == chrtObj);
 
             // 선택된 캐릭만 HP바 활성화
-            characterStats.PlayerCharacter1.HPbar.gameObject.SetActive(characterStats.PlayerCharacter1.characterPrefab == chrtObj);
+            if (characterStats.PlayerCharacter1.HPbar.gameObject)
+                characterStats.PlayerCharacter1.HPbar.gameObject.SetActive(characterStats.PlayerCharacter1.characterPrefab == chrtObj);
 
-            characterStats.PlayerCharacter2.HPbar.gameObject.SetActive(characterStats.PlayerCharacter2.characterPrefab == chrtObj);
+            if (characterStats.PlayerCharacter2.HPbar.gameObject)
+                characterStats.PlayerCharacter2.HPbar.gameObject.SetActive(characterStats.PlayerCharacter2.characterPrefab == chrtObj);
         }
         
     }
@@ -211,7 +219,8 @@ public class TurnManager : MonoBehaviour
     {
         if (isPlayerTurn &&
             !(skillmanager.defendingCharacter == characterStats.PlayerCharacter1 ||
-            skillmanager.defendingCharacter == characterStats.PlayerCharacter2))
+            skillmanager.defendingCharacter == characterStats.PlayerCharacter2) &&
+            skillmanager.defendingCharacter.isdie)
             return; //공격턴에서 선택된 캐릭이 없으면 턴 전환 불가
         
 

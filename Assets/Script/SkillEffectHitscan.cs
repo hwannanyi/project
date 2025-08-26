@@ -31,22 +31,29 @@ public class SkillEffectHitscan : MonoBehaviour
 
     public SpriteRenderer spriteRenderer; // Inspector에서 할당하거나 GetComponent로 가져오기
 
+    //스킬 시점 잠금
+    public bool CastLock = false;
+    public AICastSkill aICastSkill;
+
     public SkillTiming skillTiming;
     private void Awake()
     {
 
     }
 
-    public void Initialize(SkillData skill, Vector3 targetPos, GameObject charcter,
+    public void Initialize(SkillData skill, Vector3 targetPos, GameObject casterObject,
         Stats character, GameObject target = null)
     {
         skillData = skill;
         range = skill.range;
         rotatingVisual.rotation = Quaternion.Euler(90f, 0, 0f);
         hasExitedPhase = false;
-        charcterUnit = charcter;
+        charcterUnit = casterObject;
         casterStats = character;
         colliderMerger = GetComponent<ColliderMerger>();
+
+        aICastSkill = casterObject.GetComponent<AICastSkill>();
+        CastLock = aICastSkill.skillCastLock;
 
         // 외형 변경
         if (spriteRenderer != null && skill.SkillEffectIllustration != null)
@@ -114,7 +121,7 @@ public class SkillEffectHitscan : MonoBehaviour
         SkillHitOn hit = GetComponent<SkillHitOn>();
         if (hit != null)
         {
-            hit.Initialize(skill, charcter, character); // 또는 실제 캐릭터 GameObject
+            hit.Initialize(skill, casterObject, character); // 또는 실제 캐릭터 GameObject
         }
 
         // 스킬 데이터 전송
@@ -124,7 +131,7 @@ public class SkillEffectHitscan : MonoBehaviour
             castingSkillData.SetSkillData(
                 skill,
                 targetPos,
-                charcter,
+                casterObject,
                 character,
                 target);
         }
@@ -196,7 +203,8 @@ public class SkillEffectHitscan : MonoBehaviour
 
                         SumCharacterObject.name = summonCharacter.name;*/
         }
-
+        // AI 스킬 시전 잠금 해제
+        aICastSkill.skillCastLock = !CastLock && aICastSkill.skillCastLock;
         if (!hasExitedPhase && !skillData.isreactSkill)
         {
             //TurnManager.Instance.ExitReactPhase(); //미사용, 스킬종료로 인해 대응단계가 종료되지 않도록 변경

@@ -11,7 +11,7 @@ public class StartScene : MonoBehaviour
     float black_Curtain_value = 1f; // 커튼 알파값(투명도)
     public float black_Curtain_speed = 1f; // 커튼 전환 속도
 
-    public void Awake()
+    public void Start()
     {
         black_Curtain.SetActive(true); // 시작 시 커튼 활성화
         black_Curtain_image.color = new Color(0, 0, 0, black_Curtain_value); // 완전히 어둡게 설정

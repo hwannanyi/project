@@ -251,7 +251,6 @@ public class CharacterSelection : MonoBehaviour
         }
         catch
         {
-            MoveArrow.SetActive(false);
 
         }
     }

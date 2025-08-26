@@ -183,6 +183,7 @@ public class StageDataManager : MonoBehaviour
 
     public void GoStage_Selection()
     {
+        Time.timeScale = 1f; // 게임 시간 재개
         SceneManager.LoadScene("Stage_Selection"); // 게임 씬으로 전환
     }
 }
