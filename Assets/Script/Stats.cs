@@ -16,12 +16,12 @@ public class Stats
     public int maxhp;             // 최대체력
     public int hp;                // 체력
     public int shields;           // 보호막
-    public int maxmp;             // 최대코스트
-    public int mp;                // 코스트
+    public int rage;              // 코스트
+    public int risk;              // 리스크
     public int atk;               // 공격력
     public int def;               // 방어력
-    public float damageReduction; // 받피감
-    public float damageIncreased; //주피증
+    public int damage_Defense; // 받피감
+    public int damage_Plus; //주피증
 
     public int speed;             // 속도
     public int movespeed;         // 이속
@@ -96,12 +96,13 @@ public class Stats
         maxhp = data.maxhp;
         hp = data.maxhp;
         shields = 0;
-        maxmp = data.maxmp;
-        mp = data.maxmp;
+        rage = data.rage;
+        risk = 0;
+
         atk = data.atk;
         def = data.def;
-        damageReduction = 1f;
-        damageIncreased = 1f;
+        damage_Defense = 0;
+        damage_Plus = 0;
 
         speed = data.speed;
         movespeed = data.movespeed;
@@ -175,8 +176,11 @@ public class Stats
         //조건부분
 
         lastHitSkillData = null;
+    }
 
-
+    public void Rage_Overheating()
+    {
+        damage_Defense = risk;
     }
 
     // 패링 코루틴

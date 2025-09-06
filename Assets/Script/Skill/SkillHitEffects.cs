@@ -569,7 +569,7 @@ public class SkillHitEffects : MonoBehaviour
     /// <returns></returns>
     public int DamageFormula(int value, Stats target, Stats caster, SkillData Skill)
     {
-        int finalDamage = Mathf.RoundToInt((value*(1 - (target.damageReduction - caster.damageIncreased)) - target.def));
+        int finalDamage = Mathf.RoundToInt(((value - target.def) - target.damage_Defense + caster.damage_Plus) + target.risk);
         if (finalDamage <= 0)
         {
             finalDamage = 1; // 0이하의 데미지는 1로 처리

@@ -261,7 +261,7 @@ public class CharacterMovement : MonoBehaviour
             spriteRenderer.flipX = true;
 
         Vector3 velocity = Vector3.zero; // SmoothDamp에서 사용할 속도 참조 변수
-        float smoothTime = 0.05f; // 감속에 걸리는 시간 (값이 작을수록 더 빠르게 멈춤)
+        float smoothTime = 0.02f; // 감속에 걸리는 시간 (값이 작을수록 더 빠르게 멈춤)
 
         // 목표 위치에 가까워질수록 점점 느려``지며 이동
         while (Vector3.Distance(transform.position, targetPosition) > 0.01f)

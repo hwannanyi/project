@@ -50,7 +50,7 @@ public class CharacterStats : MonoBehaviour
     {
         wave = 1;
         turnManager = GetComponent<TurnManager>();
-        uiManager.UpdateWaveCount(wave);
+        //uiManager.UpdateWaveCount(wave);
 
             Instance = this;
         characterCreat = false; // 캐릭터 생성 여부 초기화
@@ -378,19 +378,6 @@ public class CharacterStats : MonoBehaviour
                 return stats;
         }
         return null;
-    }
-
-    public void UEmenyCount()
-    {
-        int enemyAliveCount = characterList
-    .Count(stats => stats.team == Team.enemy && stats.isdie == false);
-        uiManager.Updatenemytcount(enemyAliveCount);
-    }
-
-    public void WaveUpdate()
-    {
-        wave--;
-        uiManager.UpdateWaveCount(wave);
     }
 
     public bool IsClear(VictoryRule rule)

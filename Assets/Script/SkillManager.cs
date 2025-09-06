@@ -26,7 +26,7 @@ public class SkillManager : MonoBehaviour
     public CharacterSelection characterSelection; // 캐릭터 선택 스크립트
     public CharacterStats characterStats; // 캐릭터 스탯 매니저
     public SFDController SFD; // SFD 컨트롤러
-
+    public TurnUIManager turnUIManager; // 턴 UI 매니저
 
     ///선택한 스킬이 일시적으로 저장되는곳
     public SkillData selectedSkill = null;
@@ -143,7 +143,7 @@ public class SkillManager : MonoBehaviour
         
         
         //if (CameraZoom.isControlMode) return;
-        if (skillSelectLocked || isCastingSkill)
+        if ((skillSelectLocked || isCastingSkill) && turnManager.isPlayerTurn)
         {
             // 스킬선택잠금 또는 스킬시전중, 이동중 입력 무시
             return;
@@ -208,7 +208,7 @@ public class SkillManager : MonoBehaviour
         }
 
         // 마우스 클릭으로 타겟 유닛 선택
-        if (Input.GetKeyDown(KeyCode.Return) && !storyManager.skillLock)
+        if (Input.GetKeyDown(KeyCode.Space) && !storyManager.skillLock)
         {
             selectedTargetUnit=null; // 클릭시 타겟 초기화
 
@@ -321,8 +321,8 @@ public class SkillManager : MonoBehaviour
         selectedSkill = skill;
         selectedCaster = caster;
         selectedCharacter = character;
-        if (skill.cost.ContainsKey(CostType.mp) && skill.cost[CostType.mp] > character.mp)
-        {// mp 코스트가 캐릭터 mp보다 많을 때 실행할 코드(mp 부족)
+        if (skill.rageCost > character.rage && skill.hpCost >= character.hp)
+        {// 필요한 코스트가 부족하면 취소
             isSkillReady = false;
             selectedSkill = null;
             selectedCaster = null;
@@ -351,6 +351,9 @@ public class SkillManager : MonoBehaviour
             : (Action)(() => { })                   
         )();
 
+
+        //스킬사용시 스킬 시작버튼 활성화
+        turnUIManager.Skill_Start_Button.SetActive(turnManager.isPlayerTurn); // 스킬시작 버튼 활성화
 
         Debug.Log($"[SkillManager] 스킬 선택 완료: {skill.skillName}");
 
@@ -414,9 +417,12 @@ public class SkillManager : MonoBehaviour
         }
 
 
-        if (skill.cost.ContainsKey(CostType.mp) && skill.cost[CostType.mp] > character.mp)
-        {// mp 코스트가 캐릭터 mp보다 많을 때 실행할 코드(mp 부족)
+        if (skill.rageCost > character.rage && skill.hpCost >= character.hp)
+        {// 필요한 코스트가 부족하면 취소
             isSkillReady = false;
+            selectedSkill = null;
+            selectedCaster = null;
+            selectedCharacter = null;
             Debug.Log($"[SkillManager] 코스트가 부족합니다: {skill.skillName}");
             return (null, null, null);
         }
@@ -1087,22 +1093,8 @@ public class SkillManager : MonoBehaviour
         }
 
         // 코스트 차감
-        if (skill.cost != null && character != null)
-        {
-            foreach (var pair in skill.cost)
-            {
-                switch (pair.Key)
-                {
-                    case CostType.mp:
-                        character.mp -= pair.Value;
-                        break;
-                    case CostType.hp:
-                        character.hp -= pair.Value;
-                        break;
-                        // 필요에 따라 다른 코스트 타입도 추가
-                }
-            }
-        }
+        character.rage -= skill.rageCost;
+        character.hp -= skill.hpCost;
 
 
         // 쿨타임 시작
@@ -1127,6 +1119,8 @@ public class SkillManager : MonoBehaviour
 
         skillRangeVisualizer.StartSkillTargetRangePreview(null);
 
+        // 스킬 시전시 스킬시작 버튼 비활성화
+        turnUIManager.Skill_Start_Button.SetActive(false);
 
     }
 
@@ -1341,5 +1335,8 @@ public class SkillManager : MonoBehaviour
         skillRangeVisualizer.StopNonTargetProjectileRange();
         skillRangeVisualizer.StopSkillRangePreview();
         skillRangeVisualizer.HideSkillRange();
+
+        // 스킬 취소시 스킬시작 버튼 비활성화
+        turnUIManager.Skill_Start_Button.SetActive(false);
     }
 }

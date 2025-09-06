@@ -199,10 +199,16 @@ public class TurnManager : MonoBehaviour
 
             // 수비턴일 때는 선택된 캐릭터만 활성화
 
-            if (characterStats.PlayerCharacter1.characterPrefab)
+            if (characterStats.PlayerCharacter1.characterPrefab){
                 chrt1.characterPrefab.SetActive(!chrt1.isdie && chrt1.characterPrefab == chrtObj);
-            if (characterStats.PlayerCharacter2.characterPrefab)
+                chrt1.rage = chrt1 == skillmanager.defendingCharacter && chrt1.rage <= 5 ? chrt1.rage + 1 : chrt1.rage + 0;
+                chrt1.risk = chrt1 == skillmanager.defendingCharacter ? +1 : 0;
+            }
+            if (characterStats.PlayerCharacter2.characterPrefab){
                 chrt2.characterPrefab.SetActive(!chrt2.isdie && chrt2.characterPrefab == chrtObj);
+                chrt2.rage = chrt2 == skillmanager.defendingCharacter && chrt2.rage <= 5 ? chrt2.rage + 1 : chrt2.rage + 0;
+                chrt2.risk = chrt2 == skillmanager.defendingCharacter ? +1 : 0;
+            }
 
             // 선택된 캐릭만 HP바 활성화
             if (characterStats.PlayerCharacter1.HPbar.gameObject)
@@ -210,6 +216,10 @@ public class TurnManager : MonoBehaviour
 
             if (characterStats.PlayerCharacter2.HPbar.gameObject)
                 characterStats.PlayerCharacter2.HPbar.gameObject.SetActive(characterStats.PlayerCharacter2.characterPrefab == chrtObj);
+        
+
+
+
         }
         
     }
@@ -249,16 +259,9 @@ public class TurnManager : MonoBehaviour
             {
                 if (skill.colldownTime > 0)
                 {
-                    skill.ReduceCooldown(1);
+                    skill.ReduceCooldown(Turn % 2);
                 }
             }
-
-                character.mp = character.mp < 10 ? character.mp + 1 : character.mp;
-
-            /*            if (character.NowMoveCount < 8)
-                        {
-                            character.NowMoveCount += 1;
-                        }*/
             character.isPatternEnd = character.isdie; // AI 패턴 초기화
         }
 

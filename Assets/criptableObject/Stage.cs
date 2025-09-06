@@ -41,6 +41,10 @@ public class Stage : ScriptableObject
 
     [Header("맵(미구현)")]
     public int[][] map; // 시작 위치 리스트
+    public int mapWidth; // 맵 너비
+    public int mapHeight; // 맵 높이
+    public Sprite mapSprite; // 맵 스프라이트
+    public Sprite mapBackGround; // 맵 배경 스프라이트
 
     [Header("스테이지 적 설정")]
     public List<EnemyData> enemyDatalist; // 적 데이터 리스트

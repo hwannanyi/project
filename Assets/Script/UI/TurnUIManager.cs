@@ -29,14 +29,6 @@ public class TurnUIManager : MonoBehaviour
         trunCountText.text = turnCount.ToString() + "ео";
     }
 
-    public void Updatenemytcount(int emeny)
-    {
-
-    }
-    public void UpdateWaveCount(int wave)
-    {
-
-    }
 
     public void UpdateButtonActive(bool playerturn)
     {

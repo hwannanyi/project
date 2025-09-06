@@ -72,7 +72,7 @@ public class ValueSource
         return attr switch
         {
             AttributeType.hp => stats.hp,
-            AttributeType.mp => stats.mp,
+            //AttributeType.mp => stats.mp,
             _ => 0
         };
     }
@@ -114,7 +114,7 @@ public class ConditionBuilder
             float attrValue = attr switch
             {
                 AttributeType.hp => stats.hp,
-                AttributeType.mp => stats.mp,
+                //AttributeType.mp => stats.mp,
                 _ => 0
             };
             // 비교 연산 수행

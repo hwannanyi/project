@@ -41,8 +41,10 @@ public class SkillData
     public int skillNumber;       // 스킬의 갯수 (변형 가능)
     public int skillCumulative;   // 최대 충전 횟수 (기본 1)
 
-    public UDictionary<CostType, int> cost; // 코스트
-    public UDictionary<CostType, int> currentcost; // 기본코스트
+    public int rageCost; // 코스트
+    public int hpCost; // 체력 코스트
+    public int rageCost_bas;            // 기본 코스트
+    public int hpCost_bas;            // 기본 체력 코스트
 
     public StartSkillPosition startSkillPosition; // 스킬 시작 위치 (플레이어, 지정된 대상 등)
     public int XstartSkillPosition;
@@ -129,8 +131,10 @@ public class SkillData
         skillNumber = data.skillNumber;
         skillCumulative = data.skillCumulative;
 
-        cost = data.cost;
-        currentcost = data.cost;
+        rageCost = data.rageCost;
+        hpCost = data.hpCost;
+        rageCost_bas = data.rageCost;
+        hpCost_bas = data.hpCost;
 
         startSkillPosition = data.startSkillPosition;
         projectile = data.projectile;
@@ -295,7 +299,7 @@ public class SkillData
 
     //정지연출
     
-    public IEnumerator SFD(SFDType sfdType, float delay) //Suspended for directing
+/*    public IEnumerator SFD(SFDType sfdType, float delay) //Suspended for directing
     {
         Debug.Log("SFD Start");
 
@@ -333,7 +337,7 @@ public class SkillData
         }
         Time.timeScale = 1f; // 게임 시간 재개
         SFDController.Instance.isSFD = false;
-    }
+    }*/
     
 
 

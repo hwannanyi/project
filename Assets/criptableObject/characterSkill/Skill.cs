@@ -29,7 +29,7 @@ public enum IncreaseType
 { none, ad, ap, hp }
 
 public enum CostType
-{ mp, hp}
+{ Rage, hp}
 
 
 public enum SkillhitEffect
@@ -116,7 +116,8 @@ public class Skill : ScriptableObject
     public int skillCumulative = 1; // 최대 충전 횟수 (기본 1)
 
     [Header("코스트")]
-    public UDictionary<CostType, int> cost; // 코스트
+    public int rageCost = 0; // 코스트
+    public int hpCost = 0; // 체력 코스트
 
     [Header("스킬 시작위치")]
     public StartSkillPosition startSkillPosition; // 스킬 시작 위치 (플레이어, 지정된 대상 등)

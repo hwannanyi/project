@@ -117,7 +117,7 @@ public class StoryManager : MonoBehaviour
         }
 
         NextPopUpStory();
-        if (isStoryActive && Input.GetKeyDown(KeyCode.Return))
+        if (isStoryActive && Input.GetKeyDown(KeyCode.Space))
         {
             if (talkRead.Count >= 0 && currentTalkIndex < talkRead.Count - 1)
             {
@@ -765,12 +765,12 @@ public class StoryManager : MonoBehaviour
 
     public bool ISskillCast()
     {
-        return Input.GetKeyDown(KeyCode.Return);
+        return Input.GetKeyDown(KeyCode.Space);
     }
 
     public bool ISturn()
     {
-        return Input.GetKeyDown(KeyCode.Space) || (!turnManager.isPlayerTurn && aITurn.AIturnEnd);
+        return Input.GetKeyDown(KeyCode.Return) || (!turnManager.isPlayerTurn && aITurn.AIturnEnd);
     }
 
     public bool ISmove()

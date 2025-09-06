@@ -57,7 +57,7 @@ public class CharacterUIManager : MonoBehaviour
 
     public void UpdateCharacterProfile(Stats character)
     {
-        if (character != null && character.characterProfileillustration != null)
+/*        if (character != null && character.characterProfileillustration != null)
         {
             characterProfileUI.sprite = character.characterProfileillustration;
             characterProfileUI.enabled = true;
@@ -65,7 +65,7 @@ public class CharacterUIManager : MonoBehaviour
         else
         {
             characterProfileUI.sprite = characterProfileSkillUI; // 이미지가 없으면 안 보이게
-        }
+        }*/
     }
 
     public void UpdateCharacterProfileSkill(Stats character, bool playerturn)
@@ -89,7 +89,7 @@ public class CharacterUIManager : MonoBehaviour
                 skillImage.color = skill.colldownTime > 0 ? cooldownColor : normalColor; // 쿨타임 색상 처리
 
                 // MP가 부족할 경우 색상 변경
-                if (skill.cost.ContainsKey(CostType.mp) && skill.cost[CostType.mp] > character.mp)
+                if (skill.rageCost > character.rage && skill.hpCost >= character.hp)
                 {
                     skillImage.color = nompdownColor;
                 }
@@ -170,12 +170,12 @@ public class CharacterUIManager : MonoBehaviour
         if (hpBar != null)
             hpBar.fillAmount = (float)character.hp / character.maxhp;
         if (mpBar != null)
-            mpBar.fillAmount = (float)character.mp / character.maxmp;
+            mpBar.fillAmount = (float)character.rage / 5;
 
         if (hpText != null)
             hpText.text = $"{character.hp} / {character.maxhp}";
         if (mpText != null)
-            mpText.text = $"{character.mp} / {character.maxmp}";
+            mpText.text = $"{character.rage} / {5}";
     }
 
     public void AssignMiniprofileTargets()
@@ -199,13 +199,14 @@ public class CharacterUIManager : MonoBehaviour
     public void UpdateProfileUIBySelection()
     {
         bool isActive = CharacterSelection.selectedCharacterIndex != -1;
-
-        // ProfileUI의 모든 자식 오브젝트 활성/비활성화
-        foreach (Transform child in ProfileUI.transform)
-        {
-            if (child.gameObject == skillhight) continue;
-            child.gameObject.SetActive(isActive);
-        }
+        ProfileUI.SetActive(isActive);
+        /*
+                // ProfileUI의 모든 자식 오브젝트 활성/비활성화
+                foreach (Transform child in ProfileUI.transform)
+                {
+                    if (child.gameObject == skillhight) continue;
+                    child.gameObject.SetActive(isActive);
+                }*/
     }
 
     public void SelectionMiniprofileUI(int index)

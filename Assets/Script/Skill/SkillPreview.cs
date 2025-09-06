@@ -87,7 +87,7 @@ public class SkillPreview : MonoBehaviour
             rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f);
         }
 
-        if (skill.skillPreviewStop && skill.SFDtype != SFDType.none)
+/*        if (skill.skillPreviewStop && skill.SFDtype != SFDType.none)
         {
             /////////////////////////////
             storyManager = StoryManager.instance;
@@ -100,9 +100,9 @@ public class SkillPreview : MonoBehaviour
                 Debug.Log("SFD 시작SFD 시작SFD 시작SFD 시작SFD 시작SFD 시작SFD 시작SFD 시작");    
                 isSFD = true;
                 OnSFDStart?.Invoke(skill.SFDtype, skill.SFDtime); // 이벤트 발생
-                StartCoroutine(skill.SFD(skill.SFDtype, skill.SFDtime));
+                //StartCoroutine(skill.SFD(skill.SFDtype, skill.SFDtime));
             }
-        }
+        }*/
 
         skillCoroutine = !skill.projectile ? StartCoroutine(StretchObjectToTarget(skill, targetPosition))
             :

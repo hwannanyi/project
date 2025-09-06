@@ -25,13 +25,13 @@ public class CharacterEffect : MonoBehaviour
     }
     void Start()
     {
-        // EffectActions 딕셔너리 초기화
+/*        // EffectActions 딕셔너리 초기화
         EffectActions = new Dictionary<(EffectWrapper.EffectType, int), Action>
         {
             {(EffectWrapper.EffectType.Buff, (int)Buffs.solid), () => Buff_solid(character)},
             {(EffectWrapper.EffectType.Debuff, (int)Debuffs.corrosion), () => DeBuff_corrosion(character)},
             {(EffectWrapper.EffectType.CC, (int)CCs.stun), () => CC_stun(character)}
-        };
+        };*/
     }
 
     void OnDestroy()
@@ -51,11 +51,11 @@ public class CharacterEffect : MonoBehaviour
             character.gurd -= Time.deltaTime;
         }
         TimeFlow();
-        HitDamage();
-
+        //HitDamage();
+/*
         Buff_solid(character);
         DeBuff_corrosion(character);
-        CC_stun(character);
+        CC_stun(character);*/
     }
 
 
@@ -103,7 +103,7 @@ public class CharacterEffect : MonoBehaviour
         character.ccEffects.RemoveAll(b => b.trun <= 0 && b.time <= 0);
     }
 
-    //홀드 도중 들어오는 데미지
+/*    //홀드 도중 들어오는 데미지
     public void HitDamage()
     {
         try
@@ -148,11 +148,11 @@ public class CharacterEffect : MonoBehaviour
         {
             return;
         }
-    }
+    }*/
 
     //버프
     //경화
-    public void Buff_solid(Stats stats)
+/*    public void Buff_solid(Stats stats)
     {
         foreach (var buff in character.buffEffects)
         {
@@ -169,8 +169,8 @@ public class CharacterEffect : MonoBehaviour
             }
         }
     }
-
-    //디버프
+*/
+/*    //디버프
     //부식
     //받는 피해 증가
     public void DeBuff_corrosion(Stats stats)
@@ -188,9 +188,9 @@ public class CharacterEffect : MonoBehaviour
                 debuff.isApplied = false;
             }
         }
-    }
+    }*/
 
-    //CC기
+/*    //CC기
     //기절
     //행동불가
     public void CC_stun(Stats stats)
@@ -210,6 +210,6 @@ public class CharacterEffect : MonoBehaviour
                 cc.isApplied = false;
             }
         }
-    }
+    }*/
 
 }

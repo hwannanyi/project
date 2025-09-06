@@ -15,7 +15,7 @@ public class Skill_SFD : MonoBehaviour
 
     public void Start()
     {
-        SkillData skill = castingSkillData.skillData;
+/*        SkillData skill = castingSkillData.skillData;
 
             storyManager = StoryManager.instance;
             isSFD = false;
@@ -38,7 +38,7 @@ public class Skill_SFD : MonoBehaviour
                 OnSFDStart?.Invoke(skill.SFDtype, skill.SFDtime); // 이벤트 발생
                 StartCoroutine(skill.SFD(skill.SFDtype, skill.SFDtime));
             }
-        }
+        }*/
         
     }
 

@@ -9,7 +9,7 @@ public class Character : ScriptableObject
 {
     public string charactername;  // 캐릭 이름
     public int maxhp;             // 최대체력
-    public int maxmp;             // 최대코스트
+    public int rage;             // 코스트
     public int atk;               // 공격력
     public int def;               // 방어력
     public int speed;             // 속도

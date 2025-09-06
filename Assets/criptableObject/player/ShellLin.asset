@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charactername: ShellLin
   maxhp: 10
-  maxmp: 10
+  rage: 0
   atk: 10
   def: 10
-  speed: 10
-  movespeed: 3
+  speed: 15
+  movespeed: 10
   moveCount: 8
   trun: 10
   team: 0
