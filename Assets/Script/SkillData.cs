@@ -87,10 +87,6 @@ public class SkillData
     public List<HitEffectEntry> hitEffects;
     public List<ConditionalEffect> conditionalEffects; // 특정 조건부 효과
 
-    public React react; //대응가능유무 + 대응가능대상
-    public bool isreactSkill; // 4방향 회전
-    public float reactTime;
-
     public int skillCastCode; // 스킬 실행시 스킬을 찾기위한 임시코드 
     public Gurd gurd; //가드 정보
 
@@ -104,7 +100,7 @@ public class SkillData
     public SFDType SFDtype = SFDType.none; // 정지해체 기준
     public float SFDtime = 0f; // 정지 선딜 시간
     public bool skillPreviewStop = false; // 스킬 시전 전에 정지
-    public SkillData(Skill data, string characterName, bool isreactSkill, int depth = 0)
+    public SkillData(Skill data, string characterName, int depth = 0)
     {
         if (data == null)
         {
@@ -116,7 +112,6 @@ public class SkillData
 
         skillCastCode = 0; // 스킬 실행시 스킬을 찾기위한 임시코드
 
-        isreactSkill = this.isreactSkill;
         skillName = data.skillName;
         useCharacterName = characterName; // 직접 문자열을 할당
 
@@ -188,9 +183,9 @@ public class SkillData
         //BuffEffects = new List<BuffEffect>(data.BuffEffects);
         //CCEffects = new List<CCEffect>(data.CCEffects);
         //conditionalEffects = new List<ConditionalEffect>(data.conditionalEffects);
-        react = data.react;
+
         fourRotation = data.fourRotation; 
-        reactTime = data.reactTime;
+
 
         skillPreview = data.skillPreview; // 범위 표시 시간 제한
 
@@ -247,11 +242,11 @@ public class SkillData
             {
                 if (data.summonCharacter.useSkill[i] == null)
                 {
-                    summonCharacter.usingSkill.Add(new SkillData(null, summonCharacter.name, false, depth + 1));
+                    summonCharacter.usingSkill.Add(new SkillData(null, summonCharacter.name, depth + 1));
                 }
                 else
                 {
-                    summonCharacter.usingSkill.Add(new SkillData(data.summonCharacter.useSkill[i], summonCharacter.name, false, depth + 1));
+                    summonCharacter.usingSkill.Add(new SkillData(data.summonCharacter.useSkill[i], summonCharacter.name, depth + 1));
 
 
                     if (!string.IsNullOrEmpty(summonCharacter.useSkill[i].AdditionalSkills.skillName))
@@ -349,8 +344,8 @@ public class SkillData
         // skillName이 name과 일치하는 skill 찾음
         return new SkillData(
             (character.useSkill.FirstOrDefault(skill => skill != null && skill.skillName == name)),
-            character.name,
-            false);
+            character.name
+            );
     }
 
 }

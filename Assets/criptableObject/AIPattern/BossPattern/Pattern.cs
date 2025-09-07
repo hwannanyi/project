@@ -24,16 +24,16 @@ public class Pattern : ScriptableObject
     public bool isRandom_circle;
 
     [Header("straight")]
-    public int ammo_straight;
-    public int interval_straight;
-    public Vector2 direction_straight;
-    public float radius_straight;
-    public bool isRadius_tracking_straight;
-    public float delayTime_straight;
-    public Vector3 position_straight;
-    public bool isPosition_tracking_straight;
-    public int count_straight;
-    public bool isRandom_straight;
+    public int ammo_straight; // 발사체 수
+    public int interval_straight; // 발사 간격
+    public Vector2 direction_straight; // 발사 방향
+    public float radius_straight; // 발사 반경
+    public bool isRadius_tracking_straight; // 반경 추적 여부
+    public float delayTime_straight; // 발사 지연 시간
+    public Vector3 position_straight; // 발사 위치
+    public bool isPosition_tracking_straight; // 위치 추적 여부
+    public int count_straight; // 반복 횟수
+    public bool isRandom_straight; // 랜덤 여부
 
 
     [Header("repeat")]

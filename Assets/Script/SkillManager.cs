@@ -953,7 +953,6 @@ public class SkillManager : MonoBehaviour
         if (!team)
         {
             // 적이 사용하는 스킬인 경우 EnemySkill 에 저장
-            selectedSkill.isreactSkill = true;
             if (EnemySkill == null)
                 EnemySkill = new Dictionary<int, ActionWrapper>();
 
@@ -970,7 +969,6 @@ public class SkillManager : MonoBehaviour
         else
         {
             // 팀이 사용하는 스킬인 경우 TeamSkill 에 저장
-            selectedSkill.isreactSkill = false;
             if (TeamSkill == null)
                 TeamSkill = new Dictionary<int, ActionWrapper>();
 
@@ -1025,7 +1023,6 @@ public class SkillManager : MonoBehaviour
         if (!team)
         {
             // 적이 사용하는 스킬인 경우 EnemySkill 에 저장
-            skill.isreactSkill = true;
             if (EnemySkill == null)
                 EnemySkill = new Dictionary<int, ActionWrapper>();
 
@@ -1042,7 +1039,6 @@ public class SkillManager : MonoBehaviour
         else
         {
             // 팀이 사용하는 스킬인 경우 TeamSkill 에 저장
-            skill.isreactSkill = false;
             if (TeamSkill == null)
                 TeamSkill = new Dictionary<int, ActionWrapper>();
 

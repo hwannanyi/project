@@ -103,7 +103,7 @@ public class AICastSkill : MonoBehaviour
             // 일정턴이 되어야 스킬 발동
             if(pattern.currentIndex >= turnManager.Turn) continue;
 
-            var targetSkill = new SkillData(pattern.skill, character.name, false);
+            var targetSkill = new SkillData(pattern.skill, character.name);
 
             // 사용 중인 스킬에 해당 스킬이 없으면 다음 패턴으로 넘어감
             if (!character.usingSkill.Any(x => x.skillName == pattern.skill.skillName)) continue; 

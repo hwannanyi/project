@@ -156,7 +156,7 @@ public class Stats
                 // 패시브가 null이면 SkillData도 null로 생성, ConditionHit도 null로 저장
                 passiveSkill.Add(new PassiveSkill
                 {
-                    passive = new SkillData(null, data.charactername, false),
+                    passive = new SkillData(null, data.charactername),
                     conditionHit = null
                 });
             }
@@ -165,7 +165,7 @@ public class Stats
                 // 패시브가 있으면 SkillData로 복사 생성, ConditionHit도 복사
                 passiveSkill.Add(new PassiveSkill
                 {
-                    passive = new SkillData(src.passive, data.charactername, false),
+                    passive = new SkillData(src.passive, data.charactername),
                     conditionHit = src.conditionHit,
                     passiveTarget = src.passiveTarget
                 });

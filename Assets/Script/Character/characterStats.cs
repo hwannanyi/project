@@ -171,12 +171,12 @@ public class CharacterStats : MonoBehaviour
             // 캐릭터 이름과 스킬을 SkillData로 만들어 리스트에 추가
             if (characterList[index1].useSkill[i] == null)
             {
-                characterList[index1].usingSkill.Add(new SkillData(null, characterList[index1].name, false));
+                characterList[index1].usingSkill.Add(new SkillData(null, characterList[index1].name));
             }
             else
             {
                 var character = characterList[index1];
-                characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name, false));
+                characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name));
 
                 if (!string.IsNullOrEmpty(character.useSkill[i].AdditionalSkills.skillName))
                 {
@@ -212,8 +212,7 @@ public class CharacterStats : MonoBehaviour
         // skillName이 name과 일치하는 skill 찾음
         return new SkillData(
             (character.useSkill.FirstOrDefault(skill => skill != null && skill.skillName == name)),
-            character.name,
-            false);
+            character.name);
     }
 
     public void Charactercreation()
@@ -335,12 +334,12 @@ public class CharacterStats : MonoBehaviour
             // 캐릭터 이름과 스킬을 SkillData로 만들어 리스트에 추가
             if (characterList[index1].useSkill[i] == null)
             {
-                characterList[index1].usingSkill.Add(new SkillData(null, characterList[index1].name, false));
+                characterList[index1].usingSkill.Add(new SkillData(null, characterList[index1].name));
             }
             else
             {
                 var character = characterList[index1];
-                characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name, false));
+                characterList[index1].usingSkill.Add(new SkillData(characterList[index1].useSkill[i], characterList[index1].name));
 
                 if (!string.IsNullOrEmpty(character.useSkill[i].AdditionalSkills.skillName))
                 {

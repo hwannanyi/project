@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 370a92f1eb4363941ba0808f1e624232, type: 3}
+  m_Name: Pattern
+  m_EditorClassIdentifier: 
+  skill: {fileID: 0}
+  ammo_circle: 0
+  radius_circle: 0
+  isRadius_tracking_circle: 0
+  delayTime_circle: 0
+  position_circle: {x: 0, y: 0, z: 0}
+  isPosition_tracking_circle: 0
+  count_circle: 0
+  isRandom_circle: 0
+  ammo_straight: 0
+  interval_straight: 0
+  direction_straight: {x: 0, y: 0}
+  radius_straight: 0
+  isRadius_tracking_straight: 0
+  delayTime_straight: 0
+  position_straight: {x: 0, y: 0, z: 0}
+  isPosition_tracking_straight: 0
+  count_straight: 0
+  isRandom_straight: 0
+  skill_repeat: []
+  count_repeat: 0
+  isRandom_repeat: 0

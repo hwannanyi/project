@@ -164,10 +164,6 @@ public class Skill : ScriptableObject
     [Header("적중시 효과")]
     public List<HitEffectEntry> hitEffects;
 
-    [Header("대응유무")]
-    public React react; //대응가능유무 + 대응가능대상
-    public float reactTime;
-
     [Header("가드 정보")]
     public Gurd gurd; //가드 정보
 

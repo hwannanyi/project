@@ -205,7 +205,7 @@ public class SkillEffectHitscan : MonoBehaviour
         }
         // AI 스킬 시전 잠금 해제
         aICastSkill.skillCastLock = !CastLock && aICastSkill.skillCastLock;
-        if (!hasExitedPhase && !skillData.isreactSkill)
+        if (!hasExitedPhase)
         {
             //TurnManager.Instance.ExitReactPhase(); //미사용, 스킬종료로 인해 대응단계가 종료되지 않도록 변경
             hasExitedPhase = true;
