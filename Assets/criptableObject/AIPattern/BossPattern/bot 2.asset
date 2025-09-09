@@ -167,4 +167,9 @@ MonoBehaviour:
       reverse_order: 0
       index: 1
       target: 0
-  skillCondition: []
+  skillCondition:
+  - skillCondition: []
+  patterns:
+  - pattern:
+    - {fileID: 0}
+    - {fileID: 0}

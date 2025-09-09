@@ -29,13 +29,10 @@ public enum Condition_Hit
     parrying      //패링
 }
 
-
-
-
 // 조건 판별용 델리게이트 (Stats 기준)
 public delegate bool ConditionPredicate(Stats self, Stats enemy, SkillData skillData, Team team);
-// 조건 빌더 패턴 클래스
 
+// ValueSource (기존 그대로)
 public enum ValueSourceType { Constant, Self, Target, Team }
 public class ValueSource
 {
@@ -79,6 +76,204 @@ public class ValueSource
 }
 
 
+/// <summary>
+/// 상태패턴용 인터페이스: 하나의 조건(또는 조건 조합)을 표현
+/// </summary>
+public interface IConditionState
+{
+    bool Evaluate(Stats self, Stats enemy, SkillData skillData, Team team);
+}
+
+/// <summary>
+/// 속성 비교 조건 상태 (AttributeCondition)
+/// - ValueSource를 사용해 비교 값을 동적으로 지원
+/// </summary>
+public class AttributeConditionState : IConditionState
+{
+    public Target Target { get; }
+    public AttributeType Attribute { get; }
+    public Condition_statement Comparison { get; }
+    public ValueSource CompareValue { get; }
+
+    public AttributeConditionState(Target target, AttributeType attribute, Condition_statement comparison, ValueSource value)
+    {
+        Target = target;
+        Attribute = attribute;
+        Comparison = comparison;
+        CompareValue = value;
+    }
+
+    public bool Evaluate(Stats self, Stats enemy, SkillData skillData, Team team)
+    {
+        Stats stats = Target switch
+        {
+            Target.self => self,
+            Target.enemy => enemy,
+            _ => null
+        };
+        if (stats == null) return false;
+
+        float attrValue = Attribute switch
+        {
+            AttributeType.hp => stats.hp,
+            //AttributeType.mp => stats.mp,
+            _ => 0
+        };
+
+        float cmpValue = CompareValue?.GetValue(self, enemy, team) ?? 0;
+
+        return Comparison switch
+        {
+            Condition_statement.below => attrValue < cmpValue,
+            Condition_statement.more => attrValue >= cmpValue,
+            Condition_statement.equal => Mathf.Approximately(attrValue, cmpValue),
+            Condition_statement.not_equal => !Mathf.Approximately(attrValue, cmpValue),
+            _ => false
+        };
+    }
+}
+
+/// <summary>
+/// Hit 관련 조건 상태 (원래 HitCondition 로직 캡슐화)
+/// </summary>
+public class HitConditionState : IConditionState
+{
+    public Target Target { get; }
+    public TargetUnit UnitType { get; }
+    public Condition_Hit Comparison { get; }
+    public string Value { get; }
+
+    public HitConditionState(Target target, TargetUnit type, Condition_Hit comparison, string value)
+    {
+        Target = target;
+        UnitType = type;
+        Comparison = comparison;
+        Value = value;
+    }
+
+    public bool Evaluate(Stats self, Stats enemy, SkillData skillData, Team team)
+    {
+        // 1. target 매칭
+        bool targetMatch = true;
+        switch (Target)
+        {
+            case Target.self:
+                targetMatch = self != null && enemy == self;
+                break;
+            case Target.team:
+                targetMatch = self != null && enemy != null && self.team == enemy.team;
+                break;
+            case Target.enemy:
+                targetMatch = self != null && enemy != null && self.team != enemy.team;
+                break;
+            case Target.all:
+                targetMatch = enemy != null;
+                break;
+            default:
+                targetMatch = false;
+                break;
+        }
+        if (!targetMatch) return false;
+
+        // 2. 타입 매칭
+        bool typeMatch = false;
+        if (UnitType == TargetUnit.character && enemy != null) typeMatch = true;
+        else if (UnitType == TargetUnit.skill && skillData != null) typeMatch = true;
+        if (!typeMatch) return false;
+
+        // 3. comparison (기존 주석 처리된 부분은 프로젝트 타입에 맞춰 확장)
+        bool comparisonMatch = true;
+        switch (Comparison)
+        {
+            // 실제 프로퍼티가 존재하면 여기서 체크
+            default:
+                comparisonMatch = true;
+                break;
+        }
+        if (!comparisonMatch) return false;
+
+        // 4. 값(이름) 비교
+        if (!string.IsNullOrEmpty(Value))
+        {
+            bool nameMatch = false;
+            if (skillData != null && skillData.skillName == Value) nameMatch = true;
+            if (!nameMatch && enemy != null && enemy.name == Value) nameMatch = true;
+            if (!nameMatch) return false;
+        }
+
+        return true;
+    }
+}
+
+
+/// <summary>
+/// Status(예: 기절) 조건 상태
+/// Stats.HasStatus(StatusType) 를 사용하여 검사
+/// </summary>
+public class StatusConditionState : IConditionState
+{
+    public Target Target { get; }
+    public StatusType Status { get; }
+    public bool Required { get; }
+
+    // Required: true => 해당 상태가 있어야 true, false => 없어야 true
+    public StatusConditionState(Target target, StatusType status, bool required = true)
+    {
+        Target = target;
+        Status = status;
+        Required = required;
+    }
+
+    public bool Evaluate(Stats self, Stats enemy, SkillData skillData, Team team)
+    {
+        Stats stats = Target switch
+        {
+            Target.self => self,
+            Target.enemy => enemy,
+            _ => null
+        };
+        if (stats == null) return false;
+
+        bool has = stats.HasStatus(Status);
+        return Required ? has : !has;
+    }
+}
+
+
+/// <summary>
+/// Composite 상태들: And, Or, Not
+/// </summary>
+public class AndConditionState : IConditionState
+{
+    private readonly IConditionState[] _children;
+    public AndConditionState(params IConditionState[] children) => _children = children;
+    public bool Evaluate(Stats self, Stats enemy, SkillData skillData, Team team)
+    {
+        foreach (var c in _children) if (!c.Evaluate(self, enemy, skillData, team)) return false;
+        return true;
+    }
+}
+
+public class OrConditionState : IConditionState
+{
+    private readonly IConditionState[] _children;
+    public OrConditionState(params IConditionState[] children) => _children = children;
+    public bool Evaluate(Stats self, Stats enemy, SkillData skillData, Team team)
+    {
+        foreach (var c in _children) if (c.Evaluate(self, enemy, skillData, team)) return true;
+        return false;
+    }
+}
+
+public class NotConditionState : IConditionState
+{
+    private readonly IConditionState _child;
+    public NotConditionState(IConditionState child) => _child = child;
+    public bool Evaluate(Stats self, Stats enemy, SkillData skillData, Team team) => !_child.Evaluate(self, enemy, skillData, team);
+}
+
+
+// 기존 ConditionBuilder 유지 + 상태 기반 생성기 추가
 public class ConditionBuilder
 {
     private ConditionPredicate _predicate;
@@ -90,12 +285,17 @@ public class ConditionBuilder
     }
 
     /// <summary>
-    /// 스탯 속성 비교 조건 생성
+    /// 상태(IConditionState)로부터 ConditionBuilder 생성 (상태패턴 통합 포인트)
     /// </summary>
-    /// <param name="target">대상(자신/적)</param>
-    /// <param name="attr">속성(체력/마나)</param>
-    /// <param name="comp">비교 연산</param>
-    /// <param name="value">비교 값</param>
+    public static ConditionBuilder FromState(IConditionState state)
+    {
+        if (state == null) throw new ArgumentNullException(nameof(state));
+        return new ConditionBuilder((self, enemy, skillData, team) => state.Evaluate(self, enemy, skillData, team));
+    }
+
+    /// <summary>
+    /// 스탯 속성 비교 조건 생성 (기존 API 유지)
+    /// </summary>
     public static ConditionBuilder Attribute(Target target, AttributeType attr, Condition_statement comp, float value)
     {
         var manager = CharacterStats.Instance;
@@ -129,7 +329,7 @@ public class ConditionBuilder
         });
     }
 
-    // ConditionHit 조건에 따라 유닛 충돌 여부를 판별하는 ConditionBuilder 생성 함수
+    // ConditionHit 조건에 따라 유닛 충돌 여부를 판별하는 ConditionBuilder 생성 함수 (기존 API 유지)
     public static ConditionBuilder HitCondition(
         Target target, TargetUnit type, Condition_Hit comparison, string value)
     {
@@ -168,33 +368,14 @@ public class ConditionBuilder
             }
             else if (type == TargetUnit.skill && skillData != null)
             {
-                typeMatch = true;   
-            }
-/*            else if (type == TargetUnit.all)
-            {
                 typeMatch = true;
-            }*/
+            }
             if (!typeMatch) return false;
 
             // 3. comparison: 적중, 방어 등 상황 판별
             bool comparisonMatch = true;
             switch (comparison)
             {
-/*                case Condition_Hit.hit:
-                    comparisonMatch = enemy != null && enemy.lastHitType == Condition_Hit.hit;
-                    break;
-                case Condition_Hit.gurd:
-                    comparisonMatch = enemy != null && enemy.lastHitType == Condition_Hit.gurd;
-                    break;
-                case Condition_Hit.parrying:
-                    comparisonMatch = enemy != null && enemy.lastHitType == Condition_Hit.parrying;
-                    break;
-                case Condition_Hit.not_hit:
-                    comparisonMatch = enemy != null && enemy.lastHitType == Condition_Hit.not_hit;
-                    break;
-                case Condition_Hit.not_gurd:
-                    comparisonMatch = enemy != null && enemy.lastHitType == Condition_Hit.not_gurd;
-                    break;*/
                 default:
                     comparisonMatch = true;
                     break;
@@ -205,19 +386,17 @@ public class ConditionBuilder
             if (!string.IsNullOrEmpty(value))
             {
                 bool nameMatch = false;
-                // enemyStats.lastHitSkillData.name == value
                 if (skillData != null && skillData.skillName == value)
                 {
                     nameMatch = true;
                 }
-                // enemy의 캐릭터 이름 비교
                 if (!nameMatch && enemy != null && enemy.name == value)
                 {
                     nameMatch = true;
                 }
                 if (!nameMatch) return false;
             }
-            
+
             return true;
         });
     }

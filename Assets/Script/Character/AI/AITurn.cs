@@ -57,7 +57,7 @@ public class AITurn : MonoBehaviour
             AIturnEnd = false; // AI 턴 종료 상태 초기화
             if (turnTimer >= turntime)
             {
-                EventManager.Instance.FinishTurn(true); // AI 턴 종료
+                EventManager.Instance.FinishTurn(); // AI 턴 종료
                 turnTimer = 0f;
                 AIturnEnd = true; // AI 턴 종료 상태 업데이트
             }

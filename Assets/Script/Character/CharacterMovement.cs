@@ -27,6 +27,9 @@ public class CharacterMovement : MonoBehaviour
     public bool isShowMoveHighlights;
     public SpriteRenderer spriteRenderer;
 
+    public ChRotation lookRotation; // 바라보는 방향
+    public GameObject lookRota;
+
     //SFD
     public SFDController SFD;
 
@@ -36,7 +39,7 @@ public class CharacterMovement : MonoBehaviour
         startPosition = transform.position;   // 초기 위치 설정
         CharacterSelection.selectedCharacterIndex = -1;
         SFD = SFDController.Instance;
-
+        lookRotation = CharacterStats.Instance.GetStats(gameObject).charRotation;
 
     }
     void Awake()
@@ -181,36 +184,52 @@ public class CharacterMovement : MonoBehaviour
                 {
                     if (!StoryManager.instance.moveLock)
                     {
-                        if (Input.GetKey(KeyCode.UpArrow) )
+                        if (Input.GetKeyDown(KeyCode.UpArrow))
+                        {
                             chosenDir = Vector3.forward;
-                        else if (Input.GetKey(KeyCode.DownArrow))
+                            lookRotation = ChRotation.up;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.DownArrow))
+                        {
                             chosenDir = Vector3.back;
-                        else if (Input.GetKey(KeyCode.LeftArrow))
+                            lookRotation = ChRotation.down;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                        {
                             chosenDir = Vector3.left;
-                        else if (Input.GetKey(KeyCode.RightArrow))
+                            lookRotation = ChRotation.left;
+                        }
+                        else if (Input.GetKeyDown(KeyCode.RightArrow))
+                        {
                             chosenDir = Vector3.right;
+                            lookRotation = ChRotation.right;
+                        }
                     }
                     else
                     {
-                        if (Input.GetKey(KeyCode.UpArrow) && SFD.moveUp && SFD.isSFD)
+                        if (Input.GetKeyDown(KeyCode.UpArrow) && SFD.moveUp && SFD.isSFD)
                         {
                             chosenDir = Vector3.forward;
                             SFD.isSFD = false;
+                            lookRotation =  ChRotation.up;
                         }
-                        else if (Input.GetKey(KeyCode.DownArrow) && SFD.moveDo)
+                        else if (Input.GetKeyDown(KeyCode.DownArrow) && SFD.moveDo)
                         {
                             chosenDir = Vector3.back;
                             SFD.isSFD = false;
+                            lookRotation =  ChRotation.down;
                         }
-                        else if (Input.GetKey(KeyCode.LeftArrow) && SFD.moveL)
+                        else if (Input.GetKeyDown(KeyCode.LeftArrow) && SFD.moveL)
                         {
                             chosenDir = Vector3.left;
                             SFD.isSFD = false;
+                            lookRotation = ChRotation.left;
                         }
-                        else if (Input.GetKey(KeyCode.RightArrow) && SFD.moveR)
+                        else if (Input.GetKeyDown(KeyCode.RightArrow) && SFD.moveR)
                         {
                             chosenDir = Vector3.right;
                             SFD.isSFD = false;
+                            lookRotation = ChRotation.right;
                         }
                     }
                 }
@@ -225,6 +244,17 @@ public class CharacterMovement : MonoBehaviour
                     Vector2Int nextTile = new Vector2Int(Mathf.RoundToInt(nextPos.x), Mathf.RoundToInt(nextPos.z));
                     if (!IsBlockedTile(nextTile))
                     {
+                        float targetZ = 0f;
+                        switch (lookRotation)
+                        {
+                            case ChRotation.up: targetZ = 0f; break;
+                            case ChRotation.down: targetZ = 180f; break;
+                            case ChRotation.left: targetZ = 90f; break;
+                            case ChRotation.right: targetZ = -90f; break;
+                        }
+
+                        lookRota.transform.localRotation = Quaternion.Euler(0f, 0f, targetZ);
+
                         targetPosition = new Vector3(nextTile.x, 0f, nextTile.y);
                         startPosition = transform.position;
                         moveCoroutine = StartCoroutine(MoveToTarget());

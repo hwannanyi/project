@@ -6,6 +6,18 @@ using Unity.VisualScripting;
 //using UnityEditor;
 using UnityEngine;
 
+public enum ChRotation
+{
+    right, left, up, down
+}
+
+public enum StatusType
+{
+    none,
+    risk5,
+    // 필요하면 확장: Poisoned, Sleep 등
+}
+
 
 [System.Serializable]
 public class Stats
@@ -22,6 +34,7 @@ public class Stats
     public int def;               // 방어력
     public int damage_Defense; // 받피감
     public int damage_Plus; //주피증
+    public bool rest;            // 휴식
 
     public int speed;             // 속도
     public int movespeed;         // 이속
@@ -29,7 +42,7 @@ public class Stats
     public int NowMoveCount;         // 이동가능횟수
     public int trun;              // 보유 턴
     public Vector3 charPosition;  // 현제위치
-    public Quaternion charRotation;  // 현재 방향
+    public ChRotation charRotation;  // 현재 방향
     public bool isdie;            // 죽음
     public Team team;             // 팀
     public bool summons;          // 소환수인가요?
@@ -66,6 +79,7 @@ public class Stats
     public SkillData lastHitSkillData; // 마지막 적중 스킬 데이터 저장
 
     public AIPattern aIPattern; // AI 패턴
+
     public void SetHighlight(bool isOn)
     {
         if (highlightEffect != null)
@@ -87,8 +101,24 @@ public class Stats
     public List<HoldEffect> holdGauge =new();
     public List<MashingEffect> keyMashing = new();
 
+
+
+    // 상태 관리용 컬렉션 (기절 등)
+    // 직렬화하지 않으려면 [NonSerialized] 추가 가능
+    [NonSerialized]
+    public HashSet<StatusType> statuses = new HashSet<StatusType>();
+
+    // 상태 조작/조회 유틸
+    public void AddStatus(StatusType status) => statuses.Add(status);
+    public void RemoveStatus(StatusType status) => statuses.Remove(status);
+    public bool HasStatus(StatusType status) => statuses.Contains(status);
+
+    public void ClearStatuses() => statuses.Clear();
+
+
     public Stats(Character data, bool die, List<SkillData> usingSkill)
     {
+        ClearStatuses();
         isPatternEnd = false;
 
         characterNumber = 0;
@@ -96,7 +126,7 @@ public class Stats
         maxhp = data.maxhp;
         hp = data.maxhp;
         shields = 0;
-        rage = data.rage;
+        rage = 0;
         risk = 0;
 
         atk = data.atk;
@@ -111,7 +141,7 @@ public class Stats
         trun = data.trun;
 
         this.charPosition = Vector3.zero;
-        this.charRotation = Quaternion.identity;
+        this.charRotation = ChRotation.right;
 
         isdie = die;
 
@@ -176,11 +206,46 @@ public class Stats
         //조건부분
 
         lastHitSkillData = null;
+
+
+}
+
+
+
+    public bool Rage_Overheat(){
+        return rage >= 5;
     }
 
-    public void Rage_Overheating()
+    //휴식
+    public void Rest(int i)
     {
-        damage_Defense = risk;
+        if(rest)
+        {
+            hp = hp + i > 10 ? 10 : hp + i;
+        }
+       
+    }
+
+    public void AddRage(bool defchar,int i)
+    {
+        if (defchar)
+            rage = rage >= 5 ? 5 : rage + i;
+    }
+
+    public void AddRisk(bool defchar,int i)
+    {
+        if (defchar)
+            risk = risk >= 5 ? 5 : risk + i;
+        else
+            risk = 0;
+        if (risk >= 5)
+        {
+            AddStatus(StatusType.risk5);
+            Debug.Log("리스크 5이상 상태 추가됨");
+        }
+        else
+            RemoveStatus(StatusType.risk5);
+
     }
 
     // 패링 코루틴
@@ -214,10 +279,11 @@ public class Stats
                 return false;
         }
     }
-    
 
-// 홀드시 모든 홀드 게이지가 줄어듬
-public void Hold()
+
+
+    // 홀드시 모든 홀드 게이지가 줄어듬
+    public void Hold()
 {
 
         for (int i = 0; i < holdGauge.Count; i++)
@@ -255,6 +321,7 @@ public void Mashing(int num)
     {
         return characterPrefab != null ? characterPrefab.transform : null;
     }
+
 
     [System.Serializable]
     public class Debuffa

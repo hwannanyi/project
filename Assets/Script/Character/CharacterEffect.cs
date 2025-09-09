@@ -61,7 +61,7 @@ public class CharacterEffect : MonoBehaviour
 
 
     // 턴 종료 시 버프의 trun 감소
-    private void OnTurnEnd(bool value)
+    private void OnTurnEnd()
     {
         foreach (var buff in character.buffEffects)
         {

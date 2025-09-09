@@ -160,6 +160,8 @@ public class SkillManager : MonoBehaviour
             return; // StoryManager를 못불려와도 모든입력무시
         }
 
+
+
         // 정지상태에서 사용해야할 스킬이 아니면 스킬 선택 취소(선택불가)
         if (Input.GetKeyDown(KeyCode.Q) && SFD.isSFD && !SFD.skillQ)
             return;
@@ -170,10 +172,20 @@ public class SkillManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R) && SFD.isSFD && !SFD.skillR)
             return;
 
+        bool rest = false;
+        try 
+        {
+            rest = characterSelection.selectedCharacter.rest; 
+        }
+        catch
+        {
+            rest = false;
+        }
+
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (turnManager.isPlayerTurn)
+            if (turnManager.isPlayerTurn && !rest)
             {
                 PrepareSkillCast(0, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 0)
                 StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
@@ -182,7 +194,7 @@ public class SkillManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            if (turnManager.isPlayerTurn)
+            if (turnManager.isPlayerTurn && !rest)
             {
                 PrepareSkillCast(1, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 1)
                 StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
@@ -200,10 +212,18 @@ public class SkillManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            if (turnManager.isPlayerTurn)
+            if (turnManager.isPlayerTurn && !rest)
             {
                 PrepareSkillCast(3, CharacterSelection.selectedCharacterIndex); // 1. 스킬 선택 (index 3)
                 StartCoroutine(SkillSelectLockCoroutine()); // 공격단계에서 스킬 선택 잠금
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            if (turnManager.isPlayerTurn)
+            {
+                characterSelection.selectedCharacter.rest = !characterSelection.selectedCharacter.rest; // 휴식모드
             }
         }
 
@@ -742,7 +762,7 @@ public class SkillManager : MonoBehaviour
         }
 
         
-        mouseWorldPos = AI ? Position : mouseWorldPos;
+        mouseWorldPos = AI ? Position + AIDirection : mouseWorldPos;
 
         // ② 방향 계산
         if (skill.targeting && selectedTargetUnit != null)
@@ -791,7 +811,8 @@ public class SkillManager : MonoBehaviour
             float range = skill.RangeAdjustment ? mousePlayerRange : skill.range;
 
             targetPosition = skill.projectile ?
-                skill.unlimitedRota ? startPosition + direction * range : startPosition + closestDirection * range 
+                skill.unlimitedRota ? startPosition + direction * range : 
+                startPosition + closestDirection * range 
                 : startPosition;
             targetPosition.y = 0f;
         }

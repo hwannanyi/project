@@ -27,12 +27,15 @@ public class CharacterUIManager : MonoBehaviour
     public GameObject skillhight;
     private RectTransform skillHightRect;
     private List<RectTransform> skillSlotRects;
-/*
-    [Header("이동")]
-    public Sprite MoveCount1;
-    public Sprite MoveCount2;
-    public List<Image> MoveCount;*/
+    /*
+        [Header("이동")]
+        public Sprite MoveCount1;
+        public Sprite MoveCount2;
+        public List<Image> MoveCount;*/
 
+    [Header("과열")]
+    public List<Image> RageCount;
+    public List<Image> RiskCount;
 
     [Header("이동")]
     public Image hpBar; // Fill Amount 방식
@@ -42,6 +45,8 @@ public class CharacterUIManager : MonoBehaviour
 
     [Header("미니프로필")]
     public List<MiniprofileUIManager> miniprofileUIManagers;
+
+    public TurnManager turnManager; // 턴 매니저
 
     void Awake()
     {
@@ -53,6 +58,20 @@ public class CharacterUIManager : MonoBehaviour
         skillSlotImages = new List<Image>();
         foreach (var go in characterProfileSkillListUI)
             skillSlotImages.Add(go.GetComponent<Image>());
+    }
+
+    public void OnEnable()
+    {
+        turnManager.OnTurnChanged -= UpdateRageCount;
+        turnManager.OnTurnChanged -= UpdateRiskCount;
+        turnManager.OnTurnChanged += UpdateRageCount;
+        turnManager.OnTurnChanged += UpdateRiskCount;
+    }
+
+    public void Destroy()
+    {
+        turnManager.OnTurnChanged -= UpdateRageCount;
+        turnManager.OnTurnChanged -= UpdateRiskCount;
     }
 
     public void UpdateCharacterProfile(Stats character)
@@ -84,7 +103,7 @@ public class CharacterUIManager : MonoBehaviour
             // 해당 슬롯에 스킬이 존재하는 경우
             if (character.usingSkill.Count > index && character.usingSkill[index].skillName != null)
             {
-                var skill = character.usingSkill[index];
+                SkillData skill = character.usingSkill[index];
                 skillImage.sprite = skill.skillIcon; // 스킬 아이콘 표시
                 skillImage.color = skill.colldownTime > 0 ? cooldownColor : normalColor; // 쿨타임 색상 처리
 
@@ -100,6 +119,7 @@ public class CharacterUIManager : MonoBehaviour
                 if (!playerturn)
                 {
                     skillImage.color = index == 2 ? nompdownColor : Color.gray;
+
                 }
 
                 if (index == 2 && playerturn)
@@ -107,7 +127,11 @@ public class CharacterUIManager : MonoBehaviour
                     skillImage.color = Color.gray;
                 }
 
-                
+
+                if (character.rest)
+                {
+                    skillImage.color = new Color(50,50,50);
+                }
             }
             else // 스킬이 없는 슬롯
             {
@@ -131,24 +155,62 @@ public class CharacterUIManager : MonoBehaviour
             skillHightRect.anchoredPosition = skillSlotRects[skillIndex].anchoredPosition;
     }
 
-/*    public void UpdateMoveCount(int moveCount)
+    /*    public void UpdateMoveCount(int moveCount)
+        {
+            // 모든 MoveCount 이미지 비활성화
+            foreach (var countImage in MoveCount)
+            {
+                countImage.enabled = false;
+            }
+
+            // 이동 횟수에 해당하는 이미지까지 모두 활성화
+            if (moveCount >= 1 && moveCount <= MoveCount.Count)
+            {
+                for (int i = 0; i < moveCount; i++)
+                {
+                    MoveCount[i].enabled = true;
+                }
+            }
+        }
+    */
+
+    public void UpdateRageCount(Stats ch)
     {
         // 모든 MoveCount 이미지 비활성화
-        foreach (var countImage in MoveCount)
+        foreach (var countImage in RageCount)
         {
             countImage.enabled = false;
         }
-
+        int idx = ch.rage;
         // 이동 횟수에 해당하는 이미지까지 모두 활성화
-        if (moveCount >= 1 && moveCount <= MoveCount.Count)
+        if (idx >= 1 && idx <= RageCount.Count)
         {
-            for (int i = 0; i < moveCount; i++)
+            for (int i = 0; i < idx; i++)
             {
-                MoveCount[i].enabled = true;
+                RageCount[i].enabled = true;
             }
         }
     }
-*/
+
+    public void UpdateRiskCount(Stats ch)
+    {
+        // 모든 MoveCount 이미지 비활성화
+        foreach (var countImage in RiskCount)
+        {
+            countImage.enabled = false;
+        }
+        int idx = ch.risk;
+        // 이동 횟수에 해당하는 이미지까지 모두 활성화
+        if (idx >= 1 && idx <= RiskCount.Count)
+        {
+            for (int i = 0; i < idx; i++)
+            {
+                RiskCount[i].enabled = true;
+            }
+        }
+    }
+
+
     public void ProfileUpdate(Stats character, bool playerturn)
     {
         UpdateCharacterProfile(character);

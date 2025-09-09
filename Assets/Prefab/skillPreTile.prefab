@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_Sprite: {fileID: 21300000, guid: 4fd18ce22bbfb6e4dbe98cda9d8735da, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.65882355}
+  m_Color: {r: 0.7264151, g: 0.01027944, b: 0.01027944, a: 0.5803922}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -172,7 +172,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 4
   m_Sprite: {fileID: 21300000, guid: 4fd18ce22bbfb6e4dbe98cda9d8735da, type: 3}
-  m_Color: {r: 0.7264151, g: 0.1545324, b: 0.14733891, a: 0.6666667}
+  m_Color: {r: 0.9150943, g: 0.88842493, b: 0.30647027, a: 0.57254905}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -335,12 +335,10 @@ MonoBehaviour:
     actionsNumber: 0
     skillNumber: 0
     skillCumulative: 0
-    cost:
-      keys: 
-      values: 
-    currentcost:
-      keys: 
-      values: 
+    rageCost: 0
+    hpCost: 0
+    rageCost_bas: 0
+    hpCost_bas: 0
     startSkillPosition: 0
     XstartSkillPosition: 0
     YstartSkillPosition: 0
@@ -376,9 +374,6 @@ MonoBehaviour:
     hitSpeed: 0
     hitEffects: []
     conditionalEffects: []
-    react: 0
-    isreactSkill: 0
-    reactTime: 0
     skillCastCode: 0
     gurd:
       time: 0
@@ -389,6 +384,25 @@ MonoBehaviour:
     SFDtype: 0
     SFDtime: 0
     skillPreviewStop: 0
+    patternType: 0
+    ammo_circle: 0
+    radius_circle: 0
+    isRadius_tracking_circle: 0
+    delayTime_circle: 0
+    position_circle: {x: 0, y: 0, z: 0}
+    isPosition_tracking_circle: 0
+    count_circle: 0
+    isRandom_circle: 0
+    ammo_straight: 0
+    interval_straight: 0
+    direction_straight: {x: 0, y: 0}
+    radius_straight: 0
+    isRadius_tracking_straight: 0
+    delayTime_straight: 0
+    position_straight: {x: 0, y: 0, z: 0}
+    isPosition_tracking_straight: 0
+    count_straight: 0
+    isRandom_straight: 0
   targetPosition: {x: 0, y: 0, z: 0}
   casterObj: {fileID: 0}
   caster:
@@ -397,19 +411,19 @@ MonoBehaviour:
     maxhp: 0
     hp: 0
     shields: 0
-    maxmp: 0
-    mp: 0
+    rage: 0
+    risk: 0
     atk: 0
     def: 0
-    damageReduction: 0
-    damageIncreased: 0
+    damage_Defense: 0
+    damage_Plus: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -516,12 +530,10 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
-      cost:
-        keys: 
-        values: 
-      currentcost:
-        keys: 
-        values: 
+      rageCost: 0
+      hpCost: 0
+      rageCost_bas: 0
+      hpCost_bas: 0
       startSkillPosition: 0
       XstartSkillPosition: 0
       YstartSkillPosition: 0
@@ -557,9 +569,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -570,6 +579,27 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0

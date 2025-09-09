@@ -238,7 +238,7 @@ public class PassiveSkillCast : MonoBehaviour
         if (EventManager.Instance != null)
             EventManager.Instance.TurnEnd -= OnTurnEnd;
     }
-    private void OnTurnEnd(bool value)
+    private void OnTurnEnd()
     {
 /*        var manager = CharacterStats.Instance;
         var character = manager.GetStats(gameObject);

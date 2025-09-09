@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d224440329b07543ba63fea5671617e, type: 3}
-  m_Name: 1stage
+  m_Name: Stage2
   m_EditorClassIdentifier: 
   skillQueue:
   - skillQueue: []
@@ -608,12 +608,23 @@ MonoBehaviour:
       target: 0
   skillCondition: []
   patterns:
-  - pattern: []
   - pattern:
-    - {fileID: 0}
-    - {fileID: 11400000, guid: 84c782bbb7ac45e41ba9e29f91f320e3, type: 2}
-    - {fileID: 0}
-    - {fileID: 11400000, guid: 6e5f64749858bd746b10dc1985426d50, type: 2}
-  - pattern: []
+    - {fileID: 11400000, guid: 307cc0cbd868e9e45b6c4b1e5e8ae659, type: 2}
   - pattern:
-    - {fileID: 11400000, guid: 84c782bbb7ac45e41ba9e29f91f320e3, type: 2}
+    - {fileID: 11400000, guid: 9c4240abfe8a6e642bccc8dc58ea1246, type: 2}
+    - {fileID: 11400000, guid: 56579fce367374444989fdd202ecb625, type: 2}
+    - {fileID: 11400000, guid: e975d3b1be60ca541830d18b2858b87b, type: 2}
+    - {fileID: 11400000, guid: d82bd12e3ea798c47b4aefa422de5b19, type: 2}
+    - {fileID: 11400000, guid: 9c4240abfe8a6e642bccc8dc58ea1246, type: 2}
+    - {fileID: 11400000, guid: 832efbab21aa0184b8720fc22ef4c510, type: 2}
+    - {fileID: 11400000, guid: 56579fce367374444989fdd202ecb625, type: 2}
+    - {fileID: 11400000, guid: d82bd12e3ea798c47b4aefa422de5b19, type: 2}
+    - {fileID: 11400000, guid: e975d3b1be60ca541830d18b2858b87b, type: 2}
+    - {fileID: 11400000, guid: 9c4240abfe8a6e642bccc8dc58ea1246, type: 2}
+    - {fileID: 11400000, guid: 832efbab21aa0184b8720fc22ef4c510, type: 2}
+    - {fileID: 11400000, guid: 56579fce367374444989fdd202ecb625, type: 2}
+  - pattern:
+    - {fileID: 11400000, guid: 307cc0cbd868e9e45b6c4b1e5e8ae659, type: 2}
+  - pattern:
+    - {fileID: 11400000, guid: 40cc77e8e615db1448072ce2dd373296, type: 2}
+  isRandomPattern: 0

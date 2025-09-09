@@ -12,7 +12,8 @@ public enum StartSkillPosition
 public enum projectileType
 { straight, throwtype }
 public enum Target
-{ self, team, enemy, all, spTarget, mySkill}
+{ self, team, enemy, all, spTarget, mySkill,
+defchar}
 
 public enum TargetUnit
 {
@@ -84,7 +85,12 @@ public struct AoeInfo
     public Vector2 size;      // 크기 (x, y)
     public Vector2 position;  // 위치 (x, y)
 }
-
+public enum PatternType
+{
+    circle,
+    straight,
+    repeat,
+}
 [System.Serializable]
 [CreateAssetMenu(fileName = "Skill", menuName = "Scriptable Objects/Skill")]
 public class Skill : ScriptableObject
@@ -110,10 +116,8 @@ public class Skill : ScriptableObject
     [Header("스킬로 생성되는 소환수")]
     public Character summonCharacter; // 소환수 캐릭터 (예: 소환수, 함정 등)
 
-    [Header("스킬의 갯수")]
-    public int actionsNumber = 1; // 스킬 행동 개수 (기본 1)
-    public int skillNumber = 1;   // 스킬의 갯수 (변형 가능)
-    public int skillCumulative = 1; // 최대 충전 횟수 (기본 1)
+
+
 
     [Header("코스트")]
     public int rageCost = 0; // 코스트
@@ -164,6 +168,34 @@ public class Skill : ScriptableObject
     [Header("적중시 효과")]
     public List<HitEffectEntry> hitEffects;
 
+    [Header("패턴유형")]
+    public PatternType patternType;
+
+    [Header("circle")]
+    public int ammo_circle;
+    public float radius_circle;
+    public bool isRadius_tracking_circle;
+    public float delayTime_circle;
+    public Vector3 position_circle;
+    public bool isPosition_tracking_circle;
+    public int count_circle;
+    public bool isRandom_circle;
+
+    [Header("straight")]
+    public int ammo_straight; // 발사체 수
+    public int interval_straight; // 발사 간격
+    public Vector2 direction_straight; // 발사 방향
+    public float radius_straight; // 발사 반경
+    public bool isRadius_tracking_straight; // 반경 추적 여부
+    public float delayTime_straight; // 발사 지연 시간
+    public Vector3 position_straight; // 발사 위치
+    public bool isPosition_tracking_straight; // 위치 추적 여부
+    public int count_straight; // 반복 횟수
+    public bool isRandom_straight; // 랜덤 여부
+
+
+
+
     [Header("가드 정보")]
     public Gurd gurd; //가드 정보
 
@@ -182,6 +214,7 @@ public class Skill : ScriptableObject
     public bool skillPreviewStop = false; // 스킬 시전 전에 정지
 }
 public enum SFDType { none, moveUp, moveDo, moveUpDo, skillE }
+
 
 [System.Serializable]
 public class HoldEffect

@@ -38,6 +38,11 @@ public class Pattern : ScriptableObject
 
     [Header("repeat")]
     public List<SkillQueue> skill_repeat;
-    public int count_repeat;
+    public int count_repeat = 1;
     public bool isRandom_repeat;
+
+    [Header("조건")]
+    public bool useCond; // 조건 사용 여부
+    public Condition condition; // 조건
+    public StatusType statusType; // 상태 유형
 }

@@ -17,13 +17,13 @@ public class EventManager : MonoBehaviour
 
     }
 
-    public delegate void SignalEvent(bool value);
+    public delegate void SignalEvent();
     public event SignalEvent TurnEnd;
 
     public delegate void SignalUseSkill(bool value);
     //public event SignalUseSkill Useskill;
 
-    public void FinishTurn(bool value)
+    public void FinishTurn()
     {
         
         try
@@ -37,7 +37,7 @@ public class EventManager : MonoBehaviour
             return; // StoryManager를 못불려와도 모든입력무시
         }
 
-        TurnEnd?.Invoke(value);
+        TurnEnd?.Invoke();
     }
 
     public void Update()
@@ -45,7 +45,7 @@ public class EventManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Return) && turnManager.isPlayerTurn) 
         {
-            FinishTurn(true);
+            FinishTurn();
         }
     }
 }

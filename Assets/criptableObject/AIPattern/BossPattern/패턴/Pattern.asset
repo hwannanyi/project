@@ -31,6 +31,272 @@ MonoBehaviour:
   isPosition_tracking_straight: 0
   count_straight: 0
   isRandom_straight: 0
-  skill_repeat: []
-  count_repeat: 0
+  skill_repeat:
+  - skill: {fileID: 11400000, guid: dfa00a7ae5001754fbd63660a114a15a, type: 2}
+    currentIndex: 5
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0
+    isCastingNotCast: 0
+    coordinate: {x: 3, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 2
+    targetTypeY: 2
+    RotationType: 0
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: dfa00a7ae5001754fbd63660a114a15a, type: 2}
+    currentIndex: 5
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0
+    isCastingNotCast: 0
+    coordinate: {x: 0, y: 0, z: 3}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 2
+    targetTypeY: 2
+    RotationType: 0
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: dfa00a7ae5001754fbd63660a114a15a, type: 2}
+    currentIndex: 5
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0
+    isCastingNotCast: 0
+    coordinate: {x: 0, y: 0, z: 3}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 2
+    targetTypeY: 2
+    RotationType: 0
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: dfa00a7ae5001754fbd63660a114a15a, type: 2}
+    currentIndex: 5
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0
+    isCastingNotCast: 0
+    coordinate: {x: -3, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 2
+    targetTypeY: 2
+    RotationType: 0
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: dfa00a7ae5001754fbd63660a114a15a, type: 2}
+    currentIndex: 5
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0
+    isCastingNotCast: 0
+    coordinate: {x: 0, y: 0, z: -3}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 2
+    targetTypeY: 2
+    RotationType: 0
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: 3607d18238a71a84d9c90531c620524a, type: 2}
+    currentIndex: 0
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0.1
+    isCastingNotCast: 0
+    coordinate: {x: 3, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 2
+    targetTypeY: 2
+    RotationType: 1
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: 79cdc5c507e1c8041912fcd37ee6b515, type: 2}
+    currentIndex: 0
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0.1
+    isCastingNotCast: 0
+    coordinate: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 2
+    targetTypeY: 2
+    RotationType: 1
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: 3607d18238a71a84d9c90531c620524a, type: 2}
+    currentIndex: 0
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0.1
+    isCastingNotCast: 0
+    coordinate: {x: 0, y: 0, z: 3}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 2
+    targetTypeY: 2
+    RotationType: 1
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: 79cdc5c507e1c8041912fcd37ee6b515, type: 2}
+    currentIndex: 0
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0.1
+    isCastingNotCast: 0
+    coordinate: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 2
+    targetTypeY: 2
+    RotationType: 1
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: 3607d18238a71a84d9c90531c620524a, type: 2}
+    currentIndex: 0
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0.1
+    isCastingNotCast: 0
+    coordinate: {x: -3, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 2
+    targetTypeY: 2
+    RotationType: 1
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: 79cdc5c507e1c8041912fcd37ee6b515, type: 2}
+    currentIndex: 0
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0.1
+    isCastingNotCast: 0
+    coordinate: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 2
+    targetTypeY: 2
+    RotationType: 1
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: 3607d18238a71a84d9c90531c620524a, type: 2}
+    currentIndex: 0
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0.1
+    isCastingNotCast: 0
+    coordinate: {x: 0, y: 0, z: -3}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 2
+    targetTypeY: 2
+    RotationType: 1
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: 3607d18238a71a84d9c90531c620524a, type: 2}
+    currentIndex: 0
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0.1
+    isCastingNotCast: 1
+    coordinate: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 0
+    targetTypeY: 0
+    RotationType: 1
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  - skill: {fileID: 11400000, guid: 3607d18238a71a84d9c90531c620524a, type: 2}
+    currentIndex: 0
+    condition:
+      isactive: 0
+      target: 0
+      type: 0
+      comparison: 0
+      value: 0
+    delay: 0.1
+    isCastingNotCast: 1
+    coordinate: {x: 0, y: 0, z: 0}
+    Rotation: {x: 0, y: 0, z: 0}
+    targetTypeX: 0
+    targetTypeY: 0
+    RotationType: 1
+    Designation: 0
+    reverse_order: 0
+    index: 0
+    target: 0
+  count_repeat: 1
   isRandom_repeat: 0

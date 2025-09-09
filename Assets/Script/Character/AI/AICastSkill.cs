@@ -14,6 +14,7 @@ public class AICastSkill : MonoBehaviour
 
     public bool SkillCasting = false; // 스킬 시전 중인지 여부'
     public bool skillCastLock = false; //다음 스킬 시전 잠금
+    public List<SkillQueue> patternsQueue; //패턴 스킬큐
 
     private Coroutine skillCoroutine = null;
 
@@ -22,6 +23,14 @@ public class AICastSkill : MonoBehaviour
     {
 
     }
+
+    public void Start()
+    {
+        turnManager = TurnManager.Instance;
+        skillManager = SkillManager.Instance;
+        patternsQueue = new List<SkillQueue>();
+    }
+
     void OnEnable()
     {
         EventManager.Instance.TurnEnd -= OnTurnEnd; // 혹시 남아있을 구독 제거
@@ -35,22 +44,69 @@ public class AICastSkill : MonoBehaviour
         if (EventManager.Instance != null)
             EventManager.Instance.TurnEnd -= OnTurnEnd;
     }
-    private void OnTurnEnd(bool value)
+    private void OnTurnEnd()
     {
         if (!gameObject.activeInHierarchy) return;
 
         CharacterStats manager = CharacterStats.Instance;
         Stats character = manager.GetStats(gameObject);
-        if (character.aIPattern.skillQueueList == null)
+
+        if (character.aIPattern.patterns == null)
+            return;
+
+        int patternCount = (turnManager.Turn) % character.aIPattern.patterns.Count == 0 ?
+        character.aIPattern.patterns.Count - 1 : (turnManager.Turn) % character.aIPattern.patterns.Count - 1;
+
+        if (character.aIPattern.patterns[patternCount] == null)
+            return;
+
+        List<SkillQueue> patterns = new List<SkillQueue>();
+        for (int i = 0; i < character.aIPattern.patterns[patternCount].Count; i++)
+        {
+            Debug.Log(character.aIPattern.patterns[patternCount][i].statusType);
+            Debug.Log(AnyEnemyHasStatus(character, character.aIPattern.patterns[patternCount][i].statusType));
+
+            if (AnyEnemyHasStatus(character, character.aIPattern.patterns[patternCount][i].statusType)
+                || (character.aIPattern.patterns[patternCount][i].statusType == StatusType.none))
+            {
+                for (int j = 0; j < character.aIPattern.patterns[patternCount][i].count_repeat; j++)
+                {
+
+                    patterns.AddRange(character.aIPattern.patterns[patternCount][i].skill_repeat);
+                }
+            }
+        }
+
+        patternsQueue = patterns == null ? null : new List<SkillQueue>(patterns);
+
+        if (patternsQueue == null)
             return;
 
         if(skillCoroutine != null)
         {
-            StopAllCoroutines();
+            StopCoroutine(OnTurnEndCoroutine());
         }
         skillCoroutine = StartCoroutine(OnTurnEndCoroutine());
 
         //character.isPatternEnd = true; // 패턴 종료 상태로 설정
+    }
+    //랜덤섞기
+    private List<int> ShuffleIndices(int count, int? seed = null)
+    {
+        var indices = Enumerable.Range(0, count).ToList();
+        if (indices.Count <= 1) return indices;
+
+        System.Random rng = seed.HasValue ? new System.Random(seed.Value) : new System.Random();
+
+        // Fisher-Yates
+        for (int k = indices.Count - 1; k > 0; k--)
+        {
+            int r = rng.Next(k + 1);
+            int tmp = indices[k];
+            indices[k] = indices[r];
+            indices[r] = tmp;
+        }
+        return indices;
     }
 
     public void OnDisable()
@@ -63,18 +119,17 @@ public class AICastSkill : MonoBehaviour
 
     private IEnumerator OnTurnEndCoroutine()
     {
-        TurnManager turnManager = TurnManager.Instance;
-        SkillManager skillManager = SkillManager.Instance;
+        
 
         CharacterStats manager = CharacterStats.Instance;
         Stats character = manager.GetStats(gameObject);
         character.isPatternEnd = false;
 
-        if (character.aIPattern.skillQueueList == null || character.aIPattern.skillQueueList.Count == 0)
+/*        if (character.aIPattern.skillQueueList == null || character.aIPattern.skillQueueList.Count == 0)
         {
             character.isPatternEnd = true; // 패턴 종료 상태로 설정
             yield break;
-        }
+        }*/
 
         if (character.usingSkill == null)
         {
@@ -82,22 +137,19 @@ public class AICastSkill : MonoBehaviour
             yield break;
         }
 
-        int patternCount = (turnManager.Turn) % character.aIPattern.skillQueueList.Count == 0 ? 
-            character.aIPattern.skillQueueList.Count - 1 : (turnManager.Turn) % character.aIPattern.skillQueueList.Count - 1;
 
-        Debug.Log(patternCount);
-        if (character.aIPattern.skillQueueList == null ||
+/*        if (character.aIPattern.skillQueueList == null ||
         character.aIPattern.skillQueueList.Count <= 1 ||
         character.aIPattern.skillQueueList[patternCount] == null)
         {
             character.isPatternEnd = true; // 패턴 종료 상태로 설정
             yield break;
-        }
+        }*/
 
-        for (int i = 0; i < character.aIPattern.skillQueueList[patternCount].Count; i++)
+        for (int i = 0; i < patternsQueue.Count; i++)
         {
 
-            var pattern = character.aIPattern.skillQueueList[patternCount][i];
+            var pattern = patternsQueue[i];
             if (pattern.skill == null) continue;
 
             // 일정턴이 되어야 스킬 발동
@@ -129,7 +181,10 @@ public class AICastSkill : MonoBehaviour
                 if (target == character)
                     continue; // 대상이 자기인 경우 종료
 
+            if (pattern.delay > 0)
+            {
                 yield return new WaitForSeconds(pattern.delay);
+            }
                     int index = character.usingSkill.FindIndex(x => x.skillName == pattern.skill.skillName);
 
                 //CharacterSelection.Instance.SelectCharacter2P(character.characterNumber);
@@ -140,8 +195,8 @@ public class AICastSkill : MonoBehaviour
                 switch(pattern.RotationType) // 방향 방식에 따라 방향 지정
                 {
                     case Rotation.none:
-                        rotatoin = Vector3.zero;
-                        break;
+                        rotatoin = pattern.Rotation;
+                    break;
                     case Rotation.self:
                         rotatoin = pattern.Rotation;
                         break;
@@ -157,7 +212,7 @@ public class AICastSkill : MonoBehaviour
                 switch (pattern.targetTypeX) // X축 타겟팅 방식에 따라 위치 지정
                 {
                     case TargetTypeX.none:
-                        targetPositionX = (pattern.coordinate).x;
+                        targetPositionX = 0;
                         break;
                     case TargetTypeX.self:
                         targetPositionX = character.charPosition.x + (pattern.coordinate).x; // 자기 위치
@@ -175,7 +230,7 @@ public class AICastSkill : MonoBehaviour
                 switch (pattern.targetTypeY) // Y축 타겟팅 방식에 따라 위치 지정
                 {
                     case TargetTypeY.none:
-                        targetPositionY = (pattern.coordinate).z;
+                        targetPositionY = 0;
                         break;
                     case TargetTypeY.self:
                         targetPositionY = character.charPosition.z + (pattern.coordinate).z; // 자기 위치
@@ -239,6 +294,7 @@ public class AICastSkill : MonoBehaviour
             
         }
         character.isPatternEnd = true; // 패턴 종료 상태로 설정
+        patternsQueue = new List<SkillQueue>();
     }
 
     public Vector3 GetClosestCharacterPosition(Stats GetClosestCharacter)
@@ -318,5 +374,36 @@ public class AICastSkill : MonoBehaviour
             .Build();
 
         return cond(casterStats, targetStats, null, Team.team);
+    }
+
+
+
+
+    ///////////////////////////////////////////////////////////
+
+    public void ConditionPattern(Stats ch)
+    {
+
+
+
+    }
+
+    public bool AnyEnemyHasStatus(Stats self, StatusType status)
+    {
+        var manager = CharacterStats.Instance;
+        if (manager == null) return false;
+
+        var list = manager.characterList;
+        if (list == null) return false;
+
+        foreach (var s in list)
+        {
+            if (s == null) continue;
+            if (s.isdie) continue;           // 죽은 캐릭터 무시
+            if (s.team == self.team) continue; // 같은 팀이면 무시 (적만 검사)
+            if (s.HasStatus(status)) return true;
+        }
+
+        return false;
     }
 }

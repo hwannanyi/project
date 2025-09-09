@@ -123,8 +123,9 @@ public class CharacterSelection : MonoBehaviour
                 selectedCharacter = characterStats.characterList[selectedCharacterIndex];
 
              OnCharacterSelected(index);
-                //characterUIManager.ProfileUIOn();
-                characterUIManager.UpdateProfileUIBySelection();
+                characterUIManager.UpdateRageCount(selectedCharacter);
+            characterUIManager.UpdateRiskCount(selectedCharacter);
+            characterUIManager.UpdateProfileUIBySelection();
                 characterUIManager.SelectionMiniprofileUI(selectedCharacterIndex);
                 //Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");
 

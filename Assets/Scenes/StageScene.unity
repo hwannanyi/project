@@ -10772,7 +10772,7 @@ Transform:
   m_GameObject: {fileID: 8874596}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -2, y: 0, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -10852,13 +10852,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 11956256}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 381591437}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 99.71232, y: 14.599999}
@@ -10877,14 +10877,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.97649056, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d58a47556b8aacd4abf56e96d0b65ec0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12078,13 +12078,14 @@ MonoBehaviour:
     def: 0
     damage_Defense: 0
     damage_Plus: 0
+    rest: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -12230,9 +12231,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -12243,6 +12241,27 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12260,13 +12279,14 @@ MonoBehaviour:
     def: 0
     damage_Defense: 0
     damage_Plus: 0
+    rest: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -12412,9 +12432,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -12425,6 +12442,27 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12462,13 +12500,14 @@ MonoBehaviour:
     def: 0
     damage_Defense: 0
     damage_Plus: 0
+    rest: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -12614,9 +12653,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -12627,6 +12663,27 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12840,9 +12897,6 @@ MonoBehaviour:
     hitSpeed: 0
     hitEffects: []
     conditionalEffects: []
-    react: 0
-    isreactSkill: 0
-    reactTime: 0
     skillCastCode: 0
     gurd:
       time: 0
@@ -12853,6 +12907,25 @@ MonoBehaviour:
     SFDtype: 0
     SFDtime: 0
     skillPreviewStop: 0
+    patternType: 0
+    ammo_circle: 0
+    radius_circle: 0
+    isRadius_tracking_circle: 0
+    delayTime_circle: 0
+    position_circle: {x: 0, y: 0, z: 0}
+    isPosition_tracking_circle: 0
+    count_circle: 0
+    isRandom_circle: 0
+    ammo_straight: 0
+    interval_straight: 0
+    direction_straight: {x: 0, y: 0}
+    radius_straight: 0
+    isRadius_tracking_straight: 0
+    delayTime_straight: 0
+    position_straight: {x: 0, y: 0, z: 0}
+    isPosition_tracking_straight: 0
+    count_straight: 0
+    isRandom_straight: 0
   selectedCaster: {fileID: 0}
   selectedCharacter:
     characterNumber: 0
@@ -12866,13 +12939,14 @@ MonoBehaviour:
     def: 0
     damage_Defense: 0
     damage_Plus: 0
+    rest: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -13018,9 +13092,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -13031,6 +13102,27 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -13064,13 +13156,14 @@ MonoBehaviour:
     def: 0
     damage_Defense: 0
     damage_Plus: 0
+    rest: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -13216,9 +13309,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -13229,6 +13319,27 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -13398,9 +13509,6 @@ MonoBehaviour:
     hitSpeed: 0
     hitEffects: []
     conditionalEffects: []
-    react: 0
-    isreactSkill: 0
-    reactTime: 0
     skillCastCode: 0
     gurd:
       time: 0
@@ -13411,6 +13519,25 @@ MonoBehaviour:
     SFDtype: 0
     SFDtime: 0
     skillPreviewStop: 0
+    patternType: 0
+    ammo_circle: 0
+    radius_circle: 0
+    isRadius_tracking_circle: 0
+    delayTime_circle: 0
+    position_circle: {x: 0, y: 0, z: 0}
+    isPosition_tracking_circle: 0
+    count_circle: 0
+    isRandom_circle: 0
+    ammo_straight: 0
+    interval_straight: 0
+    direction_straight: {x: 0, y: 0}
+    radius_straight: 0
+    isRadius_tracking_straight: 0
+    delayTime_straight: 0
+    position_straight: {x: 0, y: 0, z: 0}
+    isPosition_tracking_straight: 0
+    count_straight: 0
+    isRandom_straight: 0
   debugStart: {x: 0, y: 0, z: 0}
   debugTarget: {x: 0, y: 0, z: 0}
   debugAOECenter: {x: 0, y: 0, z: 0}
@@ -13490,13 +13617,14 @@ MonoBehaviour:
     def: 0
     damage_Defense: 0
     damage_Plus: 0
+    rest: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -13642,9 +13770,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -13655,6 +13780,27 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -21452,13 +21598,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 329170854}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1876964808}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 99.71232, y: 14.599999}
@@ -21477,14 +21623,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7924528, g: 0.14578143, b: 0.17465012, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d58a47556b8aacd4abf56e96d0b65ec0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -21711,13 +21857,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 338783916}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1876964808}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 64.71232, y: 14.599999}
@@ -21736,14 +21882,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7924528, g: 0.14578143, b: 0.17465012, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d58a47556b8aacd4abf56e96d0b65ec0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -29963,13 +30109,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 640894987}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 381591437}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 29.71232, y: 14.6}
@@ -29988,14 +30134,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.97649056, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d58a47556b8aacd4abf56e96d0b65ec0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -30746,13 +30892,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 708935477}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1876964808}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 169.71236, y: 14.599999}
@@ -30771,14 +30917,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7924528, g: 0.14578143, b: 0.17465012, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d58a47556b8aacd4abf56e96d0b65ec0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -32596,6 +32742,18 @@ MonoBehaviour:
   cooldownColor: {r: 0.21542363, g: 0.91134155, b: 0.9716981, a: 1}
   nompdownColor: {r: 0.032440357, g: 0.18245633, b: 0.764151, a: 1}
   skillhight: {fileID: 1510391217}
+  RageCount:
+  - {fileID: 640894989}
+  - {fileID: 793126247}
+  - {fileID: 11956258}
+  - {fileID: 887747180}
+  - {fileID: 1442928908}
+  RiskCount:
+  - {fileID: 891818954}
+  - {fileID: 338783918}
+  - {fileID: 329170856}
+  - {fileID: 1224897050}
+  - {fileID: 708935479}
   hpBar: {fileID: 1401323425}
   mpBar: {fileID: 0}
   hpText: {fileID: 1365097830}
@@ -32605,6 +32763,7 @@ MonoBehaviour:
   - {fileID: 915938601}
   - {fileID: 1713399449}
   - {fileID: 1046355451}
+  turnManager: {fileID: 62703694}
 --- !u!114 &781908733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33051,13 +33210,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 793126245}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 381591437}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 64.71232, y: 14.599999}
@@ -33076,14 +33235,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.97649056, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d58a47556b8aacd4abf56e96d0b65ec0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -35246,13 +35405,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 887747178}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 381591437}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 134.71233, y: 14.599999}
@@ -35271,14 +35430,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.97649056, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d58a47556b8aacd4abf56e96d0b65ec0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -35321,13 +35480,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 891818952}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1876964808}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 29.71232, y: 14.6}
@@ -35346,14 +35505,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7924528, g: 0.14578143, b: 0.17465012, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d58a47556b8aacd4abf56e96d0b65ec0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -35876,13 +36035,14 @@ MonoBehaviour:
     def: 0
     damage_Defense: 0
     damage_Plus: 0
+    rest: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -36028,9 +36188,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -36041,6 +36198,27 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -37133,13 +37311,14 @@ MonoBehaviour:
     def: 0
     damage_Defense: 0
     damage_Plus: 0
+    rest: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -37285,9 +37464,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -37298,6 +37474,27 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -39299,13 +39496,14 @@ MonoBehaviour:
     def: 0
     damage_Defense: 0
     damage_Plus: 0
+    rest: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -39451,9 +39649,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -39464,6 +39659,27 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -42482,13 +42698,14 @@ MonoBehaviour:
     def: 0
     damage_Defense: 0
     damage_Plus: 0
+    rest: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -42634,9 +42851,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -42647,6 +42861,27 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -43210,13 +43445,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1224897048}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1876964808}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 134.71233, y: 14.599999}
@@ -43235,14 +43470,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.7924528, g: 0.14578143, b: 0.17465012, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d58a47556b8aacd4abf56e96d0b65ec0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -49838,13 +50073,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1442928906}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 381591437}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 169.71236, y: 14.599999}
@@ -49863,14 +50098,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 0.97649056, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 52df1cca955f35a439c052ec7840a63c, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d58a47556b8aacd4abf56e96d0b65ec0, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -56924,6 +57159,8 @@ MonoBehaviour:
   highlightPrefab: {fileID: 0}
   isShowMoveHighlights: 0
   spriteRenderer: {fileID: 0}
+  lookRotation: 0
+  lookRota: {fileID: 0}
   SFD: {fileID: 0}
 --- !u!212 &1672660646
 SpriteRenderer:
@@ -57741,13 +57978,14 @@ MonoBehaviour:
     def: 0
     damage_Defense: 0
     damage_Plus: 0
+    rest: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -57893,9 +58131,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -57906,6 +58141,27 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -64576,6 +64832,8 @@ MonoBehaviour:
   highlightPrefab: {fileID: 0}
   isShowMoveHighlights: 0
   spriteRenderer: {fileID: 0}
+  lookRotation: 0
+  lookRota: {fileID: 0}
   SFD: {fileID: 0}
 --- !u!212 &1930392186
 SpriteRenderer:

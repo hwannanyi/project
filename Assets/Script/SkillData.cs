@@ -100,6 +100,33 @@ public class SkillData
     public SFDType SFDtype = SFDType.none; // 정지해체 기준
     public float SFDtime = 0f; // 정지 선딜 시간
     public bool skillPreviewStop = false; // 스킬 시전 전에 정지
+
+
+    [Header("패턴유형")]
+    public PatternType patternType;
+
+    [Header("circle")]
+    public int ammo_circle;
+    public float radius_circle;
+    public bool isRadius_tracking_circle;
+    public float delayTime_circle;
+    public Vector3 position_circle;
+    public bool isPosition_tracking_circle;
+    public int count_circle;
+    public bool isRandom_circle;
+
+    [Header("straight")]
+    public int ammo_straight; // 발사체 수
+    public int interval_straight; // 발사 간격
+    public Vector2 direction_straight; // 발사 방향
+    public float radius_straight; // 발사 반경
+    public bool isRadius_tracking_straight; // 반경 추적 여부
+    public float delayTime_straight; // 발사 지연 시간
+    public Vector3 position_straight; // 발사 위치
+    public bool isPosition_tracking_straight; // 위치 추적 여부
+    public int count_straight; // 반복 횟수
+    public bool isRandom_straight; // 랜덤 여부
+
     public SkillData(Skill data, string characterName, int depth = 0)
     {
         if (data == null)
@@ -122,9 +149,6 @@ public class SkillData
         passive = data.passive;
         skillTypes = new List<skillType>(data.skillTypes);
         tooltip = data.tooltip;
-        actionsNumber = data.actionsNumber;
-        skillNumber = data.skillNumber;
-        skillCumulative = data.skillCumulative;
 
         rageCost = data.rageCost;
         hpCost = data.hpCost;
@@ -188,6 +212,29 @@ public class SkillData
 
 
         skillPreview = data.skillPreview; // 범위 표시 시간 제한
+
+        patternType = data.patternType;
+        // circle
+        ammo_circle = data.ammo_circle;
+        radius_circle = data.radius_circle;
+        isRadius_tracking_circle = data.isRadius_tracking_circle;
+        delayTime_circle = data.delayTime_circle;
+        position_circle = data.position_circle;
+        isPosition_tracking_circle = data.isPosition_tracking_circle;
+        count_circle = data.count_circle;
+        isRandom_circle = data.isRandom_circle;
+        // straight
+        ammo_straight = data.ammo_straight;
+        interval_straight = data.interval_straight;
+        direction_straight = data.direction_straight;
+        radius_straight = data.radius_straight;
+        isRadius_tracking_straight = data.isRadius_tracking_straight;
+        delayTime_straight = data.delayTime_straight;
+        position_straight = data.position_straight;
+        isPosition_tracking_straight = data.isPosition_tracking_straight;
+        count_straight = data.count_straight;
+        isRandom_straight = data.isRandom_straight;
+
 
         // 연계 스킬 데이터이 있으면 추가하고 없으면 null을 입력
         // AdditionalSkills
@@ -269,6 +316,8 @@ public class SkillData
                     //AdditionalSkills
                 }
             }
+
+
         }
 
         //정지연출

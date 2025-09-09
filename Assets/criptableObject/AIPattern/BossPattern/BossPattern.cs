@@ -34,13 +34,21 @@ public class BossPattern : ScriptableObject
 {
     [Header("스킬순서")]
     public List<DoubleList_SkillQueue> skillQueue; // 스킬 큐
-    public List<DoubleList_SkillCondition> skillCondition; //행에 들어갈 배열들
+    public List<PatternList> skillCondition; //행에 들어갈 배열들
+    public List<PatternList> patterns; //패턴
+    public bool isRandomPattern; //패턴 랜덤실행
 }
 
 [System.Serializable]
 public class DoubleList_SkillQueue
 {
     public List<SkillQueue> skillQueue; //행에 들어갈 배열들
+}
+
+[System.Serializable]
+public class PatternList
+{
+    public List<Pattern> pattern; //행에 들어갈 배열들
 }
 
 [System.Serializable]
@@ -92,13 +100,16 @@ public struct SkillQueue
 public struct SkillCondition
 {
     public Skill skill; //스킬
+    [Header("몇턴부터 사용함?")]
+    public int currentIndex; // 현재 인덱스
+
     [Header("스킬시전조건")]
     public Condition condition; // 현재 인덱스
+
     [Header("이전 스킬 사용후 현제스킬 사용까지의 시간")]
     public float delay; // 딜레이
-    public bool isCastingNotCast; //앞 순서 스킬 실행 종료 뒤에 실행
 
-    [Header("시전 위치로부터")]
+    [Header("시전 위치")]
     public Vector3 coordinate;
 
     [Header("스킬 방향")]
@@ -111,11 +122,6 @@ public struct SkillCondition
 
     [Header("타겟팅 스킬이면 미사용 좌표, 방향")]
     public Rotation RotationType;
-
-    [Header("캐릭선택 방식, 역순, 몇등")]
-    public DesignationType Designation;
-    public bool reverse_order;
-    public int index;
 
     [Header("타겟")]
     public TargetTeam target;

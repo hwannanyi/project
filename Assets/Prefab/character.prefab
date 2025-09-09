@@ -150,10 +150,12 @@ MonoBehaviour:
     - gurd
     - hold
     - parrying
+    - rest
     values:
     - {fileID: -398341292, guid: d2736e599297c954fabb954320e029fc, type: 3}
     - {fileID: 605166660, guid: 86d47658a2b0ae94f83019dcdf559fee, type: 3}
     - {fileID: -1829394237, guid: d2736e599297c954fabb954320e029fc, type: 3}
+    - {fileID: 21300000, guid: e0bd34455030d0b42bbdf547e064ab6c, type: 3}
   moveAllow:
   - {fileID: 0}
   - {fileID: 0}
@@ -199,6 +201,7 @@ Transform:
   m_Children:
   - {fileID: 6529487402943143276}
   - {fileID: 5990146313329943085}
+  - {fileID: 5085301298886123491}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!212 &2151475502029843507
@@ -277,6 +280,8 @@ MonoBehaviour:
   highlightPrefab: {fileID: 7146173340283780072, guid: 2dee0d61832042e46b2ee6a471fa15fc, type: 3}
   isShowMoveHighlights: 0
   spriteRenderer: {fileID: 8694669764875988480}
+  lookRotation: 0
+  lookRota: {fileID: 4904790158046436457}
   SFD: {fileID: 0}
 --- !u!114 &4141925944930643250
 MonoBehaviour:
@@ -389,6 +394,7 @@ MonoBehaviour:
   skillManager: {fileID: 0}
   SkillCasting: 0
   skillCastLock: 0
+  patternsQueue: []
 --- !u!114 &8313277456761592515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -407,19 +413,20 @@ MonoBehaviour:
     maxhp: 0
     hp: 0
     shields: 0
-    maxmp: 0
-    mp: 0
+    rage: 0
+    risk: 0
     atk: 0
     def: 0
-    damageReduction: 0
-    damageIncreased: 0
+    damage_Defense: 0
+    damage_Plus: 0
+    rest: 0
     speed: 0
     movespeed: 0
     moveCount: 0
     NowMoveCount: 0
     trun: 0
     charPosition: {x: 0, y: 0, z: 0}
-    charRotation: {x: 0, y: 0, z: 0, w: 0}
+    charRotation: 0
     isdie: 0
     team: 0
     summons: 0
@@ -526,12 +533,10 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
-      cost:
-        keys: 
-        values: 
-      currentcost:
-        keys: 
-        values: 
+      rageCost: 0
+      hpCost: 0
+      rageCost_bas: 0
+      hpCost_bas: 0
       startSkillPosition: 0
       XstartSkillPosition: 0
       YstartSkillPosition: 0
@@ -567,9 +572,6 @@ MonoBehaviour:
       hitSpeed: 0
       hitEffects: []
       conditionalEffects: []
-      react: 0
-      isreactSkill: 0
-      reactTime: 0
       skillCastCode: 0
       gurd:
         time: 0
@@ -580,11 +582,119 @@ MonoBehaviour:
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+    aIPattern:
+      isRandomPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
     holdGauge: []
     keyMashing: []
+--- !u!1 &4904790158046436457
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5085301298886123491}
+  - component: {fileID: 6424949657197157684}
+  m_Layer: 0
+  m_Name: "\uD654\uC0B4\uD45C"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5085301298886123491
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4904790158046436457}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalScale: {x: 1, y: 2.4063, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2574469382588196305}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &6424949657197157684
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4904790158046436457}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 4
+  m_Sprite: {fileID: 21300000, guid: e43d2179ec113cd49b8026659ba66c8a, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.41666666, y: 0.5}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &8885726257730448549
 GameObject:
   m_ObjectHideFlags: 0

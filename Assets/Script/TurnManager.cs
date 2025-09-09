@@ -4,7 +4,9 @@ using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.SceneManagement;
+using static EventManager;
 
 /*public enum TurnPhase
 {
@@ -29,7 +31,8 @@ public class TurnManager : MonoBehaviour
     /*    public UnityEvent<string> OnStoryStart = new UnityEvent<string>();
         public UnityEvent<string> OnStoryStop = new UnityEvent<string>();*/
 
-
+    public event Action<Stats> OnTurnChanged;
+    public static event Action<Stats> OnTurnChanged_condition;
 
     public StageManager stageManager;
     public TurnUIManager uiManager;
@@ -180,9 +183,17 @@ public class TurnManager : MonoBehaviour
         {
             // 공격턴일 때는 모든 캐릭터 복귀
             if (characterStats.PlayerCharacter1.characterPrefab)
+            {
+                characterStats.PlayerCharacter1.Rest(3);
                 characterStats.PlayerCharacter1.characterPrefab.SetActive(true);
+            }
             if (characterStats.PlayerCharacter2.characterPrefab)
+            {
+                characterStats.PlayerCharacter2.Rest(3);
                 characterStats.PlayerCharacter2.characterPrefab.SetActive(true);
+            }
+
+
 
             // HP바 활성화
             if (characterStats.PlayerCharacter1.HPbar.gameObject)
@@ -201,14 +212,16 @@ public class TurnManager : MonoBehaviour
 
             if (characterStats.PlayerCharacter1.characterPrefab){
                 chrt1.characterPrefab.SetActive(!chrt1.isdie && chrt1.characterPrefab == chrtObj);
-                chrt1.rage = chrt1 == skillmanager.defendingCharacter && chrt1.rage <= 5 ? chrt1.rage + 1 : chrt1.rage + 0;
-                chrt1.risk = chrt1 == skillmanager.defendingCharacter ? +1 : 0;
+                chrt1.AddRage(chrt1 == skillmanager.defendingCharacter, 1);
+                chrt1.AddRisk(chrt1 == skillmanager.defendingCharacter, 1);
             }
             if (characterStats.PlayerCharacter2.characterPrefab){
                 chrt2.characterPrefab.SetActive(!chrt2.isdie && chrt2.characterPrefab == chrtObj);
-                chrt2.rage = chrt2 == skillmanager.defendingCharacter && chrt2.rage <= 5 ? chrt2.rage + 1 : chrt2.rage + 0;
-                chrt2.risk = chrt2 == skillmanager.defendingCharacter ? +1 : 0;
+                chrt2.AddRage(chrt2 == skillmanager.defendingCharacter, 1);
+                chrt2.AddRisk(chrt2 == skillmanager.defendingCharacter, 1);
             }
+
+            OnTurnChanged?.Invoke(skillmanager.defendingCharacter);
 
             // 선택된 캐릭만 HP바 활성화
             if (characterStats.PlayerCharacter1.HPbar.gameObject)
@@ -216,12 +229,10 @@ public class TurnManager : MonoBehaviour
 
             if (characterStats.PlayerCharacter2.HPbar.gameObject)
                 characterStats.PlayerCharacter2.HPbar.gameObject.SetActive(characterStats.PlayerCharacter2.characterPrefab == chrtObj);
-        
-
-
-
         }
-        
+        OnTurnChanged_condition?.Invoke(skillmanager.defendingCharacter);
+        OnTurnChanged_condition?.Invoke(characterStats.PlayerCharacter1);
+        OnTurnChanged_condition?.Invoke(characterStats.PlayerCharacter2);
     }
 
     //  턴 전환 (일반 턴 순환: 플레이어 <-> 적)
@@ -233,6 +244,8 @@ public class TurnManager : MonoBehaviour
             skillmanager.defendingCharacter.isdie)
             return; //공격턴에서 선택된 캐릭이 없으면 턴 전환 불가
         
+        if(skillmanager.defendingCharacter.rest)
+            return; // 수비캐릭이 휴식중이면 턴 전환 불가
 
         skillmanager.Skillcancel(); // 스킬 쿨타임 초기화
         isPlayerTurn = !isPlayerTurn; // 플레이어 턴 여부 토글
@@ -242,6 +255,7 @@ public class TurnManager : MonoBehaviour
         Turn++;
         UITrunCount(Turn);//  턴 UI 업데이트
         ChrtTag();
+
         try
         {
             if(CharacterSelection.selectedCharacterIndex != -1)
@@ -271,7 +285,7 @@ public class TurnManager : MonoBehaviour
     }
 
     //  EventManager 이벤트용
-    public void NextTurnEnd(bool value)
+    public void NextTurnEnd()
     {
         Debug.Log("[TurnManager] EventManager를 통한 턴 종료 요청 감지");
         NextTurn();
