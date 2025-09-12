@@ -86,15 +86,16 @@ public class SkillEffectHitscan : MonoBehaviour
         }
 
 
-/*        // 병합 실행
-        ColliderMerger merger = GetComponent<ColliderMerger>();
-        if (merger != null)
-        {
-            merger.MergeChildBoxColliders();
-        }*/
+        /*        // 병합 실행
+                ColliderMerger merger = GetComponent<ColliderMerger>();
+                if (merger != null)
+                {
+                    merger.MergeChildBoxColliders();
+                }*/
 
         // 2. 그 인스턴스에서 SkillProjectileHitbox 스크립트를 가져와 초기화
-            if (skill.aoetype == AoeType.spAoe)
+        SkillHitOn hit = GetComponent<SkillHitOn>();
+        if (skill.aoetype == AoeType.spAoe)
             {
                 if (skillData.specialAoe == null || skillData.specialAoe.Length == 0)
                 {
@@ -102,23 +103,23 @@ public class SkillEffectHitscan : MonoBehaviour
                 }
             for (int i = 0; i < skillData.specialAoe.Length; i++)
                 {
-                    GameObject hitboxObj = Instantiate(hitbox, this.transform);
+                    GameObject hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
                     hitboxObj.transform.localPosition = Vector3.zero;
                     HitboxTile hitboxScript = hitboxObj.GetComponent<HitboxTile>();
                     hitboxScript.Initialize(skillData.specialAoe[i].size.x, skillData.specialAoe[i].size.y,
-                        skillData.specialAoe[i].position);
+                        skillData.specialAoe[i].position, transform, hit);
                 }
             }
             else
             {
-                GameObject hitboxObj = Instantiate(hitbox, this.transform);
+                GameObject hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
                 hitboxObj.transform.localPosition = Vector3.zero;
                 HitboxTile hitboxScript = hitboxObj.GetComponent<HitboxTile>();
-                hitboxScript.Initialize(skill.Xaoe, skill.Yaoe, Vector2.zero);
+                hitboxScript.Initialize(skill.Xaoe, skill.Yaoe, Vector2.zero, transform, hit);
             }
         
         // 충돌 처리 전달
-        SkillHitOn hit = GetComponent<SkillHitOn>();
+       
         if (hit != null)
         {
             hit.Initialize(skill, casterObject, character); // 또는 실제 캐릭터 GameObject

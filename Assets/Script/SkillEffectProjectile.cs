@@ -81,17 +81,19 @@ public class SkillEffectProjectile : MonoBehaviour
             rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f);
         }
 
-/*        GameObject HitboxTile = Instantiate(hitbox, this.transform);
-        HitboxTile.transform.localPosition = Vector3.zero;*/
-/*
-        // 병합 실행
-        ColliderMerger merger = GetComponent<ColliderMerger>();
-        if (merger != null)
-        {
-            merger.MergeChildBoxColliders();
-        }
-*/
+        /*        GameObject HitboxTile = Instantiate(hitbox, this.transform);
+                HitboxTile.transform.localPosition = Vector3.zero;*/
+        /*
+                // 병합 실행
+                ColliderMerger merger = GetComponent<ColliderMerger>();
+                if (merger != null)
+                {
+                    merger.MergeChildBoxColliders();
+                }
+        */
         // 2. 그 인스턴스에서 SkillProjectileHitbox 스크립트를 가져와 초기화
+        SkillHitOn hit = GetComponent<SkillHitOn>();
+
         if (skill.aoetype == AoeType.spAoe)
         {
             if (skillData.specialAoe == null || skillData.specialAoe.Length == 0)
@@ -100,22 +102,22 @@ public class SkillEffectProjectile : MonoBehaviour
             }
             for (int i = 0; i < skillData.specialAoe.Length; i++)
             {
-                GameObject hitboxObj = Instantiate(hitbox, this.transform);
-                hitboxObj.transform.localPosition = Vector3.zero;
+                GameObject hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
+                //hitboxObj.transform.localPosition = Vector3.zero;
                 HitboxTile hitboxScript = hitboxObj.GetComponent<HitboxTile>();
                 hitboxScript.Initialize(skillData.specialAoe[i].size.x, skillData.specialAoe[i].size.y,
-                    skillData.specialAoe[i].position);
+                    skillData.specialAoe[i].position, transform, hit);
             }
         }
         else
         {
-            GameObject hitboxObj = Instantiate(hitbox, this.transform);
-            hitboxObj.transform.localPosition = Vector3.zero;
+            GameObject hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
+            //hitboxObj.transform.localPosition = Vector3.zero;
             HitboxTile hitboxScript = hitboxObj.GetComponent<HitboxTile>();
-            hitboxScript.Initialize(skill.Xaoe, skill.Yaoe, Vector2.zero);
+            hitboxScript.Initialize(skill.Xaoe, skill.Yaoe, Vector2.zero, transform, hit);
         }
         // 충돌 처리 전달
-        SkillHitOn hit = GetComponent<SkillHitOn>();
+        
         if (hit != null)
         {
             hit.Initialize(skill, casterObject, character); // 또는 실제 캐릭터 GameObject
@@ -309,14 +311,14 @@ public class SkillEffectProjectile : MonoBehaviour
         return new Vector3(x, 0, y);
     }
 
-    public void OnTriggerEnter(Collider other)
+/*    public void OnTriggerEnter(Collider other)
     {
         if (!isInitialized) return;
         if ((!skill.penetration || skill.skillTypes.Contains(skillType.movement)) && other.CompareTag("MapBorder"))
         {
             Destroy(gameObject);
         }
-    }
+    }*/
 
     public void OnDestroy()
     {

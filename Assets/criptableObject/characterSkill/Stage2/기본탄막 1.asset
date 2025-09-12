@@ -116,8 +116,8 @@ MonoBehaviour:
   aoetype: 1
   fourRotation: 0
   effectRotation: 0
-  Xaoe: 0.7
-  Yaoe: 0.7
+  Xaoe: 1
+  Yaoe: 2
   specialAoe: []
   aoecenter: 0
   projectile_targetMove: 1

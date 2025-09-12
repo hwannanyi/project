@@ -8,16 +8,20 @@ using UnityEngine;
 public class HitboxTile : MonoBehaviour
 {
     // 콜라이더의 크기(X, Y) 정보
-    public Vector2 colliderXY;
+    public Vector2 colliderXY = Vector2.zero;
     // 콜라이더의 위치 오프셋(X, Y)
-    public Vector2 offsetXY;
+    public Vector2 offsetXY = Vector2.zero;
     // BoxCollider 캐싱용 변수
-    private BoxCollider boxCollider;
+    private BoxCollider boxCollider = null;
     // 회전용 트랜스폼(필요시 사용)
-    public Transform rotating;
+    public Transform rotating = null;
     // Collider 캐싱용 변수 (활성화/비활성화 용도)
-    private Collider col;
+    private Collider col = null;
+    // 부모위치
+    public Transform parentTransform = null;
+    public SkillHitOn hitOn = null;
 
+    private bool hitOnnonull = false;
     /// <summary>
     /// 컴포넌트가 생성될 때 호출됨. 콜라이더와 트랜스폼을 캐싱한다.
     /// </summary>
@@ -29,16 +33,26 @@ public class HitboxTile : MonoBehaviour
         // if (col != null) col.enabled = false; // 기본적으로 콜라이더 비활성화 (주석 처리됨)
     }
 
+    public void Update()
+    {
+        SnapToParentRounded();
+    }
+
     /// <summary>
     /// 히트박스(타일) 초기화. 콜라이더 크기와 오프셋을 설정한다.
     /// </summary>
     /// <param name="X">콜라이더 X 크기</param>
     /// <param name="Y">콜라이더 Y 크기</param>
     /// <param name="offset">오프셋 벡터</param>
-    public void Initialize(float X, float Y, Vector2 offset)
+    public void Initialize(float X, float Y, Vector2 offset, Transform parent, SkillHitOn hitOn)
     {
+        colliderXY = new Vector2(X, Y); // 콜라이더 크기 설정
         // 콜라이더 크기 및 오프셋 적용
         ResizeColliderWithOffset(new Vector2(X, Y), offset);
+        parentTransform = parent; // 부모 트랜스폼 설정
+        this.hitOn = hitOn;
+        hitOnnonull = true;
+        EnableCollider();
     }
 
     /// <summary>
@@ -71,5 +85,26 @@ public class HitboxTile : MonoBehaviour
         boxCollider.size = new Vector2(XY.x - 0.2f, XY.y - 0.2f);
         // 오프셋만큼 위치 이동
         transform.position += new Vector3(offset.x, 0f, offset.y);
+    }
+
+    /// <summary>
+    /// 부모의 월드 좌표를 반올림하여 즉시 스냅시키는 공개 헬퍼.
+    /// 필요 시 외부에서 호출하세요.
+    /// </summary>
+    public void SnapToParentRounded() 
+    {
+        if (parentTransform == null) return;
+
+        Vector3 parentWorld = parentTransform.position;
+        float y = parentWorld.y;
+
+        Vector3 roundedWorld = new Vector3(Mathf.Round(parentWorld.x), y, Mathf.Round(parentWorld.z));
+        transform.position = roundedWorld;
+    }
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (hitOnnonull)
+            hitOn.ColliderHitOn(other);
     }
 }

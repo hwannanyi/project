@@ -59,7 +59,13 @@ public class SkillHitOn : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter()
+    {
+
+    }
+
+
+    public void ColliderHitOn(Collider other)
     {
         if (other.gameObject.tag == "Character")
         {
@@ -81,11 +87,11 @@ public class SkillHitOn : MonoBehaviour
 
             var self = casterObj.transform.root.gameObject;
 
-/*            if (target == self)
-            {
-                Debug.Log("[SkillHitOn] 자기 자신과 충돌 - 무시");
-                return;
-            }*/
+            /*            if (target == self)
+                        {
+                            Debug.Log("[SkillHitOn] 자기 자신과 충돌 - 무시");
+                            return;
+                        }*/
 
             var targetStats = manager.GetStats(target);
             var casterStats = manager.GetStats(self);
@@ -111,7 +117,7 @@ public class SkillHitOn : MonoBehaviour
                 SkillManager.Instance.isCastingSkill = false;
                 Destroy(gameObject);
             }
-            
+
             skillHitEffects.TargetOnHit(target, self, skillData, Target.self);
             skillHitEffects.TargetOnHit(target, self, skillData, Target.enemy);
             skillHitEffects.TargetOnHit(target, self, skillData, Target.team);
@@ -153,7 +159,7 @@ public class SkillHitOn : MonoBehaviour
             // SkillHitOn.cs에서 적중 시
             targetStats.lastHitSkillData = skillData; // 마지막 적중 스킬 데이터 저장
             CheckDeathOnly(target);
-            PassiveSkillCast.Instance.OnHitPassive(targetStats, casterStats , skillData);
+            PassiveSkillCast.Instance.OnHitPassive(targetStats, casterStats, skillData);
 
         }
 
@@ -167,7 +173,6 @@ public class SkillHitOn : MonoBehaviour
             Debug.Log("스킬에 충돌!");
         }
     }
-
 
 
 
