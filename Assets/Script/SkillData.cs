@@ -75,6 +75,16 @@ public class SkillData
 
     public AoeInfo[] specialAoe; // 특수 범위 (크기, 위치 배열)
 
+    [Header("순차적 목표추적형")]
+    public bool projectile_targetMove = false; // 순차적 목표추적형
+    public List<string> targetPos = new();
+    public float nextDelay = 0; // 목표지점 재출발하는데 걸리는 딜레이
+    public bool easing; // 
+    public AnimationCurve easingCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);//이동 이징 유형
+    public int repeat = 0; // 반복 횟수
+    public bool rewind = false; // 반복할때 역순이동
+    public float skillTime = 0; // 마지막 이동시 스킬이 사라지기까지 걸리는 시간
+
     public int cooldown;        // 기본쿨타임
     public int currentCooldown; //현제 쿨타임
     public int colldownTime;        // 쿨타임
@@ -164,6 +174,8 @@ public class SkillData
         unlimitedRota = data.unlimitedRota; // 자유 회전 가능한
         projectileType = data.projectileType;
 
+
+
         skillTarget = new List<Target>(data.skillTarget);
         XstartSkillPosition = data.XstartSkillPosition;
         YstartSkillPosition = data.YstartSkillPosition;
@@ -184,6 +196,16 @@ public class SkillData
 
         // SkillData.cs 생성자 내 specialAoe 복사 부분 수정
         specialAoe = new AoeInfo[data.specialAoe.Length];
+
+        projectile_targetMove = data.projectile_targetMove;
+        targetPos = new List<string>(data.targetPos);
+        nextDelay = data.nextDelay;
+        easing = data.easing;
+        easingCurve = new AnimationCurve(data.easingCurve.keys);
+        repeat = data.repeat;
+        rewind = data.rewind;
+        skillTime = data.skillTime;
+
         for (int i = 0; i < data.specialAoe.Length; i++)
         {
             specialAoe[i] = data.specialAoe[i]; // 구조체이므로 값 복사로 충분

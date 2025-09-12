@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
-  m_Name: bim
+  m_Name: "\uAE30\uBCF8\uD0C4\uB9C9 1"
   m_EditorClassIdentifier: 
-  skillName: bim
-  skillIcon: {fileID: 21300000, guid: 1a6bc54d6e9489b44a4b2a1fd9711151, type: 3}
-  SkillEffectIllustration: {fileID: 21300000, guid: 1a6bc54d6e9489b44a4b2a1fd9711151, type: 3}
+  skillName: "\uAE30\uBCF8\uD0C4\uB9C91"
+  skillIcon: {fileID: 21300000, guid: e8fce6869195caf4b922b75a9ffb1cdb, type: 3}
+  SkillEffectIllustration: {fileID: 21300000, guid: e8fce6869195caf4b922b75a9ffb1cdb, type: 3}
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
   passive: 0
   skillTypes: 00000000
-  tooltip: 1
+  tooltip: 
   AdditionalSkills:
     condition:
       isactive: 0
@@ -87,8 +87,8 @@ MonoBehaviour:
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
-      targetTypeX: 0
-      targetTypeY: 0
+      targetTypeX: 3
+      targetTypeY: 3
       RotationType: 0
       Designation: 0
       reverse_order: 0
@@ -100,7 +100,7 @@ MonoBehaviour:
   startSkillPosition: 2
   XstartSkillPosition: 0
   YstartSkillPosition: 0
-  projectile: 0
+  projectile: 1
   targeting: 0
   penetration: 0
   tracking: 0
@@ -108,31 +108,61 @@ MonoBehaviour:
   unlimitedRota: 0
   projectileType: 0
   skillTarget: 02000000
-  projectileSpeed: 3
-  hitscantime: 0.5
+  projectileSpeed: 5
+  hitscantime: 1
   afterdelay: 0
   beforedelay: 0
-  range: 3
+  range: 11
   aoetype: 1
   fourRotation: 0
   effectRotation: 0
-  Xaoe: 10
-  Yaoe: 1
+  Xaoe: 0.7
+  Yaoe: 0.7
   specialAoe: []
   aoecenter: 0
-  projectile_targetMove: 0
-  targetPos: []
-  nextDelay: 0
-  easing: 0
-  repeat: 0
-  rewind: 0
+  projectile_targetMove: 1
+  targetPos:
+  - 0 0
+  - +1 0
+  - +1 0
+  - +1 0
+  - +1 0
+  nextDelay: 0.1
+  easing: 1
+  easingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  repeat: 1
+  rewind: 1
+  skillTime: 0.5
   cooldown: 0
   colldownSkill: 0
-  basicValue: 3
+  basicValue: 2
   increase:
     keys: 01000000
     values:
-    - 0.2
+    - 0.1
   damageHit: 1
   hitSpeed: 0
   hitEffects:
@@ -144,7 +174,7 @@ MonoBehaviour:
         increase:
           keys: 01000000
           values:
-          - 0.2
+          - 0.1
         dot: 0
       DebuffEffects: []
       BuffEffects: []
@@ -173,7 +203,7 @@ MonoBehaviour:
   parryingHit: 0
   holdHit: []
   keyMashingHit: []
-  skillPreview: 1
+  skillPreview: 0
   SFDtype: 0
   SFDtime: 0
   skillPreviewStop: 0

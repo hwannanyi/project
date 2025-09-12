@@ -175,7 +175,7 @@ public class SkillEffectHitscan : MonoBehaviour
 
     void OnDestroy()
     {
-        
+        if (!isInitialized) return;
         //임시코드 캐릭터 생성
         if (skillData.summonCharacter != null)
         {

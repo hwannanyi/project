@@ -10762,7 +10762,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8874597
 Transform:
   m_ObjectHideFlags: 0
@@ -10772,7 +10772,7 @@ Transform:
   m_GameObject: {fileID: 8874596}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -2, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -12219,6 +12219,13 @@ MonoBehaviour:
       Yaoe: 0
       aoecenter: 0
       specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      repeat: 0
+      rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -12420,6 +12427,13 @@ MonoBehaviour:
       Yaoe: 0
       aoecenter: 0
       specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      repeat: 0
+      rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -12641,6 +12655,13 @@ MonoBehaviour:
       Yaoe: 0
       aoecenter: 0
       specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      repeat: 0
+      rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -12885,6 +12906,13 @@ MonoBehaviour:
     Yaoe: 0
     aoecenter: 0
     specialAoe: []
+    projectile_targetMove: 0
+    targetPos: []
+    nextDelay: 0
+    easing: 0
+    repeat: 0
+    rewind: 0
+    skillTime: 0
     cooldown: 0
     currentCooldown: 0
     colldownTime: 0
@@ -13080,6 +13108,13 @@ MonoBehaviour:
       Yaoe: 0
       aoecenter: 0
       specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      repeat: 0
+      rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -13297,6 +13332,13 @@ MonoBehaviour:
       Yaoe: 0
       aoecenter: 0
       specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      repeat: 0
+      rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -13497,6 +13539,13 @@ MonoBehaviour:
     Yaoe: 0
     aoecenter: 0
     specialAoe: []
+    projectile_targetMove: 0
+    targetPos: []
+    nextDelay: 0
+    easing: 0
+    repeat: 0
+    rewind: 0
+    skillTime: 0
     cooldown: 0
     currentCooldown: 0
     colldownTime: 0
@@ -13758,6 +13807,13 @@ MonoBehaviour:
       Yaoe: 0
       aoecenter: 0
       specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      repeat: 0
+      rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -21736,13 +21792,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 6, z: 0}
+  m_LocalRotation: {x: 0.59790486, y: -0, z: -0, w: 0.80156714}
+  m_LocalPosition: {x: 0, y: 6.23, z: -2.2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 73.44, y: 0, z: 0}
 --- !u!114 &330585547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36176,6 +36232,13 @@ MonoBehaviour:
       Yaoe: 0
       aoecenter: 0
       specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      repeat: 0
+      rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -37452,6 +37515,13 @@ MonoBehaviour:
       Yaoe: 0
       aoecenter: 0
       specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      repeat: 0
+      rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -39637,6 +39707,13 @@ MonoBehaviour:
       Yaoe: 0
       aoecenter: 0
       specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      repeat: 0
+      rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -42839,6 +42916,13 @@ MonoBehaviour:
       Yaoe: 0
       aoecenter: 0
       specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      repeat: 0
+      rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -58119,6 +58203,13 @@ MonoBehaviour:
       Yaoe: 0
       aoecenter: 0
       specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      repeat: 0
+      rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0

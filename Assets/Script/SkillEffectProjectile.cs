@@ -1,10 +1,11 @@
-using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
-using UnityEngine.TextCore.Text;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 //using UnityEditor.Experimental.GraphView;
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.TextCore.Text;
+using static UnityEngine.GraphicsBuffer;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class SkillEffectProjectile : MonoBehaviour
 {
@@ -36,6 +37,12 @@ public class SkillEffectProjectile : MonoBehaviour
     public List<Vector3> trackingPositions = new();
 
     public SkillTiming skillTiming;
+
+
+    public List<Vector3> targetPos = new(); // 순차적 목표추적형
+    public int targetCount = 0; // 현제 순서
+    public int repeatCount = 0; // 반복 횟수
+    public bool targetPosEnd = false; // 목표지점 도달 여부
 
     public void Initialize(SkillData skillData, Vector3 targetPos, GameObject casterObject, Stats character, GameObject target = null)
     {
@@ -128,8 +135,11 @@ public class SkillEffectProjectile : MonoBehaviour
         }
 
         skillTiming = SkillTiming.casting;
+        targetPosEnd = false;
+        if (skill.projectile_targetMove)
+            StartCoroutine(TargetPosMove(skill.targetPos));
     }
-
+    
     void Update()
     {
         if (!isInitialized) return;
@@ -141,17 +151,28 @@ public class SkillEffectProjectile : MonoBehaviour
         : targetPosition;
 
         // 도착처리
-        if (Vector3.Distance(transform.position, destination) < 0.2f)
+        if (!skill.projectile_targetMove &&
+            Vector3.Distance(transform.position, destination) < 0.2f)
         {
             Destroy(gameObject);
+        }
+        if (skill.projectile_targetMove && targetPosEnd
+            )
+        {
+            Destroy(gameObject, skill.skillTime);
         }
 
         Tracking(skill.tracking);
 
-        // direction 지역 변수 선언 제거 → 필드 변수로 사용
-        direction = (destination - transform.position).normalized;
 
-        transform.position += direction * speed * Time.deltaTime;
+        if (!skill.projectile_targetMove)
+        {
+
+            // direction 지역 변수 선언 제거 → 필드 변수로 사용
+            direction = (destination - transform.position).normalized;
+            transform.position += direction * speed * Time.deltaTime;
+        }
+
         if (skill.targeting && targetUnit != null)
         {
             Debug.Log($"[Destination 추적] TargetUnit: {targetUnit.name}, Position: {targetUnit.transform.position}");
@@ -178,8 +199,119 @@ public class SkillEffectProjectile : MonoBehaviour
         }
     }
 
+    // 순차적 목표추적형
+    public IEnumerator TargetPosMove(List<string> list)
+    {
+        targetCount = 0;
+        targetPos = new List<Vector3>();
+        for (int i = 0; i < list.Count; i++)
+        {
+            targetPos.Add(TargetPos_Vector3(list[i]));
+            Vector3 target = targetPos[i];
+
+            // 방향/이동: easing 적용
+            targetCount = i;
+            yield return StartCoroutine(MoveToTargetWithEasing(target));
+
+            if (skill.nextDelay <= 0) continue;
+            yield return new WaitForSeconds(skill.nextDelay);
+        }
+
+        //반복
+        for(int j = 0; j < skill.repeat; j++)
+        {
+            if (skill.rewind)
+                targetPos.Reverse();
+
+            for (int i = 0; i < targetPos.Count; i++)
+            {
+                Vector3 target = targetPos[i];
+
+                // 방향/이동: easing 적용
+                targetCount = i;
+                yield return StartCoroutine(MoveToTargetWithEasing(target));
+
+                if (skill.nextDelay <= 0) continue;
+                yield return new WaitForSeconds(skill.nextDelay);
+            }
+        }
+        targetPosEnd = true;
+        yield break;
+    }
+
+
+    // 개별 목표로 easing 이동 (TargetPosMove에서 사용)
+    private IEnumerator MoveToTargetWithEasing(Vector3 target)
+    {
+        Vector3 start = transform.position;
+        float dist = Vector3.Distance(start, target);
+
+        if (dist <= 0.001f)
+        {
+            transform.position = target;
+            yield break;
+        }
+
+        float duration = Mathf.Max(0.0001f, dist / Mathf.Max(0.0001f, speed));
+        float elapsed = 0f;
+
+        while (Vector3.Distance(transform.position, target) > 0.001f)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / duration);
+            float eased = skill.easing ? skill.easingCurve.Evaluate(t) : t;
+            transform.position = Vector3.Lerp(start, target, eased);
+
+            // 방향 업데이트(비주얼 회전용)
+            direction = (target - transform.position).normalized;
+
+            yield return null;
+        }
+
+        transform.position = target;
+    }
+
+    // 문자열 Vector3 변환 메서드
+    public Vector3 TargetPos_Vector3(string pos)
+    {
+        float x = 0f, y = 0f;
+
+        if (string.IsNullOrEmpty(pos))
+            return new Vector3(x, 0, y);
+
+        var parts = pos.Split(' ', System.StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length != 2)
+            return new Vector3(x, 0, y);
+
+        // 숫자 파싱 시 +1, -1 모두 파싱 가능
+        bool parsedX = float.TryParse(parts[0], out float tx);
+        bool parsedY = float.TryParse(parts[1], out float ty);
+
+        // 상대값 여부 판단: 파트 중 하나가 '+' 또는 '-' 로 시작하면 상대값으로 간주
+        bool part0Sign = parts[0].Length > 0 && (parts[0][0] == '+' || parts[0][0] == '-');
+        bool part1Sign = parts[1].Length > 0 && (parts[1][0] == '+' || parts[1][0] == '-');
+        bool isRelative = (part0Sign || part1Sign) && targetPos != null && targetPos.Count > 0;
+
+        if (isRelative && parsedX && parsedY)
+        {
+            // targetPos의 마지막 좌표에 더하거나 빼서 결과 생성
+            Vector3 last = targetPos[targetPos.Count - 1];
+            x = last.x + tx;
+            y = last.z + ty;
+        }
+        else if (parsedX && parsedY)
+        {
+            // 절대 좌표 처리
+            x = tx;
+            y = ty;
+        }
+
+        return new Vector3(x, 0, y);
+    }
+
     public void OnTriggerEnter(Collider other)
     {
+        if (!isInitialized) return;
         if ((!skill.penetration || skill.skillTypes.Contains(skillType.movement)) && other.CompareTag("MapBorder"))
         {
             Destroy(gameObject);
@@ -188,11 +320,13 @@ public class SkillEffectProjectile : MonoBehaviour
 
     public void OnDestroy()
     {
+        if (!isInitialized) return;
         OnHit();
     }
 
     public void OnHit()
     {
+        if (!isInitialized) return;
         // 데미지, 이펙트 등
         Debug.Log($"[SkillEffectProjectile] {skill.skillName} 타격 완료");
 
@@ -237,6 +371,8 @@ public class SkillEffectProjectile : MonoBehaviour
         trackingPositions.Add(nearestTile);
         SkillData additionalSkillData = skill.AdditionalSkillData.skill;
         GameObject skillObject = Instantiate(additionalSkillData.SkillEffectPrefab, nearestTile, Quaternion.identity);
+        skillObject.GetComponent<SkillEffectProjectile>().enabled = false;
+        skillObject.GetComponent<SkillEffectHitscan>().enabled = true;
         if (skillObject.TryGetComponent<SkillEffectHitscan>(out var effect))
             effect.Initialize(additionalSkillData, nearestTile, caster, casterStats, null);
 

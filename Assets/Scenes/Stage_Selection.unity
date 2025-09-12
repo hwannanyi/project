@@ -3636,7 +3636,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1161260382}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.64555055
+  m_Size: 0.630386
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5337,7 +5337,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD29C\uD1A0\uB9AC\uC5BC2"
+  m_text: "\uC2A4\uD14C\uC774\uC9C02"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
   m_sharedMaterial: {fileID: 7790065524298641722, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}

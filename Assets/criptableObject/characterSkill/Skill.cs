@@ -57,6 +57,11 @@ public enum React
     no, maintarget, all
 }
 
+public enum esaing
+{
+    none, linear, easeIn, easeOut, easeInOut
+}
+
 
 [System.Serializable]
 public class EffectWrapper
@@ -153,6 +158,16 @@ public class Skill : ScriptableObject
     public float Yaoe;             // 범위 크기
     public AoeInfo[] specialAoe; // 특수 범위 (크기, 위치 배열)
     public AoeCenter aoecenter;    // 광역기의 중심점
+
+    [Header("순차적 목표추적형")]
+    public bool projectile_targetMove = false; // 순차적 목표추적형
+    public List<string> targetPos = new();
+    public float nextDelay = 0; // 목표지점 재출발하는데 걸리는 딜레이
+    public bool easing = false; // 
+    public AnimationCurve easingCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);//이동 이징 유형
+    public int repeat = 0; // 반복 횟수
+    public bool rewind = false; // 반복할때 역순이동
+    public float skillTime = 0; // 마지막 이동시 스킬이 사라지기까지 걸리는 시간
 
     [Header("쿨타임")]
     public int cooldown;        // 쿨타임

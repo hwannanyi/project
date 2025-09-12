@@ -101,7 +101,7 @@ public class SkillManager : MonoBehaviour
     public GameObject skillPreview; // 스킬 프리팹
 
     [Header("현제 수비중인 캐릭터")]
-    public Stats defendingCharacter; // 현재 수비 중인 캐릭터
+    public Stats defendingCharacter = null; // 현재 수비 중인 캐릭터
 
     void Awake()
     {
@@ -123,6 +123,7 @@ public class SkillManager : MonoBehaviour
         hasReacted = false;
         waitingForResponse = false;
         isCastingSkill = false;
+        defendingCharacter = null;
 
         SelectedSkillClear();
         isSkillReady = false;
@@ -731,7 +732,7 @@ public class SkillManager : MonoBehaviour
             default:
                 startPosition = character.charPosition;
                 break;
-        }
+        }            
 
         // 방향 계산
         Vector3 direction;
@@ -844,6 +845,14 @@ public class SkillManager : MonoBehaviour
         }
         // 디버그용 시각화
         //SimulateSkillHit.Instance.SimulateForDebug(skill, startPosition, targetPosition, aoeCenterPosition);
+
+        //순차적 목표추적형
+        if (skill.projectile_targetMove)
+        {
+            startPosition = TargetPos_Vector3(skill.targetPos[0]);
+            return (startPosition, startPosition, true);
+        }
+
         return (targetPosition, aoeCenterPosition, true);
     }
 
@@ -1099,13 +1108,19 @@ public class SkillManager : MonoBehaviour
 
             if (skill.projectile)
             {
+                skillObject.GetComponent<SkillEffectProjectile>().enabled = true;
+                skillObject.GetComponent<SkillEffectHitscan>().enabled = false;
                 if (skillObject.TryGetComponent<SkillEffectProjectile>(out var effect))
                     effect.Initialize(skill, targetPosition, casterObject, character, target);
+
             }
             else
             {
+                skillObject.GetComponent<SkillEffectProjectile>().enabled = false;
+                skillObject.GetComponent<SkillEffectHitscan>().enabled = true;
                 if (skillObject.TryGetComponent<SkillEffectHitscan>(out var effect))
                     effect.Initialize(skill, targetPosition, casterObject, character, target);
+
             } 
         }
 
@@ -1355,5 +1370,24 @@ public class SkillManager : MonoBehaviour
 
         // 스킬 취소시 스킬시작 버튼 비활성화
         turnUIManager.Skill_Start_Button.SetActive(false);
+    }
+
+    public Vector3 TargetPos_Vector3(string pos)
+    {
+
+        float x = 0f, y = 0f;
+        if (!string.IsNullOrEmpty(pos))
+        {
+            var parts = pos.Split(' ');
+            //"숫자 숫자" 형식일 때만 파싱
+            if (parts.Length == 2 && float.TryParse(parts[0], out float tx) && float.TryParse(parts[1], out float ty))
+            {
+                // -1~1 범위로 제한
+                x = tx;
+                y = ty;
+            }
+        }
+
+        return new Vector3(x, 0, y);
     }
 }

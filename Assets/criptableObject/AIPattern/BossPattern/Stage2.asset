@@ -627,4 +627,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 307cc0cbd868e9e45b6c4b1e5e8ae659, type: 2}
   - pattern:
     - {fileID: 11400000, guid: 40cc77e8e615db1448072ce2dd373296, type: 2}
+  - pattern:
+    - {fileID: 11400000, guid: 307cc0cbd868e9e45b6c4b1e5e8ae659, type: 2}
+  - pattern:
+    - {fileID: 11400000, guid: b6540cd9772da3a44bc2a5efdc38bad6, type: 2}
   isRandomPattern: 0

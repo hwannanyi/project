@@ -42,9 +42,7 @@ public class MapMaker : MonoBehaviour
             for (int z = -1; z <= h; z++)
             {
                 Vector3 position = new Vector3(x, 0, z);
-               
-
-                    // 寒 积己
+                // 寒 积己
                 if (x == -1 || x == w || z == -1 || z == h)
                 {
                     GameObject tileWall = Instantiate(wallPrefab, position, Quaternion.Euler(90f, 0f, 0f), Map.transform);
@@ -61,6 +59,6 @@ public class MapMaker : MonoBehaviour
             }
         }
 
-        cameraTra.position = new Vector3(w / 2f - 0.5f, 6, w / 2f - 0.5f);
+        cameraTra.position = new Vector3(w / 2f - 0.5f, 6,0);
     }
 }

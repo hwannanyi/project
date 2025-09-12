@@ -156,11 +156,15 @@ public class SkillPreview : MonoBehaviour
 
         if (skill.projectile)
         {
+            skillObject.GetComponent<SkillEffectProjectile>().enabled = true;
+            skillObject.GetComponent<SkillEffectHitscan>().enabled = false;
             if (skillObject.TryGetComponent<SkillEffectProjectile>(out var effect))
                 effect.Initialize(skill, targetPosition, casterObj, caster, targetObj);
         }
         else
         {
+            skillObject.GetComponent<SkillEffectProjectile>().enabled = false;
+            skillObject.GetComponent<SkillEffectHitscan>().enabled = true;
             if (skillObject.TryGetComponent<SkillEffectHitscan>(out var effect))
                 effect.Initialize(skill, targetPosition, casterObj, caster, targetObj);
         }
