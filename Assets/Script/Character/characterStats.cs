@@ -32,7 +32,7 @@ public class CharacterStats : MonoBehaviour
 
     public Stats PlayerCharacter1; // 플레이어 캐릭터 1
     public Stats PlayerCharacter2; // 플레이어 캐릭터 2
-    
+    public Stats Boss; // 보스
 
     // 체력바
     public GameObject HpBar;
@@ -122,12 +122,13 @@ public class CharacterStats : MonoBehaviour
             {
                 CharacterAdd(playerCharacters[i]);
             }
-            PlayerCharacter1 = characterList[0]; // 플레이어 캐릭터 1로 설정
-            PlayerCharacter2 = characterList[1]; // 플레이어 캐릭터 1로 설정
+            PlayerCharacter1 = characterList.Count == 2 ? characterList[0] : null; // 플레이어 캐릭터 1로 설정
+            PlayerCharacter2 = characterList.Count == 2 ? characterList[1] : null; // 플레이어 캐릭터 1로 설정
             for (int j = 0; j < EnemieCharacters.Count; j++) // EnemieCharacters 리스트의 길이만큼 반복
             {
                 CharacterAdd(EnemieCharacters[j]);
             }
+            Boss = characterList.Count == 3 ? characterList[2] : null; ; // 보스로 설정
             Charactercreation();
         }
         else

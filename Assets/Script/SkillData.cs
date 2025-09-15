@@ -137,6 +137,14 @@ public class SkillData
     public int count_straight; // 반복 횟수
     public bool isRandom_straight; // 랜덤 여부
 
+    [Header("조건검사")]
+    public List<StatusType> status = new();
+    public bool statusNot; // 상태가 없어야 데미지 적용
+
+    [Header("상태적용")]
+    public List<StatusType> statusApply = new();
+    public List<StatusEffect> statusEffects = new(); // 상태 효과 리스트
+
     public SkillData(Skill data, string characterName, int depth = 0)
     {
         if (data == null)
@@ -257,6 +265,12 @@ public class SkillData
         count_straight = data.count_straight;
         isRandom_straight = data.isRandom_straight;
 
+        // 조건검사
+        status = new List<StatusType>(data.status);
+        statusNot = data.statusNot; // 상태가 없어야 데미지 적용
+        // 상태적용
+        statusApply = new List<StatusType>(data.statusApply);
+        statusEffects = new List<StatusEffect>(data.statusEffects); // 상태 효과 리스트
 
         // 연계 스킬 데이터이 있으면 추가하고 없으면 null을 입력
         // AdditionalSkills

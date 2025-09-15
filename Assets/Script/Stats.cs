@@ -15,6 +15,8 @@ public enum StatusType
 {
     none,
     risk5,
+    FaceFace,
+    sturn
     // 필요하면 확장: Poisoned, Sleep 등
 }
 
@@ -48,6 +50,9 @@ public class Stats
     public bool summons;          // 소환수인가요?
     public Stats CharacterSummons; // 소환수 주인
     public List<Skill> useSkill;   // 사용스킬
+
+    public List<StatusEffect> statusEffects = new List<StatusEffect>(); // 상태 효과 리스트
+
     [NonSerialized] public List<SkillData> usingSkill = new();   // 사용스킬
     public List<PassiveSkill> passiveSkill = new();   // 패시브 스킬
 
@@ -160,6 +165,7 @@ public class Stats
         debuffEffects = new List<Debuffa>();
         buffEffects = new List<Buffa>();
         ccEffects = new List<CC>();
+        statusEffects = new List<StatusEffect>();
 
         available = true;
         movable = true;

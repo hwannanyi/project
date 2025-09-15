@@ -1,3 +1,5 @@
+using System;
+
 using UnityEngine;
 
 public class EventManager : MonoBehaviour
@@ -20,6 +22,8 @@ public class EventManager : MonoBehaviour
     public delegate void SignalEvent();
     public event SignalEvent TurnEnd;
 
+    public event Action isMove; // 누군가이동
+
     public delegate void SignalUseSkill(bool value);
     //public event SignalUseSkill Useskill;
 
@@ -38,6 +42,12 @@ public class EventManager : MonoBehaviour
         }
 
         TurnEnd?.Invoke();
+    }
+
+
+    public void Ismove()
+    {
+        isMove?.Invoke();
     }
 
     public void Update()

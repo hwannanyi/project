@@ -12005,6 +12005,7 @@ GameObject:
   - component: {fileID: 62703708}
   - component: {fileID: 62703710}
   - component: {fileID: 62703711}
+  - component: {fileID: 62703712}
   m_Layer: 0
   m_Name: BattelManager
   m_TagString: Untagged
@@ -12223,6 +12224,12 @@ MonoBehaviour:
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
       skillTime: 0
@@ -12267,6 +12274,9 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      status: 
+      statusNot: 0
+      statusApply: 
     aIPattern:
       isRandomPattern: 0
     isparrying: 0
@@ -12431,6 +12441,12 @@ MonoBehaviour:
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
       skillTime: 0
@@ -12475,6 +12491,226 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      status: 
+      statusNot: 0
+      statusApply: 
+    aIPattern:
+      isRandomPattern: 0
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: []
+  Boss:
+    characterNumber: 0
+    name: 
+    maxhp: 0
+    hp: 0
+    shields: 0
+    rage: 0
+    risk: 0
+    atk: 0
+    def: 0
+    damage_Defense: 0
+    damage_Plus: 0
+    rest: 0
+    speed: 0
+    movespeed: 0
+    moveCount: 0
+    NowMoveCount: 0
+    trun: 0
+    charPosition: {x: 0, y: 0, z: 0}
+    charRotation: 0
+    isdie: 0
+    team: 0
+    summons: 0
+    useSkill: []
+    passiveSkill: []
+    characterillustration: {fileID: 0}
+    characterProfileillustration: {fileID: 0}
+    characterPrefab: {fileID: 0}
+    debuffEffects: []
+    buffEffects: []
+    ccEffects: []
+    available: 0
+    movable: 0
+    highlightEffect: {fileID: 0}
+    HPbar: {fileID: 0}
+    isPatternEnd: 0
+    gurd: 0
+    lastHitType: 0
+    lastHitSkillData:
+      useCharacterName: 
+      skillName: 
+      skillIcon: {fileID: 0}
+      SkillEffectIllustration: {fileID: 0}
+      SkillEffectPrefab: {fileID: 0}
+      passive: 0
+      skillTypes: 
+      tooltip: 
+      AdditionalSkills: {fileID: 0}
+      AdditionalSkillData:
+        condition:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 0
+        conditionHit:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 
+        skillName: 
+        targetrule:
+          isCastingNotCast: 0
+          coordinate: {x: 0, y: 0, z: 0}
+          Rotation: {x: 0, y: 0, z: 0}
+          targetTypeX: 0
+          targetTypeY: 0
+          RotationType: 0
+          Designation: 0
+          reverse_order: 0
+          index: 0
+          target: 0
+      StartAddSkills:
+        condition:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 0
+        conditionHit:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 
+        skillName: 
+        targetrule:
+          isCastingNotCast: 0
+          coordinate: {x: 0, y: 0, z: 0}
+          Rotation: {x: 0, y: 0, z: 0}
+          targetTypeX: 0
+          targetTypeY: 0
+          RotationType: 0
+          Designation: 0
+          reverse_order: 0
+          index: 0
+          target: 0
+      EndAddSkills:
+        condition:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 0
+        conditionHit:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 
+        skillName: 
+        targetrule:
+          isCastingNotCast: 0
+          coordinate: {x: 0, y: 0, z: 0}
+          Rotation: {x: 0, y: 0, z: 0}
+          targetTypeX: 0
+          targetTypeY: 0
+          RotationType: 0
+          Designation: 0
+          reverse_order: 0
+          index: 0
+          target: 0
+      actionsNumber: 0
+      skillNumber: 0
+      skillCumulative: 0
+      rageCost: 0
+      hpCost: 0
+      rageCost_bas: 0
+      hpCost_bas: 0
+      startSkillPosition: 0
+      XstartSkillPosition: 0
+      YstartSkillPosition: 0
+      projectile: 0
+      targeting: 0
+      penetration: 0
+      tracking: 0
+      RangeAdjustment: 0
+      unlimitedRota: 0
+      projectileType: 0
+      skillTarget: 
+      projectileSpeed: 0
+      hitscantime: 0
+      afterdelay: 0
+      beforedelay: 0
+      range: 0
+      aoetype: 0
+      fourRotation: 0
+      effectRotation: 0
+      Xaoe: 0
+      Yaoe: 0
+      aoecenter: 0
+      specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      repeat: 0
+      rewind: 0
+      skillTime: 0
+      cooldown: 0
+      currentCooldown: 0
+      colldownTime: 0
+      colldownSkill: 0
+      basicValue: 0
+      increase:
+        keys: 
+        values: []
+      damageHit: 0
+      hitSpeed: 0
+      hitEffects: []
+      conditionalEffects: []
+      skillCastCode: 0
+      gurd:
+        time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+      skillPreview: 0
+      SFDtype: 0
+      SFDtime: 0
+      skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+      status: 
+      statusNot: 0
+      statusApply: 
     aIPattern:
       isRandomPattern: 0
     isparrying: 0
@@ -12659,6 +12895,12 @@ MonoBehaviour:
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
       skillTime: 0
@@ -12703,6 +12945,9 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      status: 
+      statusNot: 0
+      statusApply: 
     aIPattern:
       isRandomPattern: 0
     isparrying: 0
@@ -12910,6 +13155,12 @@ MonoBehaviour:
     targetPos: []
     nextDelay: 0
     easing: 0
+    easingCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     repeat: 0
     rewind: 0
     skillTime: 0
@@ -12954,6 +13205,9 @@ MonoBehaviour:
     isPosition_tracking_straight: 0
     count_straight: 0
     isRandom_straight: 0
+    status: 
+    statusNot: 0
+    statusApply: 
   selectedCaster: {fileID: 0}
   selectedCharacter:
     characterNumber: 0
@@ -13112,6 +13366,12 @@ MonoBehaviour:
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
       skillTime: 0
@@ -13156,6 +13416,9 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      status: 
+      statusNot: 0
+      statusApply: 
     aIPattern:
       isRandomPattern: 0
     isparrying: 0
@@ -13336,6 +13599,12 @@ MonoBehaviour:
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
       skillTime: 0
@@ -13380,6 +13649,9 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      status: 
+      statusNot: 0
+      statusApply: 
     aIPattern:
       isRandomPattern: 0
     isparrying: 0
@@ -13543,6 +13815,12 @@ MonoBehaviour:
     targetPos: []
     nextDelay: 0
     easing: 0
+    easingCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     repeat: 0
     rewind: 0
     skillTime: 0
@@ -13587,6 +13865,9 @@ MonoBehaviour:
     isPosition_tracking_straight: 0
     count_straight: 0
     isRandom_straight: 0
+    status: 
+    statusNot: 0
+    statusApply: 
   debugStart: {x: 0, y: 0, z: 0}
   debugTarget: {x: 0, y: 0, z: 0}
   debugAOECenter: {x: 0, y: 0, z: 0}
@@ -13811,6 +14092,12 @@ MonoBehaviour:
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
       skillTime: 0
@@ -13855,6 +14142,9 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      status: 
+      statusNot: 0
+      statusApply: 
     aIPattern:
       isRandomPattern: 0
     isparrying: 0
@@ -14039,6 +14329,20 @@ MonoBehaviour:
   width: 5
   height: 5
   stageDataManager: {fileID: 62703707}
+--- !u!114 &62703712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62703682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d218d556fd0951140af3b491cd31738a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterStats: {fileID: 62703689}
+  eventManager: {fileID: 62703695}
 --- !u!4 &72771762 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5236981650925629645, guid: 78e847a47d13ecc43b14da6abaea6898, type: 3}
@@ -21768,7 +22072,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 5.625
+  orthographic size: 5.5208335
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -36236,6 +36540,12 @@ MonoBehaviour:
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
       skillTime: 0
@@ -36280,6 +36590,9 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      status: 
+      statusNot: 0
+      statusApply: 
     aIPattern:
       isRandomPattern: 0
     isparrying: 0
@@ -37519,6 +37832,12 @@ MonoBehaviour:
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
       skillTime: 0
@@ -37563,6 +37882,9 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      status: 
+      statusNot: 0
+      statusApply: 
     aIPattern:
       isRandomPattern: 0
     isparrying: 0
@@ -39711,6 +40033,12 @@ MonoBehaviour:
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
       skillTime: 0
@@ -39755,6 +40083,9 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      status: 
+      statusNot: 0
+      statusApply: 
     aIPattern:
       isRandomPattern: 0
     isparrying: 0
@@ -42920,6 +43251,12 @@ MonoBehaviour:
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
       skillTime: 0
@@ -42964,6 +43301,9 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      status: 
+      statusNot: 0
+      statusApply: 
     aIPattern:
       isRandomPattern: 0
     isparrying: 0
@@ -58207,6 +58547,12 @@ MonoBehaviour:
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
       skillTime: 0
@@ -58251,6 +58597,9 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      status: 
+      statusNot: 0
+      statusApply: 
     aIPattern:
       isRandomPattern: 0
     isparrying: 0

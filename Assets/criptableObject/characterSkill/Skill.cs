@@ -208,8 +208,13 @@ public class Skill : ScriptableObject
     public int count_straight; // 반복 횟수
     public bool isRandom_straight; // 랜덤 여부
 
+    [Header("조건검사")]
+    public List<StatusType> status = new();
+    public bool statusNot; // 상태가 없어야 데미지 적용
 
-
+    [Header("상태적용")]
+    public List<StatusType> statusApply = new();
+    public List<StatusEffect> statusEffects = new();
 
     [Header("가드 정보")]
     public Gurd gurd; //가드 정보
@@ -308,6 +313,30 @@ public class DebuffEffect
     public int trunDuration;       // 기본 지속 시간 (턴사이클 수)
     public UDictionary<IncreaseType, float> timeIncrease; // 지속 시간 계수
 }
+
+[System.Serializable]
+public class StatusEffect
+{
+    public StatusType status;
+    public float Value;        // 기본 위력
+    public int trun;       // 기본 지속 시간 (턴사이클 수)
+    public float time; // 지속 시간 (초)
+
+    public StatusEffect() { }
+
+    // 복사 생성자 (필드 늘어나면 모두 추가)
+    public StatusEffect(StatusEffect other)
+    {
+        if (other == null) return;
+        status = other.status;
+        Value = other.Value;
+        trun = other.trun;
+        time = other.time;
+    }
+
+    public StatusEffect Clone() => new StatusEffect(this);
+}
+
 
 [System.Serializable]
 public class BuffEffect

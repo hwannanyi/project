@@ -12,6 +12,9 @@ public class CharacterEffect : MonoBehaviour
     public CharacterMovement characterMovement;
     private Stats character;
     public Characterdeath characterdeath;
+    public delegate void EffectAction(Stats stats);
+    public EffectAction effectAction = null;
+
     public Dictionary<(EffectWrapper.EffectType, int), Action> EffectActions { get; private set; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -25,17 +28,23 @@ public class CharacterEffect : MonoBehaviour
     }
     void Start()
     {
-/*        // EffectActions 딕셔너리 초기화
-        EffectActions = new Dictionary<(EffectWrapper.EffectType, int), Action>
-        {
-            {(EffectWrapper.EffectType.Buff, (int)Buffs.solid), () => Buff_solid(character)},
-            {(EffectWrapper.EffectType.Debuff, (int)Debuffs.corrosion), () => DeBuff_corrosion(character)},
-            {(EffectWrapper.EffectType.CC, (int)CCs.stun), () => CC_stun(character)}
-        };*/
+        var stats = CharacterStats.Instance;
+        character = stats.GetStats(gameObject);
+
+        /*        // EffectActions 딕셔너리 초기화
+                EffectActions = new Dictionary<(EffectWrapper.EffectType, int), Action>
+                {
+                    {(EffectWrapper.EffectType.Buff, (int)Buffs.solid), () => Buff_solid(character)},
+                    {(EffectWrapper.EffectType.Debuff, (int)Debuffs.corrosion), () => DeBuff_corrosion(character)},
+                    {(EffectWrapper.EffectType.CC, (int)CCs.stun), () => CC_stun(character)}
+                };*/
+
+        effectAction = Unable;
     }
 
     void OnDestroy()
     {
+        effectAction = null;
         // 이벤트 구독 해제
         if (EventManager.Instance != null)
             EventManager.Instance.TurnEnd -= OnTurnEnd;
@@ -43,9 +52,6 @@ public class CharacterEffect : MonoBehaviour
 
     void Update()
     {
-        var stats = CharacterStats.Instance;
-        character = stats.GetStats(gameObject);
-
         if(character.gurd > 0)
         {
             character.gurd -= Time.deltaTime;
@@ -63,45 +69,80 @@ public class CharacterEffect : MonoBehaviour
     // 턴 종료 시 버프의 trun 감소
     private void OnTurnEnd()
     {
-        foreach (var buff in character.buffEffects)
-        {
-            buff.trun -= 1;
-        }
+        /*        foreach (var buff in character.buffEffects)
+                {
+                    buff.trun -= 1;
+                }
 
-        foreach (var buff in character.debuffEffects)
-        {
-            buff.trun -= 1;
-        }
+                foreach (var buff in character.debuffEffects)
+                {
+                    buff.trun -= 1;
+                }
 
-        foreach (var buff in character.ccEffects)
+                foreach (var buff in character.ccEffects)
+                {
+                    buff.trun -= 1;
+                }*/
+        foreach (StatusEffect sta in character.statusEffects)
         {
-            buff.trun -= 1;
+            sta.trun -= 1;
         }
         
+
+
     }
 
     public void TimeFlow()
     {
-        foreach (Stats.Buffa eft in character.buffEffects)
-        {
-            eft.time -= Time.deltaTime;
-        }
-        // trun이 0 이하인 버프 제거
-        character.buffEffects.RemoveAll(b => b.trun <= 0 && b.time <= 0);
+        /*        foreach (Stats.Buffa eft in character.buffEffects)
+                {
+                    eft.time -= Time.deltaTime;
+                }
+                // trun이 0 이하인 버프 제거
+                character.buffEffects.RemoveAll(b => b.trun <= 0 && b.time <= 0);
 
-        foreach (Stats.Debuffa eft in character.debuffEffects)
-        {
-            eft.time -= Time.deltaTime;
-        }
-        // trun이 0 이하인 버프 제거
-        character.debuffEffects.RemoveAll(b => b.trun <= 0 && b.time <= 0);
+                foreach (Stats.Debuffa eft in character.debuffEffects)
+                {
+                    eft.time -= Time.deltaTime;
+                }
+                // trun이 0 이하인 버프 제거
+                character.debuffEffects.RemoveAll(b => b.trun <= 0 && b.time <= 0);
 
-        foreach (Stats.CC eft in character.ccEffects)
+                foreach (Stats.CC eft in character.ccEffects)
+                {
+                    eft.time -= Time.deltaTime;
+                }
+                character.ccEffects.RemoveAll(b => b.trun <= 0 && b.time <= 0);*/
+        effectAction.Invoke(character);
+        foreach (StatusEffect sta in character.statusEffects)
         {
-            eft.time -= Time.deltaTime;
+            sta.time -= Time.deltaTime;
+            if (sta.trun <= 0 && sta.time <= 0)
+                RemoveStatus(sta);
         }
-        character.ccEffects.RemoveAll(b => b.trun <= 0 && b.time <= 0);
+        
     }
+
+    public void RemoveStatus(StatusEffect status)
+    {
+        character.RemoveStatus(status.status);
+        character.statusEffects.Remove(status);
+    }
+
+    public void Unable(Stats stats)
+    {
+            if (stats.HasStatus(StatusType.sturn))
+            {
+                stats.available = false;
+                stats.movable = false;
+            }
+            else
+            {
+                stats.available = true;
+                stats.movable = true;
+            }
+    }
+
 
 /*    //홀드 도중 들어오는 데미지
     public void HitDamage()
@@ -152,64 +193,64 @@ public class CharacterEffect : MonoBehaviour
 
     //버프
     //경화
-/*    public void Buff_solid(Stats stats)
-    {
-        foreach (var buff in character.buffEffects)
+    /*    public void Buff_solid(Stats stats)
         {
-            if (buff.effect == Buffs.solid && buff.trun > 0 && !buff.isApplied)
+            foreach (var buff in character.buffEffects)
             {
-                stats.damageReduction += buff.Value;
-                buff.isApplied = true;
-            }
-            // 만약 trun이 0 이하인데 isApplied가 true라면 효과 해제
-            else if (buff.effect == Buffs.solid && buff.trun <= 0 && buff.isApplied)
-            {
-                stats.damageReduction -= buff.Value;
-                buff.isApplied = false;
+                if (buff.effect == Buffs.solid && buff.trun > 0 && !buff.isApplied)
+                {
+                    stats.damageReduction += buff.Value;
+                    buff.isApplied = true;
+                }
+                // 만약 trun이 0 이하인데 isApplied가 true라면 효과 해제
+                else if (buff.effect == Buffs.solid && buff.trun <= 0 && buff.isApplied)
+                {
+                    stats.damageReduction -= buff.Value;
+                    buff.isApplied = false;
+                }
             }
         }
-    }
-*/
-/*    //디버프
-    //부식
-    //받는 피해 증가
-    public void DeBuff_corrosion(Stats stats)
-    {
-        foreach (var debuff in character.debuffEffects)
+    */
+    /*    //디버프
+        //부식
+        //받는 피해 증가
+        public void DeBuff_corrosion(Stats stats)
         {
-            if (debuff.effect == Debuffs.corrosion && debuff.trun > 0 && !debuff.isApplied)
+            foreach (var debuff in character.debuffEffects)
             {
-                stats.damageReduction -= debuff.Value;
-                debuff.isApplied = true;
+                if (debuff.effect == Debuffs.corrosion && debuff.trun > 0 && !debuff.isApplied)
+                {
+                    stats.damageReduction -= debuff.Value;
+                    debuff.isApplied = true;
+                }
+                else if (debuff.effect == Debuffs.corrosion && debuff.trun <= 0 && debuff.isApplied)
+                {
+                    stats.damageReduction += debuff.Value;
+                    debuff.isApplied = false;
+                }
             }
-            else if (debuff.effect == Debuffs.corrosion && debuff.trun <= 0 && debuff.isApplied)
-            {
-                stats.damageReduction += debuff.Value;
-                debuff.isApplied = false;
-            }
-        }
-    }*/
+        }*/
 
-/*    //CC기
-    //기절
-    //행동불가
-    public void CC_stun(Stats stats)
-    {
-        foreach (var cc in character.ccEffects)
+    /*    //CC기
+        //기절
+        //행동불가
+        public void CC_stun(Stats stats)
         {
-            if (cc.effect == CCs.stun && cc.trun > 0 && !cc.isApplied)
+            foreach (var cc in character.ccEffects)
             {
-                stats.available = false;
-                stats.movable = false;
-                cc.isApplied = true;
+                if (cc.effect == CCs.stun && cc.trun > 0 && !cc.isApplied)
+                {
+                    stats.available = false;
+                    stats.movable = false;
+                    cc.isApplied = true;
+                }
+                else if (cc.effect == CCs.stun && cc.trun <= 0 && cc.isApplied)
+                {
+                    stats.available = true;
+                    stats.movable = true;
+                    cc.isApplied = false;
+                }
             }
-            else if (cc.effect == CCs.stun && cc.trun <= 0 && cc.isApplied)
-            {
-                stats.available = true;
-                stats.movable = true;
-                cc.isApplied = false;
-            }
-        }
-    }*/
+        }*/
 
 }

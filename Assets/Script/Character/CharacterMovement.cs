@@ -240,10 +240,12 @@ public class CharacterMovement : MonoBehaviour
 
                 if (chosenDir != Vector3.zero)
                 {
+                    character.charRotation = lookRotation;
                     Vector3 nextPos = transform.position + chosenDir;
                     Vector2Int nextTile = new Vector2Int(Mathf.RoundToInt(nextPos.x), Mathf.RoundToInt(nextPos.z));
                     if (!IsBlockedTile(nextTile))
                     {
+                        EventManager.Instance.Ismove();
                         float targetZ = 0f;
                         switch (lookRotation)
                         {

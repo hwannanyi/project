@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using Unity.VisualScripting;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using static UnityEngine.GraphicsBuffer;
@@ -93,8 +94,8 @@ public class SkillHitOn : MonoBehaviour
                             return;
                         }*/
 
-            var targetStats = manager.GetStats(target);
-            var casterStats = manager.GetStats(self);
+            Stats targetStats = manager.GetStats(target);
+            Stats casterStats = manager.GetStats(self);
 
             if (targetStats == null)
             {
@@ -118,43 +119,74 @@ public class SkillHitOn : MonoBehaviour
                 Destroy(gameObject);
             }
 
+            if(HasAllStatuses(targetStats, skillData.status, skillData.statusNot))
+                return;
+
             skillHitEffects.TargetOnHit(target, self, skillData, Target.self);
             skillHitEffects.TargetOnHit(target, self, skillData, Target.enemy);
             skillHitEffects.TargetOnHit(target, self, skillData, Target.team);
-            if (casterStats.team == Team.enemy && targetStats.team == Team.team)
+
+            //상태적용
+            if (skillData.statusApply != null)
             {
-                // 적중 시 홀드 게이지 증가
-                foreach (var effect in skillData.holdHit)
+                for (int i = 0; i < skillData.statusApply.Count; i++)
                 {
-                    targetStats.holdGauge.Add(new HoldEffect
-                    {
-                        holdGauge = effect.holdGauge,
-                        effect = effect.effect,
-                        value = effect.value,
-                        tic = effect.tic,
-                        curtic = effect.curtic
-                    });
-
-                    WorldHoldBar.Create(
-                        CharacterStats.Instance.HoldBar,
-                        target.transform,
-                        CharacterStats.Instance.canvas,
-                        targetStats,
-                        targetStats.holdGauge.Count - 1);
-                }
-
-                // 적중 시 연타 게이지 증가
-                foreach (var effect in skillData.keyMashingHit)
-                {
-                    targetStats.keyMashing.Add(new MashingEffect
-                    {
-                        keyMashingCount = effect.keyMashingCount,
-                        effect = effect.effect,
-                        value = effect.value,
-                        time = effect.time
-                    });
+                    targetStats.AddStatus(skillData.statusApply[i]);
                 }
             }
+
+            //상태적용
+            if (skillData.statusEffects != null)
+            {
+                for (int i = 0; i < skillData.statusEffects.Count; i++)
+                {
+                    var src = skillData.statusEffects[i];
+                    if (src == null) continue;
+
+                    // (선택) 이미 같은 status가 있으면 중복 방지하려면 아래 if 활성화
+                    // if (targetStats.statusEffects.Any(se => se.status == src.status)) continue;
+
+                    var clone = src.Clone();              // 깊은 복사
+                    targetStats.statusEffects.Add(clone); // 원본과 분리된 객체
+                    targetStats.AddStatus(clone.status);  // StatusType 플래그 추가(필요하다면)
+                }
+            }
+
+
+            /*            if (casterStats.team == Team.enemy && targetStats.team == Team.team)
+                        {
+                            // 적중 시 홀드 게이지 증가
+                            foreach (var effect in skillData.holdHit)
+                            {
+                                targetStats.holdGauge.Add(new HoldEffect
+                                {
+                                    holdGauge = effect.holdGauge,
+                                    effect = effect.effect,
+                                    value = effect.value,
+                                    tic = effect.tic,
+                                    curtic = effect.curtic
+                                });
+
+                                WorldHoldBar.Create(
+                                    CharacterStats.Instance.HoldBar,
+                                    target.transform,
+                                    CharacterStats.Instance.canvas,
+                                    targetStats,
+                                    targetStats.holdGauge.Count - 1);
+                            }
+
+                            // 적중 시 연타 게이지 증가
+                            foreach (var effect in skillData.keyMashingHit)
+                            {
+                                targetStats.keyMashing.Add(new MashingEffect
+                                {
+                                    keyMashingCount = effect.keyMashingCount,
+                                    effect = effect.effect,
+                                    value = effect.value,
+                                    time = effect.time
+                                });
+                            }
+                        }*/
             //OnHit(target, skillData);
             // SkillHitOn.cs에서 적중 시
             targetStats.lastHitSkillData = skillData; // 마지막 적중 스킬 데이터 저장
@@ -174,6 +206,19 @@ public class SkillHitOn : MonoBehaviour
         }
     }
 
+    // 여러 상태를 모두 가지고 있는지 확인
+    public bool HasAllStatuses(Stats target, IList<StatusType> list, bool Not)
+    {
+        bool istrue = Not ? true : false;
+        if (list == null) return true;
+        foreach (var st in list)
+        {
+            if (st == StatusType.none) continue;
+            if (!target.statuses.Contains(st)) return istrue;
+        }
+        istrue = !istrue;
+        return istrue;
+    }
 
 
     public void CheckDeathOnly(GameObject targetObj)
