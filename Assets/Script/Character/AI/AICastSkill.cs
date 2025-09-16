@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using System.Collections;
 using System;
 using static UnityEngine.GraphicsBuffer;
+using Random = UnityEngine.Random;
 
 public class AICastSkill : MonoBehaviour
 {
@@ -69,10 +70,22 @@ public class AICastSkill : MonoBehaviour
             if (AnyEnemyHasStatus(character, character.aIPattern.patterns[patternCount][i].statusType)
                 || (character.aIPattern.patterns[patternCount][i].statusType == StatusType.none))
             {
-                for (int j = 0; j < character.aIPattern.patterns[patternCount][i].count_repeat; j++)
+                Pattern pattern = character.aIPattern.patterns[patternCount][i];
+                int Count = Random.Range(
+                    pattern.count_repeat,
+                    pattern.count_repeat +
+                    pattern.count_repeat_Random);
+                for (int j = 0; j < Count; j++)
                 {
+                    List<SkillQueue> skill_repeat = new List<SkillQueue>(pattern.skill_repeat);
+                    skill_repeat = pattern.isindex_mix ? ShuffleList(skill_repeat) : skill_repeat;
 
-                    patterns.AddRange(character.aIPattern.patterns[patternCount][i].skill_repeat);
+                    // 무작위 인덱스에 삽입하는 코드:
+                    // +1은 리스트 끝에도 삽입 가능하게 함
+                    int idx = patterns.Count + 1 - pattern.Random_index >= 0 ? patterns.Count + 1 - pattern.Random_index : 0;
+                    int randomIndex = pattern.isRandom_index ? Random.Range(idx, patterns.Count + 1) : patterns.Count;
+
+                    patterns.InsertRange(randomIndex, skill_repeat);
                 }
             }
         }
@@ -107,6 +120,24 @@ public class AICastSkill : MonoBehaviour
             indices[r] = tmp;
         }
         return indices;
+    }
+
+    private List<T> ShuffleList<T>(List<T> list)
+    {
+        int random1, random2;
+        T temp;
+
+        for (int i = 0; i < list.Count; ++i)
+        {
+            random1 = Random.Range(0, list.Count);
+            random2 = Random.Range(0, list.Count);
+
+            temp = list[random1];
+            list[random1] = list[random2];
+            list[random2] = temp;
+        }
+
+        return list;
     }
 
     public void OnDisable()
@@ -183,7 +214,17 @@ public class AICastSkill : MonoBehaviour
 
             if (pattern.delay > 0)
             {
-                yield return new WaitForSeconds(pattern.delay);
+                // delay부터 delay+delayRandom 사이의 랜덤 값 생성
+                float randomDelay = pattern.delay;
+                if (pattern.delayRandom > 0)
+                {
+                    // 랜덤 값 생성 (최소값=delay, 최대값=delay+delayRandom)
+                    float rawRandom = Random.Range(pattern.delay, pattern.delay + pattern.delayRandom);
+                    // 소수점 둘째 자리까지 반올림
+                    randomDelay = Mathf.Round(rawRandom * 100f) / 100f;
+                   
+                }
+                yield return new WaitForSeconds(randomDelay);
             }
                     int index = character.usingSkill.FindIndex(x => x.skillName == pattern.skill.skillName);
 
@@ -215,7 +256,7 @@ public class AICastSkill : MonoBehaviour
                         targetPositionX = 0;
                         break;
                     case TargetTypeX.self:
-                        targetPositionX = character.charPosition.x + (pattern.coordinate).x; // 자기 위치
+                        targetPositionX = character.charPosition.x; // 자기 위치
                         break;
                     case TargetTypeX.Character:
                         targetPositionX = target.charPosition.x;
@@ -233,7 +274,7 @@ public class AICastSkill : MonoBehaviour
                         targetPositionY = 0;
                         break;
                     case TargetTypeY.self:
-                        targetPositionY = character.charPosition.z + (pattern.coordinate).z; // 자기 위치
+                        targetPositionY = character.charPosition.z; // 자기 위치
                         break;
                     case TargetTypeY.Character:
                         targetPositionY = target.charPosition.z;
@@ -244,7 +285,13 @@ public class AICastSkill : MonoBehaviour
                 }
 
                 Vector3 targetPosition = Vector3.zero; // 기본값 초기화
-                targetPosition = new Vector3(targetPositionX+ (pattern.coordinate).x, 0f, targetPositionY+ (pattern.coordinate).z); // Y축은 0으로 설정
+
+
+            //숫자랜덤
+            int XRandom = Mathf.RoundToInt(Random.Range((pattern.coordinate).x, (pattern.coordinate).x + (pattern.coordinateRandom).x));
+            int ZRandom = Mathf.RoundToInt(Random.Range((pattern.coordinate).z, (pattern.coordinate).z + (pattern.coordinateRandom).z));
+
+            targetPosition = new Vector3(targetPositionX + XRandom, 0f, targetPositionY + ZRandom);// Y축은 0으로 설정
 
 
             // 스킬 데이터 가져오기

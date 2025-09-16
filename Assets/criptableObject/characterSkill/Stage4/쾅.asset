@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
-  m_Name: bim
+  m_Name: "\uCF85"
   m_EditorClassIdentifier: 
-  skillName: bim
-  skillIcon: {fileID: 21300000, guid: 1a6bc54d6e9489b44a4b2a1fd9711151, type: 3}
-  SkillEffectIllustration: {fileID: 21300000, guid: 1a6bc54d6e9489b44a4b2a1fd9711151, type: 3}
+  skillName: "\uCF85"
+  skillIcon: {fileID: -1829394237, guid: d2736e599297c954fabb954320e029fc, type: 3}
+  SkillEffectIllustration: {fileID: 21300000, guid: ece2bec65885ca14ba2b2eb11b06bac4, type: 3}
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
   passive: 0
   skillTypes: 00000000
+  MoveBoss: 0
   tooltip: 1
   AdditionalSkills:
     condition:
@@ -97,11 +98,11 @@ MonoBehaviour:
   summonCharacter: {fileID: 0}
   rageCost: 0
   hpCost: 0
-  startSkillPosition: 2
+  startSkillPosition: 0
   XstartSkillPosition: 0
   YstartSkillPosition: 0
   projectile: 0
-  targeting: 0
+  targeting: 1
   penetration: 0
   tracking: 0
   RangeAdjustment: 0
@@ -109,23 +110,49 @@ MonoBehaviour:
   projectileType: 0
   skillTarget: 02000000
   projectileSpeed: 3
-  hitscantime: 0.5
+  hitscantime: 2
   afterdelay: 0
   beforedelay: 0
-  range: 3
+  skillTimeInf: 0
+  range: 5
   aoetype: 1
   fourRotation: 0
   effectRotation: 0
-  Xaoe: 10
-  Yaoe: 1
+  Xaoe: 5
+  Yaoe: 5
   specialAoe: []
   aoecenter: 0
   projectile_targetMove: 0
   targetPos: []
   nextDelay: 0
   easing: 0
+  easingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   repeat: 0
   rewind: 0
+  skillTime: 0
   cooldown: 0
   colldownSkill: 0
   basicValue: 3
@@ -168,6 +195,15 @@ MonoBehaviour:
   isPosition_tracking_straight: 0
   count_straight: 0
   isRandom_straight: 0
+  conditionCheck: 1
+  status: 02000000
+  statusNot: 0
+  statusApply: 
+  statusEffects:
+  - status: 3
+    Value: 0
+    trun: 0
+    time: 10
   gurd:
     time: 0
   parryingHit: 0

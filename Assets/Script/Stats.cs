@@ -16,7 +16,9 @@ public enum StatusType
     none,
     risk5,
     FaceFace,
-    sturn
+    sturn,
+    balck,
+    white
     // 필요하면 확장: Poisoned, Sleep 등
 }
 

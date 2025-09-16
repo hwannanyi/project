@@ -24,8 +24,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 3, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -43,8 +45,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 3}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -62,8 +66,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 3}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -81,8 +87,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: -3, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -100,8 +108,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: -3}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -119,8 +129,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 3, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -138,8 +150,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -157,8 +171,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 3}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -176,8 +192,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -195,8 +213,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: -3, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -214,8 +234,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -233,8 +255,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: -3}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -252,8 +276,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 0
       targetTypeY: 0
@@ -271,8 +297,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 0
       targetTypeY: 0
@@ -292,8 +320,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 1, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -311,8 +341,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 2, y: 0, z: 1}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -330,8 +362,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 1, y: 0, z: 1}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -349,8 +383,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 1, y: 0, z: 2}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -368,8 +404,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 2}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -387,8 +425,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: -1, y: 0, z: 2}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -406,8 +446,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: -2, y: 0, z: 2}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -425,8 +467,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: -2, y: 0, z: 1}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -444,8 +488,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: -2, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -463,8 +509,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: -2, y: 0, z: -1}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -482,8 +530,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: -2, y: 0, z: -2}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -501,8 +551,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: -1, y: 0, z: -2}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -520,8 +572,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: -2}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -539,8 +593,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 1, y: 0, z: -2}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -558,8 +614,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 2, y: 0, z: -2}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -577,8 +635,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0.1
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 2, y: 0, z: -1}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 1
@@ -596,8 +656,10 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 2
+      delayRandom: 0
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -610,5 +672,16 @@ MonoBehaviour:
   patterns:
   - pattern: []
   - pattern:
-    - {fileID: 11400000, guid: dda80b5697dce0349bcbfc819c76a5ac, type: 2}
+    - {fileID: 11400000, guid: bd9ec41779db9fe44812633749102b9f, type: 2}
+    - {fileID: 11400000, guid: d87a3b27ca2bfb24f8c327c6d761856b, type: 2}
+    - {fileID: 11400000, guid: d87a3b27ca2bfb24f8c327c6d761856b, type: 2}
+  - pattern: []
+  - pattern:
+    - {fileID: 11400000, guid: b5b90ccc09ffd5f4fb034691f9af2702, type: 2}
+    - {fileID: 11400000, guid: b5b90ccc09ffd5f4fb034691f9af2702, type: 2}
+    - {fileID: 11400000, guid: d87a3b27ca2bfb24f8c327c6d761856b, type: 2}
+  - pattern: []
+  - pattern:
+    - {fileID: 11400000, guid: bc904db5224035f43b1f1b3425ba74d4, type: 2}
+    - {fileID: 11400000, guid: d87a3b27ca2bfb24f8c327c6d761856b, type: 2}
   isRandomPattern: 0

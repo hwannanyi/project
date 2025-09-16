@@ -849,8 +849,24 @@ public class SkillManager : MonoBehaviour
         //순차적 목표추적형
         if (skill.projectile_targetMove)
         {
-            startPosition = TargetPos_Vector3(skill.targetPos[0]);
+            startPosition = skill.startPos ? Position : TargetPos_Vector3(skill.targetPos[0]);
             return (startPosition, startPosition, true);
+        }
+
+        if (skill.MoveBoss == 1) // 보스이동스킬
+        {
+            return (new Vector3(6, 0, 2), new Vector3(6, 0, 2), true);
+        }
+        else if (skill.MoveBoss == 2) // 보스이동스킬
+        {
+
+            return (new Vector3(-2, 0, 2), new Vector3(-2, 0, 2), true);
+        }
+        else if (skill.MoveBoss == 3) // 보스이동스킬
+        {
+
+            Vector3 pos = character.charPosition.x >= 0f ? new Vector3(-2, 0, 2) : new Vector3(6, 0, 2);
+            return (pos, pos, true);
         }
 
         return (targetPosition, aoeCenterPosition, true);

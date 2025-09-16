@@ -44,6 +44,15 @@ public class SkillEffectProjectile : MonoBehaviour
     public int repeatCount = 0; // 반복 횟수
     public bool targetPosEnd = false; // 목표지점 도달 여부
 
+    public GameObject hitboxObj = null;
+
+
+    private void OnEnable()
+    {
+            EventManager.Instance.TurnEnd += End;
+    }
+
+
     public void Initialize(SkillData skillData, Vector3 targetPos, GameObject casterObject, Stats character, GameObject target = null)
     {
         skillTiming = SkillTiming.start;
@@ -102,7 +111,7 @@ public class SkillEffectProjectile : MonoBehaviour
             }
             for (int i = 0; i < skillData.specialAoe.Length; i++)
             {
-                GameObject hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
+                hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
                 //hitboxObj.transform.localPosition = Vector3.zero;
                 HitboxTile hitboxScript = hitboxObj.GetComponent<HitboxTile>();
                 hitboxScript.Initialize(skillData.specialAoe[i].size.x, skillData.specialAoe[i].size.y,
@@ -111,7 +120,7 @@ public class SkillEffectProjectile : MonoBehaviour
         }
         else
         {
-            GameObject hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
+            hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
             //hitboxObj.transform.localPosition = Vector3.zero;
             HitboxTile hitboxScript = hitboxObj.GetComponent<HitboxTile>();
             hitboxScript.Initialize(skill.Xaoe, skill.Yaoe, Vector2.zero, transform, hit);
@@ -153,15 +162,21 @@ public class SkillEffectProjectile : MonoBehaviour
         : targetPosition;
 
         // 도착처리
-        if (!skill.projectile_targetMove &&
+        if (!skill.skillTimeInf)
+        {
+
+            if (!skill.projectile_targetMove &&
             Vector3.Distance(transform.position, destination) < 0.2f)
-        {
-            Destroy(gameObject);
-        }
-        if (skill.projectile_targetMove && targetPosEnd
-            )
-        {
-            Destroy(gameObject, skill.skillTime);
+            {
+                Destroy(hitboxObj);
+                Destroy(gameObject);
+            }
+            if (skill.projectile_targetMove && targetPosEnd
+                )
+            {
+                Destroy(hitboxObj, skill.skillTime);
+                Destroy(gameObject, skill.skillTime);
+            }
         }
 
         Tracking(skill.tracking);
@@ -297,7 +312,7 @@ public class SkillEffectProjectile : MonoBehaviour
         if (isRelative && parsedX && parsedY)
         {
             // targetPos의 마지막 좌표에 더하거나 빼서 결과 생성
-            Vector3 last = targetPos[targetPos.Count - 1];
+            Vector3 last = skill.startPos && targetPos == null ? gameObject.transform.position : targetPos[targetPos.Count - 1];
             x = last.x + tx;
             y = last.z + ty;
         }
@@ -320,8 +335,11 @@ public class SkillEffectProjectile : MonoBehaviour
         }
     }*/
 
+
+
     public void OnDestroy()
     {
+        EventManager.Instance.TurnEnd -= End;
         if (!isInitialized) return;
         OnHit();
     }
@@ -378,5 +396,11 @@ public class SkillEffectProjectile : MonoBehaviour
         if (skillObject.TryGetComponent<SkillEffectHitscan>(out var effect))
             effect.Initialize(additionalSkillData, nearestTile, caster, casterStats, null);
 
+    }
+
+    public void End()
+    {
+        Destroy(hitboxObj);
+        Destroy(gameObject);
     }
 }

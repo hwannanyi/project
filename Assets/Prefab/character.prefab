@@ -249,7 +249,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 0ed4d60afa2f43d4485494f2a4f96fff, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -301,8 +301,8 @@ MonoBehaviour:
   redTeam: {fileID: 21300000, guid: 23b63e3eb1db8614d94fd36ff137c86c, type: 3}
   isTeamForm: 1
   parentObject: {fileID: 4344314745404087944}
-  highlightEffect: {fileID: 7146173340283780072, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
-  characterHighlight: {fileID: 0}
+  highlightEffect: {fileID: 3423787255502722666}
+  characterHighlight: {fileID: 8509678210191685441}
 --- !u!65 &-2257571768671622552
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -431,6 +431,7 @@ MonoBehaviour:
     team: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
@@ -453,6 +454,7 @@ MonoBehaviour:
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -550,6 +552,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -560,6 +563,19 @@ MonoBehaviour:
       Yaoe: 0
       aoecenter: 0
       specialAoe: []
+      projectile_targetMove: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      repeat: 0
+      rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -601,6 +617,11 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
+      status: 
+      statusNot: 0
+      statusApply: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
     isparrying: 0
@@ -752,6 +773,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 2574469382588196305}
     m_Modifications:
     - target: {fileID: 2273953605623041967, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2273953605623041967, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2273953605623041967, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -792,6 +821,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2574404389363864771, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
+      propertyPath: m_Color.a
+      value: 0.14117648
+      objectReference: {fileID: 0}
+    - target: {fileID: 2574404389363864771, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
       propertyPath: m_Color.b
       value: 0
       objectReference: {fileID: 0}
@@ -801,7 +834,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2574404389363864771, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
       propertyPath: m_Color.r
-      value: 0.52875423
+      value: 0.10215378
       objectReference: {fileID: 0}
     - target: {fileID: 2574404389363864771, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
       propertyPath: m_SortingOrder
@@ -811,11 +844,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: HighlightEffect
       objectReference: {fileID: 0}
+    - target: {fileID: 7146173340283780072, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
+--- !u!1 &3423787255502722666 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7146173340283780072, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}
+  m_PrefabInstance: {fileID: 5525901985616031106}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5990146313329943085 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2273953605623041967, guid: fe78f800949b1824eb82e7b89a9731e8, type: 3}

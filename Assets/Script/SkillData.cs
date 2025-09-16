@@ -21,6 +21,7 @@ public class SkillData
     public GameObject SkillEffectPrefab;
     public bool passive;          // 패시브 여부 (false면 액티브)
     public List<skillType> skillTypes;      // 스킬 타입 (공격, 방어, 보조, 이동)
+    public int MoveBoss; //보스 이동 스킬 번호
     public string tooltip;        // 스킬 설명
 
     public Skill AdditionalSkills; // 추가 스킬 (예: 연계기 등)
@@ -61,7 +62,7 @@ public class SkillData
     public List<Target> skillTarget; // 적중 가능한 대상 (자신, 아군, 적 등)
     public float projectileSpeed; // 투사체 속도 (히트스캔이면 0)  //////////(연출용)
     public float hitscantime;
-
+    public bool skillTimeInf; // 스킬 지속시간 무한
 
     public float afterdelay; // 선딜 //////////(연출용)
     public float beforedelay; // 후딜 //////////(연출용)
@@ -77,6 +78,7 @@ public class SkillData
 
     [Header("순차적 목표추적형")]
     public bool projectile_targetMove = false; // 순차적 목표추적형
+    public bool startPos = false; // 시작지점
     public List<string> targetPos = new();
     public float nextDelay = 0; // 목표지점 재출발하는데 걸리는 딜레이
     public bool easing; // 
@@ -138,11 +140,14 @@ public class SkillData
     public bool isRandom_straight; // 랜덤 여부
 
     [Header("조건검사")]
+    public bool conditionCheck; // 조건검사 여부
     public List<StatusType> status = new();
     public bool statusNot; // 상태가 없어야 데미지 적용
 
     [Header("상태적용")]
     public List<StatusType> statusApply = new();
+    public List<StatusType> statusRemove = new();
+
     public List<StatusEffect> statusEffects = new(); // 상태 효과 리스트
 
     public SkillData(Skill data, string characterName, int depth = 0)
@@ -166,6 +171,7 @@ public class SkillData
 
         passive = data.passive;
         skillTypes = new List<skillType>(data.skillTypes);
+        MoveBoss = data.MoveBoss;
         tooltip = data.tooltip;
 
         rageCost = data.rageCost;
@@ -189,6 +195,7 @@ public class SkillData
         YstartSkillPosition = data.YstartSkillPosition;
         projectileSpeed = data.projectileSpeed;
         hitscantime = data.hitscantime; // 히트스캔 시간
+        skillTimeInf = data.skillTimeInf; // 스킬 지속시간 무한
 
         afterdelay = data.afterdelay;
         beforedelay = data.beforedelay;
@@ -266,10 +273,12 @@ public class SkillData
         isRandom_straight = data.isRandom_straight;
 
         // 조건검사
+        conditionCheck = data.conditionCheck;
         status = new List<StatusType>(data.status);
         statusNot = data.statusNot; // 상태가 없어야 데미지 적용
         // 상태적용
         statusApply = new List<StatusType>(data.statusApply);
+        statusRemove = new List<StatusType>(data.statusRemove);
         statusEffects = new List<StatusEffect>(data.statusEffects); // 상태 효과 리스트
 
         // 연계 스킬 데이터이 있으면 추가하고 없으면 null을 입력

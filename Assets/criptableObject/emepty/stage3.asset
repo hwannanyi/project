@@ -33,7 +33,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e707074c77219c249ac26d78f0db649c, type: 2}
   - {fileID: 11400000, guid: 5bab193b7fa5c5249ac1cc94052d6a44, type: 2}
   - {fileID: 11400000, guid: 01f03fc2daa06e64bad2c219f8a6dcd6, type: 2}
-  - {fileID: 11400000, guid: 01f03fc2daa06e64bad2c219f8a6dcd6, type: 2}
+  - {fileID: 11400000, guid: 79c2ce2eb26b2654d9052af44c292795, type: 2}
+  - {fileID: 11400000, guid: 6994b1dc1bba549439a7ecd25ae8cb69, type: 2}
+  - {fileID: 11400000, guid: 56a9ea11b7eb0b648844613e2c515486, type: 2}
   passiveSkill: []
   characterillustration: {fileID: 21300000, guid: 48b0b642eb9ea4f478f87f0c4db58470, type: 3}
   characterProfileillustration: {fileID: 21300000, guid: 48b0b642eb9ea4f478f87f0c4db58470, type: 3}

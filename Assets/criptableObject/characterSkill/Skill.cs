@@ -107,6 +107,7 @@ public class Skill : ScriptableObject
     public GameObject SkillEffectPrefab;
     public bool passive;          // 패시브 여부 (false면 액티브)
     public List<skillType> skillTypes;      // 스킬 타입 (공격, 방어, 보조, 이동)
+    public int MoveBoss = 0; //보스 이동 스킬
     [TextArea] public string tooltip; // 스킬 설명
 
     [Header("연계되는 추가 스킬")]
@@ -148,6 +149,7 @@ public class Skill : ScriptableObject
     public float hitscantime = 1;
     public float afterdelay; // 선딜 //////////(연출용)
     public float beforedelay; // 후딜 //////////(연출용)
+    public bool skillTimeInf; // 스킬 지속시간 무한
 
     [Header("사거리와 범위")]
     public float range;           // 사거리
@@ -161,6 +163,7 @@ public class Skill : ScriptableObject
 
     [Header("순차적 목표추적형")]
     public bool projectile_targetMove = false; // 순차적 목표추적형
+    public bool startPos = false; // 시작지점
     public List<string> targetPos = new();
     public float nextDelay = 0; // 목표지점 재출발하는데 걸리는 딜레이
     public bool easing = false; // 
@@ -209,11 +212,13 @@ public class Skill : ScriptableObject
     public bool isRandom_straight; // 랜덤 여부
 
     [Header("조건검사")]
+    public bool conditionCheck = false; // 조건검사 여부
     public List<StatusType> status = new();
     public bool statusNot; // 상태가 없어야 데미지 적용
 
     [Header("상태적용")]
     public List<StatusType> statusApply = new();
+    public List<StatusType> statusRemove = new();
     public List<StatusEffect> statusEffects = new();
 
     [Header("가드 정보")]

@@ -9,6 +9,7 @@ TagManager:
   - Character
   - MapBorder
   - MoveArrow
+  - skillpre
   layers:
   - Default
   - TransparentFX

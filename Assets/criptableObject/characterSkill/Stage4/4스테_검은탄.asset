@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8bad34a51e39ad349acd12d5e0db8a78, type: 3}
-  m_Name: "\uAE30\uBCF8\uD0C4\uB9C9 1"
+  m_Name: "4\uC2A4\uD14C_\uAC80\uC740\uD0C4"
   m_EditorClassIdentifier: 
-  skillName: "\uAE30\uBCF8\uD0C4\uB9C91"
+  skillName: "4\uC2A4\uD14C_\uAC80\uC740\uD0C4"
   skillIcon: {fileID: 21300000, guid: e8fce6869195caf4b922b75a9ffb1cdb, type: 3}
-  SkillEffectIllustration: {fileID: 21300000, guid: e8fce6869195caf4b922b75a9ffb1cdb, type: 3}
+  SkillEffectIllustration: {fileID: 21300000, guid: d1c1bfea4adf00f40902d66a315d1849, type: 3}
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
   passive: 0
   skillTypes: 00000000
+  MoveBoss: 0
   tooltip: 
   AdditionalSkills:
     condition:
@@ -112,31 +113,28 @@ MonoBehaviour:
   hitscantime: 1
   afterdelay: 0
   beforedelay: 0
-  range: 11
+  skillTimeInf: 0
+  range: 20
   aoetype: 1
   fourRotation: 0
   effectRotation: 0
-  Xaoe: 1
-  Yaoe: 2
+  Xaoe: 0.7
+  Yaoe: 0.7
   specialAoe: []
   aoecenter: 0
-  projectile_targetMove: 1
-  targetPos:
-  - 0 0
-  - +1 0
-  - +1 0
-  - +1 0
-  - +1 0
-  nextDelay: 0.1
-  easing: 1
+  projectile_targetMove: 0
+  startPos: 0
+  targetPos: []
+  nextDelay: 0
+  easing: 0
   easingCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 2
-      outSlope: 2
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
@@ -153,9 +151,9 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  repeat: 1
-  rewind: 1
-  skillTime: 0.5
+  repeat: 0
+  rewind: 0
+  skillTime: 0
   cooldown: 0
   colldownSkill: 0
   basicValue: 2
@@ -198,6 +196,12 @@ MonoBehaviour:
   isPosition_tracking_straight: 0
   count_straight: 0
   isRandom_straight: 0
+  conditionCheck: 1
+  status: 05000000
+  statusNot: 0
+  statusApply: 
+  statusRemove: 
+  statusEffects: []
   gurd:
     time: 0
   parryingHit: 0

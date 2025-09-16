@@ -114,13 +114,18 @@ public class CharacterEffect : MonoBehaviour
                 }
                 character.ccEffects.RemoveAll(b => b.trun <= 0 && b.time <= 0);*/
         effectAction.Invoke(character);
-        foreach (StatusEffect sta in character.statusEffects)
+
+        // 역순 순회
+        for (int i = character.statusEffects.Count - 1; i >= 0; i--)
         {
+            var sta = character.statusEffects[i];
             sta.time -= Time.deltaTime;
             if (sta.trun <= 0 && sta.time <= 0)
-                RemoveStatus(sta);
+            {
+                RemoveStatus(sta); //리스트에서 제거
+            }
         }
-        
+
     }
 
     public void RemoveStatus(StatusEffect status)

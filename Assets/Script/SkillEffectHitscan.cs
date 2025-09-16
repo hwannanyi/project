@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.TextCore.Text;
@@ -36,9 +37,12 @@ public class SkillEffectHitscan : MonoBehaviour
     public AICastSkill aICastSkill;
 
     public SkillTiming skillTiming;
-    private void Awake()
-    {
 
+    public GameObject hitboxObj = null;
+
+    private void OnEnable()
+    {
+        EventManager.Instance.TurnEnd += End;
     }
 
     public void Initialize(SkillData skill, Vector3 targetPos, GameObject casterObject,
@@ -103,7 +107,7 @@ public class SkillEffectHitscan : MonoBehaviour
                 }
             for (int i = 0; i < skillData.specialAoe.Length; i++)
                 {
-                    GameObject hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
+                    hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
                     hitboxObj.transform.localPosition = Vector3.zero;
                     HitboxTile hitboxScript = hitboxObj.GetComponent<HitboxTile>();
                     hitboxScript.Initialize(skillData.specialAoe[i].size.x, skillData.specialAoe[i].size.y,
@@ -112,7 +116,7 @@ public class SkillEffectHitscan : MonoBehaviour
             }
             else
             {
-                GameObject hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
+                hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
                 hitboxObj.transform.localPosition = Vector3.zero;
                 HitboxTile hitboxScript = hitboxObj.GetComponent<HitboxTile>();
                 hitboxScript.Initialize(skill.Xaoe, skill.Yaoe, Vector2.zero, transform, hit);
@@ -171,11 +175,15 @@ public class SkillEffectHitscan : MonoBehaviour
             }
         }
 
+        if(skillData.skillTimeInf)
+            return;
+        Destroy(hitboxObj, skillData.hitscantime);
         Destroy(gameObject, skillData.hitscantime); // 아주 짧게 남기기
     }
 
     void OnDestroy()
     {
+        EventManager.Instance.TurnEnd -= End;
         if (!isInitialized) return;
         //임시코드 캐릭터 생성
         if (skillData.summonCharacter != null)
@@ -231,6 +239,10 @@ public class SkillEffectHitscan : MonoBehaviour
                 rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f); // 보정 필요 시 -90f
             }
         }*/
-
+    public void End()
+    {
+        Destroy(hitboxObj);
+        Destroy(gameObject);
+    }
 
 }

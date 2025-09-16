@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30c4cb1fd5df3cb42abbdafcca2e6a47, type: 3}
+  m_Name: stage4
+  m_EditorClassIdentifier: 
+  charactername: stage4
+  maxhp: 50
+  rage: 0
+  atk: 10
+  def: 0
+  speed: 10
+  movespeed: 10
+  moveCount: 10
+  trun: 10
+  team: 1
+  summons: 0
+  useSkill:
+  - {fileID: 11400000, guid: 092de7c7cc7b4d045850ada617a0bb0b, type: 2}
+  - {fileID: 11400000, guid: 0292fe1388aed4643b7a9d0b817c23fd, type: 2}
+  - {fileID: 11400000, guid: 40a0964d8b52bc44487ec82b06b7103d, type: 2}
+  - {fileID: 11400000, guid: 315bb9ebb6558ba43ab901adbfbef823, type: 2}
+  passiveSkill: []
+  characterillustration: {fileID: 21300000, guid: 48b0b642eb9ea4f478f87f0c4db58470, type: 3}
+  characterProfileillustration: {fileID: 21300000, guid: 48b0b642eb9ea4f478f87f0c4db58470, type: 3}
+  characterPrefab: {fileID: 4344314745404087944, guid: 33c9802a4c0ec3c49b44d7ef4cc4c6e7, type: 3}
+  skillQueue: {fileID: 11400000, guid: fe7e948df0cddd74e82303b584820d6f, type: 2}

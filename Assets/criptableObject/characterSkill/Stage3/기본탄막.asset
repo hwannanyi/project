@@ -18,6 +18,7 @@ MonoBehaviour:
   SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
   passive: 0
   skillTypes: 00000000
+  MoveBoss: 0
   tooltip: 
   AdditionalSkills:
     condition:
@@ -112,7 +113,8 @@ MonoBehaviour:
   hitscantime: 1
   afterdelay: 0
   beforedelay: 0
-  range: 11
+  skillTimeInf: 0
+  range: 20
   aoetype: 1
   fourRotation: 0
   effectRotation: 0
@@ -120,6 +122,37 @@ MonoBehaviour:
   Yaoe: 0.7
   specialAoe: []
   aoecenter: 0
+  projectile_targetMove: 0
+  targetPos: []
+  nextDelay: 0
+  easing: 0
+  easingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  repeat: 0
+  rewind: 0
+  skillTime: 0
   cooldown: 0
   colldownSkill: 0
   basicValue: 2
@@ -162,6 +195,11 @@ MonoBehaviour:
   isPosition_tracking_straight: 0
   count_straight: 0
   isRandom_straight: 0
+  conditionCheck: 0
+  status: 
+  statusNot: 0
+  statusApply: 
+  statusEffects: []
   gurd:
     time: 0
   parryingHit: 0

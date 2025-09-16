@@ -134,6 +134,14 @@ public class SkillHitOn : MonoBehaviour
                     targetStats.AddStatus(skillData.statusApply[i]);
                 }
             }
+            //상태적용
+            if (skillData.statusRemove != null)
+            {
+                for (int i = 0; i < skillData.statusRemove.Count; i++)
+                {
+                    targetStats.RemoveStatus(skillData.statusRemove[i]);
+                }
+            }
 
             //상태적용
             if (skillData.statusEffects != null)
@@ -210,7 +218,7 @@ public class SkillHitOn : MonoBehaviour
     public bool HasAllStatuses(Stats target, IList<StatusType> list, bool Not)
     {
         bool istrue = Not ? true : false;
-        if (list == null) return true;
+        if (!skillData.conditionCheck) return false;
         foreach (var st in list)
         {
             if (st == StatusType.none) continue;

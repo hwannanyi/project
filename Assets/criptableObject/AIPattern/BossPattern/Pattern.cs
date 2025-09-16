@@ -39,7 +39,11 @@ public class Pattern : ScriptableObject
     [Header("repeat")]
     public List<SkillQueue> skill_repeat;
     public int count_repeat = 1;
+    public int count_repeat_Random = 0;
     public bool isRandom_repeat;
+    public bool isRandom_index; //랜덤순서
+    public bool isindex_mix; //섞기
+    public int Random_index = 0; //랜덤 시작값
 
     [Header("조건")]
     public bool useCond; // 조건 사용 여부

@@ -69,10 +69,12 @@ public struct SkillQueue
 
     [Header("이전 스킬 사용후 현제스킬 사용까지의 시간")]
     public float delay; // 딜레이
+    public float delayRandom; // 딜레이 랜덤 최대값
     public bool isCastingNotCast; //앞 순서 스킬 실행 종료 뒤에 실행
 
     [Header("시전 위치로부터")] 
     public Vector3 coordinate;
+    public Vector3 coordinateRandom; //랜덤 최대값
 
     [Header("스킬 방향")]
     public Vector3 Rotation;

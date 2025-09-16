@@ -1,23 +1,46 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class MapSkillpre : MonoBehaviour
 {
     public SpriteRenderer spriteRenderer;
+    private HashSet<Collider> overlaps = new HashSet<Collider>();
+    private Color defaultColor = new Color32(60, 60, 60, 188);
 
-    public void OnTriggerEnter(Collider other)
+    private void Awake()
     {
-        if (other.CompareTag("skill"))
+        if (spriteRenderer == null)
+            spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.color = defaultColor;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("skillpre"))
         {
-            spriteRenderer.color = Color.red; // 빨간색으로 변경
+            overlaps.Add(other);
+            spriteRenderer.color = Color.red;
         }
     }
 
-    public void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("skill"))
+        if (other.CompareTag("skillpre"))
         {
-            spriteRenderer.color = new Color32(60, 60, 60, 188); // 원래 색상으로 복원
+            overlaps.Remove(other);
+            if (overlaps.Count == 0)
+                spriteRenderer.color = defaultColor;
         }
-        
+    }
+
+    private void LateUpdate()
+    {
+        // 파괴된 콜라이더가 HashSet에 남아있으면 제거
+        if (overlaps.Count > 0)
+        {
+            overlaps.RemoveWhere(c => c == null);
+            if (overlaps.Count == 0)
+                spriteRenderer.color = defaultColor;
+        }
     }
 }
