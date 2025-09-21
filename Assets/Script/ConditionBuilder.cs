@@ -161,10 +161,10 @@ public class HitConditionState : IConditionState
                 targetMatch = self != null && enemy == self;
                 break;
             case Target.team:
-                targetMatch = self != null && enemy != null && self.team == enemy.team;
+                targetMatch = self != null && enemy != null && self.isPlayerTeam == enemy.isPlayerTeam;
                 break;
             case Target.enemy:
-                targetMatch = self != null && enemy != null && self.team != enemy.team;
+                targetMatch = self != null && enemy != null && self.isPlayerTeam != enemy.isPlayerTeam;
                 break;
             case Target.all:
                 targetMatch = enemy != null;
@@ -344,10 +344,10 @@ public class ConditionBuilder
                     targetMatch = self != null && enemy == self;
                     break;
                 case Target.team:
-                    targetMatch = self != null && enemy != null && self.team == enemy.team;
+                    targetMatch = self != null && enemy != null && self.isPlayerTeam == enemy.isPlayerTeam;
                     break;
                 case Target.enemy:
-                    targetMatch = self != null && enemy != null && self.team != enemy.team;
+                    targetMatch = self != null && enemy != null && self.isPlayerTeam != enemy.isPlayerTeam;
                     break;
                 case Target.all:
                     targetMatch = enemy != null;

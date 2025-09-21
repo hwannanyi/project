@@ -48,7 +48,7 @@ public class CharacterForm : MonoBehaviour
             if (CharacterStats.Instance.characters.Contains(gameObject))
             {
                 int index = CharacterStats.Instance.characters.IndexOf(gameObject);
-                if(CharacterStats.Instance.characterList[index].team == Team.team) 
+                if(CharacterStats.Instance.characterList[index].isPlayerTeam) 
                 {
                     spriteRenderer.sprite = blueTeam;
                 }

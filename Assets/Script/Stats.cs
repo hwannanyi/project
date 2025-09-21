@@ -48,7 +48,7 @@ public class Stats
     public Vector3 charPosition;  // 현제위치
     public ChRotation charRotation;  // 현재 방향
     public bool isdie;            // 죽음
-    public Team team;             // 팀
+    public bool isPlayerTeam;             // 팀
     public bool summons;          // 소환수인가요?
     public Stats CharacterSummons; // 소환수 주인
     public List<Skill> useSkill;   // 사용스킬
@@ -152,7 +152,7 @@ public class Stats
 
         isdie = die;
 
-        team = data.team;
+        isPlayerTeam = data.isPlayerTeam;
 
         summons = data.summons;
         CharacterSummons = null;

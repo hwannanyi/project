@@ -190,7 +190,7 @@ public class PassiveSkillCast : MonoBehaviour
 
         int skillCode = 0;
 
-        skillManager.ConfirmSkill(GetStats.team,
+        skillManager.ConfirmSkill(GetStats.isPlayerTeam,
             GetSkill,
             GetCaster,
             GetStats,
@@ -201,7 +201,7 @@ public class PassiveSkillCast : MonoBehaviour
             ref skillCode
             );
         //skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
-        skillManager.SkillAutoCast(GetStats.team, skillCode);
+        skillManager.SkillAutoCast(GetStats.isPlayerTeam, skillCode);
         SkillCasting = true; // 스킬 시전 중으로 설정
         Debug.Log("스킬실행완료");
     }
@@ -383,10 +383,10 @@ public class PassiveSkillCast : MonoBehaviour
             switch (targetTeam)
             {
                 case TargetTeam.enemy:
-                    if (character.team == self.team) continue;
+                    if (character.isPlayerTeam == self.isPlayerTeam) continue;
                     break;
                 case TargetTeam.team:
-                    if (character.team != self.team) continue;
+                    if (character.isPlayerTeam != self.isPlayerTeam) continue;
                     break;
                 case TargetTeam.all:
                     // 모두 포함 (자기 자신은 이미 제외)

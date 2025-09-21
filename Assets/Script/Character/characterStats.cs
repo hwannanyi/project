@@ -228,7 +228,7 @@ public class CharacterStats : MonoBehaviour
             characters.Add(chterObj);
 
             // 팀에 따라 위치 지정
-            if (chter.team == Team.team)
+            if (chter.isPlayerTeam)
             {
                 Vector2 postion = stageManager.CurrentStage.startPositions[i];
                 Vector3 startpostion = new Vector3(postion.x, 0, postion.y);
@@ -236,7 +236,7 @@ public class CharacterStats : MonoBehaviour
 
 
             }
-            else if (chter.team == Team.enemy)
+            else if (chter.isPlayerTeam)
             {
                 Vector2 postion = stageManager.CurrentStage.enemyDatalist[i - playerCharacters.Count].position;
                 Vector3 startpostion = new Vector3(postion.x, 0, postion.y);
@@ -386,7 +386,7 @@ public class CharacterStats : MonoBehaviour
         switch (rule)
         {
             case VictoryRule.killAll:
-                isClear = characterList.Count(stats => stats.team == Team.enemy && stats.isdie == false) == 0;
+                isClear = characterList.Count(stats => stats.isPlayerTeam && stats.isdie == false) == 0;
                 break;
             case VictoryRule.story:
                 isClear = true;

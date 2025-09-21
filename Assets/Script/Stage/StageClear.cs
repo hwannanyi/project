@@ -21,7 +21,7 @@ public class StageClear : MonoBehaviour
     {
         // Team.enemy인 캐릭터만 enemies 리스트에 저장
         var enemies = characterStats.characterList
-            .Where(c => c.team == Team.enemy)
+            .Where(c => c.isPlayerTeam == Team.enemy)
             .ToList();
         // 모든 적이 죽었는지 확인 (예시: enemies 리스트 사용)
         bool allEnemiesDead = enemies.All(e => e.isdie);

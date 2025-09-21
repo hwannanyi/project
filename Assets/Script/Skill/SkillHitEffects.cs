@@ -327,11 +327,11 @@ public class SkillHitEffects : MonoBehaviour
         }
         else if (target == Target.team)
         {
-            return skillData.hitEffects[hitEffectEntryIndex].target == target && targetStats.team == casterStats.team && targetStats != casterStats;
+            return skillData.hitEffects[hitEffectEntryIndex].target == target && targetStats.isPlayerTeam == casterStats.isPlayerTeam && targetStats != casterStats;
         }
         else if (target == Target.enemy)
         {
-            return skillData.hitEffects[hitEffectEntryIndex].target == target && targetStats.team != casterStats.team;
+            return skillData.hitEffects[hitEffectEntryIndex].target == target && targetStats.isPlayerTeam != casterStats.isPlayerTeam;
         }
         else
         {

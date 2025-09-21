@@ -244,7 +244,7 @@ public class SkillManager : MonoBehaviour
 
                     // 3. 시전 확정
                     SkillRangeVisualizer.Instance.HideSkillRange();
-                    ConfirmSkillCast(selectedCharacter.team); // 위치 계산 성공했을 때만 확정
+                    ConfirmSkillCast(selectedCharacter.isPlayerTeam); // 위치 계산 성공했을 때만 확정
 
                     SkillCastPlayer(skillCode); // 스킬실행
                     ResetResponseState(); // 대응단계 초기화
@@ -280,7 +280,7 @@ public class SkillManager : MonoBehaviour
                 if (selectedSkill.targeting && selectedTargetUnit == null)
                     return;
                 // 시전 확정
-                ConfirmSkillCast(selectedCharacter.team); // 위치 계산 성공했을 때만 확정
+                ConfirmSkillCast(selectedCharacter.isPlayerTeam); // 위치 계산 성공했을 때만 확정
                 SkillCastPlayer(skillCode);
                 ResetResponseState();
             }
@@ -875,7 +875,7 @@ public class SkillManager : MonoBehaviour
     /// <summary>
     /// 선택된 스킬의 실행을 확정
     /// </summary>
-    public void ConfirmSkillCast(Team team)
+    public void ConfirmSkillCast(bool team)
     {
         isSkillReadyFinal = true;
         //respondingCharacter = selectedCharacter;
@@ -899,7 +899,7 @@ public class SkillManager : MonoBehaviour
             return;
         } 
         Debug.Log($"[SaveSkill] Skill: {selectedSkill.skillName}, Prefab: {selectedSkill.SkillEffectPrefab}");
-        SaveSkill(team == Team.team); // 일반 스킬 저장
+        SaveSkill(team); // 일반 스킬 저장
         Debug.Log($"[SkillManager] 스킬 저장 완료: {selectedSkill.skillName}" + " " + team);
         SelectedSkillClear();
 
@@ -912,7 +912,7 @@ public class SkillManager : MonoBehaviour
     /// 대응단계 중이면 대응자 스킬을 pendingReactSkill로 저장한다.
     /// </summary>
     public void ConfirmSkill(
-        Team team,
+        bool team,
         SkillData skill,
         GameObject casterObj,
         Stats character,
@@ -952,7 +952,7 @@ public class SkillManager : MonoBehaviour
         }
 
         Debug.Log($"[SaveSkill] Skill: {skill.skillName}");
-        SaveSkillList(team == Team.team,
+        SaveSkillList(team,
             skill,
             casterObj,
             character,
@@ -1321,15 +1321,15 @@ public class SkillManager : MonoBehaviour
     }
 
 
-    public void SkillAutoCast(Team team, int skillcode)
+    public void SkillAutoCast(bool team, int skillcode)
     {
         // 첫 번째 ActionWrapper에서 SelectedSkill 꺼내기
-        var selectedAction = team == Team.team ? TeamSkill[skillcode] : EnemySkill[skillcode];
+        var selectedAction = team ? TeamSkill[skillcode] : EnemySkill[skillcode];
         var skillData = selectedAction.skillData;
         //스킬 실행
         isSkillReadyFinal = false;
         ExecuteSkill(skillData);
-        if (team == Team.team)
+        if (team)
         {
             TeamSkill.Remove(skillcode);
         }

@@ -26,7 +26,7 @@ public class AITurn : MonoBehaviour
     {
         // Team.enemy인 캐릭터만 enemies 리스트에 저장
         var enemies = characterStats.characterList
-            .Where(c => c.team == Team.enemy)
+            .Where(c => c.isPlayerTeam )
             .ToList();
         // 모든 적이 죽었는지 확인 (예시: enemies 리스트 사용)
         bool allEnemiesDead = enemies.All(e => e.isdie);
@@ -48,7 +48,7 @@ public class AITurn : MonoBehaviour
             return;
 
         if (CharacterStats.Instance.characterList
-            .Where(stats => stats.team == Team.enemy)
+            .Where(stats => stats.isPlayerTeam)
             .All(stats => stats.isPatternEnd) &&
             !(storyManager.isStoryActive || storyManager.popUpisStoryActive))
         {

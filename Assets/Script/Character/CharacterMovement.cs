@@ -174,7 +174,7 @@ public class CharacterMovement : MonoBehaviour
             if (!isMoving && !isBlocked)
             {
 
-                bool teamTurn = (character.team == Team.team && TurnManager.Instance.isPlayerTurn);
+                bool teamTurn = (character.isPlayerTeam && TurnManager.Instance.isPlayerTurn);
 //                if (nowmoveCount <= 0 && teamTurn)//이동횟수가 있어야 이동가능
 //                     return;
 
@@ -310,7 +310,7 @@ public class CharacterMovement : MonoBehaviour
 
         var stats = CharacterStats.Instance;
         var character = stats.GetStats(gameObject);
-        bool teamTurn = (character.team == Team.team && TurnManager.Instance.isPlayerTurn);
+        bool teamTurn = (character.isPlayerTeam && TurnManager.Instance.isPlayerTurn);
 /*        int count = CharacterStats.Instance.characterList[characterNumber].NowMoveCount;
         count = teamTurn ? count - 1 : count; // 팀 턴일 때만 이동 횟수 차감
         CharacterStats.Instance.characterList[characterNumber].NowMoveCount = count;*/

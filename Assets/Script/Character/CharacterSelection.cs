@@ -93,7 +93,7 @@ public class CharacterSelection : MonoBehaviour
     {
         Stats character = characterStats.characterList[index];
         skillManager.Skillcancel();
-            if (character.team != Team.team)
+            if (!character.isPlayerTeam)
             {
                 return;
             }
@@ -159,7 +159,7 @@ public class CharacterSelection : MonoBehaviour
     public void Holding(int idx)
     {
         Stats character = characterStats.characterList[idx];
-        if (character.team != Team.team)
+        if (!character.isPlayerTeam)
         {
             return;
         }

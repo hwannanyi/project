@@ -324,7 +324,7 @@ public class AICastSkill : MonoBehaviour
                 int skillCode = 0;
 
 
-                skillManager.ConfirmSkill(character.team,
+                skillManager.ConfirmSkill(character.isPlayerTeam,
                     GetSkill,
                     GetCaster,
                     GetStats,
@@ -335,7 +335,7 @@ public class AICastSkill : MonoBehaviour
                     ref skillCode
                     );
                 skillCastLock = pattern.isCastingNotCast; // 스킬 시전 잠금 설정
-                skillManager.SkillAutoCast(character.team, skillCode);
+                skillManager.SkillAutoCast(character.isPlayerTeam, skillCode);
                 Debug.Log("ai스킬 실행완료");
                 SkillCasting = true; // 스킬 시전 중으로 설정
             
@@ -361,10 +361,10 @@ public class AICastSkill : MonoBehaviour
             switch (targetTeam)
             {
                 case TargetTeam.enemy:
-                    if (character.team == self.team) continue;
+                    if (character.isPlayerTeam == self.isPlayerTeam) continue;
                     break;
                 case TargetTeam.team:
-                    if (character.team != self.team) continue;
+                    if (character.isPlayerTeam != self.isPlayerTeam) continue;
                     break;
                 case TargetTeam.all:
                     // 모두 포함 (자기 자신은 이미 제외)
@@ -447,7 +447,7 @@ public class AICastSkill : MonoBehaviour
         {
             if (s == null) continue;
             if (s.isdie) continue;           // 죽은 캐릭터 무시
-            if (s.team == self.team) continue; // 같은 팀이면 무시 (적만 검사)
+            if (s.isPlayerTeam == self.isPlayerTeam) continue; // 같은 팀이면 무시 (적만 검사)
             if (s.HasStatus(status)) return true;
         }
 

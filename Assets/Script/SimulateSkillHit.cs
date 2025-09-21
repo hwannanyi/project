@@ -231,7 +231,7 @@ public class SimulateSkillHit : MonoBehaviour
                 if (!CharacterStats.Instance.characterMap.TryGetValue(character, out var targetStat)) continue;
                 if (!CharacterStats.Instance.characterMap.TryGetValue(caster, out var casterStat)) continue;
 
-                if (targetStat.team == casterStat.team) continue;
+                if (targetStat.isPlayerTeam == casterStat.isPlayerTeam) continue;
 
                 Vector3 pos = character.transform.position;
                 Debug.Log(pos);

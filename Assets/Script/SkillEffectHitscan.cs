@@ -172,6 +172,8 @@ public class SkillEffectHitscan : MonoBehaviour
             {
                 charcterUnit.transform.position = transform.position;
                 casterStats.charPosition = transform.position;
+
+                casterStats.charRotation = casterStats.charPosition.x>=3 ? ChRotation.left : ChRotation.right;
             }
         }
 
@@ -190,11 +192,11 @@ public class SkillEffectHitscan : MonoBehaviour
         {
             Stats summonCharacter = skillData.summonCharacter;
             var CharacterManager = CharacterStats.Instance;
-            if(casterStats.team == Team.team)
+            if(casterStats.isPlayerTeam)
             {
                 CharacterManager.playerCharacters.Add(summonCharacter.name);
             }
-            else if (casterStats.team == Team.enemy)
+            else if (casterStats.isPlayerTeam)
             {
                 CharacterManager.EnemieCharacters.Add(summonCharacter.name);
             }

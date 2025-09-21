@@ -95,7 +95,7 @@ public class StageDataManager : MonoBehaviour
         var timingList = CurrentStage.storyTiming;
         var timingList1 = CurrentStage.storyTiming;
         if (timingList.Count == 0) return;
-        int aliveEnemyCount = characterStats.characterList.Count(stats => stats.team == Team.enemy && stats.isdie == false);
+        int aliveEnemyCount = characterStats.characterList.Count(stats => stats.isPlayerTeam == Team.enemy && stats.isdie == false);
 
         // 살아있는 적이 없으면 조건을 만족하는 첫 StoryTiming 실행
         if (aliveEnemyCount == 0)
