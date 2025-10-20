@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using Unity.VisualScripting;
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using static UnityEngine.GraphicsBuffer;
@@ -81,7 +80,6 @@ public class SkillHitOn : MonoBehaviour
             var manager = CharacterStats.Instance;
             if (manager == null)
             {
-                Debug.LogWarning("CharacterStats 매니저 인스턴스가 없습니다.");
                 return;
             }
 
@@ -99,18 +97,14 @@ public class SkillHitOn : MonoBehaviour
 
             if (targetStats == null)
             {
-                Debug.LogWarning($" '{target.name}' 은 Stats 정보 없음");
                 return;
             }
 
             if (casterStats == null)
             {
-                Debug.LogWarning($" caster '{self.name}' 은 Stats 정보 없음");
                 return;
             }
 
-            // 여기서 팀 비교 등 처리
-            Debug.Log($"'{target.name}' 가 '{casterObj.name}' 의 스킬에 피격됨!");
 
             // 패링 성공시 파괴
             if (skillData.parryingT && targetStats.isparrying)
@@ -125,7 +119,11 @@ public class SkillHitOn : MonoBehaviour
             skillHitEffects.TargetOnHit(target, self, skillData, Target.self);
             skillHitEffects.TargetOnHit(target, self, skillData, Target.enemy);
             skillHitEffects.TargetOnHit(target, self, skillData, Target.team);
+            skillData.CostUp(casterStats, 1);
+            //skillData.AddStatus(SkillStatusType.hit);
+            
 
+            casterStats.AddRage(1);
             //상태적용
             if (skillData.statusApply != null)
             {
@@ -205,12 +203,10 @@ public class SkillHitOn : MonoBehaviour
 
         if (other.gameObject.tag == "Tile")
         {
-            Debug.Log("타일에 충돌!");
         }
 
         if (other.gameObject.tag == "skill")
         {
-            Debug.Log("스킬에 충돌!");
         }
     }
 

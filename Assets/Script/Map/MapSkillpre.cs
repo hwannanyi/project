@@ -7,6 +7,8 @@ public class MapSkillpre : MonoBehaviour
     private HashSet<Collider> overlaps = new HashSet<Collider>();
     private Color defaultColor = new Color32(60, 60, 60, 188);
 
+    private Color red1Color = new Color32(255, 93, 93, 188);
+
     private void Awake()
     {
         if (spriteRenderer == null)
@@ -19,6 +21,12 @@ public class MapSkillpre : MonoBehaviour
         if (other.CompareTag("skillpre"))
         {
             overlaps.Add(other);
+            spriteRenderer.color = red1Color;
+        }
+
+        if (other.CompareTag("skill"))
+        {
+            overlaps.Add(other);
             spriteRenderer.color = Color.red;
         }
     }
@@ -26,6 +34,13 @@ public class MapSkillpre : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("skillpre"))
+        {
+            overlaps.Remove(other);
+            if (overlaps.Count == 0)
+                spriteRenderer.color = defaultColor;
+        }
+
+        if (other.CompareTag("skill"))
         {
             overlaps.Remove(other);
             if (overlaps.Count == 0)

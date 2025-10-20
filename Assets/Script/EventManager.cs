@@ -29,17 +29,17 @@ public class EventManager : MonoBehaviour
 
     public void FinishTurn()
     {
-        
-        try
-        {
-            if (storyManager.isStoryActive || storyManager.turnLock)
-                return; // 모든 입력 무시
-        }
-        catch
-        {
+        Debug.Log("OnTurnEnd");
+        /*        try
+                {
+                    if (storyManager.isStoryActive || storyManager.turnLock)
+                        return; // 모든 입력 무시
+                }
+                catch
+                {
 
-            return; // StoryManager를 못불려와도 모든입력무시
-        }
+                    return; // StoryManager를 못불려와도 모든입력무시
+                }*/
 
         TurnEnd?.Invoke();
     }
@@ -50,12 +50,12 @@ public class EventManager : MonoBehaviour
         isMove?.Invoke();
     }
 
-    public void Update()
+/*    public void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Return) && turnManager.isPlayerTurn) 
+        if (Input.GetKeyDown(KeyCode.Space) && turnManager.isTurn_cooperation) 
         {
             FinishTurn();
         }
-    }
+    }*/
 }

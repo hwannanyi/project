@@ -85,7 +85,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: d1c1bfea4adf00f40902d66a315d1849, type: 3}
+  m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -93,7 +93,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!114 &2565216215778085254
@@ -113,9 +113,11 @@ MonoBehaviour:
     skillName: 
     skillIcon: {fileID: 0}
     SkillEffectIllustration: {fileID: 0}
+    animationName: 
     SkillEffectPrefab: {fileID: 0}
     passive: 0
     skillTypes: 
+    MoveBoss: 0
     tooltip: 
     AdditionalSkills: {fileID: 0}
     AdditionalSkillData:
@@ -196,13 +198,14 @@ MonoBehaviour:
     actionsNumber: 0
     skillNumber: 0
     skillCumulative: 0
+    cost: 0
     rageCost: 0
     hpCost: 0
     rageCost_bas: 0
     hpCost_bas: 0
     startSkillPosition: 0
-    XstartSkillPosition: 0
-    YstartSkillPosition: 0
+    startXpos: 0
+    startYpos: 0
     projectile: 0
     targeting: 0
     penetration: 0
@@ -213,6 +216,7 @@ MonoBehaviour:
     skillTarget: 
     projectileSpeed: 0
     hitscantime: 0
+    skillTimeInf: 0
     afterdelay: 0
     beforedelay: 0
     range: 0
@@ -224,11 +228,19 @@ MonoBehaviour:
     aoecenter: 0
     specialAoe: []
     projectile_targetMove: 0
+    startPos: 0
     targetPos: []
     nextDelay: 0
     easing: 0
+    easingCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     repeat: 0
     rewind: 0
+    skillTime: 0
     cooldown: 0
     currentCooldown: 0
     colldownTime: 0
@@ -248,6 +260,7 @@ MonoBehaviour:
     holdHit: []
     keyMashingHit: []
     skillPreview: 0
+    skillPreviewCount: 0
     SFDtype: 0
     SFDtime: 0
     skillPreviewStop: 0
@@ -270,6 +283,12 @@ MonoBehaviour:
     isPosition_tracking_straight: 0
     count_straight: 0
     isRandom_straight: 0
+    conditionCheck: 0
+    status: 
+    statusNot: 0
+    statusApply: 
+    statusRemove: 
+    statusEffects: []
   targetPosition: {x: 0, y: 0, z: 0}
   caster: {fileID: 0}
   casterStats:
@@ -280,6 +299,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -294,11 +314,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -315,9 +339,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -398,13 +424,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -415,6 +442,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -426,11 +454,19 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -450,6 +486,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -472,8 +509,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
+      status: 
+      statusNot: 0
+      statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -491,6 +535,11 @@ MonoBehaviour:
   aICastSkill: {fileID: 0}
   trackingPositions: []
   skillTiming: 0
+  targetPos: []
+  targetCount: 0
+  repeatCount: 0
+  targetPosEnd: 0
+  hitboxObj: {fileID: 0}
 --- !u!114 &-4632894591527758020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,9 +559,11 @@ MonoBehaviour:
     skillName: 
     skillIcon: {fileID: 0}
     SkillEffectIllustration: {fileID: 0}
+    animationName: 
     SkillEffectPrefab: {fileID: 0}
     passive: 0
     skillTypes: 
+    MoveBoss: 0
     tooltip: 
     AdditionalSkills: {fileID: 0}
     AdditionalSkillData:
@@ -593,13 +644,14 @@ MonoBehaviour:
     actionsNumber: 0
     skillNumber: 0
     skillCumulative: 0
+    cost: 0
     rageCost: 0
     hpCost: 0
     rageCost_bas: 0
     hpCost_bas: 0
     startSkillPosition: 0
-    XstartSkillPosition: 0
-    YstartSkillPosition: 0
+    startXpos: 0
+    startYpos: 0
     projectile: 0
     targeting: 0
     penetration: 0
@@ -610,6 +662,7 @@ MonoBehaviour:
     skillTarget: 
     projectileSpeed: 0
     hitscantime: 0
+    skillTimeInf: 0
     afterdelay: 0
     beforedelay: 0
     range: 0
@@ -621,11 +674,19 @@ MonoBehaviour:
     aoecenter: 0
     specialAoe: []
     projectile_targetMove: 0
+    startPos: 0
     targetPos: []
     nextDelay: 0
     easing: 0
+    easingCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     repeat: 0
     rewind: 0
+    skillTime: 0
     cooldown: 0
     currentCooldown: 0
     colldownTime: 0
@@ -645,6 +706,7 @@ MonoBehaviour:
     holdHit: []
     keyMashingHit: []
     skillPreview: 0
+    skillPreviewCount: 0
     SFDtype: 0
     SFDtime: 0
     skillPreviewStop: 0
@@ -667,6 +729,12 @@ MonoBehaviour:
     isPosition_tracking_straight: 0
     count_straight: 0
     isRandom_straight: 0
+    conditionCheck: 0
+    status: 
+    statusNot: 0
+    statusApply: 
+    statusRemove: 
+    statusEffects: []
   targetUnit: {fileID: 0}
   charcterUnit: {fileID: 0}
   casterStats:
@@ -677,6 +745,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -691,11 +760,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -712,9 +785,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -795,13 +870,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -812,6 +888,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -823,11 +900,19 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -847,6 +932,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -869,8 +955,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
+      status: 
+      statusNot: 0
+      statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -885,6 +978,7 @@ MonoBehaviour:
   CastLock: 0
   aICastSkill: {fileID: 0}
   skillTiming: 0
+  hitboxObj: {fileID: 0}
 --- !u!114 &2570423864531637506
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -969,9 +1063,11 @@ MonoBehaviour:
     skillName: 
     skillIcon: {fileID: 0}
     SkillEffectIllustration: {fileID: 0}
+    animationName: 
     SkillEffectPrefab: {fileID: 0}
     passive: 0
     skillTypes: 
+    MoveBoss: 0
     tooltip: 
     AdditionalSkills: {fileID: 0}
     AdditionalSkillData:
@@ -1052,13 +1148,14 @@ MonoBehaviour:
     actionsNumber: 0
     skillNumber: 0
     skillCumulative: 0
+    cost: 0
     rageCost: 0
     hpCost: 0
     rageCost_bas: 0
     hpCost_bas: 0
     startSkillPosition: 0
-    XstartSkillPosition: 0
-    YstartSkillPosition: 0
+    startXpos: 0
+    startYpos: 0
     projectile: 0
     targeting: 0
     penetration: 0
@@ -1069,6 +1166,7 @@ MonoBehaviour:
     skillTarget: 
     projectileSpeed: 0
     hitscantime: 0
+    skillTimeInf: 0
     afterdelay: 0
     beforedelay: 0
     range: 0
@@ -1080,11 +1178,19 @@ MonoBehaviour:
     aoecenter: 0
     specialAoe: []
     projectile_targetMove: 0
+    startPos: 0
     targetPos: []
     nextDelay: 0
     easing: 0
+    easingCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     repeat: 0
     rewind: 0
+    skillTime: 0
     cooldown: 0
     currentCooldown: 0
     colldownTime: 0
@@ -1104,6 +1210,7 @@ MonoBehaviour:
     holdHit: []
     keyMashingHit: []
     skillPreview: 0
+    skillPreviewCount: 0
     SFDtype: 0
     SFDtime: 0
     skillPreviewStop: 0
@@ -1126,6 +1233,12 @@ MonoBehaviour:
     isPosition_tracking_straight: 0
     count_straight: 0
     isRandom_straight: 0
+    conditionCheck: 0
+    status: 
+    statusNot: 0
+    statusApply: 
+    statusRemove: 
+    statusEffects: []
   targetPos: {x: 0, y: 0, z: 0}
   caster: {fileID: 0}
   casterStats:
@@ -1136,6 +1249,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -1150,11 +1264,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -1171,9 +1289,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -1254,13 +1374,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -1271,6 +1392,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -1282,11 +1404,19 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -1306,6 +1436,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -1328,8 +1459,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
+      status: 
+      statusNot: 0
+      statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -1353,9 +1491,11 @@ MonoBehaviour:
     skillName: 
     skillIcon: {fileID: 0}
     SkillEffectIllustration: {fileID: 0}
+    animationName: 
     SkillEffectPrefab: {fileID: 0}
     passive: 0
     skillTypes: 
+    MoveBoss: 0
     tooltip: 
     AdditionalSkills: {fileID: 0}
     AdditionalSkillData:
@@ -1436,13 +1576,14 @@ MonoBehaviour:
     actionsNumber: 0
     skillNumber: 0
     skillCumulative: 0
+    cost: 0
     rageCost: 0
     hpCost: 0
     rageCost_bas: 0
     hpCost_bas: 0
     startSkillPosition: 0
-    XstartSkillPosition: 0
-    YstartSkillPosition: 0
+    startXpos: 0
+    startYpos: 0
     projectile: 0
     targeting: 0
     penetration: 0
@@ -1453,6 +1594,7 @@ MonoBehaviour:
     skillTarget: 
     projectileSpeed: 0
     hitscantime: 0
+    skillTimeInf: 0
     afterdelay: 0
     beforedelay: 0
     range: 0
@@ -1464,11 +1606,19 @@ MonoBehaviour:
     aoecenter: 0
     specialAoe: []
     projectile_targetMove: 0
+    startPos: 0
     targetPos: []
     nextDelay: 0
     easing: 0
+    easingCurve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     repeat: 0
     rewind: 0
+    skillTime: 0
     cooldown: 0
     currentCooldown: 0
     colldownTime: 0
@@ -1488,6 +1638,7 @@ MonoBehaviour:
     holdHit: []
     keyMashingHit: []
     skillPreview: 0
+    skillPreviewCount: 0
     SFDtype: 0
     SFDtime: 0
     skillPreviewStop: 0
@@ -1510,6 +1661,12 @@ MonoBehaviour:
     isPosition_tracking_straight: 0
     count_straight: 0
     isRandom_straight: 0
+    conditionCheck: 0
+    status: 
+    statusNot: 0
+    statusApply: 
+    statusRemove: 
+    statusEffects: []
   targetPos: {x: 0, y: 0, z: 0}
   characterUnit: {fileID: 0}
   characterStats:
@@ -1520,6 +1677,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -1534,11 +1692,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -1555,9 +1717,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -1638,13 +1802,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -1655,6 +1820,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -1666,11 +1832,19 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
       repeat: 0
       rewind: 0
+      skillTime: 0
       cooldown: 0
       currentCooldown: 0
       colldownTime: 0
@@ -1690,6 +1864,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -1712,8 +1887,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
+      status: 
+      statusNot: 0
+      statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0

@@ -44,6 +44,8 @@ public class Pattern : ScriptableObject
     public bool isRandom_index; //랜덤순서
     public bool isindex_mix; //섞기
     public int Random_index = 0; //랜덤 시작값
+    public bool at_once = false; //한번에 다발사
+    public List<int> at_onces = new List<int>(); //사용된 인덱스 저장용
 
     [Header("조건")]
     public bool useCond; // 조건 사용 여부

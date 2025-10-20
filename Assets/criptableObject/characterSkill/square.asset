@@ -14,10 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skillName: square
   skillIcon: {fileID: 21300000, guid: abc68fc252f01744a950181ca3ad5cc2, type: 3}
-  SkillEffectIllustration: {fileID: 21300000, guid: 43ac82573ec88df49ab10820bd76d9e4, type: 3}
-  SkillEffectPrefab: {fileID: 6478507458708094152, guid: 996504ae6dec45d428cf8f9a8938b2b4, type: 3}
+  SkillEffectIllustration: {fileID: 0}
+  animationName: skill1
+  SkillEffectPrefab: {fileID: 6478507458708094152, guid: bb253d75da59aa14889f6ff0ff72049c, type: 3}
   passive: 0
   skillTypes: 00000000
+  MoveBoss: 0
   tooltip: "3\uCE78 \uC55E\uC73C\uB85C \uCCAB\uBC88\uC9F8 \uB300\uC0C1\uC5D0\uAC8C
     \uB2FF\uC73C\uBA74 \uB370\uBBF8\uC9C0\n\uD788\uD788 \uBC1C\uC0AC"
   AdditionalSkills:
@@ -96,34 +98,65 @@ MonoBehaviour:
       index: 0
       target: 0
   summonCharacter: {fileID: 0}
-  actionsNumber: 1
-  skillNumber: 1
-  skillCumulative: 1
-  cost:
-    keys: 00000000
-    values: 02000000
-  startSkillPosition: 2
-  XstartSkillPosition: 0
+  cost: 0
+  rageCost: 0
+  hpCost: 0
+  startSkillPosition: 0
+  XstartSkillPosition: 1
   YstartSkillPosition: 0
   projectile: 0
   targeting: 0
   penetration: 0
   tracking: 0
   RangeAdjustment: 0
+  unlimitedRota: 0
   projectileType: 0
   skillTarget: 02000000
-  projectileSpeed: 3
+  projectileSpeed: 0
   hitscantime: 1
   afterdelay: 0
   beforedelay: 0
-  range: 3
+  skillTimeInf: 0
+  range: 1
   aoetype: 1
   fourRotation: 0
   effectRotation: 0
-  Xaoe: 3
+  Xaoe: 1
   Yaoe: 3
   specialAoe: []
   aoecenter: 0
+  projectile_targetMove: 0
+  startPos: 0
+  targetPos: []
+  nextDelay: 0
+  easing: 0
+  easingCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  repeat: 0
+  rewind: 0
+  skillTime: 1
   cooldown: 2
   colldownSkill: 0
   basicValue: 10
@@ -147,11 +180,38 @@ MonoBehaviour:
       DebuffEffects: []
       BuffEffects: []
       CCEffects: []
-  react: 2
-  reactTime: 1
+  patternType: 0
+  ammo_circle: 0
+  radius_circle: 0
+  isRadius_tracking_circle: 0
+  delayTime_circle: 0
+  position_circle: {x: 0, y: 0, z: 0}
+  isPosition_tracking_circle: 0
+  count_circle: 0
+  isRandom_circle: 0
+  ammo_straight: 0
+  interval_straight: 0
+  direction_straight: {x: 0, y: 0}
+  radius_straight: 0
+  isRadius_tracking_straight: 0
+  delayTime_straight: 0
+  position_straight: {x: 0, y: 0, z: 0}
+  isPosition_tracking_straight: 0
+  count_straight: 0
+  isRandom_straight: 0
+  conditionCheck: 0
+  status: 
+  statusNot: 0
+  statusApply: 
+  statusRemove: 
+  statusEffects: []
   gurd:
     time: 0
   parryingHit: 0
   holdHit: []
   keyMashingHit: []
   skillPreview: 0
+  skillPreviewCount: 0
+  SFDtype: 0
+  SFDtime: 0
+  skillPreviewStop: 0

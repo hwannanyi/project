@@ -99,10 +99,10 @@ MonoBehaviour:
   rageCost: 0
   hpCost: 0
   startSkillPosition: 0
-  XstartSkillPosition: 0
+  XstartSkillPosition: 4
   YstartSkillPosition: 0
   projectile: 0
-  targeting: 1
+  targeting: 0
   penetration: 0
   tracking: 0
   RangeAdjustment: 0
@@ -118,11 +118,12 @@ MonoBehaviour:
   aoetype: 1
   fourRotation: 0
   effectRotation: 0
-  Xaoe: 5
+  Xaoe: 7
   Yaoe: 5
   specialAoe: []
   aoecenter: 0
   projectile_targetMove: 0
+  startPos: 0
   targetPos: []
   nextDelay: 0
   easing: 0
@@ -199,6 +200,7 @@ MonoBehaviour:
   status: 02000000
   statusNot: 0
   statusApply: 
+  statusRemove: 
   statusEffects:
   - status: 3
     Value: 0

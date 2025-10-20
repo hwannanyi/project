@@ -1,7 +1,8 @@
-talkID,characters,left_side,right_side,talk_character,talk,id,character_animated ,production
-1,testerMan\(testerMan),testerMan,testerMan,testerMan,안녕?,1,,
-1,,testerMan,testerMan,testerMan,내가 이곳의 전투 방식을 알려줄게,1,,
-2,,testerMan,testerMan,testerMan,뜌우땨이...,1,,
-2,,testerMan,testerMan,testerMan,우따야,1,,
-2,,testerMan,testerMan,testerMan,우따야?,1,,
-에러,testerMan,testerMan,testerMan,testerMan,꺅 에러가 떴다아,1,,
+talkID,characters,transform,expression,talk_character,talk,id,character_animated ,production,backgroud
+1,"세렌,자인","자인:왼,세렌:오",0,자인,"태스트 태스트 태스트 태스트, 태스트태스트",1,,,defulte
+1,,"자인:오,세렌:왼",0,자인,"태스트 태스트 태스트 태스트, 태스트태스트",1,,,
+1,,"자인:왼,세렌:오",0,세렌,"태스트 태스트 태스트 태스트, 태스트태스트",1,,,
+1,,자인,0,자인,"태스트 태스트 태스트 태스트, 태스트태스트",1,,waveW,
+1,,자인,1,자인,"태스트 태스트 태스트 태스트, 태스트태스트",1,,fade_out,
+1,,자인,0,자인,"태스트 태스트 태스트 태스트, 태스트태스트",1,point,fade_in,two
+1,,세렌,3,자인,"태스트 태스트 태스트 태스트, 태스트태스트",1,nunchi,zoom_in,

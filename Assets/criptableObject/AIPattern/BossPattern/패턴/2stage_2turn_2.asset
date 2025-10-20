@@ -33,7 +33,7 @@ MonoBehaviour:
   isRandom_straight: 0
   skill_repeat:
   - skill: {fileID: 11400000, guid: 27863e81b0731904ba32ebef0603585a, type: 2}
-    currentIndex: 4
+    currentIndex: 0
     condition:
       isactive: 0
       target: 0
@@ -41,8 +41,11 @@ MonoBehaviour:
       comparison: 0
       value: 0
     delay: 0
+    delayRandom: 0
     isCastingNotCast: 0
     coordinate: {x: -3, y: 0, z: 0}
+    coordinateRandom: {x: 0, y: 0, z: 0}
+    isWithin_Range: 0
     Rotation: {x: 1, y: 0, z: 0}
     targetTypeX: 0
     targetTypeY: 0
@@ -52,16 +55,19 @@ MonoBehaviour:
     index: 1
     target: 0
   - skill: {fileID: 11400000, guid: 27863e81b0731904ba32ebef0603585a, type: 2}
-    currentIndex: 8
+    currentIndex: 0
     condition:
       isactive: 0
       target: 0
       type: 0
       comparison: 0
       value: 0
-    delay: 0
+    delay: 0.1
+    delayRandom: 0
     isCastingNotCast: 0
     coordinate: {x: -3, y: 0, z: 2}
+    coordinateRandom: {x: 0, y: 0, z: 0}
+    isWithin_Range: 0
     Rotation: {x: 1, y: 0, z: 0}
     targetTypeX: 0
     targetTypeY: 0
@@ -71,16 +77,19 @@ MonoBehaviour:
     index: 1
     target: 0
   - skill: {fileID: 11400000, guid: 27863e81b0731904ba32ebef0603585a, type: 2}
-    currentIndex: 10
+    currentIndex: 0
     condition:
       isactive: 0
       target: 0
       type: 0
       comparison: 0
       value: 0
-    delay: 0
+    delay: 0.1
+    delayRandom: 0
     isCastingNotCast: 0
     coordinate: {x: -3, y: 0, z: 4}
+    coordinateRandom: {x: 0, y: 0, z: 0}
+    isWithin_Range: 0
     Rotation: {x: 1, y: 0, z: 0}
     targetTypeX: 0
     targetTypeY: 0
@@ -90,4 +99,18 @@ MonoBehaviour:
     index: 1
     target: 0
   count_repeat: 1
+  count_repeat_Random: 0
   isRandom_repeat: 0
+  isRandom_index: 0
+  isindex_mix: 0
+  Random_index: 0
+  at_once: 0
+  at_onces: 
+  useCond: 0
+  condition:
+    isactive: 0
+    target: 0
+    type: 0
+    comparison: 0
+    value: 0
+  statusType: 0

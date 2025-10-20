@@ -1,5 +1,4 @@
 ﻿using System;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.TextCore.Text;
@@ -75,20 +74,29 @@ public class SkillEffectHitscan : MonoBehaviour
         else
         {
             startPosition = transform.position;
+
+
             targetPosition = targetPos;
         }
 
-        // direction 벡터 계산 (이동 방향)
-        targetPosition.z = startPosition.z;
-        direction = (targetPosition - startPosition).normalized;
+        transform.rotation = casterStats.charRotation == ChRotation.left ? Quaternion.Euler(90f, 180f, 0f) :
+            casterStats.charRotation == ChRotation.right ? Quaternion.Euler(90f, 0f, 0f) :
+            casterStats.charRotation == ChRotation.up ? Quaternion.Euler(90f, -90f, 0f) :
+            Quaternion.Euler(90f, 90f, 0f);
 
-        // 필수: direction이 0이 아닐 때만 회전 처리
-        if (direction != Vector3.zero && rotatingVisual != null)
-        {
-            float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
-            rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f);
-        }
 
+        /*
+                // direction 벡터 계산 (이동 방향)
+                targetPosition.z = startPosition.z;
+                direction = (targetPosition - startPosition).normalized;
+
+                // 필수: direction이 0이 아닐 때만 회전 처리
+                if (direction != Vector3.zero && rotatingVisual != null)
+                {
+                    float angle = Mathf.Atan2(direction.z, direction.x) * Mathf.Rad2Deg;
+                    rotatingVisual.rotation = Quaternion.Euler(90f, angle, 0f);
+                }
+        */
 
         /*        // 병합 실행
                 ColliderMerger merger = GetComponent<ColliderMerger>();
@@ -100,15 +108,15 @@ public class SkillEffectHitscan : MonoBehaviour
         // 2. 그 인스턴스에서 SkillProjectileHitbox 스크립트를 가져와 초기화
         SkillHitOn hit = GetComponent<SkillHitOn>();
         if (skill.aoetype == AoeType.spAoe)
+        {
+            
+            if (skillData.specialAoe == null || skillData.specialAoe.Length == 0)
             {
-                if (skillData.specialAoe == null || skillData.specialAoe.Length == 0)
-                {
-                    return;
-                }
+                return;
+            }
             for (int i = 0; i < skillData.specialAoe.Length; i++)
                 {
                     hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
-                    hitboxObj.transform.localPosition = Vector3.zero;
                     HitboxTile hitboxScript = hitboxObj.GetComponent<HitboxTile>();
                     hitboxScript.Initialize(skillData.specialAoe[i].size.x, skillData.specialAoe[i].size.y,
                         skillData.specialAoe[i].position, transform, hit);
@@ -117,7 +125,6 @@ public class SkillEffectHitscan : MonoBehaviour
             else
             {
                 hitboxObj = Instantiate(hitbox, transform.position, transform.rotation);
-                hitboxObj.transform.localPosition = Vector3.zero;
                 HitboxTile hitboxScript = hitboxObj.GetComponent<HitboxTile>();
                 hitboxScript.Initialize(skill.Xaoe, skill.Yaoe, Vector2.zero, transform, hit);
             }
@@ -171,9 +178,11 @@ public class SkillEffectHitscan : MonoBehaviour
             if (charcterUnit != null)
             {
                 charcterUnit.transform.position = transform.position;
-                casterStats.charPosition = transform.position;
 
-                casterStats.charRotation = casterStats.charPosition.x>=3 ? ChRotation.left : ChRotation.right;
+                Vector3 Pos12 = transform.position;
+                Pos12.x = transform.position.x * (10.0f / 12.0f);
+                casterStats.charPosition = Pos12;
+                
             }
         }
 
@@ -192,11 +201,11 @@ public class SkillEffectHitscan : MonoBehaviour
         {
             Stats summonCharacter = skillData.summonCharacter;
             var CharacterManager = CharacterStats.Instance;
-            if(casterStats.isPlayerTeam)
+            if(casterStats.team == Team.team)
             {
                 CharacterManager.playerCharacters.Add(summonCharacter.name);
             }
-            else if (casterStats.isPlayerTeam)
+            else if (casterStats.team == Team.enemy)
             {
                 CharacterManager.EnemieCharacters.Add(summonCharacter.name);
             }

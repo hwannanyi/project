@@ -3,7 +3,6 @@ using UnityEngine;
 public enum Team
 { team, enemy, neutral, spTarget }
 
-
 [CreateAssetMenu(fileName = "Character", menuName = "Scriptable Objects/Character")]
 
 public class Character : ScriptableObject
@@ -17,16 +16,20 @@ public class Character : ScriptableObject
     public int movespeed;         // 이속
     public int moveCount;         // 이동가능횟수
     public int trun;              // 보유 턴
-    public bool isPlayerTeam = true;             // 팀
+    public Team team;             // 팀
+    public bool mainCh = true;
     public bool summons = false;          // 소환수인가요?
     public List<Skill> useSkill = new List<Skill> { null, null, null, null, null, null, null, null, null, null };   // 사용스킬
 
     public List<PassiveList> passiveSkill;   // 패시브 스킬
     public Sprite characterillustration;
     public Sprite characterProfileillustration;
+    public RuntimeAnimatorController animatorController = null;
+
     public GameObject characterPrefab;
 
     public BossPattern skillQueue; // 스킬 큐
+    public bool noPattern; // 패턴없음
 }
 [System.Serializable]
 public class PassiveList

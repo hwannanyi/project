@@ -64,7 +64,6 @@ public class HitboxTile : MonoBehaviour
         if (col != null)
         {
             col.enabled = true; // 콜라이더 활성화
-            Debug.Log("[HitboxTile] Collider 활성화됨");
         }
     }
 
@@ -77,7 +76,6 @@ public class HitboxTile : MonoBehaviour
     {
         if (boxCollider == null || colliderXY == null)
         {
-            Debug.LogWarning("BoxCollider 또는 colliderXY 값이 없음");
             return;
         }
 
@@ -98,7 +96,7 @@ public class HitboxTile : MonoBehaviour
         Vector3 parentWorld = parentTransform.position;
         float y = parentWorld.y;
 
-        Vector3 roundedWorld = new Vector3(Mathf.Round(parentWorld.x), y, Mathf.Round(parentWorld.z));
+        Vector3 roundedWorld = new Vector3(Mathf.Round(parentWorld.x)*1.2f, y, Mathf.Round(parentWorld.z));
         transform.position = roundedWorld;
     }
 

@@ -12006,6 +12006,7 @@ GameObject:
   - component: {fileID: 62703710}
   - component: {fileID: 62703711}
   - component: {fileID: 62703712}
+  - component: {fileID: 62703713}
   m_Layer: 0
   m_Name: BattelManager
   m_TagString: Untagged
@@ -12056,6 +12057,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26d686b5a6a7af74487147f36b8f6346, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterSelection: {fileID: 62703691}
   turnManager: {fileID: 0}
   uiManager: {fileID: 781908733}
   ProfileuiManager: {fileID: 781908732}
@@ -12075,6 +12077,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -12089,11 +12092,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -12110,9 +12117,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -12193,13 +12202,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -12210,6 +12220,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -12221,6 +12232,7 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
@@ -12252,6 +12264,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -12274,11 +12287,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
       status: 
       statusNot: 0
       statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12292,6 +12309,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -12306,11 +12324,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -12327,9 +12349,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -12410,13 +12434,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -12427,6 +12452,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -12438,6 +12464,7 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
@@ -12469,6 +12496,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -12491,11 +12519,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
       status: 
       statusNot: 0
       statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12509,6 +12541,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -12523,11 +12556,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -12544,9 +12581,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -12627,13 +12666,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -12644,6 +12684,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -12655,6 +12696,7 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
@@ -12686,6 +12728,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -12708,11 +12751,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
       status: 
       statusNot: 0
       statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12746,6 +12793,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -12760,11 +12808,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -12781,9 +12833,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -12864,13 +12918,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -12881,6 +12936,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -12892,6 +12948,7 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
@@ -12923,6 +12980,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -12945,11 +13003,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
       status: 
       statusNot: 0
       statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -12980,14 +13042,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a7d2a772ed3dccb44966417299d044bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  battelManager: {fileID: 0}
   stageManager: {fileID: 0}
   uiManager: {fileID: 781908733}
   skillmanager: {fileID: 0}
   characterUIManager: {fileID: 781908732}
   storyManager: {fileID: 0}
-  isPlayerTurn: 1
+  isTurn_cooperation: 1
   Reacttrun: 0
   Turn: 0
+  turn_alone: 0
+  turn_cooperation: 0
+  turnCount: 0
   playerSkillTurn: 10
   enemySkillTurn: 10
   playerUseSkillTurn: 0
@@ -13041,9 +13107,11 @@ MonoBehaviour:
     skillName: 
     skillIcon: {fileID: 0}
     SkillEffectIllustration: {fileID: 0}
+    animationName: 
     SkillEffectPrefab: {fileID: 0}
     passive: 0
     skillTypes: 
+    MoveBoss: 0
     tooltip: 
     AdditionalSkills: {fileID: 0}
     AdditionalSkillData:
@@ -13124,13 +13192,14 @@ MonoBehaviour:
     actionsNumber: 0
     skillNumber: 0
     skillCumulative: 0
+    cost: 0
     rageCost: 0
     hpCost: 0
     rageCost_bas: 0
     hpCost_bas: 0
     startSkillPosition: 0
-    XstartSkillPosition: 0
-    YstartSkillPosition: 0
+    startXpos: 0
+    startYpos: 0
     projectile: 0
     targeting: 0
     penetration: 0
@@ -13141,6 +13210,7 @@ MonoBehaviour:
     skillTarget: 
     projectileSpeed: 0
     hitscantime: 0
+    skillTimeInf: 0
     afterdelay: 0
     beforedelay: 0
     range: 0
@@ -13152,6 +13222,7 @@ MonoBehaviour:
     aoecenter: 0
     specialAoe: []
     projectile_targetMove: 0
+    startPos: 0
     targetPos: []
     nextDelay: 0
     easing: 0
@@ -13183,6 +13254,7 @@ MonoBehaviour:
     holdHit: []
     keyMashingHit: []
     skillPreview: 0
+    skillPreviewCount: 0
     SFDtype: 0
     SFDtime: 0
     skillPreviewStop: 0
@@ -13205,9 +13277,12 @@ MonoBehaviour:
     isPosition_tracking_straight: 0
     count_straight: 0
     isRandom_straight: 0
+    conditionCheck: 0
     status: 
     statusNot: 0
     statusApply: 
+    statusRemove: 
+    statusEffects: []
   selectedCaster: {fileID: 0}
   selectedCharacter:
     characterNumber: 0
@@ -13217,6 +13292,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -13231,11 +13307,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -13252,9 +13332,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -13335,13 +13417,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -13352,6 +13435,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -13363,6 +13447,7 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
@@ -13394,6 +13479,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -13416,11 +13502,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
       status: 
       statusNot: 0
       statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -13442,223 +13532,6 @@ MonoBehaviour:
   cursor: {fileID: 1749610548}
   cursorOn: 0
   skillPreview: {fileID: 7146173340283780072, guid: dc797be0f1f749d4b9ae3f0790a4ef3a, type: 3}
-  defendingCharacter:
-    characterNumber: 0
-    name: 
-    maxhp: 0
-    hp: 0
-    shields: 0
-    rage: 0
-    risk: 0
-    atk: 0
-    def: 0
-    damage_Defense: 0
-    damage_Plus: 0
-    rest: 0
-    speed: 0
-    movespeed: 0
-    moveCount: 0
-    NowMoveCount: 0
-    trun: 0
-    charPosition: {x: 0, y: 0, z: 0}
-    charRotation: 0
-    isdie: 0
-    team: 0
-    summons: 0
-    useSkill: []
-    passiveSkill: []
-    characterillustration: {fileID: 0}
-    characterProfileillustration: {fileID: 0}
-    characterPrefab: {fileID: 0}
-    debuffEffects: []
-    buffEffects: []
-    ccEffects: []
-    available: 0
-    movable: 0
-    highlightEffect: {fileID: 0}
-    HPbar: {fileID: 0}
-    isPatternEnd: 0
-    gurd: 0
-    lastHitType: 0
-    lastHitSkillData:
-      useCharacterName: 
-      skillName: 
-      skillIcon: {fileID: 0}
-      SkillEffectIllustration: {fileID: 0}
-      SkillEffectPrefab: {fileID: 0}
-      passive: 0
-      skillTypes: 
-      tooltip: 
-      AdditionalSkills: {fileID: 0}
-      AdditionalSkillData:
-        condition:
-          isactive: 0
-          target: 0
-          type: 0
-          comparison: 0
-          value: 0
-        conditionHit:
-          isactive: 0
-          target: 0
-          type: 0
-          comparison: 0
-          value: 
-        skillName: 
-        targetrule:
-          isCastingNotCast: 0
-          coordinate: {x: 0, y: 0, z: 0}
-          Rotation: {x: 0, y: 0, z: 0}
-          targetTypeX: 0
-          targetTypeY: 0
-          RotationType: 0
-          Designation: 0
-          reverse_order: 0
-          index: 0
-          target: 0
-      StartAddSkills:
-        condition:
-          isactive: 0
-          target: 0
-          type: 0
-          comparison: 0
-          value: 0
-        conditionHit:
-          isactive: 0
-          target: 0
-          type: 0
-          comparison: 0
-          value: 
-        skillName: 
-        targetrule:
-          isCastingNotCast: 0
-          coordinate: {x: 0, y: 0, z: 0}
-          Rotation: {x: 0, y: 0, z: 0}
-          targetTypeX: 0
-          targetTypeY: 0
-          RotationType: 0
-          Designation: 0
-          reverse_order: 0
-          index: 0
-          target: 0
-      EndAddSkills:
-        condition:
-          isactive: 0
-          target: 0
-          type: 0
-          comparison: 0
-          value: 0
-        conditionHit:
-          isactive: 0
-          target: 0
-          type: 0
-          comparison: 0
-          value: 
-        skillName: 
-        targetrule:
-          isCastingNotCast: 0
-          coordinate: {x: 0, y: 0, z: 0}
-          Rotation: {x: 0, y: 0, z: 0}
-          targetTypeX: 0
-          targetTypeY: 0
-          RotationType: 0
-          Designation: 0
-          reverse_order: 0
-          index: 0
-          target: 0
-      actionsNumber: 0
-      skillNumber: 0
-      skillCumulative: 0
-      rageCost: 0
-      hpCost: 0
-      rageCost_bas: 0
-      hpCost_bas: 0
-      startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
-      projectile: 0
-      targeting: 0
-      penetration: 0
-      tracking: 0
-      RangeAdjustment: 0
-      unlimitedRota: 0
-      projectileType: 0
-      skillTarget: 
-      projectileSpeed: 0
-      hitscantime: 0
-      afterdelay: 0
-      beforedelay: 0
-      range: 0
-      aoetype: 0
-      fourRotation: 0
-      effectRotation: 0
-      Xaoe: 0
-      Yaoe: 0
-      aoecenter: 0
-      specialAoe: []
-      projectile_targetMove: 0
-      targetPos: []
-      nextDelay: 0
-      easing: 0
-      easingCurve:
-        serializedVersion: 2
-        m_Curve: []
-        m_PreInfinity: 2
-        m_PostInfinity: 2
-        m_RotationOrder: 4
-      repeat: 0
-      rewind: 0
-      skillTime: 0
-      cooldown: 0
-      currentCooldown: 0
-      colldownTime: 0
-      colldownSkill: 0
-      basicValue: 0
-      increase:
-        keys: 
-        values: []
-      damageHit: 0
-      hitSpeed: 0
-      hitEffects: []
-      conditionalEffects: []
-      skillCastCode: 0
-      gurd:
-        time: 0
-      parryingT: 0
-      holdHit: []
-      keyMashingHit: []
-      skillPreview: 0
-      SFDtype: 0
-      SFDtime: 0
-      skillPreviewStop: 0
-      patternType: 0
-      ammo_circle: 0
-      radius_circle: 0
-      isRadius_tracking_circle: 0
-      delayTime_circle: 0
-      position_circle: {x: 0, y: 0, z: 0}
-      isPosition_tracking_circle: 0
-      count_circle: 0
-      isRandom_circle: 0
-      ammo_straight: 0
-      interval_straight: 0
-      direction_straight: {x: 0, y: 0}
-      radius_straight: 0
-      isRadius_tracking_straight: 0
-      delayTime_straight: 0
-      position_straight: {x: 0, y: 0, z: 0}
-      isPosition_tracking_straight: 0
-      count_straight: 0
-      isRandom_straight: 0
-      status: 
-      statusNot: 0
-      statusApply: 
-    aIPattern:
-      isRandomPattern: 0
-    isparrying: 0
-    parryingTime: 0
-    hold: 0
-    holdGauge: []
-    keyMashing: []
 --- !u!114 &62703698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13701,9 +13574,11 @@ MonoBehaviour:
     skillName: 
     skillIcon: {fileID: 0}
     SkillEffectIllustration: {fileID: 0}
+    animationName: 
     SkillEffectPrefab: {fileID: 0}
     passive: 0
     skillTypes: 
+    MoveBoss: 0
     tooltip: 
     AdditionalSkills: {fileID: 0}
     AdditionalSkillData:
@@ -13784,13 +13659,14 @@ MonoBehaviour:
     actionsNumber: 0
     skillNumber: 0
     skillCumulative: 0
+    cost: 0
     rageCost: 0
     hpCost: 0
     rageCost_bas: 0
     hpCost_bas: 0
     startSkillPosition: 0
-    XstartSkillPosition: 0
-    YstartSkillPosition: 0
+    startXpos: 0
+    startYpos: 0
     projectile: 0
     targeting: 0
     penetration: 0
@@ -13801,6 +13677,7 @@ MonoBehaviour:
     skillTarget: 
     projectileSpeed: 0
     hitscantime: 0
+    skillTimeInf: 0
     afterdelay: 0
     beforedelay: 0
     range: 0
@@ -13812,6 +13689,7 @@ MonoBehaviour:
     aoecenter: 0
     specialAoe: []
     projectile_targetMove: 0
+    startPos: 0
     targetPos: []
     nextDelay: 0
     easing: 0
@@ -13843,6 +13721,7 @@ MonoBehaviour:
     holdHit: []
     keyMashingHit: []
     skillPreview: 0
+    skillPreviewCount: 0
     SFDtype: 0
     SFDtime: 0
     skillPreviewStop: 0
@@ -13865,9 +13744,12 @@ MonoBehaviour:
     isPosition_tracking_straight: 0
     count_straight: 0
     isRandom_straight: 0
+    conditionCheck: 0
     status: 
     statusNot: 0
     statusApply: 
+    statusRemove: 
+    statusEffects: []
   debugStart: {x: 0, y: 0, z: 0}
   debugTarget: {x: 0, y: 0, z: 0}
   debugAOECenter: {x: 0, y: 0, z: 0}
@@ -13943,6 +13825,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -13957,11 +13840,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -13978,9 +13865,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -14061,13 +13950,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -14078,6 +13968,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -14089,6 +13980,7 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
@@ -14120,6 +14012,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -14142,11 +14035,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
       status: 
       statusNot: 0
       statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -14167,9 +14064,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turntime: 3
   turnTimer: 0
-  storyManager: {fileID: 0}
-  characterStats: {fileID: 0}
-  turnManager: {fileID: 0}
+  storyManager: {fileID: 62703709}
+  characterStats: {fileID: 62703689}
+  turnManager: {fileID: 62703694}
+  battelManager: {fileID: 62703713}
   AIturnEnd: 0
 --- !u!114 &62703706
 MonoBehaviour:
@@ -14198,6 +14096,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageManager: {fileID: 0}
   storyManager: {fileID: 62703709}
+  battelManager: {fileID: 62703713}
   CurrentStage: {fileID: 0}
   turnManager: {fileID: 62703694}
   characterStats: {fileID: 62703689}
@@ -14269,7 +14168,9 @@ MonoBehaviour:
   currentTalkIndex: 0
   talklist: []
   talkRead: []
-  characterSprites: []
+  characterSprites:
+    keys: []
+    values: []
   popUpStoryUI: {fileID: 1160122067}
   PopUptalklist: []
   PopUptalkRead: []
@@ -14287,6 +14188,13 @@ MonoBehaviour:
   skillLock: 0
   timeLock: 0
   isOnSFDEnd: 0
+  newDictionary:
+    keys:
+    - "\uC138\uB80C"
+    - "\uC790\uC778"
+    values:
+    - {fileID: 11400000, guid: 31a8816b671a6234d80286b09906aad8, type: 2}
+    - {fileID: 11400000, guid: cdc0cc3a9382ef44598322428511bb3c, type: 2}
 --- !u!114 &62703710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14343,6 +14251,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterStats: {fileID: 62703689}
   eventManager: {fileID: 62703695}
+--- !u!114 &62703713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 62703682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 997c2f64bc0447a42933f6adb63ec081, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boss_hp: 100
+  boss_maxhp: 100
+  player_hp: 100
+  player_maxhp: 100
+  serveTurn_actionCount: 1
+  serveTurn_Count: 1
 --- !u!4 &72771762 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5236981650925629645, guid: 78e847a47d13ecc43b14da6abaea6898, type: 3}
@@ -16253,8 +16179,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 0, y: 100}
-  m_SizeDelta: {x: 1016, y: 160}
+  m_AnchoredPosition: {x: 0.0028162003, y: 90}
+  m_SizeDelta: {x: 1066.4, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &179626144
 MonoBehaviour:
@@ -21434,7 +21360,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &313632245
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22072,7 +21998,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 0
-  orthographic size: 5.5208335
+  orthographic size: 5.7083335
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -22745,8 +22671,8 @@ GameObject:
   - component: {fileID: 361908667}
   - component: {fileID: 361908671}
   - component: {fileID: 361908670}
-  - component: {fileID: 361908672}
   - component: {fileID: 361908668}
+  - component: {fileID: 361908672}
   m_Layer: 5
   m_Name: MiniTalk
   m_TagString: Untagged
@@ -22773,8 +22699,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 93.0988, y: 52.5754}
+  m_AnchoredPosition: {x: 0.000010967, y: 141}
+  m_SizeDelta: {x: 850, y: 128}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &361908668
 MonoBehaviour:
@@ -22783,7 +22709,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 361908666}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
@@ -22835,20 +22761,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 361908666}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 10
-    m_Right: 10
-    m_Top: 5
-    m_Bottom: 5
-  m_ChildAlignment: 8
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
   m_Spacing: 0
-  m_ChildForceExpandWidth: 0
-  m_ChildForceExpandHeight: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
@@ -22999,8 +22925,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 51.9188, y: -20.04}
-  m_SizeDelta: {x: 62.36, y: 30.08}
+  m_AnchoredPosition: {x: 479.75827, y: -55.839485}
+  m_SizeDelta: {x: 720.8766, y: 92.9589}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &373541446
 MonoBehaviour:
@@ -23009,7 +22935,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 373541444}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
@@ -23097,7 +23023,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 512
+  m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -29281,7 +29207,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &580761817
 RectTransform:
   m_ObjectHideFlags: 0
@@ -32206,7 +32132,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -87.251495, y: 33.440002}
+  m_AnchoredPosition: {x: 88, y: 39}
   m_SizeDelta: {x: 148.3892, y: 43.5165}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &754582855
@@ -33083,7 +33009,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53c11afc24df6f34a9f777b63954fabe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Instance: {fileID: 0}
   characterProfileUI: {fileID: 0}
   ProfileUI: {fileID: 1558331731}
   characterProfileSkillUI: {fileID: 21300000, guid: 4fd18ce22bbfb6e4dbe98cda9d8735da, type: 3}
@@ -33143,6 +33068,7 @@ MonoBehaviour:
   Skill_TurnEnd_Button: {fileID: 754582853}
   AttackTurn: {fileID: 1405590730}
   GurdTurn: {fileID: 1818774451}
+  trunCount2Text: {fileID: 1527085677}
 --- !u!114 &781908734
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -36115,6 +36041,93 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5236981650925629645, guid: 78e847a47d13ecc43b14da6abaea6898, type: 3}
   m_PrefabInstance: {fileID: 1300363105}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &895742917
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 895742919}
+  - component: {fileID: 895742918}
+  m_Layer: 0
+  m_Name: 234234
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!212 &895742918
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895742917}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 7f236062de2211947b4701b381f5fe98, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 0.96875, y: 1.5625}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 0
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
+--- !u!4 &895742919
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 895742917}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!4 &895943279 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5236981650925629645, guid: 78e847a47d13ecc43b14da6abaea6898, type: 3}
@@ -36275,6 +36288,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 298079380}
+  - {fileID: 1527085676}
   m_Father: {fileID: 1495428764}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
@@ -36391,6 +36405,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -36405,11 +36420,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -36426,9 +36445,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -36509,13 +36530,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -36526,6 +36548,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -36537,6 +36560,7 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
@@ -36568,6 +36592,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -36590,11 +36615,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
       status: 
       statusNot: 0
       statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -37683,6 +37712,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -37697,11 +37727,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -37718,9 +37752,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -37801,13 +37837,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -37818,6 +37855,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -37829,6 +37867,7 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
@@ -37860,6 +37899,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -37882,11 +37922,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
       status: 
       statusNot: 0
       statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -39884,6 +39928,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -39898,11 +39943,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -39919,9 +39968,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -40002,13 +40053,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -40019,6 +40071,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -40030,6 +40083,7 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
@@ -40061,6 +40115,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -40083,11 +40138,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
       status: 
       statusNot: 0
       statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -41444,7 +41503,7 @@ SpriteRenderer:
   m_SortingLayerID: 680496379
   m_SortingLayer: -1
   m_SortingOrder: -20
-  m_Sprite: {fileID: 21300000, guid: ae149a0ac88412641804cc2c9c593256, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 661ca521482119447a975c462948abe7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -41463,13 +41522,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1103327163}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalRotation: {x: 0.597905, y: -0, z: -0, w: 0.801567}
+  m_LocalPosition: {x: 2, y: 0.24886894, z: 1.7101154}
+  m_LocalScale: {x: 0.5, y: 0.50000006, z: 0.50000006}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1109748447
 GameObject:
   m_ObjectHideFlags: 0
@@ -43102,6 +43161,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -43116,11 +43176,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -43137,9 +43201,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -43220,13 +43286,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -43237,6 +43304,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -43248,6 +43316,7 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
@@ -43279,6 +43348,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -43301,11 +43371,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
       status: 
       statusNot: 0
       statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -44067,6 +44141,8 @@ GameObject:
   - component: {fileID: 1232715707}
   - component: {fileID: 1232715709}
   - component: {fileID: 1232715708}
+  - component: {fileID: 1232715711}
+  - component: {fileID: 1232715710}
   m_Layer: 0
   m_Name: enter
   m_TagString: Untagged
@@ -44088,10 +44164,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 361908667}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 46.5494, y: -41.3277}
-  m_SizeDelta: {x: 73.0988, y: 12.4954}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -28.5, y: 9.800003}
+  m_SizeDelta: {x: 48.484802, y: 13.211502}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1232715708
 MonoBehaviour:
@@ -44192,6 +44268,44 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1232715706}
   m_CullTransparentMesh: 1
+--- !u!111 &1232715710
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232715706}
+  m_Enabled: 0
+  serializedVersion: 4
+  m_Animation: {fileID: 7400000, guid: 207ef6199dcb53e48b9b94363af9e5e2, type: 2}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_UpdateMode: 0
+  m_CullingType: 0
+--- !u!95 &1232715711
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1232715706}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b9df06c63f3bf944c91a702db18313d9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 2
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1233370340
 GameObject:
   m_ObjectHideFlags: 0
@@ -47649,7 +47763,9 @@ MonoBehaviour:
   currentTalkIndex: 0
   talklist: []
   talkRead: []
-  characterSprites: []
+  characterSprites:
+    keys: []
+    values: []
   popUpStoryUI: {fileID: 1160122067}
   PopUptalklist: []
   PopUptalkRead: []
@@ -47667,6 +47783,9 @@ MonoBehaviour:
   skillLock: 0
   timeLock: 0
   isOnSFDEnd: 0
+  newDictionary:
+    keys: []
+    values: []
 --- !u!1001 &1375955273
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49656,7 +49775,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1429512909
 RectTransform:
   m_ObjectHideFlags: 0
@@ -49673,7 +49792,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -50}
+  m_AnchoredPosition: {x: 60, y: -64}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1429512910
@@ -52447,6 +52566,142 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5236981650925629645, guid: 78e847a47d13ecc43b14da6abaea6898, type: 3}
   m_PrefabInstance: {fileID: 1523487852}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1527085675
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1527085676}
+  - component: {fileID: 1527085678}
+  - component: {fileID: 1527085677}
+  m_Layer: 0
+  m_Name: Trun_Count (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1527085676
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527085675}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 913627583}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 245, y: -549}
+  m_SizeDelta: {x: 200, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1527085677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527085675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 4
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
+  m_sharedMaterial: {fileID: 7790065524298641722, guid: 25de4ae9d4c3f6d46a1ba7bdf64b1ad3, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4278249215
+  m_fontColor: {r: 1, g: 0.90361226, b: 0, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 36
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1527085678
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1527085675}
+  m_CullTransparentMesh: 1
 --- !u!1 &1532260917
 GameObject:
   m_ObjectHideFlags: 0
@@ -52732,7 +52987,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1547579768
 RectTransform:
   m_ObjectHideFlags: 0
@@ -57576,6 +57831,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterNumber: 2
   moveSpeed: 5
+  targetPosition: {x: 0, y: 0, z: 0}
+  startPosition: {x: 0, y: 0, z: 0}
   isMoving: 0
   isBlocked: 0
   moveRange: 5
@@ -57585,6 +57842,238 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   lookRotation: 0
   lookRota: {fileID: 0}
+  character:
+    characterNumber: 0
+    name: 
+    maxhp: 0
+    hp: 0
+    shields: 0
+    rage: 0
+    risk: 0
+    cost: 0
+    atk: 0
+    def: 0
+    damage_Defense: 0
+    damage_Plus: 0
+    rest: 0
+    speed: 0
+    movespeed: 0
+    moveCount: 0
+    NowMoveCount: 0
+    trun: 0
+    charPosition: {x: 0, y: 0, z: 0}
+    charRotation: 0
+    isdie: 0
+    team: 0
+    mainCh: 0
+    summons: 0
+    useSkill: []
+    statusEffects: []
+    passiveSkill: []
+    characterillustration: {fileID: 0}
+    characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
+    characterPrefab: {fileID: 0}
+    debuffEffects: []
+    buffEffects: []
+    ccEffects: []
+    available: 0
+    movable: 0
+    highlightEffect: {fileID: 0}
+    HPbar: {fileID: 0}
+    isPatternEnd: 0
+    gurd: 0
+    lastHitType: 0
+    lastHitSkillData:
+      useCharacterName: 
+      skillName: 
+      skillIcon: {fileID: 0}
+      SkillEffectIllustration: {fileID: 0}
+      animationName: 
+      SkillEffectPrefab: {fileID: 0}
+      passive: 0
+      skillTypes: 
+      MoveBoss: 0
+      tooltip: 
+      AdditionalSkills: {fileID: 0}
+      AdditionalSkillData:
+        condition:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 0
+        conditionHit:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 
+        skillName: 
+        targetrule:
+          isCastingNotCast: 0
+          coordinate: {x: 0, y: 0, z: 0}
+          Rotation: {x: 0, y: 0, z: 0}
+          targetTypeX: 0
+          targetTypeY: 0
+          RotationType: 0
+          Designation: 0
+          reverse_order: 0
+          index: 0
+          target: 0
+      StartAddSkills:
+        condition:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 0
+        conditionHit:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 
+        skillName: 
+        targetrule:
+          isCastingNotCast: 0
+          coordinate: {x: 0, y: 0, z: 0}
+          Rotation: {x: 0, y: 0, z: 0}
+          targetTypeX: 0
+          targetTypeY: 0
+          RotationType: 0
+          Designation: 0
+          reverse_order: 0
+          index: 0
+          target: 0
+      EndAddSkills:
+        condition:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 0
+        conditionHit:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 
+        skillName: 
+        targetrule:
+          isCastingNotCast: 0
+          coordinate: {x: 0, y: 0, z: 0}
+          Rotation: {x: 0, y: 0, z: 0}
+          targetTypeX: 0
+          targetTypeY: 0
+          RotationType: 0
+          Designation: 0
+          reverse_order: 0
+          index: 0
+          target: 0
+      actionsNumber: 0
+      skillNumber: 0
+      skillCumulative: 0
+      cost: 0
+      rageCost: 0
+      hpCost: 0
+      rageCost_bas: 0
+      hpCost_bas: 0
+      startSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
+      projectile: 0
+      targeting: 0
+      penetration: 0
+      tracking: 0
+      RangeAdjustment: 0
+      unlimitedRota: 0
+      projectileType: 0
+      skillTarget: 
+      projectileSpeed: 0
+      hitscantime: 0
+      skillTimeInf: 0
+      afterdelay: 0
+      beforedelay: 0
+      range: 0
+      aoetype: 0
+      fourRotation: 0
+      effectRotation: 0
+      Xaoe: 0
+      Yaoe: 0
+      aoecenter: 0
+      specialAoe: []
+      projectile_targetMove: 0
+      startPos: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      repeat: 0
+      rewind: 0
+      skillTime: 0
+      cooldown: 0
+      currentCooldown: 0
+      colldownTime: 0
+      colldownSkill: 0
+      basicValue: 0
+      increase:
+        keys: 
+        values: []
+      damageHit: 0
+      hitSpeed: 0
+      hitEffects: []
+      conditionalEffects: []
+      skillCastCode: 0
+      gurd:
+        time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+      skillPreview: 0
+      skillPreviewCount: 0
+      SFDtype: 0
+      SFDtime: 0
+      skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+      conditionCheck: 0
+      status: 
+      statusNot: 0
+      statusApply: 
+      statusRemove: 
+      statusEffects: []
+    aIPattern:
+      isRandomPattern: 0
+    noPattern: 0
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: []
   SFD: {fileID: 0}
 --- !u!212 &1672660646
 SpriteRenderer:
@@ -58398,6 +58887,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -58412,11 +58902,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
+    statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -58433,9 +58927,11 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
+      MoveBoss: 0
       tooltip: 
       AdditionalSkills: {fileID: 0}
       AdditionalSkillData:
@@ -58516,13 +59012,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -58533,6 +59030,7 @@ MonoBehaviour:
       skillTarget: 
       projectileSpeed: 0
       hitscantime: 0
+      skillTimeInf: 0
       afterdelay: 0
       beforedelay: 0
       range: 0
@@ -58544,6 +59042,7 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
@@ -58575,6 +59074,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -58597,11 +59097,15 @@ MonoBehaviour:
       isPosition_tracking_straight: 0
       count_straight: 0
       isRandom_straight: 0
+      conditionCheck: 0
       status: 
       statusNot: 0
       statusApply: 
+      statusRemove: 
+      statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
@@ -64114,7 +64618,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1876964808
 RectTransform:
   m_ObjectHideFlags: 0
@@ -65265,6 +65769,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterNumber: 1
   moveSpeed: 5
+  targetPosition: {x: 0, y: 0, z: 0}
+  startPosition: {x: 0, y: 0, z: 0}
   isMoving: 0
   isBlocked: 0
   moveRange: 5
@@ -65274,6 +65780,238 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   lookRotation: 0
   lookRota: {fileID: 0}
+  character:
+    characterNumber: 0
+    name: 
+    maxhp: 0
+    hp: 0
+    shields: 0
+    rage: 0
+    risk: 0
+    cost: 0
+    atk: 0
+    def: 0
+    damage_Defense: 0
+    damage_Plus: 0
+    rest: 0
+    speed: 0
+    movespeed: 0
+    moveCount: 0
+    NowMoveCount: 0
+    trun: 0
+    charPosition: {x: 0, y: 0, z: 0}
+    charRotation: 0
+    isdie: 0
+    team: 0
+    mainCh: 0
+    summons: 0
+    useSkill: []
+    statusEffects: []
+    passiveSkill: []
+    characterillustration: {fileID: 0}
+    characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
+    characterPrefab: {fileID: 0}
+    debuffEffects: []
+    buffEffects: []
+    ccEffects: []
+    available: 0
+    movable: 0
+    highlightEffect: {fileID: 0}
+    HPbar: {fileID: 0}
+    isPatternEnd: 0
+    gurd: 0
+    lastHitType: 0
+    lastHitSkillData:
+      useCharacterName: 
+      skillName: 
+      skillIcon: {fileID: 0}
+      SkillEffectIllustration: {fileID: 0}
+      animationName: 
+      SkillEffectPrefab: {fileID: 0}
+      passive: 0
+      skillTypes: 
+      MoveBoss: 0
+      tooltip: 
+      AdditionalSkills: {fileID: 0}
+      AdditionalSkillData:
+        condition:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 0
+        conditionHit:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 
+        skillName: 
+        targetrule:
+          isCastingNotCast: 0
+          coordinate: {x: 0, y: 0, z: 0}
+          Rotation: {x: 0, y: 0, z: 0}
+          targetTypeX: 0
+          targetTypeY: 0
+          RotationType: 0
+          Designation: 0
+          reverse_order: 0
+          index: 0
+          target: 0
+      StartAddSkills:
+        condition:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 0
+        conditionHit:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 
+        skillName: 
+        targetrule:
+          isCastingNotCast: 0
+          coordinate: {x: 0, y: 0, z: 0}
+          Rotation: {x: 0, y: 0, z: 0}
+          targetTypeX: 0
+          targetTypeY: 0
+          RotationType: 0
+          Designation: 0
+          reverse_order: 0
+          index: 0
+          target: 0
+      EndAddSkills:
+        condition:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 0
+        conditionHit:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 
+        skillName: 
+        targetrule:
+          isCastingNotCast: 0
+          coordinate: {x: 0, y: 0, z: 0}
+          Rotation: {x: 0, y: 0, z: 0}
+          targetTypeX: 0
+          targetTypeY: 0
+          RotationType: 0
+          Designation: 0
+          reverse_order: 0
+          index: 0
+          target: 0
+      actionsNumber: 0
+      skillNumber: 0
+      skillCumulative: 0
+      cost: 0
+      rageCost: 0
+      hpCost: 0
+      rageCost_bas: 0
+      hpCost_bas: 0
+      startSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
+      projectile: 0
+      targeting: 0
+      penetration: 0
+      tracking: 0
+      RangeAdjustment: 0
+      unlimitedRota: 0
+      projectileType: 0
+      skillTarget: 
+      projectileSpeed: 0
+      hitscantime: 0
+      skillTimeInf: 0
+      afterdelay: 0
+      beforedelay: 0
+      range: 0
+      aoetype: 0
+      fourRotation: 0
+      effectRotation: 0
+      Xaoe: 0
+      Yaoe: 0
+      aoecenter: 0
+      specialAoe: []
+      projectile_targetMove: 0
+      startPos: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      repeat: 0
+      rewind: 0
+      skillTime: 0
+      cooldown: 0
+      currentCooldown: 0
+      colldownTime: 0
+      colldownSkill: 0
+      basicValue: 0
+      increase:
+        keys: 
+        values: []
+      damageHit: 0
+      hitSpeed: 0
+      hitEffects: []
+      conditionalEffects: []
+      skillCastCode: 0
+      gurd:
+        time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+      skillPreview: 0
+      skillPreviewCount: 0
+      SFDtype: 0
+      SFDtime: 0
+      skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+      conditionCheck: 0
+      status: 
+      statusNot: 0
+      statusApply: 
+      statusRemove: 
+      statusEffects: []
+    aIPattern:
+      isRandomPattern: 0
+    noPattern: 0
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: []
   SFD: {fileID: 0}
 --- !u!212 &1930392186
 SpriteRenderer:
@@ -73967,6 +74705,66 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5236981650925629645, guid: 78e847a47d13ecc43b14da6abaea6898, type: 3}
   m_PrefabInstance: {fileID: 2104232859}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2105384923
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2105384926}
+  - component: {fileID: 2105384925}
+  - component: {fileID: 2105384924}
+  m_Layer: 0
+  m_Name: VisualScripting SceneVariables
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2105384924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105384923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 765181c9ef4b24d32a4f7cbd2ef370dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2105384925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105384923}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e741851cba3ad425c91ecf922cc6b379, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _data:
+    _json: '{"declarations":{"Kind":"Scene","collection":{"$content":[],"$version":"A"},"$version":"A"}}'
+    _objectReferences: []
+--- !u!4 &2105384926
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2105384923}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2106212377
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -76658,3 +77456,5 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 1103327165}
   - {fileID: 4330217052959935432}
+  - {fileID: 895742919}
+  - {fileID: 2105384926}

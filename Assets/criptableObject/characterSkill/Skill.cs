@@ -104,6 +104,7 @@ public class Skill : ScriptableObject
     public string skillName;      // 스킬 이름
     public Sprite skillIcon;        // 스킬 아이콘
     public Sprite SkillEffectIllustration;
+    public string animationName; // 스킬 애니메이션 이름
     public GameObject SkillEffectPrefab;
     public bool passive;          // 패시브 여부 (false면 액티브)
     public List<skillType> skillTypes;      // 스킬 타입 (공격, 방어, 보조, 이동)
@@ -126,13 +127,14 @@ public class Skill : ScriptableObject
 
 
     [Header("코스트")]
+    public int cost = 0; // 코스트
     public int rageCost = 0; // 코스트
     public int hpCost = 0; // 체력 코스트
 
     [Header("스킬 시작위치")]
     public StartSkillPosition startSkillPosition; // 스킬 시작 위치 (플레이어, 지정된 대상 등)
-    public int XstartSkillPosition;
-    public int YstartSkillPosition;
+    public float XstartSkillPosition;
+    public float YstartSkillPosition;
 
     [Header("스킬의 유형")]
     public bool projectile;       // 투사체 여부 (false면 히트스캔)
@@ -173,8 +175,8 @@ public class Skill : ScriptableObject
     public float skillTime = 0; // 마지막 이동시 스킬이 사라지기까지 걸리는 시간
 
     [Header("쿨타임")]
-    public int cooldown;        // 쿨타임
-    public int colldownSkill;   // 지속 스킬횟수
+    public float cooldown;        // 쿨타임
+    public float colldownSkill;   // 지속 스킬횟수
 
     [Header("위력과 갯수")]
     public int basicValue;      // 기본 위력
@@ -232,6 +234,7 @@ public class Skill : ScriptableObject
 
     [Header("스킬 시전전에 범위 표시")]
     public float skillPreview = 0f; // 범위 표시 시간 제한
+    public int skillPreviewCount = 0; // 범위 표시 횟수 제한
 
     [Header("스킬 정지연출")]
     public SFDType SFDtype = SFDType.none; // 정지해체 기준

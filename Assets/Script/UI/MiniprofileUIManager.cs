@@ -82,7 +82,7 @@ public class MiniprofileUIManager : MonoBehaviour
                 skillImage.color = skill.colldownTime > 0 ? cooldownColor : normalColor; // 쿨타임 색상 처리
 
                 // MP 부족 시 색상 처리
-                if (skill.rageCost > character.rage && skill.hpCost >= character.hp)
+                if (skill.rageCost > character.rage && skill.hpCost >= character.hp && skill.cost >= character.cost)
                 {
                     skillImage.color = nompdownColor;
                 }

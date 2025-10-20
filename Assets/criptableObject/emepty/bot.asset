@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charactername: bot
   maxhp: 10
-  maxmp: 99
+  rage: 0
   atk: 10
   def: 0
   speed: 10
@@ -22,12 +22,13 @@ MonoBehaviour:
   moveCount: 10
   trun: 10
   team: 1
+  mainCh: 1
   summons: 0
   useSkill:
   - {fileID: 11400000, guid: 8da697a8ec9af084d8ec2e4186dcccb9, type: 2}
   - {fileID: 11400000, guid: dfa00a7ae5001754fbd63660a114a15a, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 6e15a82115132c941a27e1bf2e585564, type: 2}
+  - {fileID: 11400000, guid: 1afce002ce760db4bad1e5952c5560dd, type: 2}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 11400000, guid: 9c11d0421fab6ec45beb13019a7bef03, type: 2}
@@ -39,3 +40,4 @@ MonoBehaviour:
   characterProfileillustration: {fileID: 21300000, guid: 48b0b642eb9ea4f478f87f0c4db58470, type: 3}
   characterPrefab: {fileID: 4344314745404087944, guid: 33c9802a4c0ec3c49b44d7ef4cc4c6e7, type: 3}
   skillQueue: {fileID: 11400000, guid: 2d40dbb2510b5444eb3ce854b5a3c0cc, type: 2}
+  noPattern: 0

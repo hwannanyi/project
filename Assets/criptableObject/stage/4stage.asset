@@ -22,6 +22,8 @@ MonoBehaviour:
   startPositions:
   - {x: 0, y: 1}
   - {x: 0, y: 0}
+  P1: {fileID: 0}
+  P2: {fileID: 0}
   mapWidth: 5
   mapHeight: 5
   mapSprite: {fileID: 21300000, guid: a81979b2d3648484b99ba8ba97d2c400, type: 3}
@@ -31,3 +33,5 @@ MonoBehaviour:
     position: {x: 6, y: 2}
   clear: 0
   feil: 0
+  isServeTurn: 01010000
+  turnOrder: 04000000040000000000000000000000

@@ -22,12 +22,16 @@ MonoBehaviour:
   startPositions:
   - {x: 0, y: 0}
   - {x: 0, y: 1}
+  P1: {fileID: 0}
+  P2: {fileID: 0}
   mapWidth: 5
   mapHeight: 5
   mapSprite: {fileID: 21300000, guid: 8f4f60127189df34a9703ef53961323a, type: 3}
   mapBackGround: {fileID: 0}
   enemyDatalist:
-  - enemyName: stage2
-    position: {x: 3, y: 3}
+  - enemyName: stage-1
+    position: {x: 2, y: 2}
   clear: 0
   feil: 0
+  isServeTurn: 0100
+  turnOrder: 0400000000000000

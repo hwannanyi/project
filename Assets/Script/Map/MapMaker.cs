@@ -41,7 +41,7 @@ public class MapMaker : MonoBehaviour
         {
             for (int z = -1; z <= h; z++)
             {
-                Vector3 position = new Vector3(x, 0, z);
+                Vector3 position = new Vector3(x * 1.2f, 0, z);
                 // º® »ý¼º
                 if (x == -1 || x == w || z == -1 || z == h)
                 {
@@ -59,6 +59,6 @@ public class MapMaker : MonoBehaviour
             }
         }
 
-        cameraTra.position = new Vector3(w / 2f - 0.5f, 6,0);
+        cameraTra.position = new Vector3(w * 1.2f / 2f - 0.5f, 6,0);
     }
 }

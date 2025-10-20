@@ -210,9 +210,13 @@ public class SkillHitEffects : MonoBehaviour
                 }
                 else
                 {
-                    targetStats.hp -= finalDamage
+                    
 
-;
+                    if(targetStats.mainCh)
+                        BattelManager.instance.Hit(finalDamage, targetStats.team == Team.team);
+                    else
+                        targetStats.hp -= finalDamage
+                ;
                     DamageText.Instance.ShowDamage(targetObj.transform.position + Vector3.up * 1.5f, finalDamage, false);
                     Debug.Log($"[Hit] {targetStats.name}이(가) {casterStats.name}에게 {damageValue} 피해를 입음. 남은 HP: {targetStats.hp}");
                 }
@@ -220,7 +224,11 @@ public class SkillHitEffects : MonoBehaviour
             }
             if (HasSkillHitEffect_Damge_ByTarget(skillData, target, 0, SkillhitEffect.heal))
             {
-                targetStats.hp += damageValue;
+                
+                if (targetStats.mainCh)
+                    BattelManager.instance.Hit(-damageValue, targetStats.team == Team.team);
+                else
+                    targetStats.hp += damageValue;
                 DamageText.Instance.ShowDamage(targetObj.transform.position + Vector3.up * 1.5f, damageValue, true);
                 Debug.Log($"[Hit] {targetStats.name}이(가) {casterStats.name}에게 {damageValue} 회복을 함. 남은 HP: {targetStats.hp}");
             }
@@ -327,11 +335,11 @@ public class SkillHitEffects : MonoBehaviour
         }
         else if (target == Target.team)
         {
-            return skillData.hitEffects[hitEffectEntryIndex].target == target && targetStats.isPlayerTeam == casterStats.isPlayerTeam && targetStats != casterStats;
+            return skillData.hitEffects[hitEffectEntryIndex].target == target && targetStats.team == casterStats.team && targetStats != casterStats;
         }
         else if (target == Target.enemy)
         {
-            return skillData.hitEffects[hitEffectEntryIndex].target == target && targetStats.isPlayerTeam != casterStats.isPlayerTeam;
+            return skillData.hitEffects[hitEffectEntryIndex].target == target && targetStats.team != casterStats.team;
         }
         else
         {

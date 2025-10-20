@@ -20,6 +20,7 @@ public class TurnUIManager : MonoBehaviour
     public RectTransform AttackTurn;
     public RectTransform GurdTurn;
 
+    public TextMeshProUGUI trunCount2Text;  // ео
     public void Start()
     {
         UpdateReactTurn(true);
@@ -27,6 +28,11 @@ public class TurnUIManager : MonoBehaviour
     public void UpdateTrunCount(int turnCount)
     {
         trunCountText.text = turnCount.ToString() + "ео";
+    }
+
+    public void UpdateTrunCount2(int turnCount)
+    {
+        trunCount2Text.text = turnCount.ToString();
     }
 
 
@@ -48,7 +54,7 @@ public class TurnUIManager : MonoBehaviour
 
     public void UpdateReactTurn(bool playerturn)
     {
-        if (turnManager.isPlayerTurn)
+        if (turnManager.isTurn_cooperation)
         {
             StartCoroutine(MoveGurdTurnToZero());
             StartCoroutine(MoveAttackTurnTo150());

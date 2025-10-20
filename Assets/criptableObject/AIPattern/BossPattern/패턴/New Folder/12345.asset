@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d224440329b07543ba63fea5671617e, type: 3}
+  m_Name: 12345
+  m_EditorClassIdentifier: 
+  skillQueue: []
+  skillCondition: []
+  patterns_turn_alone:
+  - pattern:
+    - {fileID: 11400000, guid: 8d93ad450a908ee45b651d78dfbe6666, type: 2}
+  patterns_turn_cooperation:
+  - pattern:
+    - {fileID: 11400000, guid: 32e3695996ab8b643b6e5192d0ca4670, type: 2}
+  patterns_turn_cooperation_end:
+  - pattern:
+    - {fileID: 11400000, guid: 14b9ec1d7ab9a2d45977d58ea47cb5b2, type: 2}
+  isRandomPattern: 0

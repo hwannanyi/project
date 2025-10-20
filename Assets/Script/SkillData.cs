@@ -10,6 +10,12 @@ using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using static UnityEngine.Rendering.VolumeComponent;
 
+public enum SkillStatusType
+{
+    none,
+    hit
+    // 필요하면 확장: Poisoned, Sleep 등
+}
 
 [System.Serializable]
 public class SkillData
@@ -18,6 +24,7 @@ public class SkillData
     public string skillName;      // 스킬 이름
     public Sprite skillIcon;        // 스킬 아이콘
     public Sprite SkillEffectIllustration;
+    public string animationName; // 스킬 애니메이션 이름
     public GameObject SkillEffectPrefab;
     public bool passive;          // 패시브 여부 (false면 액티브)
     public List<skillType> skillTypes;      // 스킬 타입 (공격, 방어, 보조, 이동)
@@ -42,14 +49,15 @@ public class SkillData
     public int skillNumber;       // 스킬의 갯수 (변형 가능)
     public int skillCumulative;   // 최대 충전 횟수 (기본 1)
 
+    public int cost; // 코스트
     public int rageCost; // 코스트
     public int hpCost; // 체력 코스트
     public int rageCost_bas;            // 기본 코스트
     public int hpCost_bas;            // 기본 체력 코스트
 
     public StartSkillPosition startSkillPosition; // 스킬 시작 위치 (플레이어, 지정된 대상 등)
-    public int XstartSkillPosition;
-    public int YstartSkillPosition;
+    public float startXpos;
+    public float startYpos;
 
     public bool projectile;       // 투사체 여부 (false면 히트스캔)
     public bool targeting;        // 타겟팅 여부 (false면 논타겟팅)
@@ -87,10 +95,10 @@ public class SkillData
     public bool rewind = false; // 반복할때 역순이동
     public float skillTime = 0; // 마지막 이동시 스킬이 사라지기까지 걸리는 시간
 
-    public int cooldown;        // 기본쿨타임
-    public int currentCooldown; //현제 쿨타임
-    public int colldownTime;        // 쿨타임
-    public int colldownSkill;      // 지속 스킬횟수
+    public float cooldown;        // 기본쿨타임
+    public float currentCooldown; //현제 쿨타임
+    public float colldownTime;        // 쿨타임
+    public float colldownSkill;      // 지속 스킬횟수
 
     public int basicValue;      // 기본 위력
     public UDictionary<IncreaseType, float> increase; // 위력 계수 (예: {공격력: 0.1}, {방어력: 0.5})
@@ -107,6 +115,7 @@ public class SkillData
     public List<MashingEffect> keyMashingHit = new();
 
     public float skillPreview = 1f; // 범위 표시 시간 제한
+    public int skillPreviewCount = 0; // 범위 표시 횟수 제한
 
     //정지연출
     public SFDType SFDtype = SFDType.none; // 정지해체 기준
@@ -150,6 +159,14 @@ public class SkillData
 
     public List<StatusEffect> statusEffects = new(); // 상태 효과 리스트
 
+
+    public HashSet<SkillStatusType> statuses = new HashSet<SkillStatusType>();
+
+    // 상태 조작/조회 유틸
+    public void AddStatus(SkillStatusType status) => statuses.Add(status);
+    public void RemoveStatus(SkillStatusType status) => statuses.Remove(status);
+    public bool HasStatus(SkillStatusType status) => statuses.Contains(status);
+
     public SkillData(Skill data, string characterName, int depth = 0)
     {
         if (data == null)
@@ -161,7 +178,7 @@ public class SkillData
             return;
 
         skillCastCode = 0; // 스킬 실행시 스킬을 찾기위한 임시코드
-
+        animationName = data.animationName;
         skillName = data.skillName;
         useCharacterName = characterName; // 직접 문자열을 할당
 
@@ -174,6 +191,7 @@ public class SkillData
         MoveBoss = data.MoveBoss;
         tooltip = data.tooltip;
 
+        cost = data.cost;
         rageCost = data.rageCost;
         hpCost = data.hpCost;
         rageCost_bas = data.rageCost;
@@ -191,8 +209,8 @@ public class SkillData
 
 
         skillTarget = new List<Target>(data.skillTarget);
-        XstartSkillPosition = data.XstartSkillPosition;
-        YstartSkillPosition = data.YstartSkillPosition;
+        startXpos = data.XstartSkillPosition;
+        startYpos = data.YstartSkillPosition;
         projectileSpeed = data.projectileSpeed;
         hitscantime = data.hitscantime; // 히트스캔 시간
         skillTimeInf = data.skillTimeInf; // 스킬 지속시간 무한
@@ -249,6 +267,7 @@ public class SkillData
 
 
         skillPreview = data.skillPreview; // 범위 표시 시간 제한
+        skillPreviewCount = data.skillPreviewCount; // 범위 표시 횟수 제한
 
         patternType = data.patternType;
         // circle
@@ -371,6 +390,16 @@ public class SkillData
         skillPreviewStop = data.skillPreviewStop;
     }
 
+    public IEnumerator SkillCooldown()
+    {
+        colldownTime = currentCooldown;
+        while (colldownTime > 0)
+        {
+            colldownTime -= Time.deltaTime;
+            yield return null;
+        }
+    }
+
     public void StartCooldown()
     {
         colldownTime = currentCooldown;
@@ -379,6 +408,13 @@ public class SkillData
     public void ReduceCooldown(int amount)
     {
         colldownTime = Mathf.Max(0, colldownTime - amount);
+    }
+
+    public void CostUp(Stats ch, int i)
+    {
+        if(!HasStatus(SkillStatusType.hit))
+            ch.cost = ch.cost+ i >= 10 ? 10 : ch.cost + i;
+        CharacterUIManager.Instance.UpdateRageCount(ch);
     }
     
     public bool IsAvailable()

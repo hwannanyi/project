@@ -1,5 +1,6 @@
-using UnityEngine;
+using NUnit.Framework;
 using System.Collections.Generic;
+using UnityEngine;
 
 
 public enum VictoryRule
@@ -14,7 +15,8 @@ public enum StoryTimingType
 {
     hp, // 체력이 일정 비율 이하
     kill, // 처치됨
-    turn, // 일정턴
+    turnCount, // 일정턴
+    turn, // 특정 턴
     TuToMove, // 이동(튜토전용)
     TuToskillcast, // 스킬 시전(튜토전용)
 }
@@ -38,6 +40,9 @@ public class Stage : ScriptableObject
     [Header("참여인원")]
     public int participants = 1; // 참여자 수
     public List<Vector2> startPositions; // 시작 위치 리스트
+    public Character P1;
+    public Character P2;
+
 
     [Header("맵(미구현)")]
     public int[][] map; // 시작 위치 리스트
@@ -53,7 +58,11 @@ public class Stage : ScriptableObject
     public VictoryRule clear; 
 
     [Header("패배조건")]
-    public VictoryRule feil; 
+    public VictoryRule feil;
+
+    [Header("턴")]
+    public List<bool> isServeTurn;
+    public List<int> turnOrder; // 행동횟수
 }
 [System.Serializable]
 public class EnemyData

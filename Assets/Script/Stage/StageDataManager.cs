@@ -10,6 +10,7 @@ public class StageDataManager : MonoBehaviour
     public static StageDataManager Instance; // 싱글턴 인스턴스
     public StageManager stageManager; // 스테이지 매니저 인스턴스
     public StoryManager storyManager; // 스토리 매니저 인스턴스
+    public BattelManager battelManager; // 배틀 매니저 인스턴스
 
     public Stage CurrentStage; // 현재 선택된 스테이지
 
@@ -40,36 +41,55 @@ public class StageDataManager : MonoBehaviour
 
     public void CheckHP()
     {
+        // 현재 적이 살아있는 수
         var timingList = CurrentStage.storyTiming;
-        // 아직 읽지 않은 스토리 중 value(비율)가 가장 높은 것 우선
-        var timing = timingList
-            .Where(t => !storyManager.readpopupStoryID.Contains(t.ID))
-            .OrderByDescending(t => t.value)
-            .FirstOrDefault();
-
-        if (timing == null) return;
-
-        // 타겟 캐릭터의 체력 비율이 timing.value 이하인지 확인 (0~1 기준)
-        bool check = characterStats.characterList
-            .Any(stats => stats.name == timing.Target
-                          && !stats.isdie
-                          && (stats.hp / (float)stats.maxhp) <= timing.value);
-
-        if (check)
+        var timingList1 = CurrentStage.storyTiming;
+        if (timingList.Count == 0) return;
+        // 살아있는 적이 없으면 조건을 만족하는 첫 StoryTiming 실행
+        if (battelManager.boss_hp <= 0)
         {
-/*            if (timing.talkType == TalkType.speech_bubble)
-                storyManager.PopUpStoryReStart(timing.ID);
-            else if (timing.talkType == TalkType.bare)
-                storyManager.StoryReStart(CurrentStage.ID);
-            else if (timing.talkType == TalkType.all)
-            {
-                storyManager.PopUpStoryReStart(timing.ID);
-                storyManager.StoryReStart(CurrentStage.ID);
-            }
-*/
 
+            // 조건을 만족하는 StoryTiming를 추출
+            var timing = timingList
+                .Where(t => t.storyTimingType == StoryTimingType.hp && t.isPopUp) // kill 타입만 필터링
+                .FirstOrDefault(t => !storyManager.readpopupStoryID.Contains(t.ID));
+
+            // 조건을 만족하는 StoryTiming를 추출
+            var bartiming = timingList1
+                .Where(talk => talk.storyTimingType == StoryTimingType.turnCount && !talk.isPopUp)
+                .FirstOrDefault(talk => !storyManager.readStoryID.Contains(talk.ID));
+
+            float hp = battelManager.boss_hp;
+            float hpMx = battelManager.boss_maxhp;
+            bool check = hp / hpMx <= timing.value;
+
+            if(!check)
+                return;
+            try
+            {
+                if (timing.isPopUp)
+                {
+                    // 말풍선 스토리 실행
+                    storyManager.PopUpStoryReStart(timing.ID);
+                }
+            }
+            catch
+            {
+            }
+            try
+            {
+                if (!bartiming.isPopUp)
+                {
+                    // 말풍선 스토리 실행
+                    storyManager.StoryReStart(bartiming.ID);
+                }
+            }
+            catch
+            {
+            }
         }
     }
+
     /*    public void CheckKill(List<StoryTiming> timingList)
         {
             // 현재 적이 살아있는 수
@@ -95,10 +115,8 @@ public class StageDataManager : MonoBehaviour
         var timingList = CurrentStage.storyTiming;
         var timingList1 = CurrentStage.storyTiming;
         if (timingList.Count == 0) return;
-        int aliveEnemyCount = characterStats.characterList.Count(stats => stats.isPlayerTeam == Team.enemy && stats.isdie == false);
-
         // 살아있는 적이 없으면 조건을 만족하는 첫 StoryTiming 실행
-        if (aliveEnemyCount == 0)
+        if (battelManager.boss_hp <= 0)
         {
 
             // 조건을 만족하는 StoryTiming를 추출
@@ -108,7 +126,7 @@ public class StageDataManager : MonoBehaviour
 
             // 조건을 만족하는 StoryTiming를 추출
             var bartiming = timingList1
-                .Where(talk => talk.storyTimingType == StoryTimingType.turn && !talk.isPopUp)
+                .Where(talk => talk.storyTimingType == StoryTimingType.kill && !talk.isPopUp)
                 .FirstOrDefault(talk => !storyManager.readStoryID.Contains(talk.ID));
 
 
@@ -147,12 +165,12 @@ public class StageDataManager : MonoBehaviour
 
         // 조건을 만족하는 StoryTiming를 추출
         var timing = timingList
-            .Where(t => t.storyTimingType == StoryTimingType.turn && t.isPopUp) // turn 타입과 speech_bubble 타입만 필터링
+            .Where(t => t.storyTimingType == StoryTimingType.turnCount && t.isPopUp) // turn 타입과 speech_bubble 타입만 필터링
             .FirstOrDefault(t => turn >= t.value && !storyManager.readpopupStoryID.Contains(t.ID));
 
         // 조건을 만족하는 StoryTiming를 추출
         var bartiming = timingList1
-            .Where(talk => talk.storyTimingType == StoryTimingType.turn && !talk.isPopUp) 
+            .Where(talk => talk.storyTimingType == StoryTimingType.turnCount && !talk.isPopUp) 
             .FirstOrDefault(talk => turn >= talk.value && !storyManager.readStoryID.Contains(talk.ID));
 
         try
@@ -180,6 +198,48 @@ public class StageDataManager : MonoBehaviour
         
     }
 
+
+    public void CheckmainTurn()
+    {
+        var timingList = CurrentStage.storyTiming;
+        var timingList1 = CurrentStage.storyTiming;
+        if (timingList.Count == 0) return;
+        float turn = (float)turnManager.Turn;
+
+        // 조건을 만족하는 StoryTiming를 추출
+        var timing = timingList
+            .Where(t => t.storyTimingType == StoryTimingType.turn && t.isPopUp) // turn 타입과 speech_bubble 타입만 필터링
+            .FirstOrDefault(t => turn >= t.value && !storyManager.readpopupStoryID.Contains(t.ID));
+
+        // 조건을 만족하는 StoryTiming를 추출
+        var bartiming = timingList1
+            .Where(talk => talk.storyTimingType == StoryTimingType.turn && !talk.isPopUp)
+            .FirstOrDefault(talk => turn >= talk.value && !storyManager.readStoryID.Contains(talk.ID));
+
+        try
+        {
+            if (timing.isPopUp)
+            {
+                // 말풍선 스토리 실행
+                storyManager.PopUpStoryReStart(timing.ID);
+            }
+        }
+        catch
+        {
+        }
+        try
+        {
+            if (!bartiming.isPopUp)
+            {
+                // 말풍선 스토리 실행
+                storyManager.StoryReStart(bartiming.ID);
+            }
+        }
+        catch
+        {
+        }
+
+    }
 
     public void GoStage_Selection()
     {

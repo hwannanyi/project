@@ -12,24 +12,18 @@ public class AITurn : MonoBehaviour
     public StoryManager storyManager; // 스토리 매니저
     public CharacterStats characterStats; // 캐릭터 스탯 매니저
     public TurnManager turnManager; // 턴 매니저 
+    public BattelManager battelManager; // 배틀 매니저
     public bool AIturnEnd = false; // AI 턴 종료 여부
 
-    public void Awake()
-    {
-
-        storyManager = GetComponent<StoryManager>();
-        characterStats = GetComponent<CharacterStats>();
-        turnManager = GetComponent<TurnManager>();
-    }
 
     public void Update()
     {
         // Team.enemy인 캐릭터만 enemies 리스트에 저장
         var enemies = characterStats.characterList
-            .Where(c => c.isPlayerTeam )
+            .Where(c => c.team == Team.enemy)
             .ToList();
         // 모든 적이 죽었는지 확인 (예시: enemies 리스트 사용)
-        bool allEnemiesDead = enemies.All(e => e.isdie);
+        bool allEnemiesDead = battelManager.StageClear();
 
         // 스토리 종료 상태 확인
         if (allEnemiesDead && storyManager.ispopUpStoryEnd && storyManager.isStoryEnd && characterStats.characterCreat)
@@ -44,11 +38,11 @@ public class AITurn : MonoBehaviour
             return;
         if (CharacterStats.Instance.characterList.Count == 0)
             return;
-        if (TurnManager.Instance.isPlayerTurn)
+        if (TurnManager.Instance.isTurn_cooperation)
             return;
 
         if (CharacterStats.Instance.characterList
-            .Where(stats => stats.isPlayerTeam)
+            .Where(stats => stats.team == Team.enemy)
             .All(stats => stats.isPatternEnd) &&
             !(storyManager.isStoryActive || storyManager.popUpisStoryActive))
         {

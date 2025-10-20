@@ -1,5 +1,7 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
@@ -34,6 +36,7 @@ public class TurnManager : MonoBehaviour
     public event Action<Stats> OnTurnChanged;
     public static event Action<Stats> OnTurnChanged_condition;
 
+    public BattelManager battelManager;
     public StageManager stageManager;
     public TurnUIManager uiManager;
     public SkillManager skillmanager; // 스킬 매니저 인스턴스
@@ -41,7 +44,7 @@ public class TurnManager : MonoBehaviour
     public StoryManager storyManager; // 스토리 매니저 인스턴스
 
 
-    public bool isPlayerTurn = true; // 플레이어 턴 여부
+    public bool isTurn_cooperation = true; // 플레이어 턴 여부
 
     /*    public TurnPhase nowtrun = TurnPhase.PlayerTurn;
         public TurnPhase currentPhase = TurnPhase.PlayerTurn;
@@ -49,7 +52,14 @@ public class TurnManager : MonoBehaviour
 
     public ReactTurnPhase Reacttrun = ReactTurnPhase.EnemyTurn;
 
-    public int Turn = 1;
+    public int Turn = 0;
+
+    public int turn_alone = 0;
+    public int turn_cooperation = 0;
+
+
+    public int turnCount = 0; // 행동횟수
+
 
     public int playerSkillTurn = 10;
     public int enemySkillTurn = 10;
@@ -68,6 +78,8 @@ public class TurnManager : MonoBehaviour
     public CharacterStats characterStats;
     public StageDataManager stageDataManager;
 
+    public static event Action TurnEnd; // 턴 종료 이벤트 
+
     private void Awake()
     {
         skillmanager = GetComponent<SkillManager>();
@@ -85,44 +97,53 @@ public class TurnManager : MonoBehaviour
         }
 
         Turn = 1;
-    UITrunCount(Turn);//  턴 UI 업데이트
+        UITrunCount(Turn);//  턴 UI 업데이트
 
-            Instance = this;
+        Instance = this;
 
     }
 
     public void Start()
     {
+        Turn = 0;
+        turn_alone = 0;
+        turn_cooperation = 0;
         stageDataManager.CheckTurn();//스토리활성화
+        stageDataManager.CheckmainTurn();
+        EventManager.Instance.TurnEnd += NextTurnEnd;
+        EventManager.Instance.isMove += TurnCount;
+        SkillManager.SkillCast += TurnCount;
+        EventManager.Instance.FinishTurn();
     }
     //  EventManager 연동 유지 (턴 종료 이벤트로 외부에서 턴 넘기기 가능)
     private void OnEnable()
     {
-        if (EventManager.Instance != null)
-        {
-            EventManager.Instance.TurnEnd += NextTurnEnd;
-        }
-        else
-        {
-            Debug.LogError("[TurnManager] EventManager.Instance가 null입니다! 실행 순서를 확인하세요.");
-        }
+
+            
     }
 
     private void OnDisable()
     {
-        if (EventManager.Instance != null)
-        {
             EventManager.Instance.TurnEnd -= NextTurnEnd;
-        }
+            EventManager.Instance.isMove -= TurnCount;
+            SkillManager.SkillCast -= TurnCount;
+
+    }
+
+public void OnDestroy()
+    {
+        EventManager.Instance.TurnEnd -= NextTurnEnd;
+        EventManager.Instance.isMove -= TurnCount;
+        SkillManager.SkillCast -= TurnCount;
     }
 
     //  현재 턴 판별 함수들
 
-/*/   public bool NowPlayerTurn()
-    {
-        return nowtrun == TurnPhase.PlayerTurn;
-    }
-*/
+    /*/   public bool NowPlayerTurn()
+        {
+            return nowtrun == TurnPhase.PlayerTurn;
+        }
+    */
 
 
     public bool IsInReactPhase()
@@ -142,12 +163,12 @@ public class TurnManager : MonoBehaviour
 
     public bool IsPlayerActive()
     {
-        return IsPlayerReactPhase() || isPlayerTurn;
+        return IsPlayerReactPhase() || isTurn_cooperation;
     }
 
     public bool IsEnemyActive()
     {
-        return IsEnemyReactPhase() || !isPlayerTurn;
+        return IsEnemyReactPhase() || !isTurn_cooperation;
     }
 
     //  캐릭터가 플레이어 팀인지 판별
@@ -162,7 +183,7 @@ public class TurnManager : MonoBehaviour
         playerUseSkillReactTrun = 0;
         enemyUseSkillReactTrun = 0;
         
-        Reacttrun = isPlayerTurn ? ReactTurnPhase.PlayerTurn : ReactTurnPhase.EnemyTurn;
+        Reacttrun = isTurn_cooperation ? ReactTurnPhase.PlayerTurn : ReactTurnPhase.EnemyTurn;
     }
 
     public void ExitReactPhase()
@@ -179,15 +200,21 @@ public class TurnManager : MonoBehaviour
 
     public void ChrtTag()//수비턴일시 비선택된 캐릭은 퇴각, 공격턴에 복귀
     {
-        if (isPlayerTurn)
+        if (Turn == 1)
+            return;
+        
+        Stats selec = characterSelection.selectedCharacter;
+        Stats chrt1 = characterStats.PlayerCharacter1;
+        Stats chrt2 = characterStats.PlayerCharacter2;
+        if (isTurn_cooperation)
         {
             // 공격턴일 때는 모든 캐릭터 복귀
-            if (characterStats.PlayerCharacter1.characterPrefab)
+            if (!characterStats.PlayerCharacter1.isdie)
             {
                 characterStats.PlayerCharacter1.Rest(3);
                 characterStats.PlayerCharacter1.characterPrefab.SetActive(true);
             }
-            if (characterStats.PlayerCharacter2.characterPrefab)
+            if (!characterStats.PlayerCharacter2.isdie)
             {
                 characterStats.PlayerCharacter2.Rest(3);
                 characterStats.PlayerCharacter2.characterPrefab.SetActive(true);
@@ -196,41 +223,33 @@ public class TurnManager : MonoBehaviour
 
 
             // HP바 활성화
-            if (characterStats.PlayerCharacter1.HPbar.gameObject)
+            if (!chrt1.mainCh && !chrt1.isdie)
                 characterStats.PlayerCharacter1.HPbar.gameObject.SetActive(true);
-            if (characterStats.PlayerCharacter2.HPbar.gameObject)
+            if (!chrt2.mainCh && !chrt2.isdie)
                 characterStats.PlayerCharacter2.HPbar.gameObject.SetActive(true);
 
         }
         else
         {
-            GameObject chrtObj = skillmanager.defendingCharacter?.characterPrefab;
-            Stats chrt1 = characterStats.PlayerCharacter1;
-            Stats chrt2 = characterStats.PlayerCharacter2;
+            
 
             // 수비턴일 때는 선택된 캐릭터만 활성화
 
-            if (characterStats.PlayerCharacter1.characterPrefab){
-                chrt1.characterPrefab.SetActive(!chrt1.isdie && chrt1.characterPrefab == chrtObj);
-                chrt1.AddRage(chrt1 == skillmanager.defendingCharacter, 1);
-                chrt1.AddRisk(chrt1 == skillmanager.defendingCharacter, 1);
-            }
-            if (characterStats.PlayerCharacter2.characterPrefab){
-                chrt2.characterPrefab.SetActive(!chrt2.isdie && chrt2.characterPrefab == chrtObj);
-                chrt2.AddRage(chrt2 == skillmanager.defendingCharacter, 1);
-                chrt2.AddRisk(chrt2 == skillmanager.defendingCharacter, 1);
-            }
+            if (!characterStats.PlayerCharacter1.isdie)
+                chrt1.characterPrefab.SetActive(characterStats.PlayerCharacter1.HasStatus(StatusType.main));
+            if (!characterStats.PlayerCharacter2.isdie)
+                chrt2.characterPrefab.SetActive(characterStats.PlayerCharacter2.HasStatus(StatusType.main));
 
-            OnTurnChanged?.Invoke(skillmanager.defendingCharacter);
+            OnTurnChanged?.Invoke(selec);
 
             // 선택된 캐릭만 HP바 활성화
-            if (characterStats.PlayerCharacter1.HPbar.gameObject)
-                characterStats.PlayerCharacter1.HPbar.gameObject.SetActive(characterStats.PlayerCharacter1.characterPrefab == chrtObj);
+            if (!chrt1.mainCh && !chrt1.isdie)
+                characterStats.PlayerCharacter1.HPbar.gameObject.SetActive(characterStats.PlayerCharacter1.HasStatus(StatusType.main));
 
-            if (characterStats.PlayerCharacter2.HPbar.gameObject)
-                characterStats.PlayerCharacter2.HPbar.gameObject.SetActive(characterStats.PlayerCharacter2.characterPrefab == chrtObj);
+            if (!chrt2.mainCh && !chrt2.isdie)
+                characterStats.PlayerCharacter2.HPbar.gameObject.SetActive(characterStats.PlayerCharacter2.HasStatus(StatusType.main));
         }
-        OnTurnChanged_condition?.Invoke(skillmanager.defendingCharacter);
+        OnTurnChanged_condition?.Invoke(selec);
         OnTurnChanged_condition?.Invoke(characterStats.PlayerCharacter1);
         OnTurnChanged_condition?.Invoke(characterStats.PlayerCharacter2);
     }
@@ -238,21 +257,26 @@ public class TurnManager : MonoBehaviour
     //  턴 전환 (일반 턴 순환: 플레이어 <-> 적)
     public void NextTurn()
     {
-        if (isPlayerTurn &&
-            !(skillmanager.defendingCharacter == characterStats.PlayerCharacter1 ||
-            skillmanager.defendingCharacter == characterStats.PlayerCharacter2) &&
-            skillmanager.defendingCharacter.isdie)
-            return; //공격턴에서 선택된 캐릭이 없으면 턴 전환 불가
-        
-        if(skillmanager.defendingCharacter.rest)
-            return; // 수비캐릭이 휴식중이면 턴 전환 불가
-
         skillmanager.Skillcancel(); // 스킬 쿨타임 초기화
-        isPlayerTurn = !isPlayerTurn; // 플레이어 턴 여부 토글
+
+
+        //턴 업데이트
+        List<bool> ServeTurn = stageDataManager.CurrentStage.isServeTurn;
+
+        Turn++;
+
+        //턴 카운트
+        isTurn_cooperation = ServeTurn[(Turn - 1) % ServeTurn.Count];
+        if (isTurn_cooperation) turn_cooperation++;
+        else turn_alone++;
+
+        turnCount = stageDataManager.CurrentStage.turnOrder[(Turn - 1) % ServeTurn.Count];
+        uiManager.UpdateTrunCount2(turnCount);
+
         EnterReactPhase();
         //CharacterSelection.selectedCharacterIndex = -1;
         characterUIManager.UpdateProfileUIBySelection();
-        Turn++;
+        
         UITrunCount(Turn);//  턴 UI 업데이트
         ChrtTag();
 
@@ -260,28 +284,29 @@ public class TurnManager : MonoBehaviour
         {
             if(CharacterSelection.selectedCharacterIndex != -1)
             characterUIManager.ProfileUpdate(characterSelection.PickcharNumber(CharacterSelection.selectedCharacterIndex),
-                isPlayerTurn);
+                isTurn_cooperation);
         }
-        catch (Exception e)
+        catch
         {
-            Debug.LogError($"[TurnManager] 캐릭터 프로필 업데이트 실패: {e.Message}");
+            Debug.LogError($"[TurnManager] 캐릭터 프로필 업데이트 실패:");
         }
         // 모든 캐릭터의 스킬 쿨타임 감소
         foreach (var character in characterStats.characterList)
         {
-            foreach (var skill in character.usingSkill)
+/*            foreach (var skill in character.usingSkill)
             {
                 if (skill.colldownTime > 0)
                 {
                     skill.ReduceCooldown(Turn % 2);
                 }
-            }
+            }*/
             character.isPatternEnd = character.isdie; // AI 패턴 초기화
         }
 
         Debug.Log($"[TurnManager] 턴 전환됨");
 
         stageDataManager.CheckTurn();//스토리활성화
+        stageDataManager.CheckmainTurn();
     }
 
     //  EventManager 이벤트용
@@ -301,7 +326,35 @@ public class TurnManager : MonoBehaviour
     public void UITrunCount(int turnCount)
     {
         uiManager.UpdateTrunCount(turnCount);
-        uiManager.UpdateReactTurn(isPlayerTurn);
+        uiManager.UpdateReactTurn(isTurn_cooperation);
+    }
+
+    public void TurnCount()
+    {
+        if(!isTurn_cooperation) return;
+        turnCount--;
+        uiManager.UpdateTrunCount2(turnCount);
+        if (turnCount <= 0)
+        {
+
+            StartCoroutine(TurnCountZero());
+        }
+
+    }
+
+    public IEnumerator TurnCountZero()
+    {
+        yield return new WaitForSeconds(1f);
+        while (skillmanager.isCastingSkill) yield return null;
+        TurnEnd?.Invoke();
+
+        while (skillmanager.isCastingSkill 
+            || !CharacterStats.Instance.characterList
+            .Where(stats => stats.team == Team.enemy)
+            .All(stats => stats.isPatternEnd)) yield return null;
+
+        yield return new WaitForSeconds(3f);
+        EventManager.Instance.FinishTurn();
     }
 }
 

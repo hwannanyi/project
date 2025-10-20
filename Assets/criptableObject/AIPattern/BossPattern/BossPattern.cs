@@ -35,7 +35,9 @@ public class BossPattern : ScriptableObject
     [Header("스킬순서")]
     public List<DoubleList_SkillQueue> skillQueue; // 스킬 큐
     public List<PatternList> skillCondition; //행에 들어갈 배열들
-    public List<PatternList> patterns; //패턴
+    public List<PatternList> patterns_turn_alone; //패턴
+    public List<PatternList> patterns_turn_cooperation; //패턴
+    public List<PatternList> patterns_turn_cooperation_end;
     public bool isRandomPattern; //패턴 랜덤실행
 }
 
@@ -75,6 +77,9 @@ public struct SkillQueue
     [Header("시전 위치로부터")] 
     public Vector3 coordinate;
     public Vector3 coordinateRandom; //랜덤 최대값
+
+    [Header("사거리 영향 받음")]
+    public bool isWithin_Range; //사거리 영향 받음
 
     [Header("스킬 방향")]
     public Vector3 Rotation;

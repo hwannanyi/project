@@ -23,13 +23,13 @@ MonoBehaviour:
     isPopUp: 1
     ID: 1
   - Target: stage
-    storyTimingType: 2
-    value: 3
+    storyTimingType: 3
+    value: 2
     isPopUp: 1
     ID: 2
   - Target: 
-    storyTimingType: 2
-    value: 5
+    storyTimingType: 3
+    value: 3
     isPopUp: 1
     ID: 3
   - Target: 
@@ -42,12 +42,16 @@ MonoBehaviour:
   startPositions:
   - {x: 0, y: 0}
   - {x: 0, y: 1}
+  P1: {fileID: 0}
+  P2: {fileID: 0}
   mapWidth: 7
   mapHeight: 5
   mapSprite: {fileID: 21300000, guid: a81979b2d3648484b99ba8ba97d2c400, type: 3}
   mapBackGround: {fileID: 0}
   enemyDatalist:
   - enemyName: bot
-    position: {x: 5, y: 0}
+    position: {x: 4, y: 2}
   clear: 0
   feil: 0
+  isServeTurn: 01010000
+  turnOrder: 06000000060000000000000000000000

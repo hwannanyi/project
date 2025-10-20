@@ -13,8 +13,8 @@ public class CharacterMovement : MonoBehaviour
 
     public int characterNumber;
     public int moveSpeed = 5;  // 이동 속도
-    private Vector3 targetPosition;  // 목표 위치
-    private Vector3 startPosition;   // 이동 시작 위치
+    public Vector3 targetPosition;  // 목표 위치
+    public Vector3 startPosition;   // 이동 시작 위치
     public bool isMoving = false;  // 이동 중인지 여부
     public bool isBlocked = false;  // 타일에 부딪히면 이동 차단
     private Coroutine moveCoroutine;  // 이동 코루틴을 저장할 변수
@@ -30,6 +30,8 @@ public class CharacterMovement : MonoBehaviour
     public ChRotation lookRotation; // 바라보는 방향
     public GameObject lookRota;
 
+    public Stats character;
+
     //SFD
     public SFDController SFD;
 
@@ -37,7 +39,7 @@ public class CharacterMovement : MonoBehaviour
     {  
         targetPosition = transform.position;  // 시작 위치 설정
         startPosition = transform.position;   // 초기 위치 설정
-        CharacterSelection.selectedCharacterIndex = -1;
+        //CharacterSelection.selectedCharacterIndex = -1;
         SFD = SFDController.Instance;
         lookRotation = CharacterStats.Instance.GetStats(gameObject).charRotation;
 
@@ -63,7 +65,8 @@ public class CharacterMovement : MonoBehaviour
         moveRange = CharacterStats.Instance.characterList[index].movespeed;
         CharacterStats.Instance.characterList[index].NowMoveCount = CharacterStats.Instance.characterList[index].moveCount;
 
-        CharacterStats.Instance.characterList[characterNumber].charPosition = transform.position;
+
+        character = CharacterStats.Instance.characterList[characterNumber];
     }
 
     void Update()
@@ -79,8 +82,7 @@ public class CharacterMovement : MonoBehaviour
         {
             return; // StoryManager를 못불려와도 모든입력무시
         }
-        var stats = CharacterStats.Instance;
-        var character = stats.GetStats(gameObject);
+
 
 
         int indexnumber = CharacterSelection.selectedCharacterIndex;
@@ -98,7 +100,7 @@ public class CharacterMovement : MonoBehaviour
             //이동불가 상태라면 이동금지
             //스킬 시전중 이동 금지
             if (character.movable == false ||
-                SkillManager.Instance.isCastingSkill)
+                (SkillManager.Instance.isCastingSkill && TurnManager.Instance.isTurn_cooperation))
             {
                 return;
             }
@@ -123,6 +125,11 @@ public class CharacterMovement : MonoBehaviour
             //*/
 
             if (SkillManager.Instance.waitingForResponse == true)
+            {
+                return;
+            }
+
+            if(TurnManager.Instance.turnCount <= 0 && TurnManager.Instance.isTurn_cooperation)
             {
                 return;
             }
@@ -174,7 +181,7 @@ public class CharacterMovement : MonoBehaviour
             if (!isMoving && !isBlocked)
             {
 
-                bool teamTurn = (character.isPlayerTeam && TurnManager.Instance.isPlayerTurn);
+                bool teamTurn = (character.team == Team.team && TurnManager.Instance.isTurn_cooperation);
 //                if (nowmoveCount <= 0 && teamTurn)//이동횟수가 있어야 이동가능
 //                     return;
 
@@ -241,7 +248,7 @@ public class CharacterMovement : MonoBehaviour
                 if (chosenDir != Vector3.zero)
                 {
                     character.charRotation = lookRotation;
-                    Vector3 nextPos = transform.position + chosenDir;
+                    Vector3 nextPos = character.charPosition + chosenDir;
                     Vector2Int nextTile = new Vector2Int(Mathf.RoundToInt(nextPos.x), Mathf.RoundToInt(nextPos.z));
                     if (!IsBlockedTile(nextTile))
                     {
@@ -257,9 +264,9 @@ public class CharacterMovement : MonoBehaviour
 
                         lookRota.transform.localRotation = Quaternion.Euler(0f, 0f, targetZ);
 
-                        targetPosition = new Vector3(nextTile.x, 0f, nextTile.y);
+                        targetPosition = new Vector3(nextTile.x * 1.2f, 0f, nextTile.y);
                         startPosition = transform.position;
-                        moveCoroutine = StartCoroutine(MoveToTarget());
+                        moveCoroutine = StartCoroutine(MoveToTarget(new Vector3(nextTile.x, 0f, nextTile.y)));
                     }
 
                 }
@@ -282,9 +289,10 @@ public class CharacterMovement : MonoBehaviour
     }*/
 
     // 목표 위치로 이동하는 코루틴
-    private IEnumerator MoveToTarget()
+    private IEnumerator MoveToTarget(Vector3 pos)
     {
         isMoving = true;  // 이동 중 상태로 설정
+        StartCoroutine(CharacterSelection.Instance.Ismoving());
 
         Vector3 moveDir = targetPosition - transform.position;
         if (moveDir.x > 0)
@@ -305,17 +313,21 @@ public class CharacterMovement : MonoBehaviour
         }
 
         transform.position = targetPosition; // 정확한 목표 위치로 위치 보정
+
+        if(TurnManager.Instance.isTurn_cooperation)
+            yield return new WaitForSeconds(1f);
+
         isMoving = false; // 이동 완료 후 이동 가능 상태로 변경
         
-
+/*
         var stats = CharacterStats.Instance;
         var character = stats.GetStats(gameObject);
-        bool teamTurn = (character.isPlayerTeam && TurnManager.Instance.isPlayerTurn);
+        bool teamTurn = (character.team == Team.team && TurnManager.Instance.isPlayerTurn);*/
 /*        int count = CharacterStats.Instance.characterList[characterNumber].NowMoveCount;
         count = teamTurn ? count - 1 : count; // 팀 턴일 때만 이동 횟수 차감
         CharacterStats.Instance.characterList[characterNumber].NowMoveCount = count;*/
 
-        PositionUpdate(); // 위치 갱신 처리
+        PositionUpdate(pos); // 위치 갱신 처리
     }
 
     // 타일에 부딪혔을 때 호출되는 메서드
@@ -336,7 +348,7 @@ public class CharacterMovement : MonoBehaviour
             // 현재 위치에서 가장 가까운 타일로 이동
             Vector3 nearestTile = GetNearestTile(transform.position);
             StartCoroutine(MoveToTargetFromCurrent(nearestTile));  // 가장 가까운 타일로 이동
-            PositionUpdate();
+            PositionUpdate(new Vector3(nearestTile.x * (10.0f / 12.0f), 0, nearestTile.z));
             //SendSignal(true);
         }
     }
@@ -345,10 +357,10 @@ public class CharacterMovement : MonoBehaviour
     private Vector3 GetNearestTile(Vector3 currentPosition)
     {
         // 현재 위치에서 가장 가까운 타일의 좌표를 계산
-        float x = Mathf.Round(currentPosition.x);
+        float x = Mathf.Round(currentPosition.x * (10.0f / 12.0f));
         float y = Mathf.Round(currentPosition.z);
 
-        return new Vector3(x, 0f, y);  // 가장 가까운 타일로 반환
+        return new Vector3(x * 1.2f, 0f, y);  // 가장 가까운 타일로 반환
     }
 
     // 가장 가까운 타일로 이동하는 코루틴
@@ -416,10 +428,10 @@ public class CharacterMovement : MonoBehaviour
         return result;
     }
 
-    private void PositionUpdate()
+    private void PositionUpdate(Vector3 pos)
     {
         ClearHighlights();
-        CharacterStats.Instance.characterList[characterNumber].charPosition = transform.position;
+        CharacterStats.Instance.characterList[characterNumber].charPosition = pos;
     }
 
     public void OnDestroy()

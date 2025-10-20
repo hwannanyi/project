@@ -24,8 +24,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -43,8 +46,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 2
@@ -62,8 +68,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -81,8 +90,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 2
@@ -100,8 +112,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -119,8 +134,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 2
@@ -138,8 +156,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -157,8 +178,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 1
       targetTypeY: 2
@@ -176,8 +200,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 1
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -197,8 +224,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -216,8 +246,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 3, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -235,8 +268,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: -3, y: 0, z: 0}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -254,8 +290,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: 3}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -273,8 +312,11 @@ MonoBehaviour:
         comparison: 0
         value: 0
       delay: 0
+      delayRandom: 0
       isCastingNotCast: 0
       coordinate: {x: 0, y: 0, z: -3}
+      coordinateRandom: {x: 0, y: 0, z: 0}
+      isWithin_Range: 0
       Rotation: {x: 0, y: 0, z: 0}
       targetTypeX: 2
       targetTypeY: 2
@@ -284,3 +326,13 @@ MonoBehaviour:
       index: 1
       target: 0
   skillCondition: []
+  patterns:
+  - pattern:
+    - {fileID: 11400000, guid: b1b769114372899489486156eecd5135, type: 2}
+  - pattern:
+    - {fileID: 11400000, guid: b1b769114372899489486156eecd5135, type: 2}
+  - pattern:
+    - {fileID: 11400000, guid: dc898c1ceefddbc468b226e8a3fa872b, type: 2}
+  - pattern:
+    - {fileID: 11400000, guid: dc898c1ceefddbc468b226e8a3fa872b, type: 2}
+  isRandomPattern: 0

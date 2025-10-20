@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class CharacterUIManager : MonoBehaviour
 {
-    public CharacterUIManager Instance;
+    public static CharacterUIManager Instance;
 
     [Header("UI 이미지 연결")]
     public Image characterProfileUI;  // UI에 표시될 이미지 컴포넌트
@@ -58,6 +58,8 @@ public class CharacterUIManager : MonoBehaviour
         skillSlotImages = new List<Image>();
         foreach (var go in characterProfileSkillListUI)
             skillSlotImages.Add(go.GetComponent<Image>());
+
+        Instance = this;
     }
 
     public void OnEnable()
@@ -72,6 +74,7 @@ public class CharacterUIManager : MonoBehaviour
     {
         turnManager.OnTurnChanged -= UpdateRageCount;
         turnManager.OnTurnChanged -= UpdateRiskCount;
+        Instance = null;
     }
 
     public void UpdateCharacterProfile(Stats character)
@@ -108,7 +111,7 @@ public class CharacterUIManager : MonoBehaviour
                 skillImage.color = skill.colldownTime > 0 ? cooldownColor : normalColor; // 쿨타임 색상 처리
 
                 // MP가 부족할 경우 색상 변경
-                if (skill.rageCost > character.rage && skill.hpCost >= character.hp)
+                if (skill.rageCost > character.rage && skill.hpCost >= character.hp && skill.cost >= character.cost)
                 {
                     skillImage.color = nompdownColor;
                 }
@@ -181,7 +184,7 @@ public class CharacterUIManager : MonoBehaviour
         {
             countImage.enabled = false;
         }
-        int idx = ch.rage;
+        int idx = ch.cost;
         // 이동 횟수에 해당하는 이미지까지 모두 활성화
         if (idx >= 1 && idx <= RageCount.Count)
         {

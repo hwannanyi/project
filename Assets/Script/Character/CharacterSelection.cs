@@ -19,6 +19,8 @@ public class CharacterSelection : MonoBehaviour
     public StoryManager storyManager; // 스토리 매니저 인스턴스
     public CharacterStats characterStats;
 
+    public static bool ismoveing = false;
+
     public Stats selectedCharacter;
     public GameObject MoveArrow;
     void Awake()
@@ -33,11 +35,10 @@ public class CharacterSelection : MonoBehaviour
 
     }
 
-
     //  1, 2, 3 키 입력으로 캐릭터 선택
     void Update()
     {
-        if (skillManager.isCastingSkill || skillManager.isSkillReady) MoveArrow.SetActive(false);
+        if (skillManager.isCastingSkill);
 
         try
         {
@@ -49,10 +50,9 @@ public class CharacterSelection : MonoBehaviour
             
             return; // StoryManager를 못불려와도 모든입력무시
         }  
-
+        
         HandleCharacterSelection();
 
-       
         if (selectedCharacterIndex >= characterStats.playerCharacters.Count)
         {
             //OnCharacterSelectedMoveCount2P(selectedCharacterIndex);
@@ -68,22 +68,25 @@ public class CharacterSelection : MonoBehaviour
     }
 
 
+    public IEnumerator Ismoving()
+    {
+        ismoveing = true;
+        yield return new WaitForSeconds(1f);
+        ismoveing = false;
+    }
+
     public Stats PickcharNumber(int index)
     {
         return characterStats.characterList[index];
     }
     void HandleCharacterSelection()
     {
+
+        if (ismoveing) // 누가 이동이면 이동 불가
+            return;
+
         if (Input.GetKeyDown(KeyCode.Alpha1)) SelectCharacter(0);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SelectCharacter(1);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) SelectCharacter(2);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) SelectCharacter(3);
-
-
-        if (Input.GetKey(KeyCode.Alpha1)) Holding(0);
-        if (Input.GetKey(KeyCode.Alpha2)) Holding(1);
-        if (Input.GetKey(KeyCode.Alpha3)) Holding(2);
-        if (Input.GetKey(KeyCode.Alpha4)) Holding(3);
         /*        if (Input.GetKeyDown(KeyCode.Alpha5)) SelectCharacter2P(4);// 0
                 if (Input.GetKeyDown(KeyCode.Alpha6)) SelectCharacter2P(5);// 1
                 if (Input.GetKeyDown(KeyCode.Alpha7)) SelectCharacter(6);// 2*/
@@ -93,52 +96,38 @@ public class CharacterSelection : MonoBehaviour
     {
         Stats character = characterStats.characterList[index];
         skillManager.Skillcancel();
-            if (!character.isPlayerTeam)
-            {
-                return;
-            }
-            if (character.isdie)
-            {
-                Debug.Log("죽은 캐릭터는 선택할 수 없습니다.");
-                return;
-            }
+        if (character.team != Team.team)
+            return;
+        if (character.isdie)
+            return;
 
-            if ( selectedCharacterIndex != index)
+        if (selectedCharacterIndex != index)
+        {
+            // 이전 캐릭터 하이라이트 끄기
+            if (prevSelectedIndex >= 0 && prevSelectedIndex < characterStats.characterList.Count)
             {
-                // 이전 캐릭터 하이라이트 끄기
-                if (prevSelectedIndex >= 0 && prevSelectedIndex < characterStats.characterList.Count)
-                {
                 characterStats.characterList[prevSelectedIndex].SetHighlight(false);
-                }
+                characterStats.characterList[prevSelectedIndex].RemoveStatus(StatusType.main);
+            }
 
-                selectedCharacterIndex = index;
-                prevSelectedIndex = index;
-
-            //선택된 캐릭은 수비
-            skillManager.defendingCharacter = characterStats.characterList[selectedCharacterIndex];
+            selectedCharacterIndex = index;
+            prevSelectedIndex = index;
 
             // 새 캐릭터 하이라이트 켜기
             characterStats.characterList[selectedCharacterIndex].SetHighlight(true);
 
-                selectedCharacter = characterStats.characterList[selectedCharacterIndex];
+            // 선택중인 캐릭 갱신
+            selectedCharacter = characterStats.characterList[selectedCharacterIndex];
+            selectedCharacter.AddStatus(StatusType.main);
 
-             OnCharacterSelected(index);
-                characterUIManager.UpdateRageCount(selectedCharacter);
+            OnCharacterSelected(index);
+            characterUIManager.UpdateRageCount(selectedCharacter);
             characterUIManager.UpdateRiskCount(selectedCharacter);
             characterUIManager.UpdateProfileUIBySelection();
-                characterUIManager.SelectionMiniprofileUI(selectedCharacterIndex);
-                //Debug.Log($"{selectedCharacterIndex}선택된 캐릭터: {CharacterStats.Instance.playerCharacters[selectedCharacterIndex]}");
+            characterUIManager.SelectionMiniprofileUI(selectedCharacterIndex);
+            Debug.Log("캐릭터 선택됨");
 
-            }
-            else if (selectedCharacterIndex == index)
-            {
-            CancelSelection();
         }
-            else
-            {
-                Debug.Log("캐릭 선택실패");
-            }
-            SetArrow();
     }
 
     public void CancelSelection()
@@ -147,7 +136,7 @@ public class CharacterSelection : MonoBehaviour
         characterStats.characterList[selectedCharacterIndex].SetHighlight(false);
 
         selectedCharacter = null;
-        skillManager.defendingCharacter = null;
+        //skillManager.defendingCharacter = null;
         selectedCharacterIndex = -1;
         //characterUIManager.ProfileUIOn();
         prevSelectedIndex = -1;
@@ -159,7 +148,7 @@ public class CharacterSelection : MonoBehaviour
     public void Holding(int idx)
     {
         Stats character = characterStats.characterList[idx];
-        if (!character.isPlayerTeam)
+        if (character.team != Team.team)
         {
             return;
         }
@@ -238,23 +227,7 @@ public class CharacterSelection : MonoBehaviour
                 }
             }
         }*/
-    public void SetArrow()
-    {
-        try
-        {
-            MoveArrow.SetActive(true);
-            // 이동가이드를 캐릭터 오브젝트의 자식으로 설정
-            MoveArrow.transform.SetParent(selectedCharacter.characterPrefab.transform);
-            // 위치/회전/스케일도 초기화
-            MoveArrow.transform.localPosition = Vector3.zero;
-            MoveArrow.transform.localRotation = Quaternion.identity;
-            MoveArrow.transform.localScale = Vector3.one;
-        }
-        catch
-        {
 
-        }
-    }
     public void SelectCharacterCen()
     {
         selectedCharacterIndex = -1;
@@ -269,7 +242,7 @@ public class CharacterSelection : MonoBehaviour
         Stats character = characterStats.characterList[index];
         
         characterUIManager.UpdateCharacterProfile(character);
-        characterUIManager.UpdateCharacterProfileSkill(character, turnManager.isPlayerTurn);
+        characterUIManager.UpdateCharacterProfileSkill(character, turnManager.isTurn_cooperation);
     }
 
 /*    public void OnCharacterSelectedMoveCount(int index)

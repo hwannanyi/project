@@ -19,27 +19,16 @@ public class SkillCastSkill : MonoBehaviour
 
     void OnDestroy()
     {
-/*        skillData = CastSkillData.skillData;
-        targetPos = CastSkillData.targetPos;
-        caster = CastSkillData.characterUnit;
-        casterStats = CastSkillData.characterStats;
-        targetUnit = CastSkillData.targetUnit;*/
         StartSkill(false, CastSkillData.characterStats, CastSkillData.skillData);
     }
 
     // 유닛 충돌 이벤트에서 호출
     public void StartSkill(bool StartTiming, Stats self, SkillData skillData)
     {
-
-        Debug.Log("연계스킬 실행 시도");
-        /*        for (int skillnumber = 0; skillnumber < self.passiveSkill.Count; skillnumber++) // 패시브 스킬이 있는지 확인
-                {
-        */
         var AddSkills = StartTiming ? skillData.StartAddSkills : skillData.EndAddSkills;
 
         if (AddSkills == null)
         {
-            Debug.Log("연계스킬이 없음");
             SkillManager.Instance.isCastingSkill = StartTiming && SkillManager.Instance.isCastingSkill; // 스킬 캐스트 스킬 초기화
             return; }
         
@@ -49,14 +38,7 @@ public class SkillCastSkill : MonoBehaviour
         Condition condition = AddSkills.condition != null ? AddSkills.condition : null;
         ConditionHit conditionHit = AddSkills.conditionHit != null ? AddSkills.conditionHit : null;
         SkillAutoCast targetrule = AddSkills.targetrule != null ? AddSkills.targetrule : null;
-        /*
-                    bool asd = HitCondition(target, self, skillData, conditionHit.target, conditionHit.type,
-                        conditionHit.comparison, conditionHit.value);
-                    Debug.Log(asd);*/
-        /*            if (conditionHit.isactive && HitCondition(target, self, skillData, conditionHit.target, conditionHit.type,
-                        conditionHit.comparison, conditionHit.value))// 불러올 패시브 스킬이 맞으면 실행
-                    {
-        */
+
 
         try
         {

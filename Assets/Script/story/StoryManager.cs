@@ -6,9 +6,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
+using UnityEngine.Rendering;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 using static ExcelReader;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 //using static UnityEditor.ShaderData;
 
 public class StoryManager : MonoBehaviour
@@ -43,8 +46,13 @@ public class StoryManager : MonoBehaviour
     public int currentTalkIndex = 0; // 현재 대사 인덱스
     public List<TalkData> talklist = new();
     public List<TalkData> talkRead = new();
-    public List<Sprite> characterSprites = new(); // 캐릭터 이미지 리스트
+
+    public UDictionary<string, Standing> characterSprites = new();// 캐릭터 이미지 리스트
     private Dictionary<string, GameObject> characterUIPool = new(); // 오브젝트 풀 리스트
+    private Dictionary<string, RectTransform> characterPosPool = new(); // 오브젝트 풀 리스트
+    private Dictionary<GameObject, Image> characterUIRenderers = new(); // 오브젝트 풀 리스트
+
+    private Dictionary<string, string> characterPositions_Names = new(); // 캐릭터 위치 리스트
 
     [Header("팝업대화창")]
     public GameObject popUpStoryUI; // 스토리 UI 오브젝트
@@ -75,11 +83,15 @@ public class StoryManager : MonoBehaviour
     [Header("행동강제 정지연출")]
     public bool isOnSFDEnd = false; // SFD 종료 상태
 
+    [Header("여기다가 스텐딩 등록")]
+    public UDictionary<string, Standing> newDictionary = new();
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Awake()
     {
-        Skill_SFD.OnSFDEnd += OnSFDEnd; // 이벤트 구독
-        SkillPreview.OnSFDEnd += OnSFDEnd; // 이벤트 구독
+/*        Skill_SFD.OnSFDEnd += OnSFDEnd; // 이벤트 구독
+        SkillPreview.OnSFDEnd += OnSFDEnd; // 이벤트 구독*/
 
         excelReader = GetComponent<ExcelReader>();
         skillManager = GetComponent<SkillManager>();
@@ -145,7 +157,6 @@ public class StoryManager : MonoBehaviour
 
         // 읽은 스토리 ID 리스트 초기화
         readStoryID = new();
-
         LoadStory(storyID); // 예시로 스토리 ID 1을 시작
     }
 
@@ -186,8 +197,10 @@ public class StoryManager : MonoBehaviour
         currentTalkIndex = 0; // 대사 인덱스 초기화
         talklist = new(); // 대사 리스트 초기화
         talkRead = new(); // 대사 리스트 초기화
-        characterSprites = new List<Sprite>(); // 캐릭터 이미지 리스트 초기화
+        characterSprites = new(); // 캐릭터 스프라이트 초기화 
         characterUIPool.Clear(); // 오브젝트 풀 초기화
+        characterPosPool.Clear(); // 오브젝트 풀 초기화
+        characterUIRenderers.Clear();
         characterUIPool = new Dictionary<string, GameObject>(); // 오브젝트 풀 딕셔너리 초기화
 
     }
@@ -197,13 +210,14 @@ public class StoryManager : MonoBehaviour
     {
         public string talkID;
         public List<string> characters;
-        public List<string> left_side;
-        public List<string> right_side;
+        public List<string> transform;
+        public string expression;
         public string talk_character;
         public string talk;
         public string id;
         public string character_animated;
         public string production;
+
 
     }
 
@@ -216,7 +230,7 @@ public class StoryManager : MonoBehaviour
 
             characterName.text = talkRead[currentTalkIndex].talk_character;
             talktext.text = talkRead[currentTalkIndex].talk;
-            HowCharacterUI(talkRead[currentTalkIndex].talk_character);
+            HowCharacterUI(talkRead[currentTalkIndex].transform);
             /*            if (talklist[currentTalkIndex].production == "stop")
                         {
                             currentTalkIndex++;
@@ -235,33 +249,35 @@ public class StoryManager : MonoBehaviour
             if (talk.talkID == storyID)
             {
                 // 새 TalkData 객체 생성
-                TalkData newTalk = new TalkData();
-                newTalk.talkID = talk.talkID;
+                TalkData newTalk = new()
+                {
+                    talkID = talk.talkID,
 
-                // 역슬래시(\) 기준으로 분할하여 리스트에 저장
-                // null 체크 및 분할
-                newTalk.characters = !string.IsNullOrEmpty(talk.characters)
-                    ? new List<string>(talk.characters.Split('\\'))
-                    : new List<string>();
-                newTalk.left_side = !string.IsNullOrEmpty(talk.left_side)
-                    ? new List<string>(talk.left_side.Split('\\'))
-                    : new List<string>();
-                newTalk.right_side = !string.IsNullOrEmpty(talk.right_side)
-                    ? new List<string>(talk.right_side.Split('\\'))
-                    : new List<string>();
+                    // 역슬래시(\) 기준으로 분할하여 리스트에 저장
+                    // null 체크 및 분할
+                    characters = !string.IsNullOrEmpty(talk.characters)
+                        ? new List<string>(talk.characters.Split(','))
+                        : new List<string>(),
+                    transform = !string.IsNullOrEmpty(talk.transform)
+                        ? new List<string>(talk.transform.Split(','))
+                        : new List<string>(),
+                    /*                newTalk.expression = !string.IsNullOrEmpty(talk.expression)
+                                        ? new List<string>(talk.expression.Split(','))
+                                        : new List<string>();*/
 
-                newTalk.talk_character = talk.talk_character;
-                newTalk.talk = talk.talk;
-                newTalk.id = talk.id;
-                newTalk.character_animated = talk.character_animated;
-                newTalk.production = talk.production;
+                    expression = talk.expression,
+                    talk_character = talk.talk_character,
+                    talk = talk.talk,
+                    id = talk.id,
+                    character_animated = talk.character_animated,
+                    production = talk.production
+                };
 
                 // 일치하는 Talk 객체를 리스트에 추가
                 talklist.Add(newTalk);
             }
         }
         LoadCharacterSprites();
-
     }
 
 
@@ -284,45 +300,99 @@ public class StoryManager : MonoBehaviour
     public void LoadCharacterSprites()
     {
         // talklist가 비어있지 않으면 첫 번째 대사의 characters만 추출
-        if (talklist.Count == 0 || talklist[0].characters == null)
+        if (talklist.Count == 0)
             return;
 
-        HashSet<string> characterNames = new HashSet<string>(talklist[0].characters);
+        HashSet<string> characterNames = new(talklist[0].characters);
 
-        Addressables.LoadAssetsAsync<Sprite>("CharacterSprites", null).Completed += (AsyncOperationHandle<IList<Sprite>> handle) =>
+
+        characterSprites.Clear();
+        foreach (var sprite in characterNames)
         {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                characterSprites.Clear();
-                foreach (var sprite in handle.Result)
-                {
-                    if (characterNames.Contains(sprite.name))
-                    {
-                        characterSprites.Add(sprite);
-                    }
-                }
-                CreateCharacterUIPool(); // 캐릭터 UI 오브젝트 풀 생성
-                ShowCurrentTalk(); // 첫 번째 대사 표시
-            }
-            else
-            {
-                Debug.LogWarning("캐릭터 이미지 리스트를 Addressable에서 불러오지 못했습니다.");
-            }
-        };
+            characterSprites.Add(sprite, newDictionary[sprite]);
+        }
+        CreateCharacterUIPool(); // 캐릭터 UI 오브젝트 풀 생성
+        ShowCurrentTalk(); // 첫 번째 대사 표시
+
+
     }
 
-    // 입력받은 캐릭터 이름(name)에 해당하는 Sprite를 찾아서 characterUI의 이미지를 변경
-    public void HowCharacterUI(string name)
+
+    public Vector2 GetCharacterPosition(string name)
     {
-        foreach (var kvp in characterUIPool)
+        Vector2 position = Vector2.zero;
+
+        switch(name)
         {
-            if (kvp.Key == name)
+            case "왼":
+                position = new Vector2(-333, -35);
+                break;
+            case "중앙":
+                position = new Vector2(0, -35);
+                break;
+            case "오":
+                position = new Vector2(333, -35);
+                break;
+            default:
+                position = new Vector2(0, -35);
+                break;
+        }
+        return position;
+    }
+
+    public (string name, string pos) ExtractPos(string input)
+    {
+        // "이름:위치" 형식에서 "이름"과 "위치" 부분을 추출
+
+        int colonIndex = input.IndexOf(':');
+        if (colonIndex < 0)
+        {
+            // 콜론이 없으면 전체를 이름으로 간주하고 위치는 비워둠
+            return (input, string.Empty);
+        }
+
+        // 이름 부분은 처음부터 콜론 전까지
+        string name = input.Substring(0, colonIndex);
+
+        // 위치 부분은 콜론 다음부터 문자열 끝까지
+        string position = input[(colonIndex + 1)..];
+
+        return (name, position);
+    }
+    // 입력받은 캐릭터 이름(name)에 해당하는 Sprite를 찾아서 characterUI의 이미지를 변경
+    public void HowCharacterUI(List<string> character)
+    {
+        characterPositions_Names.Clear();
+
+        if (character.Count == 0) return;
+
+        foreach (string i in character)
+        {
+            characterPositions_Names.Add(ExtractPos(i).name, ExtractPos(i).pos);
+            Debug.Log(ExtractPos(i).pos);
+        }
+
+        foreach (string n in talklist[0].characters)
+        {
+            if (characterPositions_Names.ContainsKey(n))
             {
-                kvp.Value.SetActive(true); // 이름이 일치하면 활성화
+                characterPosPool[n].anchoredPosition = GetCharacterPosition(characterPositions_Names[n]);
+                Debug.Log(GetCharacterPosition(characterPositions_Names[n]));
+                if(n == talkRead[currentTalkIndex].talk_character)
+                {
+                    characterUIRenderers[characterUIPool[n]].sprite = characterSprites[n].expression[talkRead[currentTalkIndex].expression];
+                    characterUIRenderers[characterUIPool[n]].color = Color.white;
+                }
+                else
+                {
+                    characterUIRenderers[characterUIPool[n]].color = new Color32(84, 84, 84, 255);
+                }
+                  
+                characterUIPool[n].gameObject.SetActive(true); // gameObject 속성으로 SetActive 호출
             }
             else
             {
-                kvp.Value.SetActive(false); // 그 외는 비활성화
+                characterUIPool[n].gameObject.SetActive(false);
             }
         }
     }
@@ -334,21 +404,31 @@ public class StoryManager : MonoBehaviour
         foreach (var obj in characterUIPool.Values)
             Destroy(obj);
         characterUIPool.Clear();
-
+        characterPosPool.Clear();
+        characterUIRenderers.Clear();
         // characterSprites 리스트의 각 Sprite에 대해 오브젝트 생성 및 Sprite 적용
-        foreach (var sprite in characterSprites)
+
+        List<string> a = talklist[0].characters;
+
+        for (int i = 0; i < a.Count; i++)
         {
+
             GameObject obj = Instantiate(characterUI, charUI.transform); // 프리팹 생성
             obj.SetActive(false); // 초기에는 비활성화
 
+
+            string name = talklist[0].characters[i];
             // Image 컴포넌트에 Sprite 적용
             var image = obj.GetComponent<Image>();
             if (image != null)
-                image.sprite = sprite;
+                image.sprite = characterSprites[name].expression["0"];
 
             // 딕셔너리 키는 Sprite의 이름(캐릭터 이름)
-            characterUIPool[sprite.name] = obj;
+            characterUIPool[name] = obj;
+            characterPosPool[name] = obj.GetComponent<RectTransform>();
+            characterUIRenderers[obj] = obj.GetComponent<Image>();
         }
+        
     }
 
 
@@ -608,7 +688,8 @@ public class StoryManager : MonoBehaviour
         { "turnUI", TurnUI },
         { "turnNextUI", TurnNextUI },
         { "skillUI", SkillUI },
-        {"UImaskDown", DownMaskScreen }
+        {"UImaskDown", DownMaskScreen },
+        {"costMax", CostMax}
         // 추가 명령어 및 함수 매핑
     };
     }
@@ -718,6 +799,11 @@ public class StoryManager : MonoBehaviour
         maskScreenUI.DownMaskScreen(); // 마스크 스크린 UI 비활성화
     }
 
+    public void CostMax()
+    {
+        CharacterSelection.Instance.selectedCharacter.CostUp(CharacterSelection.Instance.selectedCharacter, 5); // 선택된 캐릭터의 코스트 최대치로 설정
+    }
+
     public void UnPause()
     {
         skillLock = false; // 스킬 잠금 비활성화
@@ -770,7 +856,7 @@ public class StoryManager : MonoBehaviour
 
     public bool ISturn()
     {
-        return Input.GetKeyDown(KeyCode.Return) || (!turnManager.isPlayerTurn && aITurn.AIturnEnd);
+        return Input.GetKeyDown(KeyCode.Space) || (!turnManager.isTurn_cooperation && aITurn.AIturnEnd);
     }
 
     public bool ISmove()

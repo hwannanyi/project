@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Unity.VisualScripting;
+
+
 //using UnityEditor;
 using UnityEngine;
 
@@ -14,6 +16,8 @@ public enum ChRotation
 public enum StatusType
 {
     none,
+    main,
+    rest,
     risk5,
     FaceFace,
     sturn,
@@ -34,6 +38,7 @@ public class Stats
     public int shields;           // 보호막
     public int rage;              // 코스트
     public int risk;              // 리스크
+    public int cost;              // 코스트
     public int atk;               // 공격력
     public int def;               // 방어력
     public int damage_Defense; // 받피감
@@ -48,7 +53,8 @@ public class Stats
     public Vector3 charPosition;  // 현제위치
     public ChRotation charRotation;  // 현재 방향
     public bool isdie;            // 죽음
-    public bool isPlayerTeam;             // 팀
+    public Team team;             // 팀
+    public bool mainCh = true;
     public bool summons;          // 소환수인가요?
     public Stats CharacterSummons; // 소환수 주인
     public List<Skill> useSkill;   // 사용스킬
@@ -60,6 +66,8 @@ public class Stats
 
     public Sprite characterillustration;
     public Sprite characterProfileillustration;
+    public RuntimeAnimatorController animatorController = null;
+    public Animator Animator = null;
     public GameObject characterPrefab;
 
     
@@ -73,7 +81,7 @@ public class Stats
 
     public GameObject highlightEffect; // 인스펙터에서 하이라이트 오브젝트 할당
 
-    public WorldHPBar HPbar; // HP바 오브젝트
+    public WorldHPBar HPbar = null; // HP바 오브젝트
 
 
     public bool isPatternEnd;
@@ -86,6 +94,7 @@ public class Stats
     public SkillData lastHitSkillData; // 마지막 적중 스킬 데이터 저장
 
     public AIPattern aIPattern; // AI 패턴
+    public bool noPattern; // 패턴없음
 
     public void SetHighlight(bool isOn)
     {
@@ -135,6 +144,7 @@ public class Stats
         shields = 0;
         rage = 0;
         risk = 0;
+        cost = 0;
 
         atk = data.atk;
         def = data.def;
@@ -152,7 +162,8 @@ public class Stats
 
         isdie = die;
 
-        isPlayerTeam = data.isPlayerTeam;
+        team = data.team;
+        mainCh = data.mainCh;
 
         summons = data.summons;
         CharacterSummons = null;
@@ -162,6 +173,7 @@ public class Stats
 
         characterillustration = data.characterillustration;
         characterProfileillustration = data.characterProfileillustration;
+        animatorController = data.animatorController;
         characterPrefab = data.characterPrefab;
 
         debuffEffects = new List<Debuffa>();
@@ -185,6 +197,8 @@ public class Stats
 
 
         aIPattern = new AIPattern(data.skillQueue);
+        noPattern = data.noPattern;
+
         //패시브 스킬 추가
         for (int i = 0; i < data.passiveSkill.Count; i++)
         {
@@ -219,9 +233,14 @@ public class Stats
 }
 
 
+    public void CostUp(Stats ch, int i)
+    {
+        cost = cost + i >= 10 ? 10 : cost + i;
+        CharacterUIManager.Instance.UpdateRageCount(ch);
+    }
 
     public bool Rage_Overheat(){
-        return rage >= 5;
+        return rage >= 10;
     }
 
     //휴식
@@ -234,10 +253,9 @@ public class Stats
        
     }
 
-    public void AddRage(bool defchar,int i)
+    public void AddRage(int i)
     {
-        if (defchar)
-            rage = rage >= 5 ? 5 : rage + i;
+            rage = rage >= 10 ? 10 : rage + i;
     }
 
     public void AddRisk(bool defchar,int i)
@@ -328,6 +346,15 @@ public void Mashing(int num)
     public Transform GetCharacterTransform()
     {
         return characterPrefab != null ? characterPrefab.transform : null;
+    }
+
+
+
+    public void SetAnimation(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+            return;
+        Animator.SetTrigger(name);
     }
 
 

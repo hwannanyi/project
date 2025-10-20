@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   charactername: Deus
   maxhp: 10
-  maxmp: 10
+  rage: 0
   atk: 10
   def: 10
   speed: 10
@@ -22,6 +22,7 @@ MonoBehaviour:
   moveCount: 8
   trun: 10
   team: 0
+  mainCh: 1
   summons: 0
   useSkill:
   - {fileID: 11400000, guid: ef061324dfda5d14ab8b7962c9344a8b, type: 2}
@@ -34,3 +35,4 @@ MonoBehaviour:
   characterProfileillustration: {fileID: -146545473, guid: cfdd6bc0cf2fde74489ab8a1aad0a64a, type: 3}
   characterPrefab: {fileID: 4344314745404087944, guid: 33c9802a4c0ec3c49b44d7ef4cc4c6e7, type: 3}
   skillQueue: {fileID: 0}
+  noPattern: 1

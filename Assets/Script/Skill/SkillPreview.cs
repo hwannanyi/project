@@ -44,9 +44,19 @@ public class SkillPreview : MonoBehaviour
 
     public bool CastLock = false;
 
+    public int turns = 0;
+
     public AICastSkill aICastSkill;
 
     public Coroutine skillCoroutine = null;
+
+    void OnEnable()
+    {
+        turns = 0;
+        EventManager.Instance.isMove += Count;
+        SkillManager.SkillCast += Count;
+    }
+
     public void Initialize(
         SkillData skillData,
         Vector3 targetPos,
@@ -141,6 +151,13 @@ public class SkillPreview : MonoBehaviour
         float elapsed = 0f;
         Vector3 startScale = PreviewTimer.transform.localScale;
         float targetY = 1f; // 목표 y 스케일
+
+
+        while (TurnManager.Instance.isTurn_cooperation && turns < skill.skillPreviewCount)
+        {
+            yield return null; // 다음 프레임까지 대기
+        }
+
         while (elapsed < skill.skillPreview)
         {
             elapsed += Time.deltaTime;
@@ -152,6 +169,8 @@ public class SkillPreview : MonoBehaviour
 
             yield return null; // 다음 프레임까지 대기
         }
+
+        caster.SetAnimation(skill.animationName);
         GameObject skillObject = Instantiate(skill.SkillEffectPrefab, aoeCenter, Quaternion.identity);
 
         if (skill.projectile)
@@ -203,6 +222,12 @@ public class SkillPreview : MonoBehaviour
         float elapsed = 0f;
         Vector3 startScale = PreviewTimer.transform.localScale;
         Vector3 targetScale = transform.localScale;
+
+        while (TurnManager.Instance.isTurn_cooperation && turns < skill.skillPreviewCount)
+        {
+            yield return null; // 다음 프레임까지 대기
+        }
+
         while (elapsed < skill.skillPreview)
         {
             elapsed += Time.deltaTime;
@@ -210,6 +235,7 @@ public class SkillPreview : MonoBehaviour
             PreviewTimer.transform.localScale = Vector3.Lerp(startScale, new Vector3(1,1,0), t);
             yield return null; // 다음 프레임까지 대기
         }
+        caster.SetAnimation(skill.animationName);
         GameObject skillObject = Instantiate(skill.SkillEffectPrefab, aoeCenter, Quaternion.identity);
 
         if (skill.projectile)
@@ -227,6 +253,9 @@ public class SkillPreview : MonoBehaviour
     }
     public void OnDestroy()
     {
+
+        EventManager.Instance.isMove -= Count;
+        SkillManager.SkillCast -= Count;
         if (skill.skillPreviewStop)
         {
             if (skill.SFDtype == SFDType.none)
@@ -235,4 +264,6 @@ public class SkillPreview : MonoBehaviour
             isSFD = false;
         }
     }
+
+    public void Count() { turns++; }
 }

@@ -60,6 +60,7 @@ public class SkillEffectProjectile : MonoBehaviour
         caster = casterObject;
         casterStats = character;
         colliderMerger = GetComponent<ColliderMerger>();
+        speed = skill.projectileSpeed;
 
         aICastSkill = casterObject.GetComponent<AICastSkill>();
         CastLock = aICastSkill.skillCastLock;
@@ -168,8 +169,8 @@ public class SkillEffectProjectile : MonoBehaviour
             if (!skill.projectile_targetMove &&
             Vector3.Distance(transform.position, destination) < 0.2f)
             {
-                Destroy(hitboxObj);
-                Destroy(gameObject);
+                Destroy(hitboxObj, skill.skillTime);
+                Destroy(gameObject, skill.skillTime);
             }
             if (skill.projectile_targetMove && targetPosEnd
                 )
@@ -208,11 +209,12 @@ public class SkillEffectProjectile : MonoBehaviour
 
             var casterStats = manager.GetStats(caster);
             // charcterUnit의 위치를 스킬 위치로 이동한뒤 위치 갱신
-            if (caster != null)
-            {
                 caster.transform.position = transform.position;
-                casterStats.charPosition = transform.position;
-            }
+
+                Vector3 Pos12 = transform.position;
+                Pos12.x = transform.position.x * (10.0f / 12.0f);
+                casterStats.charPosition = Pos12;
+            
         }
     }
 
@@ -260,6 +262,8 @@ public class SkillEffectProjectile : MonoBehaviour
     // 개별 목표로 easing 이동 (TargetPosMove에서 사용)
     private IEnumerator MoveToTargetWithEasing(Vector3 target)
     {
+        target.x = target.x * 1.2f;
+
         Vector3 start = transform.position;
         float dist = Vector3.Distance(start, target);
 
@@ -358,11 +362,13 @@ public class SkillEffectProjectile : MonoBehaviour
 
             var casterStats = manager.GetStats(caster);
             // charcterUnit의 위치를 스킬 위치로 이동한뒤 위치 갱신
-            if (caster != null)
-            {
+
                 caster.transform.position = GetNearestTile(caster.transform.position);
-                casterStats.charPosition = GetNearestTile(caster.transform.position);
-            }
+
+            Vector3 Pos12 = transform.position;
+            Pos12.x = transform.position.x * (10.0f / 12.0f);
+            casterStats.charPosition = Pos12;
+
         }
 
         // AI 스킬 시전 잠금 해제
@@ -374,10 +380,10 @@ public class SkillEffectProjectile : MonoBehaviour
     private Vector3 GetNearestTile(Vector3 currentPosition)
     {
         // 현재 위치에서 가장 가까운 타일의 좌표를 계산
-        float x = Mathf.Round(currentPosition.x);
+        float x = Mathf.Round(currentPosition.x * (10.0f / 12.0f));
         float y = Mathf.Round(currentPosition.z);
 
-        return new Vector3(x, 0f, y);  // 가장 가까운 타일로 반환
+        return new Vector3(x * 1.2f, 0f, y);  // 가장 가까운 타일로 반환
     }
 
     public void Tracking(bool tracking)

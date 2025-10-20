@@ -14,11 +14,14 @@ using static UnityEngine.Rendering.VolumeComponent;
 public class CharacterStats : MonoBehaviour
 {
     public static CharacterStats Instance;
+
+    public CharacterSelection characterSelection;
     public TurnManager turnManager; // 턴 매니저
     public TurnUIManager uiManager;
     public CharacterUIManager ProfileuiManager; // 캐릭터 프로필 UI 매니저
 
     public Character[] ALLcharacterList;
+
     public List<string> playerCharacters = new List<string>();
     public List<string> EnemieCharacters = new List<string>();
     public List<Stats> characterList = new List<Stats>();
@@ -60,6 +63,7 @@ public class CharacterStats : MonoBehaviour
 
 
         LoadStageCharacters();
+        
         /* playerCharacters.Add("TonTonJung");
          //playerCharacters.Add("Deus");
          //playerCharacters.Add("JuInGong");
@@ -69,6 +73,11 @@ public class CharacterStats : MonoBehaviour
          EnemieCharacters.Add("프리즘");
          EnemieCharacters.Add("PuSsiMaster");*/
 
+    }
+
+    public void Start()
+    {
+        
     }
 
     public void Update()
@@ -130,6 +139,7 @@ public class CharacterStats : MonoBehaviour
             }
             Boss = characterList.Count == 3 ? characterList[2] : null; ; // 보스로 설정
             Charactercreation();
+            characterSelection.SelectCharacter(0);
         }
         else
         {
@@ -183,26 +193,23 @@ public class CharacterStats : MonoBehaviour
                 {
                     character.usingSkill[i].AdditionalSkillData.skill =
                     GetSkillDataByName(character.useSkill[i].AdditionalSkills.skillName, character);
-                    Debug.Log("추가 스킬 이름: " + character.usingSkill[i].AdditionalSkillData.skill.skillName);
                 }
 
                 if (!string.IsNullOrEmpty(character.useSkill[i].StartAddSkills.skillName))
                 {
                     character.usingSkill[i].StartAddSkills.skill =
                     GetSkillDataByName(character.useSkill[i].StartAddSkills.skillName, character);
-                    Debug.Log("추가 스킬 이름: " + character.usingSkill[i].StartAddSkills.skill.skillName);
                 }
 
                 if (!string.IsNullOrEmpty(character.useSkill[i].EndAddSkills.skillName))
                 {
                     character.usingSkill[i].EndAddSkills.skill =
                     GetSkillDataByName(character.useSkill[i].EndAddSkills.skillName, character);
-                    Debug.Log("스킬" + character.usingSkill[i].skillName);
-                    Debug.Log("추가 스킬 이름: " + character.usingSkill[i].EndAddSkills.skill.skillName);
                 }
                 //AdditionalSkills
             }
         }
+        
     }
 
     public SkillData GetSkillDataByName(string name, Stats character)
@@ -226,20 +233,27 @@ public class CharacterStats : MonoBehaviour
             var stageManager = StageManager.Instance;
             chterObj.name = chter.name;
             characters.Add(chterObj);
+            if (chter.animatorController != null)
+            {
+                chterObj.GetComponent<CharacterAnim>().animator.runtimeAnimatorController = chter.animatorController;
+                chter.Animator = chterObj.GetComponent<CharacterAnim>().animator;
+            }
 
             // 팀에 따라 위치 지정
-            if (chter.isPlayerTeam)
+            if (chter.team == Team.team)
             {
                 Vector2 postion = stageManager.CurrentStage.startPositions[i];
-                Vector3 startpostion = new Vector3(postion.x, 0, postion.y);
+                Vector3 startpostion = new Vector3(postion.x * 1.2f, 0, postion.y);
+                chter.charPosition = new Vector3(postion.x, 0, postion.y);
                 chterObj.transform.position = startpostion;
 
 
             }
-            else if (chter.isPlayerTeam)
+            else if (chter.team == Team.enemy)
             {
                 Vector2 postion = stageManager.CurrentStage.enemyDatalist[i - playerCharacters.Count].position;
-                Vector3 startpostion = new Vector3(postion.x, 0, postion.y);
+                Vector3 startpostion = new Vector3(postion.x * 1.2f, 0, postion.y);
+                chter.charPosition = new Vector3(postion.x, 0, postion.y);
                 chterObj.transform.position = startpostion;
 
             }
@@ -263,10 +277,11 @@ public class CharacterStats : MonoBehaviour
             {
                 characters.Add(chterObj);
             }
-            chter.HPbar = WorldHPBar.Create(HpBar, chterObj.transform, canvas, chter);
+            chter.HPbar = chter.mainCh ? null : WorldHPBar.Create(HpBar, chterObj.transform, canvas, chter);
         }
         ProfileuiManager.AssignMiniprofileTargets();
         characterCreat = true; // 캐릭터 생성 완료
+        
     }
 
     public void Charactercreat(Stats chter,Vector3 startpostion)
@@ -386,7 +401,7 @@ public class CharacterStats : MonoBehaviour
         switch (rule)
         {
             case VictoryRule.killAll:
-                isClear = characterList.Count(stats => stats.isPlayerTeam && stats.isdie == false) == 0;
+                isClear = characterList.Count(stats => stats.team == Team.enemy && stats.isdie == false) == 0;
                 break;
             case VictoryRule.story:
                 isClear = true;

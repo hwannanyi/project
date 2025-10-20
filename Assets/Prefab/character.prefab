@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5723915232967125904}
   - component: {fileID: 3675397492612416123}
   - component: {fileID: 8509678210191685441}
+  - component: {fileID: 2794521645196869501}
   m_Layer: 0
   m_Name: UI_17
   m_TagString: Untagged
@@ -161,6 +162,28 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+--- !u!95 &2794521645196869501
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3169559077108412857}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4344314745404087944
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,6 +202,7 @@ GameObject:
   - component: {fileID: 6120065026691064890}
   - component: {fileID: 3680048953721835883}
   - component: {fileID: 8313277456761592515}
+  - component: {fileID: 1192802461673655066}
   m_Layer: 0
   m_Name: character
   m_TagString: Character
@@ -273,6 +297,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterNumber: 0
   moveSpeed: 5
+  targetPosition: {x: 0, y: 0, z: 0}
+  startPosition: {x: 0, y: 0, z: 0}
   isMoving: 0
   isBlocked: 0
   moveRange: 5
@@ -282,6 +308,238 @@ MonoBehaviour:
   spriteRenderer: {fileID: 8694669764875988480}
   lookRotation: 0
   lookRota: {fileID: 4904790158046436457}
+  character:
+    characterNumber: 0
+    name: 
+    maxhp: 0
+    hp: 0
+    shields: 0
+    rage: 0
+    risk: 0
+    cost: 0
+    atk: 0
+    def: 0
+    damage_Defense: 0
+    damage_Plus: 0
+    rest: 0
+    speed: 0
+    movespeed: 0
+    moveCount: 0
+    NowMoveCount: 0
+    trun: 0
+    charPosition: {x: 0, y: 0, z: 0}
+    charRotation: 0
+    isdie: 0
+    team: 0
+    mainCh: 0
+    summons: 0
+    useSkill: []
+    statusEffects: []
+    passiveSkill: []
+    characterillustration: {fileID: 0}
+    characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
+    characterPrefab: {fileID: 0}
+    debuffEffects: []
+    buffEffects: []
+    ccEffects: []
+    available: 0
+    movable: 0
+    highlightEffect: {fileID: 0}
+    HPbar: {fileID: 0}
+    isPatternEnd: 0
+    gurd: 0
+    lastHitType: 0
+    lastHitSkillData:
+      useCharacterName: 
+      skillName: 
+      skillIcon: {fileID: 0}
+      SkillEffectIllustration: {fileID: 0}
+      animationName: 
+      SkillEffectPrefab: {fileID: 0}
+      passive: 0
+      skillTypes: 
+      MoveBoss: 0
+      tooltip: 
+      AdditionalSkills: {fileID: 0}
+      AdditionalSkillData:
+        condition:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 0
+        conditionHit:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 
+        skillName: 
+        targetrule:
+          isCastingNotCast: 0
+          coordinate: {x: 0, y: 0, z: 0}
+          Rotation: {x: 0, y: 0, z: 0}
+          targetTypeX: 0
+          targetTypeY: 0
+          RotationType: 0
+          Designation: 0
+          reverse_order: 0
+          index: 0
+          target: 0
+      StartAddSkills:
+        condition:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 0
+        conditionHit:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 
+        skillName: 
+        targetrule:
+          isCastingNotCast: 0
+          coordinate: {x: 0, y: 0, z: 0}
+          Rotation: {x: 0, y: 0, z: 0}
+          targetTypeX: 0
+          targetTypeY: 0
+          RotationType: 0
+          Designation: 0
+          reverse_order: 0
+          index: 0
+          target: 0
+      EndAddSkills:
+        condition:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 0
+        conditionHit:
+          isactive: 0
+          target: 0
+          type: 0
+          comparison: 0
+          value: 
+        skillName: 
+        targetrule:
+          isCastingNotCast: 0
+          coordinate: {x: 0, y: 0, z: 0}
+          Rotation: {x: 0, y: 0, z: 0}
+          targetTypeX: 0
+          targetTypeY: 0
+          RotationType: 0
+          Designation: 0
+          reverse_order: 0
+          index: 0
+          target: 0
+      actionsNumber: 0
+      skillNumber: 0
+      skillCumulative: 0
+      cost: 0
+      rageCost: 0
+      hpCost: 0
+      rageCost_bas: 0
+      hpCost_bas: 0
+      startSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
+      projectile: 0
+      targeting: 0
+      penetration: 0
+      tracking: 0
+      RangeAdjustment: 0
+      unlimitedRota: 0
+      projectileType: 0
+      skillTarget: 
+      projectileSpeed: 0
+      hitscantime: 0
+      skillTimeInf: 0
+      afterdelay: 0
+      beforedelay: 0
+      range: 0
+      aoetype: 0
+      fourRotation: 0
+      effectRotation: 0
+      Xaoe: 0
+      Yaoe: 0
+      aoecenter: 0
+      specialAoe: []
+      projectile_targetMove: 0
+      startPos: 0
+      targetPos: []
+      nextDelay: 0
+      easing: 0
+      easingCurve:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      repeat: 0
+      rewind: 0
+      skillTime: 0
+      cooldown: 0
+      currentCooldown: 0
+      colldownTime: 0
+      colldownSkill: 0
+      basicValue: 0
+      increase:
+        keys: 
+        values: []
+      damageHit: 0
+      hitSpeed: 0
+      hitEffects: []
+      conditionalEffects: []
+      skillCastCode: 0
+      gurd:
+        time: 0
+      parryingT: 0
+      holdHit: []
+      keyMashingHit: []
+      skillPreview: 0
+      skillPreviewCount: 0
+      SFDtype: 0
+      SFDtime: 0
+      skillPreviewStop: 0
+      patternType: 0
+      ammo_circle: 0
+      radius_circle: 0
+      isRadius_tracking_circle: 0
+      delayTime_circle: 0
+      position_circle: {x: 0, y: 0, z: 0}
+      isPosition_tracking_circle: 0
+      count_circle: 0
+      isRandom_circle: 0
+      ammo_straight: 0
+      interval_straight: 0
+      direction_straight: {x: 0, y: 0}
+      radius_straight: 0
+      isRadius_tracking_straight: 0
+      delayTime_straight: 0
+      position_straight: {x: 0, y: 0, z: 0}
+      isPosition_tracking_straight: 0
+      count_straight: 0
+      isRandom_straight: 0
+      conditionCheck: 0
+      status: 
+      statusNot: 0
+      statusApply: 
+      statusRemove: 
+      statusEffects: []
+    aIPattern:
+      isRandomPattern: 0
+    noPattern: 0
+    isparrying: 0
+    parryingTime: 0
+    hold: 0
+    holdGauge: []
+    keyMashing: []
   SFD: {fileID: 0}
 --- !u!114 &4141925944930643250
 MonoBehaviour:
@@ -392,9 +650,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   turnManager: {fileID: 0}
   skillManager: {fileID: 0}
+  characterSelection: {fileID: 0}
   SkillCasting: 0
   skillCastLock: 0
   patternsQueue: []
+  patternsQueue_turn_end: []
+  patternCount: 0
+  nowPattern: 0
+  nowPatternCount: 
 --- !u!114 &8313277456761592515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -415,6 +678,7 @@ MonoBehaviour:
     shields: 0
     rage: 0
     risk: 0
+    cost: 0
     atk: 0
     def: 0
     damage_Defense: 0
@@ -429,12 +693,15 @@ MonoBehaviour:
     charRotation: 0
     isdie: 0
     team: 0
+    mainCh: 0
     summons: 0
     useSkill: []
     statusEffects: []
     passiveSkill: []
     characterillustration: {fileID: 0}
     characterProfileillustration: {fileID: 0}
+    animatorController: {fileID: 0}
+    Animator: {fileID: 0}
     characterPrefab: {fileID: 0}
     debuffEffects: []
     buffEffects: []
@@ -451,6 +718,7 @@ MonoBehaviour:
       skillName: 
       skillIcon: {fileID: 0}
       SkillEffectIllustration: {fileID: 0}
+      animationName: 
       SkillEffectPrefab: {fileID: 0}
       passive: 0
       skillTypes: 
@@ -535,13 +803,14 @@ MonoBehaviour:
       actionsNumber: 0
       skillNumber: 0
       skillCumulative: 0
+      cost: 0
       rageCost: 0
       hpCost: 0
       rageCost_bas: 0
       hpCost_bas: 0
       startSkillPosition: 0
-      XstartSkillPosition: 0
-      YstartSkillPosition: 0
+      startXpos: 0
+      startYpos: 0
       projectile: 0
       targeting: 0
       penetration: 0
@@ -564,6 +833,7 @@ MonoBehaviour:
       aoecenter: 0
       specialAoe: []
       projectile_targetMove: 0
+      startPos: 0
       targetPos: []
       nextDelay: 0
       easing: 0
@@ -595,6 +865,7 @@ MonoBehaviour:
       holdHit: []
       keyMashingHit: []
       skillPreview: 0
+      skillPreviewCount: 0
       SFDtype: 0
       SFDtime: 0
       skillPreviewStop: 0
@@ -621,14 +892,29 @@ MonoBehaviour:
       status: 
       statusNot: 0
       statusApply: 
+      statusRemove: 
       statusEffects: []
     aIPattern:
       isRandomPattern: 0
+    noPattern: 0
     isparrying: 0
     parryingTime: 0
     hold: 0
     holdGauge: []
     keyMashing: []
+--- !u!114 &1192802461673655066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4344314745404087944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8442be35b9b173d42951bef1ca42a474, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 2794521645196869501}
 --- !u!1 &4904790158046436457
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,7 +942,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0}
-  m_LocalScale: {x: 1, y: 2.4063, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2574469382588196305}
@@ -705,7 +991,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 4
-  m_Sprite: {fileID: 21300000, guid: e43d2179ec113cd49b8026659ba66c8a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d4b0d75e03ab63a4ea8562706b0c420a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
